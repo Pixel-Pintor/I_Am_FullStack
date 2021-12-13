@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 4</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 4. Dar sentido a los <span translate="no">floats</span></h1>
+      <div>
+        <a href="ch_03.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_05.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este cápitulo habla sobre:</em></h4>
+      <ul>
+        <li>Cómo funcionas los <span translate="no">floats</span> y cómo evitar errores comunes</li>
+        <li>Contenedor colapsando y el <span translate="no">clearfix</span></li>
+        <li>El objeto multimedia y el patrón de contenedor doble</li>
+        <li>Contextos de formato de bloque</li>
+        <li>Cómo construir y comprender un <span translate="no">grid system</span></li>
+      </ul>
+      <p>
+        Al final de la <b>parte 1</b>, cubrimos algunos conceptos fundamentales de tamaño y espaciado de elementos. A lo largo de la <b>parte 2</b>, nos basaremos en estos conceptos analizando más de cerca los métodos principales para diseñar la página. Veremos los tres métodos más importantes para alterar el flujo de documentos: <em translate="no">floats, flexbox</em> y <em translate="no">grid</em>. Luego, veremos el posicionamiento, que se usa principalmente para apilar elementos uno frente al otro. Los diseños de <em translate="no">flexbox</em> y <em translate="no">grid</em> son nuevos en CSS y están demostrando ser herramientas esenciales. Aunque los <em translate="no">floats</em> y el posicionamiento no son nuevos, a menudo se malinterpretan.
+      </p>
+      <p>
+        En este capítulo, primero veremos los <em translate="no">floats</em>. Son el método más antiguo para diseñar una página web y durante muchos años fueron la única forma. Sin embargo, son un poco extraños. Dar sentido a los <em translate="no">floats</em> comienza con la comprensión de su propósito original, que es donde comenzaremos. Le mostraré cómo lidiar con algunas de sus peculiaridades, incluida una herramienta llamada <em translate="no">clearfix</em>. Esto pondrá algo de contexto a su comportamiento.
+      </p>
+      <p>
+        A medida que avanzamos, también aprenderá acerca de dos patrones que a menudo puede ver en los diseños de página: el patrón de <em translate="no">double container</em> y el <em translate="no">media object</em>. Para terminar, pondrás tus conocimientos en práctica para crear un sistema de cuadrícula, que es una herramienta versátil para estructurar una página.
+      </p>
+    <section>
+      <h2 id="tema1">4.1 EL PROPOSITO DE LOS <span translate="no">FLOATS</span></h2>
+      <p>
+        Aunque los <em translate="no">floats</em> no estaban destinados originalmente a construir diseños de página, han cumplido bien ese trabajo. Sin embargo, para dar sentido a los <em translate="no">floats</em>, primero debemos tener en cuenta su propósito original.
+      </p>
+      <p>
+        Un <em translate="no">float</em> tira de un elemento (a menudo una imagen) hacia un lado de su contenedor, permitiendo que el flujo de documentos lo envuelva <b>(figura 4.1)</b>. Este diseño es común en periódicos y revistas, por lo que se agregaron <em translate="no">floats</em> a CSS para lograr este efecto.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/01.jpg" alt="ibid">
+        <figcaption>Figura 4.1. Las líneas de texto se envuelven alrededor de elementos flotantes</figcaption>
+      </figure>
+      <p>
+        Esta ilustración muestra un elemento tirado hacia la izquierda, pero también puede <em>flotar</em> un elemento hacia la derecha. Un elemento <em>flotante</em> se retira del flujo normal de documentos y se tira hacia el borde del contenedor. Luego, el flujo de documentos se reanuda, pero rodeará el espacio donde ahora reside el elemento <em>flotante</em>. Si hace flotar varios elementos en la misma dirección, se apilarán uno al lado del otro, como se muestra en la <b>figura 4.2</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/02.jpg" alt="ibid">
+        <figcaption>Figura 4.2. Dos elementos flotantes apilados uno al lado del otro</figcaption>
+      </figure>
+      <p>
+        Si ha estado escribiendo CSS por un tiempo, este comportamiento probablemente no sea nuevo para usted. Pero lo importante a tener en cuenta es esto: no siempre usamos <em translate="no">floats</em> de esta manera, a pesar de que es su propósito original.
+      </p>
+      <p>
+        En los primeros días de CSS, los desarrolladores se dieron cuenta de que podían usar esta sencilla herramienta para mover secciones de la página y crear todo tipo de diseños. No tenía la intención de ser una herramienta de diseño de página, pero durante casi dos décadas, la hemos estado usando como tal.
+      </p>
+      <p>
+        Hicimos esto porque era nuestra única opción. Finalmente, surgió la capacidad de usar <code>display: inline-block</code> o <code>display: table</code>, que ofrecía alternativas, aunque limitadas. Hasta la adición de los diseños de <code>grid</code> y <code>flexbox</code> en los últimos años, los <em translate="no">floats</em> siguieron siendo nuestro gran éxito para el diseño de página. Echemos un vistazo a cómo funcionan. Como guía, creará la página que se muestra en la <b>figura 4.3</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/03.jpg" alt="ibid">
+        <figcaption>Figura 4.3. Página web con diseño <span translate="no">float</span></figcaption>
+      </figure>
+      <p>
+        En los ejemplos de este capítulo, utilizará <em>flotantes</em> para colocar cada uno de los cuatro cuadros grises. Dentro de los cuadros, colocará las imágenes junto al texto. Cree una página en blanco y vincúlela a una nueva hoja de estilo, luego agregue el código en esta lista a su página.
+      </p>
+      <pre>
+        <code class="container__base-code">
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;header&gt;                                     1           
+      &lt;h1&gt;Franklin Running Club&lt;/h1&gt;       1          
+    &lt;/header&gt;                                    1                
+  
+    &lt;main class="main clearfix"&gt;                 2               
+        &lt;h2&gt;Running tips&lt;/h2&gt;
+  
+      &lt;div&gt;
+        &lt;div class="media"&gt;                      3               
+          &lt;img class="media-image" src="runner.png"&gt;
+          &lt;div class="media-body"&gt;
+            &lt;h4&gt;Strength&lt;/h4&gt;
+            &lt;p&gt;
+              Strength training is an important part of
+              injury prevention. Focus on your core&mdash;
+              especially your abs and glutes.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+  
+        &lt;div class="media"&gt;                      3         
+          &lt;img class="media-image" src="shoes.png"&gt;
+          &lt;div class="media-body"&gt;
+            &lt;h4&gt;Cadence&lt;/h4&gt;
+            &lt;p&gt;
+              Check your stride turnover. The most efficient
+              runners take about 180 steps per minute.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+  
+        &lt;div class="media"&gt;                         3          
+          &lt;img class="media-image" src="shoes.png"&gt;
+          &lt;div class="media-body"&gt;
+            &lt;h4&gt;Change it up&lt;/h4&gt;
+            &lt;p&gt;
+              Don't run the same every time you hit the
+              road. Vary your pace, and vary the distance
+              of your runs.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+  
+        &lt;div class="media"&gt;                         3           
+          &lt;img class="media-image" src="runner.png"&gt;
+          &lt;div class="media-body"&gt;
+            &lt;h4&gt;Focus on form&lt;/h4&gt;
+            &lt;p&gt;
+              Run tall but relaxed. Your feet should hit
+              the ground beneath your hips, not out in
+              front of you.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+  
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+        </code>
+        <small>Listado 4.1. HTML para una página con un diseño <small translate="no">float</small></small>
+      </pre>
+      <ol class="index-code">
+        <li>Diseño de encabezado similar al del capítulo 3</li>
+        <li>Elemento principal, el cuadro blanco, que contiene la mayor parte de la página.</li>
+        <li>Cuatro objetos multimedia para cada uno de los cuadros grises</li>
+      </ol>
+      <p>
+        Este listado le brinda la estructura de la página: un encabezado y un elemento principal que contendrá el resto de la página. Dentro del elemento principal está el título de la página, seguido de un <em>div anónimo</em> (es decir, un <code>div</code> sin clase o ID). Esto sirve para agrupar los cuatro elementos multimedia grises, cada uno de los cuales contiene una imagen y un cuerpo.
+      </p>
+      <p>
+        Por lo general, es más fácil diseñar primero las regiones grandes de una página y luego avanzar hacia los elementos más pequeños que contiene.
+      </p>
+      <p>
+        Antes de comenzar con los elementos flotantes, colocará la estructura exterior de la página en su lugar. Agregue la siguiente lista a su hoja de estilo.
+      </p>
+      <pre>
+        <code class="container__base-code">
+:root {                             1
+  box-sizing: border-box;           1
+}                                   1
+                                    1
+*,                                  1
+::before,                           1
+::after {                           1
+  box-sizing: inherit;              1
+}                                   1
+  
+body {
+  background-color: #eee;
+  font-family: Helvetica, Arial, sans-serif;
+}
+  
+body * + * {                        2
+  margin-top: 1.5em;                2
+}                                   2
+  
+header {                            3
+  padding: 1em 1.5em;               3
+  color: #fff;                      3
+  background-color: #0072b0;        3
+  border-radius: .5em;              3
+  margin-bottom: 1.5em;             3
+}                                   
+  
+.main {                             4
+  padding: 0 1.5em;                 4
+  background-color: #fff;           4
+  border-radius: .5em;              4
+}
+        </code>
+        <small>Listado 4.2. Estilos base para la página</small>
+      </pre>
+      <ol class="index-code">
+        <li>Corrección de cuadro de borde global (del capítulo 3)</li>
+        <li>Márgenes globales del búho lobotomizado (del capítulo 3)</li>
+        <li>colores de encabezado y relleno</li>
+        <li>4 colores principales (contenedor blanco) y relleno</li>
+      </ol>
+      <p>
+        Esto establece algunos estilos base para la página, incluida una corrección de tamaño de caja y un búho lobotomizado del <b>capítulo 3</b>. A continuación, querrá restringir el ancho del contenido de la página, que se muestra en la <b>figura 4.4</b>. Observe los márgenes de color gris claro en ambos lados y cómo tanto el encabezado como el contenedor principal tienen anchos iguales en su interior.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/04.jpg" alt="ibid">
+        <figcaption>Figura 4.4. Página con ancho restringido</figcaption>
+      </figure>
+      <p>
+        Este diseño es común para centrar el contenido en una página. Puede lograrlo colocando su contenido dentro de dos contenedores anidados y luego establecer márgenes en el contenedor interno para colocarlo dentro del externo <b>(figura 4.5)</b>. El desarrollador web <em>Brad Westfall</em> llama a esto el patrón de contenedor doble.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/05.jpg" alt="ibid">
+        <figcaption>Figura 4.5. El patrón de contenedor doble</figcaption>
+      </figure>
+      <p>
+        En nuestro ejemplo, <code>&lt;body&gt;</code> sirve como contenedor externo. De forma predeterminada, esto ya es el <code>100%</code> del ancho de la página, por lo que no tendrá que aplicarle ningún estilo nuevo. Dentro de eso, has envuelto todo el contenido de la página en un <code>&lt;div class = "contenedor"&gt;</code>, que sirve como contenedor interno. Para eso, aplicará un <code>max-widht</code> y márgenes automáticos para centrar el contenido. Agregue este listado a su hoja de estilo.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.container {
+  max-width: 1080px;         1   
+  margin: 0 auto;            2   
+}
+        </code>
+        <small>Listado 4.3. Estilos para el contenedor doble</small>
+      </pre>
+      <ol class="index-code">
+        <li>Establece un ancho máximo de 1.080 px</li>
+        <li>Los márgenes izquierdo y derecho automáticos crecerán para llenar el espacio disponible, centrando el elemento dentro del contenedor exterior.</li>
+      </ol>
+      <p>
+        Al usar el <code>max-widht</code> en lugar del ancho, el elemento se reduce a menos de <code>1080px</code> si la ventana gráfica de la pantalla es más pequeña que eso. Es decir, en las ventanas gráficas más pequeñas, el contenedor interno llenará la pantalla, pero en las más grandes, se expandirá a <code>1080px</code>. Esto es importante para evitar el desplazamiento horizontal en dispositivos con pantallas más pequeñas.
+      </p>
+      <p>
+        <em translate="no">Flexbox</em> está reemplazando rápidamente el uso de <em translate="no">floats</em> para el diseño de páginas. Su comportamiento es sencillo y, a menudo, más predecible para los nuevos desarrolladores. Es posible que se pregunte si necesita saber algo sobre <em translate="no">float</em>. ¿CSS ha superado esto?
+      </p>
+      <p>
+        Con los navegadores modernos, ciertamente puede ir mucho más lejos sin <em translate="no">floats</em> de lo que podía en el pasado. Probablemente pueda arreglárselas sin <em translate="no">floats</em>. Pero si necesita ser compatible con Internet Explorer, es posible que no desee dejarlos de lado todavía. <em translate="no">Flexbox</em> solo es compatible con IE 10 y 11, e incluso entonces tiene algunos errores. Si no quiere preocuparse por los errores del navegador o necesita admitir navegadores más antiguos, los <em translate="no">floats</em> podrían ser una mejor opción.
+      </p>
+      <p>
+        Y los flotadores siguen siendo la única forma de mover una imagen al costado de la página y permitir que el texto la rodee.
+      </p>
+    </section>
+    <section id="tema2">
+      <h2>4.2. CONTENEDOR COLAPSANDO Y <span translate="no">CLEARFIX</span></h2>
+      <p>
+        En el pasado, los errores del navegador han plagado el comportamiento de los <em translate="no">floats</em>, aunque principalmente en IE 6 y 7. Es casi seguro que ya no necesita ser compatible con estos navegadores, por lo que no necesita preocuparse por esos errores. Ahora puede confiar en que los navegadores manejarán <em translate="no">floats</em> de manera consistente.
+      </p>
+      <p>
+        Sin embargo, algunos comportamientos de los <em translate="no">floats</em> pueden tomarlo desprevenido. Estos no son errores, sino <em translate="no">floats</em> que se comportan exactamente como se supone que deben comportarse. Veamos cómo funcionan y cómo puede ajustar su comportamiento para lograr el diseño que desea.
+      </p>
+      <h3 id="sub1">4.2.1. Entender el colapso de contenedores</h3>
+      <p>
+        En su página, hagamos flotar los cuatro cuadros de medios a la izquierda. Los problemas se harán evidentes de inmediato <b>(figura 4.6)</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/06.jpg" alt="ibid">
+        <figcaption>Figura 4.6. Contenedor con sus descendientes flotantes</figcaption>
+      </figure>
+      <p>
+        ¿Qué pasó con el fondo blanco? Lo vemos detrás del título de la página <em>("Trucos para correr")</em>, pero se detiene allí en lugar de extenderse hacia abajo para abarcar los cuadros de medios. Para ver esto en su página, agregue la siguiente lista a su hoja de estilo. Luego, veremos por qué sucede esto y cómo puede solucionarlo.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.media {
+  float: left;                 1
+  width: 50%;                  2
+  padding: 1.5em;
+  background-color: #eee;
+  border-radius: 0.5em;
+}
+        </code>
+        <small>Listado 4.4. Flotando las cuatro cajas de medios a la izquierda</small>
+      </pre>
+      <ol class="index-code">
+        <li>Flota cada caja de medios a la izquierda</li>
+        <li>Establece un ancho para que quepan dos cuadros en la página.</li>
+      </ol>
+      <p>
+        Ha establecido un fondo gris claro en cada cuadro de medios, esperando ver el fondo blanco del contenedor detrás (o mejor dicho, alrededor) de ellos. En cambio, el fondo blanco se detuvo encima de la fila superior de cajas de medios. ¿Por qué es esto?
+      </p>
+      <p>
+        El problema es que, a diferencia de los elementos del flujo de documentos normal, los elementos flotantes no añaden altura a sus elementos principales. Esto puede parecer extraño, pero se remonta al propósito original de los <em translate="no">floats</em>.
+      </p>
+      <p>
+        Como aprendió cerca del comienzo de este capítulo, los <em translate="no">floats</em> están pensados para permitir que el texto los envuelva. Cuando flota una imagen dentro de un párrafo, el párrafo no crece para contener la imagen. Esto significa que si la imagen es más alta que el texto del párrafo, el siguiente párrafo comenzará inmediatamente debajo del texto del primero y el texto de ambos párrafos se ajustará al flotante. Esto se ilustra en la <b>figura 4.7</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/07.jpg" alt="ibid">
+        <figcaption>Figura 4.7. El flotador en un contenedor se extiende al siguiente contenedor, permitiendo que el texto en ambos contenedores se envuelva alrededor del elemento flotante (contenedores resaltados con líneas discontinuas).</figcaption>
+      </figure>
+      <p>
+        En su página, todo lo que está dentro del elemento principal está flotando, excepto el título de la página, por lo que solo el título de la página contribuye a la altura del contenedor, dejando todos los elementos multimedia flotantes que se extienden debajo del fondo blanco del principal. Este no es el comportamiento que queremos, así que vamos a arreglarlo. El elemento principal debe extenderse hacia abajo para contener los cuadros grises (que se muestran en la <b>figura 4.8</b>).
+      </p>
+      <figure>
+        <img src="../img_css/cap4/08.jpg" alt="ibid">
+        <figcaption>Figura 4.8. Contenedor extendido para abarcar los <span translate="no">floats</span></figcaption>
+      </figure>
+      <p>
+        Una forma de corregir esto es con la propiedad complementaria del <em translate="no">float</em>, <code>clear</code>. Si coloca un elemento al final del contenedor principal y usa <code>clear</code>, hace que el contenedor se expanda hasta el fondo de los <em translate="no">floats</em>. El código del siguiente listado muestra, en principio, lo que queremos hacer. Puede agregar esto a su página temporalmente para ver cómo funciona.
+      </p>
+      <pre>
+        <code class="container__base-code">
+&lt;main class="main"&gt;
+  ...
+  &lt;div style="clear: both"&gt;&lt;/div&gt;    1
+&lt;/main&gt;
+        </code>
+        <small>Listado 4.5. El contenedor se extiende para contener un elemento que limpia los <span translate="no">floats</span>.</small>
+      </pre>
+      <ol class="index-code">
+        <li>Agrega un div vacío con un claro al final del contenedor principal</li>
+      </ol>
+      <p>
+        La declaración <code>clear: both</code> hace que este elemento se mueva debajo de la parte inferior de los elementos <em>flotantes</em>, en lugar de al lado de ellos. Puede asignar a esta propiedad el valor <code>left</code> o <code>right</code> para borrar solo los elementos <em>flotantes</em> hacia la izquierda o hacia la derecha, respectivamente. Debido a que este <code>div</code> vacío en sí mismo no está flotando, el contenedor se extenderá para abarcarlo, por lo que también contiene los flotadores sobre él.
+      </p>
+      <p>
+        Esto mide el tamaño del contenedor como quieras, pero es bastante <span>hacky</span>; está agregando marcas no deseadas a su HTML para hacer el trabajo que debería realizar el CSS. Continúe y elimine ese div vacío. Veamos una forma de lograr esto únicamente en su CSS.
+      </p>
+      <h3 id="sub2">4.2.2. Entendiendo el <span translate="no">clearfix</span></h3>
+      <p>
+        En lugar de agregar un <code>div</code> adicional a su marcado, usará un pseudo-elemento. Al usar el selector de pseudo-elemento <code>:: after</code>, puede insertar efectivamente un elemento en el DOM al final del contenedor, sin agregarlo al marcado.
+      </p>
+      <p>
+        <em>pseudoelemento:</em> selectores especiales que se dirigen a determinadas partes del documento. Estos comienzan con una sintaxis de dos puntos <code>(::)</code>, aunque la mayoría de los navegadores también admiten una sintaxis de dos puntos simples para compatibilidad con versiones anteriores. Los pseudoelementos más comunes son <code>::before</code> y <code>::after</code>, que se utilizan para insertar contenido al principio o al final de un elemento. Consulte el <b>apéndice A</b> para obtener más información.
+      </p>
+      <p>
+        El <b>listado 4.6</b> muestra un enfoque común al problema de contener <em translate="no">floats</em>, llamado <em translate="no">clearfix</em>. (A algunos desarrolladores les gusta abreviar el nombre de la clase a <code>cf</code>, que convenientemente también es una abreviatura de <em>“contener flotantes”</em>). Agregue esto a su hoja de estilo.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.clearfix::after {      1     
+  display: block;       2     
+  content: " ";         2    
+  clear: both;          3    
+}
+        </code>
+        <small>Listado 4.6. Usando clearfix para contener <span translate="no">floats</span></small>
+      </pre>
+      <ol class="index-code">
+        <li>Apunta al pseudo-elemento al final del contenedor</li>
+        <li>Un valor de visualización no en línea y un valor de contenido hacen que el pseudoelemento aparezca en el documento.</li>
+        <li>Hace que el pseudoelemento borre todos los flotadores del contenedor.</li>
+      </ol>
+      <p>
+        Es importante saber que <em translate="no">clearfix</em> se aplica al elemento que contiene los <em translate="no">floats</em>; un error común es aplicarlo al elemento equivocado, como los <em translate="no">floats</em> o el contenedor después del que los contiene.
+      </p>
+      <p>
+        El <em translate="no">clearfix</em> ha pasado por docenas de iteraciones a lo largo de los años, algunas más complicadas que otras. Muchas versiones tenían matices para corregir varios errores del navegador. La mayoría de las soluciones alternativas ya no son necesarias, aunque este ejemplo tiene una solución alternativa: el espacio en el valor del contenido. Una cadena vacía <code>("")</code> también funciona, pero el carácter de espacio agregado corrige un error oscuro en versiones anteriores de Opera. Tiendo a dejar esta solución porque es discreta.
+      </p>
+      <p>
+        Queda una inconsistencia con este <em translate="no">clearfix</em>: los márgenes de los elementos flotantes en el interior no colapsarán hacia el exterior del contenedor <em translate="no">clearfixed</em>; pero los márgenes de los elementos no flotantes colapsarán normalmente. Puede ver esto en su página donde el encabezado “Consejos para correr” se presiona directamente contra la parte superior del <code>&lt;main&gt;</code> blanco <b>(figura 4.8)</b>; su margen se ha derrumbado fuera del contenedor.
+      </p>
+      <p>
+        Algunos desarrolladores prefieren usar una versión modificada de <em translate="no">clearfix</em> que contendrá todos los márgenes porque puede ser un poco más predecible. Agregar esta versión a su página evitará que el margen superior del título de la página se contraiga fuera del principal, como se muestra en la <b>figura 4.9</b>, dejando el espacio apropiado encima del encabezado.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/09.jpg" alt="ibid">
+        <figcaption>Figura 4.9. Un <span>clearfix</span> modificado contiene todos los <span>floats</span> y márgenes; observe que el margen superior del encabezado "Consejos para correr" ahora está dentro del &lt;main&gt;   blanco.</figcaption>
+      </figure>
+      <p>
+        Para la versión modificada, actualice el <em translate="no">clearfix</em> en su hoja de estilo para que coincida con esta lista.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.clearfix::before,        1
+.clearfix::after {        1
+  display: table;         2
+  content: " ";
+}
+  
+.clearfix::after {        3
+  clear: both;            3
+}                         3
+        </code>
+        <small>Listado 4.7. Modificación de <span>clearfix</span> para contener todos los márgenes</small>
+      </pre>
+      <ol class="index-code">
+        <li>Hace que aparezcan los pseudo elementos :: before y :: after</li>
+        <li>Evita que los márgenes colapsen a través de los pseudoelementos</li>
+        <li>Solo el pseudo elemento :: after necesita borrar los flotantes.</li>
+      </ol>
+      <p>
+        Esta versión hace uso de <code>display: table</code> en lugar de <code>display: block</code>. Al aplicar esto a los pseudoelementos <code>::before</code> y <code>::after</code>, contendrá los márgenes de los elementos secundarios en la parte superior e inferior del contenedor. Consulte la barra lateral <em translate="no">Clearfix</em> y <code>display: table</code> para obtener una explicación más completa de por qué funciona.
+      </p>
+      <p>
+        Esta versión de <em translate="no">clearfix</em> también funciona como una forma útil de evitar que los márgenes colapsen donde no queremos.
+      </p>
+      <p>
+        La versión de <em translate="no">clearfix</em> que utilice en sus proyectos depende de usted. Algunos desarrolladores argumentan que el colapso de márgenes es una característica fundamental de CSS, por lo que prefieren no contener márgenes. Pero, debido a que ninguna de las versiones contiene los márgenes de los elementos flotantes, otros prefieren el comportamiento más consistente de la versión modificada. Cada argumento tiene su mérito.
+      </p>
+      <p>
+        El uso de <code>display: table</code> en <em translate="no">clearfix</em> contiene márgenes debido a algunas peculiaridades de CSS. La creación de un elemento de tabla de visualización (o, en este caso, un pseudo-elemento) crea implícitamente una fila de tabla dentro del elemento y una celda de tabla dentro de ella. Debido a que los márgenes no se colapsan a través de elementos de celda de tabla (como se menciona en el <b>capítulo 3</b>), tampoco se colapsarán a través de un pseudo elemento de tabla de visualización.
+      </p>
+      <p>
+        Entonces, podría parecer que podría usar <code>display: table-cell</code> para el mismo efecto. Sin embargo, la propiedad <code>clear</code> solo funciona cuando se aplica a elementos a nivel de bloque. Una tabla es un elemento a nivel de bloque, pero una celda de tabla no lo es; por lo tanto, la propiedad <code>clear</code> no se pudo aplicar junto con <code>display: table-cell</code>. Por lo tanto, debe usar <code>display: table</code> para borrar los <em translate="no">floats</em> y su celda de tabla implícita para contener los márgenes.
+      </p>
+    </section>
+    <section id="tema3">
+      <h3>4.3 <span translate="no">INESPERADO "FLOAT CATCHING"</span></h3>
+      <p>
+        Ahora que el contenedor blanco contiene los elementos multimedia flotantes en su página, se hace evidente otro problema: los cuatro cuadros multimedia no están dispuestos en dos filas iguales como usted desea. En cambio, los dos primeros cuadros (<em>"Fuerza" y "Cadencia"</em>) están en una fila como se esperaba, pero el tercer cuadro (<em>"Cambiarlo"</em>) está a la derecha, debajo del segundo cuadro. Esto deja un gran espacio debajo del primer cuadro, lo que sucede porque el navegador coloca los flotadores lo más alto posible. Consulte la <b>figura 4.10</b> para ver un diagrama simplificado.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/10.jpg" alt="ibid">
+        <figcaption>Figura 4.10. Tres cajas flotantes a la izquierda: la caja 3 no flota completamente hacia la izquierda si la caja 1 es más alta que la caja 2, sino que flota contra la caja 1.</figcaption>
+      </figure>
+      <p>
+        Dado que la casilla 2 es más corta que la casilla 1, hay espacio para la casilla 3 debajo. En lugar de limpiar la casilla 1, la casilla 3 <em>"la atrapa"</em> en ella. Es decir, no flota hasta el borde izquierdo, sino que flota contra la esquina inferior de la caja 1.
+      </p>
+      <p>
+        La naturaleza exacta de este comportamiento depende de las alturas de cada uno de los bloques flotantes. Incluso una diferencia de 1 px en la altura de los elementos puede causar este problema. Por otro lado, si el cuadro 1 es más corto que el cuadro 2, no habrá ningún borde para que el tercer cuadro se dé cuenta y no verá el problema hasta que el contenido cambie más tarde, lo que dará como resultado un cambio en la altura de los elementos.
+      </p>
+      <p>
+        Al hacer flotar una serie de elementos a un lado, puede terminar con una gran variedad de diseños, dependiendo de las alturas de cada caja. Incluso cambiar el ancho del navegador puede alterar las cosas, ya que esto afectará el ajuste de línea y cambiará las alturas de los elementos. En cambio, lo que desea ver en su página son dos cuadros flotantes por fila, como en la <b>figura 4.11</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/11.jpg" alt="ibid">
+        <figcaption>Figura 4.11. Dos elementos por fila: la segunda fila de elementos multimedia debe borrar los elementos de la primera fila.</figcaption>
+      </figure>
+      <p>
+        La solución para esto es simple: el tercer <span translate="no">float</span> necesita limpiar los <span translate="no">floats</span> sobre él. O, de manera más general, el primer elemento de cada fila debe borrar el <span translate="no">float</span> que está encima. Como sabe que tiene dos casillas por fila, necesitará los elementos impares para borrar la fila de arriba. Puede apuntar a estos con el selector de pseudo-clase <code>:nth-child()</code>. Agregue este conjunto de reglas a su hoja de estilo.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.media {
+  float: left;
+  width: 50%;
+  padding: 1.5em;
+  background-color: #eee;
+  border-radius: 0.5em;
+}
+  
+.media:nth-child(odd) {       
+  clear: left;                
+}                             
+        </code>
+        <small>Listado 4.8. Usando el selector: <code>nth-child ()</code> para apuntar a cada elemento multimedia impar</small>
+      </pre>
+      <ol class="index-code">
+        <li>Cada nueva fila borra la fila de arriba</li>
+      </ol>
+      <p>
+        Este código funcionará incluso si agrega más elementos a la página más adelante. Se dirige al primer, tercer, quinto elemento, etc. Si, en cambio, tuviera tres elementos por fila, podría apuntar a cada tercio con el selector <code>.media: nth-child (3n + 1)</code>. Consulte el <b>apéndice A</b> para obtener más información sobre el uso del selector <code>:nth-child</code>.
+      </p>
+      <p>
+        Esta técnica para borrar cada fila solo funciona cuando sabe cuántos elementos hay en cada fila. Si el ancho se define utilizando algo que no sea un porcentaje, el número de elementos puede variar, dependiendo del ancho de la ventana gráfica. En este caso, lo mejor que puede hacer es utilizar una técnica de diseño diferente, como <em translate="no">flexbox</em> o elementos <em translate="no">inline-block</em>.
+      </p>
+      <p>
+        También agreguemos márgenes a nuestros elementos de medios para proporcionar un margen entre ellos. El búho lobotomizado también agregará un margen superior a cada elemento excepto al primero. Esto desalinea los elementos en la fila superior, por lo que también deberá restablecer el margen superior en ellos. Actualice su hoja de estilo para que coincida con la siguiente lista.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.media {
+  float: left;
+  margin: 0 1.5em 1.5em 0;          1
+  width: calc(50% - 1.5em);         2 
+  padding: 1.5em;
+  background-color: #eee;
+  border-radius: 0.5em;
+}
+  
+.media:nth-child(odd) {
+  clear: left;
+}
+        </code>
+        <small>Listado 4.9. Agregar márgenes a los elementos multimedia</small>
+      </pre>
+      <ol class="index-code">
+        <li>Agrega un margen derecho e inferior a cada elemento multimedia</li>
+        <li>Resta el margen del ancho para evitar un ajuste de línea no deseado</li>
+      </ol>
+      <p>
+        Al agregar márgenes correctos a los elementos, ya no se ajustarán a dos en una fila, por lo que tendrá que restar una cantidad igual del ancho del elemento usando <code>calc()</code>.
+      </p>
+      <h2 id="tema4">4.4. OBJETOS DE MEDIOS Y CONTEXTOS DE FORMATO DE BLOQUES</h2>
+      <p>
+        Ahora que cada uno de los cuatro recuadros grises está distribuido, veamos su contenido. En nuestro diseño previsto, tenemos una imagen en un lado y un bloque de texto al lado <b>(figura 4.12)</b>. Este es otro patrón común en los diseños de página, que la desarrolladora web <em>Nicole Sullivan</em> ha llamado el <em>"objeto multimedia"</em>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/12.jpg" alt="ibid">
+        <figcaption>Figura 4.12. El patrón de objeto multimedia: una imagen a la izquierda y contenido descriptivo a la derecha</figcaption>
+      </figure>
+      <p>
+        Este patrón se puede implementar de varias formas, incluidas las pantallas <em translate="no">flexbox</em> o <em translate="no">table</em>, pero lo haremos usando <em translate="no">floats</em>. El marcado de uno de los objetos multimedia en su página se ve así:
+      </p>
+      <pre>
+        <code class="container__base-code">
+&lt;div class="media"&gt;
+  &lt;img class="media-image" src="shoes.png"&gt;
+  &lt;div class="media-body"&gt;
+    &lt;h4&gt;Change it up&lt;/h4&gt;
+    &lt;p&gt;
+      Don't run the same every time you hit the
+      road. Vary your pace, and vary the distance
+      of your runs.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+        </code>
+      </pre>
+      <p>
+        Agregué las clases <code>media-image</code> y <code>media-body</code> a las partes izquierda y derecha de cada objeto multimedia, que usarás para colocarlos. Empezarás flotando la imagen a la izquierda. Como puede ver <b>(figura 4.13)</b>, simplemente hacer flotar la imagen no es suficiente. Cuando el texto es lo suficientemente largo, envuelve el elemento <span translate="no">float</span>. Este es el comportamiento de <span translate="no">float</span> normal, pero no es lo que queremos en este caso.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/13.jpg" alt="ibid">
+        <figcaption>Figura 4.13. Texto no deseado que envuelve la imagen flotante</figcaption>
+      </figure>
+      <p>
+        Agregue el <b>listado 4.10</b> a su hoja de estilo para que su página coincida con la <b>figura 4.13</b>, luego veremos cómo puede solucionarlo. Este código también elimina los márgenes superiores del cuerpo del medio y el título que contiene.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.media-image {           1
+  float: left;           1
+}                        1
+  
+.media-body {            2
+  margin-top: 0;         2 
+}                        2
+  
+.media-body h4 {         3
+  margin-top: 0;         3
+}                        3
+        </code>
+        <small>Listado 4.10. Flotando la imagen del objeto multimedia a la izquierda</small>
+      </pre>
+      <ol class="index-code">
+        <li>Imagen flotante a la izquierda</li>
+        <li>Elimina el margen superior aplicado por el búho lobotomizado</li>
+        <li>Anula el margen superior aplicado por los estilos de agente de usuario</li>
+      </ol>
+      <p>
+        Para corregir el comportamiento del texto, deberá comprender un poco más sobre cómo funcionan los <em translate="no">floats</em>.
+      </p>
+      <h3 id="sub3">4.4.1. Establecer un contexto de formato de bloque</h3>
+      <p>
+        Si examina el cuerpo del medio en las <em>DevTools</em> de su navegador (haga clic con el botón derecho y seleccione Inspeccionar o Inspeccionar elemento), verá que su cuadro se extiende completamente hacia la izquierda, por lo que envuelve la imagen flotante (<b>figura 4.14</b>, izquierda). El texto dentro del cuerpo envuelve la imagen, pero una vez que está fuera de la parte inferior de la imagen, se mueve completamente hacia la izquierda del cuadro. En cambio, lo que queremos es colocar el borde izquierdo del cuerpo del medio a la derecha de la imagen flotante (<b>figura 4.14</b>, derecha).
+      </p>
+      <figure>
+        <img src="../img_css/cap4/14.jpg" alt="ibid">
+        <figcaption>Figura 4.14. De forma predeterminada, el texto del cuerpo del objeto multimedia envuelve la imagen flotante (izquierda). Al darle al cuerpo un contexto de formato de bloque, el texto no se superpone (derecha).</figcaption>
+      </figure>
+      <p>
+        Para lograr el diseño de la derecha, deberá establecer algo llamado <em translate="no">block-formatting-context</em> para el cuerpo del medio. Un <em translate="no">block-formatting-context</em> (a veces llamado BFC) es una región de la página en la que se distribuyen los elementos. Un <span translate="no">block-formatting-context</span> en sí mismo es parte del flujo de documentos circundante, pero aísla su contenido del contexto externo. Este aislamiento hace tres cosas para el elemento que establece el BFC:
+      </p>
+      <ol>
+        <li>Contiene los márgenes superior e inferior de todos los elementos que contiene. No se colapsarán con márgenes de elementos fuera del <em translate="no">block-formatting-context</em>.</li>
+        <li>Contiene todos los elementos flotantes en su interior.</li>
+        <li>No se superpone con elementos flotantes fuera del BFC.</li>
+      </ol>
+      <p>
+        En pocas palabras, los contenidos dentro de un <em translate="no">block-formatting-context</em> no se superpondrán ni interactuarán con los elementos externos como se esperaría normalmente. Si aplica <code>clear</code> a un elemento, solo borrará los <em translate="no">floats</em> dentro de su propio BFC. Y, si fuerza a un elemento a tener un nuevo BFC, no se superpondrá con otros BFC.
+      </p>
+      <p>
+        Puede establecer un nuevo <em translate="no">block-formatting-context</em> de varias formas. La aplicación de cualquiera de los siguientes valores de propiedad a un elemento desencadena uno:
+      </p>
+      <ul>
+        <li><code>float: left</code> o <code>float: right</code>, cualquier cosa menos ninguna</li>
+        <li><code>overflow: hidden, auto</code> o <code>scroll</code>, cualquier cosa menos <code>visible</code>.</li>
+        <li><code>display: inline-block, table-cell, table-caption, flex, inline-flex, grid</code> o <code>inline-grid</code>; estos se denominan contenedores de bloques.</li>
+        <li><code>position: absolute</code> o <code>position: fixed</code></li>
+      </ul>
+      <p>
+        El elemento raíz de la pagina también crea un <em translate="no">block-formatting-context</em> de nivel superior para la página.
+      </p>
+      <h3 id="sub4">4.4.2 Usar un <span translate="no">block-formatting-context</span> para diseños de objetos multimedia</h3>
+      <p>
+        Una vez que cada cuerpo de medios establece su propio <em translate="no">block-formatting-context</em>, su página tendrá el diseño que desea <b>(figura 4.15)</b>. La mejor manera de hacer esto es a menudo establecer un valor de desbordamiento, ya sea oculto o automático.
+      </p>
+      <figure>
+          <img src="../img_css/cap4/15.jpg" alt="ibid">
+          <figcaption>Figura 4.15. <span translate="no">block-formatting-context</span> aplicados a todos los cuerpos de medios</figcaption>
+      </figure>
+      <p>
+        Establezcamos el valor de desbordamiento en su hoja de estilo. Actualice la parte correspondiente de su hoja de estilo para que coincida con esta lista.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.media {
+  float: left;
+  margin: 0 1.5em 1.5em 0;
+  width: calc(50% - 1.5em);
+  padding: 1.5em;
+  background-color: #eee;
+  border-radius: 0.5em;
+}
+  
+.media:nth-child(odd) {
+  clear: left;
+}
+  
+.media-image {
+  float: left;
+  margin-right: 1.5em;         1
+}
+  
+.media-body {
+  overflow: auto;              2
+  margin-top: 0;
+}
+  
+.media-body h4 {
+  margin-top: 0;
+}
+        </code>
+        <small>Listado 4.11. La adición automática de <code>overflow</code> desencadena un nuevo <span translate="no">block-formatting-context</span></small>
+      </pre>
+      <ol class="container__base-code">
+        <li>Agrega un margen a la imagen para insertar espacio entre esta y el cuerpo</li>
+        <li>Establece un nuevo contexto de formato de bloque para que el cuerpo no se superponga a la imagen flotante</li>
+      </ol>
+      <p>
+        Usar <code>overflow: auto</code> para BFC es generalmente el enfoque más simple. En su lugar, puede usar las otras propiedades mencionadas anteriormente, pero algunas tienen consideraciones a tener en cuenta: un <code>float</code> o un <code>inline-block</code> crecerá al <code>100%</code> de ancho, por lo que deberá restringir el ancho del elemento para evitar que se alinee envolviendo debajo del <code>float</code>. Por el contrario, un elemento de celda de tabla solo crecerá lo suficiente para contener su contenido, por lo que es posible que deba establecer un ancho grande para forzarlo a llenar el espacio restante.
+      </p>
+      <p>
+        En algunas circunstancias, el contenido de un <em translate="no">block-formatting-context</em> aún puede superponerse al contenido de otro. Esto sucederá si el contenido se desborda del contenedor (por ejemplo, el contenido es demasiado ancho) o si los márgenes negativos tiran del contenido fuera del contenedor.
+      </p>
+      <p>
+        Para obtener más información sobre el objeto de los medios, lea la publicación fundamental de Nicole Sullivan al respecto en https://mng.bz/6wj3w. Esta publicación se adentra en una metodología llamada CSS orientado a objetos (OOCSS), que veremos con más profundidad en el <b>capítulo 9</b>.
+      </p>
+    </section>
+    <section id="tema5">
+      <h2>4.5. <span translate="no">GRID SYSTEMS</span></h2>
+      <p>
+        Ahora ha creado su diseño de página completo, pero no está exento de errores. En particular, no se ha configurado para reutilizar fácilmente partes de los estilos. Ha codificado los objetos multimedia para que tengan un ancho del <code>50%</code>, por lo que siempre están en filas de dos. ¿Qué pasa si luego quieres usar el mismo diseño en filas de tres en su lugar?
+      </p>
+      <p>
+        Una forma popular de facilitar la reutilización del código es con la ayuda de un ;<em translate="no">grid-system</em>. Esta es una serie de nombres de clases que puede agregar a su marcado para estructurar partes de la página en filas y columnas. No debe proporcionar estilos visuales, como colores o bordes, a la página; solo debe establecer el ancho y la posición de los contenedores. Dentro de cada uno de estos contenedores, puede agregar nuevos elementos para diseñar visualmente como desee.
+      </p>
+      <p>
+        La mayoría de los <em translate="no">CSS frameworks</em> populares incluyen algún tipo de <em translate="no">grid-system</em>. Los detalles varían de uno a otro, pero generalmente el principio general es el mismo: coloque un contenedor de fila alrededor de uno o más contenedores de columna. Cada una de las clases aplicadas a los contenedores de columna determinará sus respectivos anchos. Creemos nuestro propio <code>grid-system</code> para que tenga una idea clara de cómo funcionan y luego podrá aplicarlo a su página.
+      </p>
+      <p>
+        <em translate="no">CSS framework</em> es una biblioteca de código CSS prediseñado que proporciona estilos para patrones comunes en el desarrollo web. Estos pueden ser útiles para la creación rápida de prototipos o para proporcionar un punto de partida sólido sobre el que puede crear estilos adicionales. Los marcos comunes incluyen <em translate="no">Bootstrap, Foundation</em> y <em translate="no">Pure</em>.
+      </p>
+      <h3 id="sub5">4.5.1. Comprender un <span translate="no">grid-system</span></h3>
+      <p>
+        Antes de construir el <em translate="no">grid-system</em>, veamos cómo puede esperar que se comporte. Un sistema de cuadrícula generalmente se define para contener un cierto número de columnas en cada fila; esto suele ser 12, pero puede variar. Los elementos secundarios de una fila pueden tener un ancho desde una columna hasta 12 columnas de ancho.
+      </p>
+      <p>
+        La <b>figura 4.16</b> ilustra un par de filas en una cuadrícula de 12 columnas. La primera fila tiene seis elementos de 1 columna y tres elementos de 2 columnas. La siguiente fila tiene un elemento de 4 columnas seguido de un elemento de 8 columnas. Cada conjunto agrega hasta 12 columnas, por lo que llenarán el ancho de la fila.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/16.jpg" alt="ibid">
+        <figcaption>Figura 4.16. Dos filas de un <span translate="no">grid-system</span> de 12 columnas: los elementos secundarios de cada fila pueden tener cualquier ancho de 1 a 12 columnas.</figcaption>
+      </figure>
+      <p>
+        Doce es un buen número de columnas porque es divisible por dos, tres, cuatro y seis, lo que proporciona mucha flexibilidad. Esto facilita el diseño de tres columnas (tres elementos de 4 columnas) o un diseño de cuatro columnas (cuatro elementos de 3 columnas). También puede crear diseños asimétricos, como un elemento principal de 9 columnas y una barra lateral de 3 columnas. Dentro de cada elemento de columna, puede colocar el marcado que necesite.
+      </p>
+      <p>
+        El marcado de este ejemplo es sencillo. Cada fila tiene un <code>div</code> contenedor de fila y dentro de él colocará un <code>div</code> para cada elemento de columna con una clase <code>column-n</code> (donde n es el número de columnas en la cuadrícula):
+      </p>
+      <pre>
+        <code class="container__base-code">
+&lt;div class="row"&gt;
+  &lt;div class="column-4"&gt;4 column&lt;/div&gt;
+  &lt;div class="column-8"&gt;8 column&lt;/div&gt;
+&lt;/div&gt;
+        </code>
+      </pre>
+      <h3 id="sub6">4.5.2. Construyendo un <span translate="no">grid-system</span></h3>
+      <p>
+          Vamos a convertir su paginá para que utilice un <code>grid-system</code>. Esto demostrará ser un poco más detallado que nuestro enfoque anterior de la página, pero la compensación por un CSS más reutilizable valdrá la pena. Edite su HTML para que coincida con este listado.
+      </p>
+      <pre>
+        <code class="container__base-code">
+&lt;main class="main clearfix"&gt;
+  &lt;h2&gt;Running tips&lt;/h2&gt;
+  
+  &lt;div class="row"&gt;                                         
+    &lt;div class="column-6"&gt;                                  1
+      &lt;div class="media"&gt;                                   2
+        &lt;img class="media-image" src="runner.png"&gt;
+        &lt;div class="media-body"&gt;
+          &lt;h4&gt;Strength&lt;/h4&gt;
+          &lt;p&gt;
+            Strength training is an important part of
+            injury prevention. Focus on your core&mdash;
+            especially your abs and glutes.
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  
+    &lt;div class="column-6"&gt;                                 2 
+      &lt;div class="media"&gt;
+        &lt;img class="media-image" src="shoes.png"&gt;
+        &lt;div class="media-body"&gt;
+          &lt;h4&gt;Cadence&lt;/h4&gt;
+          &lt;p&gt;
+            Check your stride turnover. The most efficient
+            runners take about 180 steps per minute.
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;                                                   3  
+  
+  &lt;div class="row"&gt;                                        1 
+    div class="column-6"&gt;                                     2
+      &lt;div class="media"&gt;
+        &lt;img class="media-image" src="shoes.png"&gt;
+        &lt;div class="media-body"&gt;
+          &lt;h4&gt;Change it up&lt;/h4&gt;
+          &lt;p&gt;
+            Don't run the same every time you hit the
+            road. Vary your pace, and vary the distance
+            of your runs.
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  
+    &lt;div class="column-6"&gt;                                  
+      &lt;div class="media"&gt;                                 2
+        &lt;img class="media-image" src="runner.png"&gt;
+        &lt;div class="media-body"&gt;
+          &lt;h4&gt;Focus on form&lt;/h4&gt;
+          &lt;p&gt;
+            Run tall but relaxed. Your feet should hit
+            the ground beneath your hips, not out in
+            front of you.
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+        </code>
+        <small>Listado 4.12. HTML reestructurado para usar un <span translate="no">grid-system</span></small>
+      </pre>
+      <ol class="container__base-code">
+        <li>Agrega una fila alrededor de cada conjunto de dos objetos multimedia</li>
+        <li>Agrega una columna-6 alrededor de cada objeto multimedia, colocando cada objeto multimedia en su propia columna</li>
+        <li>Cierra la primera fila antes de abrir la segunda</li>
+      </ol>
+      <p>
+        Esta lista le da una fila alrededor de cada conjunto de dos objetos multimedia. En su interior, ha envuelto cada objeto multimedia dentro de su propio contenedor de 6 columnas.
+      </p>
+      <p>
+        Agreguemos los estilos para diseñar la cuadrícula. Primero, definirá la clase de fila. Agregue este código a su hoja de estilo.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.row::after {                1
+  content: " ";              1
+  display: block;            1
+  clear: both;               1
+}                            1
+        </code>
+        <small>Listado 4.13. CSS para las filas de la cuadrícula</small>
+      </pre>
+      <ol class="index-code">
+        <li>Replica el clearfix para que la fila contenga sus columnas flotantes</li>
+      </ol>
+      <p>
+        Esto no es más que un <em translate="no">clearfix</em>. Lo agrega aquí para no tener que agregar una clase <code>clearfix</code> cada vez que usa una fila. Agregará más a esto en un momento, pero fundamentalmente todo lo que hace la fila es proporcionar un contenedor para contener las columnas, y eso es lo que hace este <em translate="no">clearfix</em> por usted.
+      </p>
+      <p>
+        A continuación, agregará los estilos iniciales para las columnas. Aquí es donde tiene lugar el <em>"trabajo pesado"</em>, pero como verá, no es demasiado complicado. Flotará todas las columnas a la izquierda y especificará los anchos para cada valor de columna. Agregue este listado a su hoja de estilo.
+      </p>
+      <pre>
+        <code>
+[class*="column-"] {                  1
+  float: left;                        1
+}                                     1
+  
+.column-1 { width: 8.3333%; }         2
+.column-2 { width: 16.6667%; }        3
+.column-3 { width: 25%; }             4
+.column-4 { width: 33.3333%; }
+.column-5 { width: 41.6667%; }
+.column-6 { width: 50%; }
+.column-7 { width: 58.3333%; }
+.column-8 { width: 66.6667%; }
+.column-9 { width: 75%; }
+.column-10 { width: 83.3333%; }
+.column-11 { width: 91.6667% }
+.column-12 { width: 100%; }
+        </code>
+        <small>Listado 4.14. CSS para las columnas de la cuadrícula</small>
+      </pre>
+      <ol class="index-code">
+        <li>Apunta a todos los elementos con un atributo de clase que incluye "columna-"</li>
+        <li>1/2</li>
+        <li>2/12</li>
+        <li>3/12 y así sucesivamente. . .</li>
+      </ol>
+      <p>
+        El primer selector aquí puede ser nuevo para usted. Es un <em>selector de atributos</em>, que apunta a elementos según su atributo de clase. Esto le permite hacer algo un poco más complejo de lo que puede hacer con un selector de clases normal. El comparador <code>*=</code> especifica cualquier valor que incluya la subcadena especificada: cualquier elemento con <code>column-</code> en cualquier lugar dentro del atributo de clase. Esto apunta a <code>&lt;div class = "column-2"&gt;</code> así como a <code>&lt;div class = "column-6"&gt;</code>. En resumen, se dirige a cualquiera de sus clases de columna. Ahora todas las columnas, independientemente de su tamaño, flotarán hacia la izquierda. Consulte el <b>apéndice A</b> para obtener más información sobre los selectores de atributos.
+      </p>
+      <p>
+        Este selector de atributos arroja una red más amplia de la que necesita, ya que también apunta a algo como <code>&lt;div class = "column-header"&gt;</code>. Tenga esto en cuenta a medida que escriba más estilos. Para nuestros propósitos, sería mejor considerar <em translate="no">"column"</em> en el nombre de una clase como una especie de palabra reservada de aquí en adelante para no chocar con estas reglas.
+      </p>
+      <p>
+        Después de aplicar <code>float: left</code> a todas las columnas, apunte a cada una individualmente, especificando sus anchos. Esto puede requerir un poco de trabajo en una calculadora para obtener cada valor: el número deseado de columnas dividido por el número total de columnas (12). Asegúrese de mantener al menos algunos puntos decimales de precisión para evitar errores de redondeo.
+      </p>
+      <p>
+        En esta etapa, tiene los conceptos básicos de un <em translate="no">grid-system</em> en su lugar. Su página debería verse como la <b>figura 4.17</b>. Parece un poco roto en este punto porque los objetos multimedia todavía tienen algunos estilos que duplican el trabajo realizado por el <em translate="no">grid-system</em>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/17.jpg" alt="ibid">
+        <figcaption>Figura 4.17. Con el grid-system aplicado, los objetos multimedia ya no necesitan algunos de sus estilos.</figcaption>
+      </figure>
+      <p>
+        Ahora puede simplificar el objeto multimedia. Ya no es necesario que flote hacia la izquierda, ya que la columna de la cuadrícula lo hace por usted. Tampoco necesita ancho; sin uno, naturalmente llenará el 100% de su contenedor. El contenedor es un elemento de columna 6, que es del tamaño que desea. También puede eliminar los márgenes y el selector de n-ésimo hijo que borra cada fila. Entonces su página debería coincidir con la <b>figura 4.18</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/18.jpg" alt="ibid">
+        <figcaption>Figura 4.18. Eliminar las propiedades relacionadas con la posición del objeto multimedia permite que el grid-system las coloque y dimensione en consecuencia.</figcaption>
+      </figure>
+      <p>
+        Después de eliminar estas partes, todos sus estilos para el objeto multimedia deben coincidir con los de la siguiente lista.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.media {                              1 
+  padding: 1.5em;                     1 
+  background-color: #eee;             1 
+  border-radius: 0.5em;               1
+}
+
+.media-image {                        2
+    float: left;
+    margin-right: 1.5em;
+}
+  
+.media-body {
+  overflow: auto;
+  margin-top: 0;
+}
+  
+.media-body h4 {
+  margin-top: 0;
+}
+        </code>
+        <small>Listado 4.15. Eliminación de declaraciones de tamaño y posicionamiento del objeto multimedia</small>
+      </pre>
+      <ol class="index-code">
+        <li>Declaraciones de flotador, margen y ancho eliminadas</li>
+        <li>Se eliminó el conjunto de reglas .media:nth-child(odd) con la declaración clear: left</li>
+      </ol>
+      <p>
+        Debido a que eliminó todos los márgenes del objeto multimedia, incluido el margen inferior, ya no hay un espacio debajo de la última fila de objetos multimedia y la parte inferior de su contenedor. Usemos un <code>padding</code> en el contenedor para recuperarlo.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.main {
+  padding: 0 1.5em 1.5em;          1  
+  background-color: #fff;
+  border-radius: .5em;
+}
+        </code>
+        <small>Listado 4.16. Agregar un <span translate="no">padding</span> inferior al contenedor principal</small>
+      </pre>
+      <ol class="index-code">
+        <li>1 Agrega un acolchado inferior de 1.5em para que coincida con el acolchado izquierdo y derecho</li>
+      </ol>
+      <p>
+        Ahora está cerca del diseño final, aunque hay algunos detalles más para implementar.
+      </p>
+      <h3 id="sub7">4.5.3. Agregar canaletas</h3>
+      <p>
+        Una cosa que aún le falta a su <code>grid-system</code> es un canalón entre cada columna. Agreguemos los siguientes, junto con un par de detalles más. Una vez que termine, su página debería verse como la <b>figura 4.19</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/19.jpg" alt="ibid">
+        <figcaption>Figura 4.19. Página completa con un grid-system completamente funcional</figcaption>
+      </figure>
+      <p>
+        Puede crear canaletas agregando <code>padding</code> izquierdo y derecho a cada columna de la cuadrícula. Al agregar esto al sistema de cuadrícula en lugar de componentes individuales, como el objeto multimedia, podrá reutilizar la cuadrícula una y otra vez en otras páginas sin preocuparse por las canaletas nuevamente.
+      </p>
+      <p>
+        Como desea un tamaño de canaleta de <code>1.5em</code>, puede dividirlo por la mitad y luego poner la mitad a la izquierda y la mitad a la derecha de cada elemento de la columna. Actualice sus estilos de cuadrícula para que coincidan con la siguiente lista. Esto también elimina el margen superior de todas las columnas, anulando nuevamente al búho lobotomizado.
+      </p>
+      <pre>
+        <code class="container__base-code">
+[class*="column-"] {
+  float: left;
+  padding: 0 0.75em;           1
+  margin-top: 0;               2
+}
+        </code>
+        <small>Lista 4.17.Agregando canaletas al grid-system</small>
+      </pre>
+      <ol class="index-code">
+        <li>Agrega .75 em relleno izquierdo y derecho a cada elemento de columna</li>
+        <li>Elimina los márgenes superiores de las columnas</li>
+      </ol>
+      <p>
+        Ahora los elementos de la columna de la cuadrícula siempre tendrán un buen margen de <code>1.5em</code> entre ellos, y las cosas se ven bastante bien. Sin embargo, este código introduce una ligera desalineación entre una columna de la cuadrícula y el contenido fuera de la fila de la cuadrícula. La <b>Figura 4.20</b> muestra dónde ocurre esto en la página: el borde izquierdo del título de la página <em translate="no">("Running tips")</em> debe alinearse con el borde del objeto multimedia en la primera columna. En cambio, el <code>padding</code> de la columna empuja el cuadro gris del objeto multimedia un poco hacia la derecha.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/20.jpg" alt="ibid">
+        <figcaption>Figura 4.20. El lado izquierdo del título de la página se alinea con el borde del elemento de la columna (línea discontinua); en su lugar, debería alinearse con el contenido dentro de la columna.</figcaption>
+      </figure>
+      <p>
+        Puede solucionar este problema eliminando el <code>padding</code> izquierdo de la primera columna de cada fila y el <code>padding</code> derecho de la última columna de cada fila; pero en lugar de aplicar un montón de reglas específicas para eso, ajustemos el ancho de la fila.
+      </p>
+      <p>
+        Puede estirar la fila para que sea un poco más ancha utilizando márgenes negativos. Al aplicar un margen izquierdo de <code>-0.75em</code> a la fila, el margen negativo tira de la fila izquierda fuera de su contenedor. Después de hacer esto, el relleno de la columna empujará su contenido <code>0.75em</code> hacia la derecha, haciendo que la primera columna se alinee con el título <b>(figura 4.21)</b>. La aplicación de un margen negativo en el lado derecho también hará lo mismo en el lado derecho.
+      </p>
+      <figure>
+        <img src="../img_css/cap4/21.jpg" alt="ibid">
+        <figcaption>Figura 4.21. La aplicación de un margen negativo a la fila la tira hacia la izquierda, compensando el <span translate="no">padding</span> de la columna. Su contenido ahora se alinea con el título de la página.</figcaption>
+      </figure>
+      <p>
+        El código para esto se muestra en el <b>listado 4.18</b>. No importa dónde coloque una fila, ahora se estirará <code>1.5em</code> más que su contenedor; el relleno de las columnas desplazará su contenido hacia atrás para alinearlo con los bordes del contenedor exterior. Ésta es efectivamente una versión modificada del patrón de contenedor doble, donde la fila es el contenedor interno dentro de su envoltorio.
+      </p>
+      <pre>
+        <code class="container__base-code">
+.row {
+  margin-left: -0.75em;
+  margin-right: -0.75em;
+}
+        </code>
+        <small>Listado 4.18. Agregar márgenes negativos a la fila de la cuadrícula</small>
+      </pre>
+      <p>
+        Ahora tiene un <em translate="no">grid-system</em> completamente funcional, alimentado por <em translate="no">float</em>. Ya sea que use este o uno que encuentre en un <em translate="no">CSS framework</em>, ahora debería comprender cómo hace lo que hace. Su hoja de estilo completa ahora debería coincidir con la siguiente lista.
+      </p>
+      <pre>
+        <code class="container__base-code">
+:root {
+  box-sizing: border-box;
+}
+  
+*,
+::before,
+::after {
+  box-sizing: inherit;
+}
+  
+body {
+  background-color: #eee;
+  font-family: Helvetica, Arial, sans-serif;
+}
+  
+body * + * {
+  margin-top: 1.5em;
+}
+  
+.row {
+  margin-left: -0.75em;
+  margin-right: -0.75em;
+}
+  
+.row::after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+  
+[class*="column-"] {
+  float: left;
+  padding: 0 0.75em;
+  margin-top: 0;
+}
+  
+.column-1 { width: 8.3333%; }
+.column-2 { width: 16.6667%; }
+.column-3 { width: 25%; }
+.column-4 { width: 33.3333%; }
+.column-5 { width: 41.6667%; }
+.column-6 { width: 50%; }
+.column-7 { width: 58.3333%; }
+.column-8 { width: 66.6667%; }
+.column-9 { width: 75%; }
+.column-10 { width: 83.3333%; }
+.column-11 { width: 91.6667% }
+.column-12 { width: 100%; }
+  
+header {
+  padding: 1em 1.5em;
+  color: #fff;
+  background-color: #0072b0;
+  border-radius: .5em;
+  margin-bottom: 1.5em;
+}
+  
+.main {
+  padding: 0 1.5em 1.5em;
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+  
+.media {
+  padding: 1.5em;
+  background-color: #eee;
+  border-radius: 0.5em;
+}
+  
+.media-image {
+  float: left;
+  margin-right: 1.5em;
+}
+  
+.media-body {
+  overflow: auto;
+  margin-top: 0;
+}
+  
+.media-body h4 {
+  margin-top: 0;
+}
+  
+.clearfix::before,
+.clearfix::after {
+  display: table;
+  content: " ";
+}
+.clearfix::after {
+  clear: both;
+}
+        </code>
+        <small>Listado 4.19. Hoja de estilo completa</small>
+      </pre>
+      <p>
+        Ahora ha diseñado una página utilizando <em translate="no">floats</em> por completo. Tienen sus peculiaridades, pero hacen el trabajo. Con una comprensión más profunda de su comportamiento, es de esperar que los <em translate="no">floats</em> no sean demasiado intimidantes. Como mencioné anteriormente, existen alternativas más fáciles de entender a los diseños basados en <em translate="no">floats</em>. Los veremos en los dos capítulos siguientes.
+        </p>
+      </section>
+      <section id="resumen">
+        <h3>RESUMEN</h3>
+        <ul>
+          <li>Los <span translate="no">floats</span> existen para permitir que el texto se ajuste a un elemento, pero ese no suele ser el efecto que desea.</li>
+          <li>Utilice un <em translate="no">clearfix</em> para contener elementos <em translate="no">float</em>.</li>
+          <li>Comprenda los tres trucos de un contexto de formato de bloque: contener <em translate="no">floats</em>, evitar el colapso de los márgenes y evitar que el flujo de documentos se envuelva alrededor de un elemento <em translate="no">float</em>.</li>
+          <li>Utilice el patrón de contenedor doble para centrar el contenido de la página.</li>
+          <li>Utilice el patrón de objeto multimedia para colocar texto descriptivo junto a una imagen.</li>
+          <li>Utilice un <code>grid-system</code> para crear una amplia gama de diseños de página.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Proposito de los <span translate="no">FLOATS</span></a></li>
+        <li><a href="#tema2"> Contenedor colapsando y <span translate="no">CLEARFIX</span></a></li>
+        <li><a href="#sub1">- Entender el colapso de contenedores</a></li>
+        <li><a href="#sub2">- Entendiendo el <span translate="no">CLEARFIX</span></a></li>
+        <li><a href="#tema3"><span translate="no">Inesperado "FLOAT CATCHING"</span></a></li>
+        <li><a href="#tema4">Objetivos de medios y contextos de formato de bloques</a></li>
+        <li><a href="#sub3">- Establecer un contexto de formato de bloque</a></li>
+        <li><a href="#sub4">- Usar un <span translate="no">BLOCK-FORMATTING-CONTEXT</span> para diseños de objetos multimedia</a></li>
+        <li><a href="#tema5"><span translate="no">GRID SYSTEMS</span></a></li>
+        <li><a href="#sub5">- Comprender un <span translate="no">GRID-SYSTEM</span></a></li>
+        <li><a href="#sub6">- Construyendo un <span translate="no">GRID-SYSTEM</span></a></li>
+        <li><a href="#sub7">- Agregar canaletas</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

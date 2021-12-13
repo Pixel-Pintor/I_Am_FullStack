@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 3</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 3. Dominar el modelo de caja</h1>
+      <div>
+        <a href="ch_02.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_04.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capitulo habla sobre:</em></h4>
+      <ul>
+        <li>Consejos prácticos para el dimensionamiento de elementos</li>
+        <li>Centrado vertical</li>
+        <li>Columnas de igual altura</li>
+        <li>Márgenes negativos y colapso de márgenes</li>
+        <li>Espaciado consistente de componentes en la página</li>
+      </ul>
+      <p>
+        Cuando se trata de diseñar elementos en la página, encontrará muchas cosas que suceden. En un sitio complejo, puede tener flotadores, elementos absolutamente posicionados y otros elementos de varios tamaños. También puede tener algunos diseños que utilicen construcciones CSS más nuevas, como un flexbox o un diseño de cuadrícula. Tiene muchas cosas de las que realizar un seguimiento y aprender todo lo relacionado con el diseño puede ser abrumador.
+      </p>
+      <p>
+        Dedicaremos varios capítulos a analizar de cerca varias técnicas de diseño. Antes de llegar a ellos, es importante tener una comprensión sólida de los fundamentos de cómo el navegador clasifica y coloca los elementos. Los temas más avanzados de diseño se basan en conceptos como el flujo de documentos y el <em translate="no">box model</em>; estas son las reglas básicas que determinan la posición y el tamaño de los elementos en la página.
+      </p>
+      <p>
+        En este capítulo, creará un diseño de página de <em>dos columnas</em>. Puede que esté familiarizado con esto como un ejercicio clásico para principiantes de CSS, pero lo guiaré a través de él de una manera que resalte varios matices de diseño que a menudo se pasan por alto. Veremos algunos de los casos extremos del <em>modelo de caja</em> y le daré consejos prácticos para dimensionar y alinear elementos. También abordaremos dos de los problemas más notorios en CSS: el centrado vertical y las columnas de igual altura.
+      </p>
+      <section id="tema1">
+        <h2>3.1. DIFICULTADES CON <span translate="no">WIDTH</span></h2>
+        <p>
+          En este capítulo, creará una página simple con un encabezado en la parte superior y dos columnas debajo. Al final del capítulo, su página se verá como la que se muestra en la <b>figura 3.1</b>. Hice intencionalmente el diseño de la página un poco <em>"bloque"</em>, para que pueda ver fácilmente el tamaño y la posición de todos los elementos.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/01.jpg" alt="ibid">
+          <figcaption>Figura 3.1. Diseño de página de dos columnas con encabezado</figcaption>
+        </figure>
+        <p>
+          Inicie una nueva página y una hoja de estilo vacía, y luego vincúlelas. Agregue el marcado que se muestra junto a su página. Su página tendrá un encabezado, así como un <em>elemento principal</em> y un elemento de <em>barra lateral</em> que formarán las dos columnas de su página. Un contenedor envuelve las dos columnas.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Franklin Running Club&lt;/h1&gt;
+  &lt;/header&gt;
+  &lt;div class="container"&gt;
+    &lt;main class="main"&gt;
+      &lt;h2&gt;Come join us!&lt;/h2&gt;
+      &lt;p&gt;
+        The Franklin Running club meets at 6:00pm every Thursday
+        at the town square. Runs are three to five miles, at your
+        own pace.
+      &lt;/p&gt;
+    &lt;/main&gt;
+    &lt;aside class="sidebar"&gt;
+      &lt;div class="widget"&gt;&lt;/div&gt;
+      &lt;div class="widget"&gt;&lt;/div&gt;
+    &lt;/aside&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+          </code>
+          <small>Listado 3.1. HTML para página con un diseño de dos columnas</small>
+        </pre>
+        <p>
+          Comencemos con algunos de los estilos obvios. Establecerás la fuente para la página, luego los colores de fondo para la página y cada uno de los contenedores principales. Esto le ayudará a ver la posición y el tamaño de cada uno a medida que avanza. Después de hacer esto, su página se verá como la que se muestra en la <b>figura 3.2</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/02.jpg" alt="ibid">
+          <figcaption>Figura 3.2. Tres contenedores principales con colores de fondo.</figcaption>
+        </figure>
+        <p>
+          Para algunos diseños de sitios, el <em>color de fondo</em> de varios contenedores puede ser <em>transparente</em>. Cuando este es el caso, puede ser útil aplicar temporalmente un color de fondo al contenedor hasta que obtenga el tamaño y la posición adecuados.
+        </p>
+        <p>
+          Los estilos para esto se muestran en el <b>listado 3.2</b>. Actualmente, la barra lateral está vacía, por lo que, de forma predeterminada, no tiene altura. Agregará relleno para darle algo de altura. Los otros contenedores necesitarán relleno eventualmente, pero volveremos a eso. Por ahora, agregue este código a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  background-color: #eee;
+  font-family: Helvetica, Arial, sans-serif;
+}
+  
+header {
+  color: #fff;
+  background-color: #0072b0;
+  border-radius: .5em;
+}
+  
+main {                        
+  display: block;              1   
+}
+  
+.main {
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+.sidebar {
+  padding: 1.5em;                2
+  background-color: #fff;
+  border-radius: .5em;
+}
+          </code>
+          <small>Listado 3.2. Aplicar fuente y colores</small>
+        </pre>
+        <ol class="index-code">
+          <li>Arregla el problema de IE</li>
+          <li>Añade <span translate="no">padding</span> a la barra lateral</li>
+        </ol>
+        <p>
+          IE tiene un error en el que los elementos <code>&lt;main&gt;</code> se representan en línea de forma predeterminada, en lugar de como bloques. Corregimos eso aquí agregando una declaracion <code>display: block</code>.
+        </p>
+        <p>
+          A continuación, coloquemos las dos columnas en su lugar. Para empezar, utilizará un diseño basado en flotantes. Flotarás el <code>main</code> y el <code>sidebar</code> hacia la izquierda y les darás anchos de 70% y 30%, respectivamente. Actualice su hoja de estilo para que coincida con el CSS que se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.main {
+  float: left;
+  width: 70%;                   1
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+.sidebar {
+  float: left;
+  width: 30%;                   2
+  padding: 1.5em;
+  background-color: #fff;
+  border-radius: .5em;
+}
+          </code>
+          <small>Listado 3.3. Alineando dos columnas</small>
+        </pre>
+        <ol class="index-code">
+          <li>Flota la columna principal a la izquierda y establece el ancho al 70%</li>
+          <li>Flota la barra lateral hacia la izquierda y establece el ancho al 30%.</li>
+        </ol>
+        <p>
+          Puede ver el resultado en la <b>figura 3.3</b>, pero no es exactamente lo que deseaba.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/03.jpg" alt="ibid">
+          <figcaption>Figura 3.3. Columnas de la barra lateral y principal con anchos de 70% y 30%, respectivamente</figcaption>
+        </figure>
+        <p>
+          En lugar de que las dos columnas se sientan una al lado de la otra, se envuelven en línea. Aunque especificó anchos de 70% y 30%, las columnas ocuparon más del 100% del espacio disponible. Eso se debe al comportamiento predeterminado del modelo de caja <b>(figura 3.4)</b>. Cuando establece el ancho o alto de un elemento, está especificando el ancho o alto de su contenido; A continuación, se añaden a ese ancho cualquier relleno, borde y márgenes.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/04.jpg" alt="ibid">
+          <figcaption>Figura 3.4. El modelo de caja predeterminado</figcaption>
+        </figure>
+        <p>
+          Este comportamiento significa que un elemento con un ancho de <code>300px</code>, un relleno de 10 px y un borde de <code>1px</code> tiene un ancho renderizado de <code>322px</code> (ancho más relleno izquierdo y derecho más borde izquierdo y derecho). Esto se vuelve aún más confuso cuando las unidades no son todas iguales.
+        </p>
+        <p>
+          En el ejemplo <b>(listado 3.3)</b>, la barra lateral tiene un ancho del 30% más <code>1,5em</code> de relleno izquierdo y derecho; el contenedor principal tiene solo un ancho del 70%. Esto eleva el total de las dos columnas al 100% más <code>3ems</code>. Para que quepan, los contenedores deben envolverse.
+        </p>
+        <h3 id="sub1">3.1.1. Evitando los números mágicos</h3>
+        <p>
+          La solución ingenua es reducir el ancho de una de las columnas (la barra lateral, por ejemplo). En mi pantalla, un ancho del 26% para la barra lateral funciona, pero esto no es confiable. El 26% se conoce como <em>número mágico</em>. En lugar de usar un valor deseado, lo encontré haciendo cambios al azar en mis estilos hasta que obtuve el resultado que quería.
+        </p>
+        <p>
+          Para la programación en general, los <em>números mágicos</em> no son deseables. A menudo es difícil explicar por qué funciona un número mágico. Si no comprende de dónde proviene el número, no comprenderá cómo se comportará en diferentes circunstancias. Mi pantalla tiene <code>1440px</code> de ancho, por lo que en las ventanas de visualización más pequeñas, la barra lateral aún se ajustará a la línea. Aunque hay un lugar para la prueba y el error en CSS, por lo general es para las elecciones que son de naturaleza estilística y no para forzar que las cosas encajen en su posición.
+        </p>
+        <p>
+          Una alternativa a este número mágico es dejar que el navegador haga los cálculos. En este caso, las columnas son <code>3em</code> demasiado anchas (debido al relleno), por lo que puede usar la función <code>calc()</code>; para reducir el ancho exactamente en esa cantidad. Un ancho de barra lateral de <code>calc(30% - 3em)</code> le da exactamente lo que necesita. Pero todavía hay una forma mejor.
+        </p>
+        <h3 id="sub2">3.1.2. Ajuste del modelo de caja</h3>
+        <p>
+          Debido a los problemas que acaba de encontrar, el modelo de caja predeterminado no es el que normalmente querrá usar. En su lugar, querrá que los anchos especificados incluyan el <code>padding</code> y el <code>border</code>. CSS le permite ajustar el comportamiento del modelo de caja con su propiedad de <code>box-sizing</code>.
+        </p>
+        <p>
+          De forma predeterminada, <code>box-sizing</code> se establece en el valor de <code>content-box</code>. Esto significa que cualquier altura o ancho que especifique solo establece el tamaño del cuadro de contenido. En su lugar, puede asignar un valor de <code>border-box</code> al tamaño de la caja. De esa manera, las propiedades de <code>height</code> y <code>widht</code> establecen el tamaño combinado del contenido, el relleno y el borde, que es exactamente lo que desea en este ejemplo.
+        </p>
+        <p>
+          La <b>Figura 3.5</b> muestra el modelo de caja con el tamaño de la caja establecido en <code>border-box</code>. Con este modelo, el <code>padding</code> no ensancha un elemento; hace que el contenido interno sea más estrecho. También hace lo mismo con la altura.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/05.jpg" alt="ibid">
+          <figcaption>Figura 3.5. El modelo de caja con tamaño de caja establecido en border-box</figcaption>
+        </figure>
+        <p>
+          Si actualiza estos elementos para utilizar el tamaño del cuadro de borde, se ajustarán a la misma línea, independientemente del relleno izquierdo y derecho <b>(figura 3.6)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/06.jpg" alt="ibid">
+          <figcaption>Figura 3.6. Las columnas con un modelo de caja ajustado ahora encajan una al lado de la otra.</figcaption>
+        </figure>
+        <p>
+          Para ajustar el modelo de caja para los dos elementos, <code>main</code> y <code>sidebar</code>, actualice su hoja de estilo para que coincida con esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.main {
+  box-sizing: border-box;            1
+  float: left;
+  width: 70%;
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+.sidebar {
+  box-sizing: border-box;            1
+  float: left;
+  width: 30%;
+  padding: 1.5em;
+  background-color: #fff;
+  border-radius: .5em;
+}
+          </code>
+          <small>Listado 3.4. Columnas flotantes con un modelo de caja corregido</small>
+        </pre>
+        <ol class="index-code">
+          <li>Cambia el modelo de caja a <span translate="no">border-box sizing</span></li>
+        </ol>
+        <p>
+          Usando <code>box-sizing: border-box</code>, los dos elementos suman un ancho uniforme del <code>100%</code>. Sus anchos de 70% y 30% ahora incluyen su <code>padding</code>, por lo que caben en la misma línea.
+        </p>
+        <h3 id="sub3">3.1.3 Usando el <span translate="no">border-box</span> universal</h3>
+        <p>
+          Ha hecho que el tamaño de las cajas sea más intuitivo para estos dos elementos, pero seguramente se encontrará con otros elementos con el mismo problema. Sería bueno arreglarlo una vez, <em>universalmente</em> para todos los elementos, para que no tenga que volver a pensar en este ajuste. Puede hacer esto con el selector universal <code>&lt;*&gt;</code>, que apunta a todos los elementos de la página como muestra la siguiente lista. También agregué selectores para orientar cada <em>pseudoelemento</em> en la página. Pon este código en la parte superior de tu hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+*,
+::before,
+::after {
+  box-sizing: border-box;         1
+}
+          </code>
+          <small>Listado 3.5.Arreglo del <span>border-box</span> universa</small>
+        </pre>
+        <ol>
+          <li>Aplica el <span translate="no">border box sizing</span> a todos los elementos y pseudoelementos de la página</li>
+        </ol>
+        <p>
+          Después de aplicar esto a la página, <code>height</code> y el <code>widht</code> siempre especificarán la altura y el ancho reales de un elemento. El <code>padding</code> no los cambiará.
+        </p>
+        <p>
+          Agregar este fragmento cerca del comienzo de su hoja de estilo se ha convertido en una práctica común.
+        </p>
+        <p>
+          Sin embargo, si agrega componentes de terceros con su propio CSS a su página, es posible que vea algunos diseños rotos para esos componentes, especialmente si su CSS no se escribió con esta corrección en mente. Debido a que la corrección de <code>border-box</code> universal apunta a todos los elementos del componente con el <em>selector universal</em>, corregir esto puede ser problemático. Debería apuntar a cada elemento dentro del componente para volver al <span translate="no">content-box sizing</span>.
+        </p>
+        <p>
+          Puede facilitar esto con una versión ligeramente modificada de la corrección y la herencia. Actualice esta parte de su hoja de estilo para que coincida con la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+:root {
+  box-sizing: border-box;          1
+}
+  
+*,
+::before,
+::after {
+  box-sizing: inherit;             2
+}
+          </code>
+          <small>Listado 3.6.Arreglo más robusto del <span translate="no">border-box</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Aplica el tamaño del cuadro de borde al elemento raíz</li>
+          <li>Le dice a todos los demás elementos y pseudo-elementos que hereden su tamaño de caja</li>
+        </ol>
+        <p>
+          El <em translate="no">Box sizing</em> no es normalmente una propiedad heredada, pero al usar la palabra clave <code>inherit</code>, puede forzar que lo sea. Con la versión que se muestra aquí, puede convertir un componente de terceros en un <code>content-box</code> cuando sea necesario al apuntar a su contenedor de nivel superior. Entonces, todos los elementos dentro del componente heredarán el tamaño de la caja:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.third-party-component {
+  box-sizing: content-box;
+}
+          </code>
+        </pre>
+        <p>
+          Ahora, cada elemento de su sitio tendrá un modelo de caja más predecible. Le recomiendo que agregue el <b>listado 3.6</b> a su CSS cada vez que inicie un nuevo sitio; le ahorrará muchos problemas a largo plazo. Sin embargo, puede ser un poco problemático en una hoja de estilo existente, especialmente si ya ha escrito muchos estilos basados en el modelo de cuadro de contenido predeterminado. Si agrega esto a un proyecto existente, asegúrese de revisarlo a fondo para detectar cualquier error resultante.
+        </p>
+        <p>
+          A partir de este momento, todos los ejemplos de este libro supondrán que esta corrección del <code>border-box</code> se encuentra al comienzo de su hoja de estilo.
+        </p>
+        <h3 id="sub4">3.1.4. Agregar un canalón entre columnas</h3>
+        <p>
+          A menudo, es más atractivo visualmente tener un pequeño espacio &lt;o canalón&gt; entre las columnas. A veces, puede lograr esto agregando <code>padding</code> a una columna; pero en algunos casos, este enfoque no funciona. Si ambas columnas tienen un color de fondo o un borde, como en su página de ejemplo, querrá que el canalón aparezca entre los bordes de los dos elementos <b>(;figura 3.7)</b>. Tenga en cuenta el espacio gris entre los dos fondos blancos. Puedes lograr este look de varias maneras. Veamos algunos de ellos, que se muestran en los <b>listados 3.7 y 3.8</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/07.jpg" alt="ibid">
+          <figcaption>Figura 3.7. Canalón agregado entre las dos columnas</figcaption>
+        </figure>
+        <p>
+          Primero, puede agregar un margen a una de las columnas y ajustar el ancho de sus elementos para tener en cuenta el espacio agregado. El <b>Listado 3.7</b> muestra cómo restar <code>1%</code> del ancho de la columna de la barra lateral y moverlo al margen. Actualice su CSS para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.main {
+  float: left;
+  width: 70%;
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+.sidebar {
+  float: left;
+  width: 29%;                   1
+  margin-left: 1%;              2
+  padding: 1.5em;
+  background-color: #fff;
+  border-radius: .5em;
+}
+          </code>
+          <small>Listado 3.7. Margen de medianil basado en porcentaje</small>
+        </pre>
+        <ol class="index-code">
+          <li>Resta 1% del ancho. . .</li>
+          <li>...y lo agrega como margen para la canaleta</li>
+        </ol>
+        <p>
+          Esto agrega un canalón, pero su ancho se basa en el ancho del contenedor exterior; el porcentaje es relativo al ancho completo del principal. ¿Qué sucede si desea especificar la canaleta en unidades que no sean un porcentaje? (;Prefiero un canalón basado en <code>em</code>, que encuentro más consistente). Puede lograr esto con <code>calc&lt;&gt;</code>.
+        </p>
+        <p>
+          En lugar de mover un <code>1%</code> del ancho al margen, puede mover <code>1.5em</code>. Este listado muestra cómo <code>calc&lt;&gt;</code> lo hace posible. Cambie su CSS nuevamente para que coincida con este listado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.main {
+  float: left;
+  width: 70%;
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+.sidebar {
+  float: left;
+  width: calc(30% - 1.5em);         1
+  margin-left: 1.5em;               2
+  padding: 1.5em;
+  background-color: #fff;
+  border-radius: .5em;
+}
+          </code>
+          <small>Listado 3.8. Usando calc&lt;&gt; para restar la canaleta del ancho</small>
+        </pre>
+        <ol class="index-code">
+          <li>Resta 1,5 cm del ancho. . .</li>
+          <li>...y lo agrega como margen</li>
+        </ol>
+        <p>
+          Esto no solo le permite usar <code>ems</code> en lugar de porcentajes para el margen, sino que también tiene la ventaja de ser un poco más explícito en el código. Cuando revise el código más tarde, es posible que no sea evidente de dónde proviene un porcentaje específico, pero <code>30% - 1.5em</code> proporciona una pista de que está haciendo algo basado en el <code>30%</code>.
+        </p>
+      </section>
+      <section id="tema2">
+        <h3>3.2. DIFICULTADES CON <span translate="no">ELEMENT HEIGHT</span></h3>
+        <p>
+          Trabajar con la altura del elemento es diferente a trabajar con el ancho del elemento. Las correcciones del <code>border-box</code> que ha realizado hasta ahora todavía se aplican y pueden ser útiles; pero, por lo general, es mejor <em>evitar establecer alturas explícitas en los elementos</em>. El flujo de documentos normal está diseñado para trabajar con un ancho limitado y una altura ilimitada. Los contenidos llenan el ancho de la ventana gráfica y luego se ajustan según sea necesario. Debido a esto, la altura de un contenedor está determinada orgánicamente por su contenido, no por el contenedor en sí.
+        </p>
+        <p>
+          El <em>flujo de documentos normal</em> se refiere al comportamiento de diseño predeterminado de los elementos de la página. Los elementos <em translate="no">Inline</em> fluyen junto con el texto de la página, de izquierda a derecha, ajustando la línea cuando llegan al borde de su contenedor. Los <em>elementos a nivel de bloque</em> se ubican en líneas individuales, con un salto de línea arriba y abajo.
+        </p>
+        <h3 id="sub5">3.2.1. Controlar el comportamiento de <span translate="no">overflow</span></h3>
+        <p>
+          Cuando establece explícitamente la altura de un elemento, corre el riesgo de que su contenido <em translate="no">overflow</em> el contenedor. Esto sucede cuando el contenido no se ajusta a la restricción especificada y se procesa fuera del elemento principal. La <b>figura 3.8</b> muestra este comportamiento. El flujo de documentos no tiene en cuenta el <em>desbordamiento</em>, y cualquier contenido debajo del contenedor se procesará en la parte superior del contenido <em>desbordado</em>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/08.jpg" alt="ibid">
+          <figcaption>Figura 3.8. Contenido desbordando su contenedor</figcaption>
+        </figure>
+        <p>
+          Puede controlar el comportamiento exacto del contenido <em>desbordado</em> con la propiedad <code>overflow</code>, que admite cuatro valores:
+        </p>
+        <ul>
+          <li><code>visible</code> (valor predeterminado): todo el contenido es visible, incluso cuando desborda los bordes del contenedor.</li>
+          <li><code>hidden</code>: el contenido que desborda el borde acolchado del contenedor se recorta y no será visible.</li>
+          <li><code>scroll</code>: se agregan barras de desplazamiento al contenedor para que el usuario pueda desplazarse y ver el contenido restante. En algunos sistemas operativos, se agregan barras de desplazamiento horizontales y verticales, incluso si todo el contenido es visible. En este caso, las barras de desplazamiento estarán deshabilitadas (atenuadas).</li>
+          <li><code>auto</code>: las barras de desplazamiento se agregan al contenedor solo si el contenido se desborda.</li>
+        </ul>
+        <p>
+          Por lo general, prefiero <code>auto</code> en lugar de <code>scroll</code> porque, en la mayoría de los casos, no quiero que aparezcan las barras de desplazamiento excepto cuando sea necesario. La <b>Figura 3.9</b> muestra cuatro contenedores con estas configuraciones de <em>desbordamiento</em>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/09.jpg" alt="ibid">
+          <figcaption>Figura 3.9. Desbordamiento de izquierda a derecha: visible, oculto, de desplazamiento y automático</figcaption>
+        </figure>
+        <p>
+          Sea prudente con el uso de barras de desplazamiento. Los navegadores insertan una barra de desplazamiento para desplazarse por la página, y agregar áreas de desplazamiento anidadas dentro de su página puede resultar frustrante para los usuarios. Si un usuario está usando una rueda de desplazamiento del mouse para desplazarse hacia abajo en la página, y su cursor llega a un área de desplazamiento más pequeña, su rueda de desplazamiento dejará de desplazarse por la página y desplazará el cuadro más pequeño en su lugar.
+        </p>
+        <p>
+          Es posible que el contenido se desborde horizontalmente, no solo verticalmente. Una situación típica es cuando aparece una URL larga en un contenedor estrecho. Aquí se aplican las mismas reglas que con el <em>desbordamiento</em> vertical.
+        </p>
+        <p>
+          Puede controlar solo el desbordamiento horizontal utilizando la propiedad <code>overflow-x</code>, o el desbordamiento vertical con <code>overflow-y</code>. Estas propiedades admiten los mismos valores que la propiedad de <code>overflow</code>. Sin embargo, establecer explícitamente X y Y en valores diferentes tiende a tener resultados impredecibles.
+        </p>
+        <h3 id="sub6">3.2.2. Aplicar alternativas a las alturas basadas en porcentajes</h3>
+        <p>
+          Especificar la altura mediante un porcentaje es problemático. El porcentaje se refiere al tamaño del bloque contenedor de un elemento; la altura de ese contenedor, sin embargo, suele estar determinada por la altura de sus elementos secundarios. Esto produce una definición circular que el navegador no puede resolver, por lo que <em>ignorará la declaración</em>. Para que funcionen las alturas basadas en porcentajes, el <em>padre debe tener una altura definida explícitamente</em>.
+        </p>
+        <p>
+          Una de las razones por las que la gente intenta usar alturas basadas en porcentajes es para hacer que un contenedor llene la pantalla. Un mejor enfoque es usar las unidades <code>vh</code> relativas a la ventana, que revisó en el <b>capítulo 2</b>. Una altura de <code>100vh</code> es exactamente la altura de la ventana. Sin embargo, el uso más común es crear columnas de igual altura. Esto también se puede resolver sin porcentaje.
+        </p>
+        <p>
+          El problema de las columnas de igual altura es una debilidad que ha afectado a CSS desde el principio. A principios de la década de 2000, CSS reemplazó el uso de tablas HTML para diseñar contenido. En ese momento, las tablas eran la única forma de producir dos columnas de igual altura o, más específicamente, columnas de la misma altura sin especificar explícitamente la altura. Puede configurar fácilmente todas las columnas a una altura de 500 px o algún otro valor arbitrario. Pero si permitiera que las columnas determinaran sus alturas de forma natural, cada elemento se evaluaría a una altura diferente, según su contenido. Este se convirtió en un caso de uso simple lleno de frustración.
+        </p>
+        <p>
+          Se necesitaron algunos trucos creativos para solucionar el problema. A medida que CSS evolucionó, surgieron soluciones que involucraban pseudoelementos o márgenes negativos. Si todavía utiliza alguno de estos métodos complicados, es hora de solucionarlo. Los navegadores modernos lo hacen mucho más fácil: admiten tablas CSS. Por ejemplo, IE8 + admite <code>display: table</code>, e IE10 + permite una caja flexible o caja flexible, las cuales, de forma predeterminada, producen columnas de igual altura.
+        </p>
+        <p>
+          Varios diseños comunes requieren columnas de igual altura. Su página de dos columnas es un gran ejemplo. Se vería más pulido si alineara las alturas de la columna principal y la barra lateral <b>(;figura 3.10)</b>. A medida que crece el contenido en cualquiera de las columnas, cada columna crecerá según sea necesario para que los fondos siempre estén al ras.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/10.jpg" alt="ibid">
+          <figcaption>Figura 3.10. Columnas de igual altura</figcaption>
+        </figure>
+        <p>
+          Puede lograr esto estableciendo una altura arbitraria en ambas columnas, pero ¿qué valor elegiría? Si es demasiado grande, tendrá un gran espacio vacío en la parte inferior de sus contenedores; demasiado pequeño, y tendrá que lidiar con un desbordamiento.
+        </p>
+        <p>
+          La mejor solución es que las columnas se dimensionen de forma natural y luego extiendan la columna más corta para que su altura sea igual a la altura de la más alta. Le mostraré cómo hacer esto usando diseños de tabla basados en CSS y un <code>flexbox</code>.
+        </p>
+        <p>
+          Primero, utilizará un diseño de tabla basado en CSS. En lugar de utilizar flotadores, convertirá el contenedor en una pantalla: tabla y cada columna en una pantalla: tabla-celda. Actualice sus estilos para que coincidan con la <b>lista 3.9</b>. (Puede notar que no hay un elemento de fila de tabla. Con las tablas CSS, la inclusión de un elemento de fila no es un requisito tan estricto como lo es con las tablas HTML).
+        </p>
+        <pre>
+          <code class="container__base-code">
+.container {
+  display: table;              1   
+  width: 100%;                 2  
+}
+  
+.main {
+  display: table-cell;         3   
+  width: 70%;
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+.sidebar {
+  display: table-cell;         3  
+  width: 30%;
+  margin-left: 1.5em;          4  
+  padding: 1.5em;
+  background-color: #fff;
+  border-radius: .5em;
+}
+          </code>
+          <small>Listado 3.9. Columnas de igual altura usando un diseño de tabla basado en CSS</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que el diseño del contenedor se parezca a una tabla</li>
+          <li>Hace que la tabla llene el ancho de su contenedor</li>
+          <li>Hace que el diseño de la columna imite las celdas de la tabla</li>
+          <li>El margen ya no funciona</li>
+        </ol>
+        <p>
+          De forma predeterminada, un elemento con un valor de visualización de <code>table</code> no se expandirá a un ancho del <code>100% </code> como lo hará un elemento de <code>block</code>, por lo que tendrá que declarar el ancho explícitamente <b>2</b>. Este código te acerca, pero ahora falta el <em>canalón</em>. Eso se debe a que los márgenes <b>4</b> no se pueden aplicar a elementos de <code>table-cell</code>. Tendrá que hacer más cambios para que esto sea exactamente como lo desea.
+        </p>
+        <p>
+          Para definir el espacio entre las celdas de una tabla, puede usar la propiedad de <code>border-spacing</code> del elemento de la tabla. Esta propiedad acepta dos valores de longitud: uno para el espaciado horizontal y otro para el espaciado vertical. (También puede especificar solo un valor para aplicar a ambos.) Podría agregar <code>border-spacing: 1.5em 0</code> a su contenedor, pero esto tiene un efecto secundario peculiar: ese valor también se aplica a los bordes exteriores de la tabla. Ahora sus dos columnas ya no se alinean con el encabezado en los bordes izquierdo y derecho <b>(figura 3.11)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/11.jpg" alt="ibid">
+          <figcaption>Figura 3.11. El espaciado de los bordes se aplica entre las celdas de la tabla y afecta a los bordes exteriores.</figcaption>
+        </figure>
+        <p>
+          Puede solucionar este problema con el uso inteligente de un <em>margen negativo</em>, pero eso debe ir en un nuevo contenedor que envuelva toda la tabla. Así es cómo. Agregue un <code>&lt;div class = "wrapper"&gt;</code> alrededor del contenedor y aplique un margen izquierdo y derecho de <code>-1.5em</code> para contrarrestar los <code>1.5em</code> del espaciado del borde en las barras laterales. Esta parte de su hoja de estilo debería verse así.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .wrapper {
+    margin-left: -1.5em;               1 
+    margin-right: -1.5em;              1 
+  }
+  
+  .container {
+    display: table;
+    width: 100%;
+    border-spacing: 1.5em 0;           2
+  }
+  
+  .main {
+    display: table-cell;
+    width: 70%;
+    background-color: #fff;
+    border-radius: .5em;
+  }
+  
+  .sidebar {
+    display: table-cell;
+    width: 30%;
+    padding: 1.5em;
+    background-color: #fff;
+    border-radius: .5em;
+  }
+          </code>
+          <small>Listado 3.10. Columnas basadas en tablas con un medianil corregido</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega un nuevo elemento contenedor con márgenes negativos</li>
+          <li>Aplica un espaciado de borde horizontal entre las celdas de la tabla</li>
+        </ol>
+        <p>
+          En lugar de que los márgenes positivos empujen los bordes del contenedor, el margen negativo los tira hacia afuera. Combinado con el <code>border-spacing</code>, los bordes de la columna exterior ahora se alinean con los bordes del <code>&lt;body&gt;</code> (el cuadro que contiene el <em translate="no">wraper</em>). Ahora tiene el diseño que desea: dos columnas con la misma altura, un canalón de <code>1,5em</code> y bordes exteriores que se alinean con el encabezado <b>(figura 3.12)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/12.jpg" alt="ibid">
+          <figcaption>Figura 3.12. Columnas de igual altura funcionando correctamente</figcaption>
+        </figure>
+        <p>
+          Los márgenes negativos tienen algunos usos interesantes que veremos en un momento.
+        </p>
+        <p>
+          Si ha trabajado en el desarrollo web durante un tiempo, probablemente haya escuchado que es una <em>mala práctica usar tablas HTML</em> para diseños. Muchos diseñadores de sitios web a principios de la década de 2000 diseñaron sus sitios utilizando elementos <code>&lt;table&gt;</code>. A menudo era más fácil diseñar páginas usando <em>table</em> en lugar de luchar con <em translate="no">float</em> (la única alternativa viable en ese momento). Finalmente, hubo muchas reacciones violentas contra el uso de tablas para diseños porque hacerlo significaba usar HTML no semántico. En lugar de las etiquetas HTML que representan el contenido, estaban haciendo el trabajo de diseño, algo de lo que CSS debería ser responsable.
+        </p>
+        <p>
+          Los navegadores ahora admiten la visualización de tablas para todo tipo de elementos distintos de <code>&lt;table&gt;</code>, por lo que puede disfrutar de los beneficios de los diseños de tablas y mantener el marcado semántico. Sin embargo, no es una solución del <em>"santo grial"</em>. Los atributos de la tabla HTML <code>colspan</code> y <code>rowspan</code> no tienen equivalente, y los <em translate="no">floats, flexboxes</em> y los <em translate="no">inline-blocks</em> pueden diseñar el contenido de formas que las tablas no pueden.
+        </p>
+        <p>
+          También se puede lograr un diseño de dos columnas con columnas de igual altura con una <em translate="no">flexbox</em> que se muestra en el <b>listado 3.11</b>. En particular, un <em translate="no">flexbox</em> no requiere el uso de un contenedor <code>div</code> adicional. De forma predeterminada, el uso de un <em translate="no">flexbox</em> produce elementos de igual altura; no tendrá que preocuparse por los márgenes negativos.
+        </p>
+        <p>
+          Elimine el contenedor <code>div</code> que ha agregado al diseño de la tabla y actualice su hoja de estilo para que coincida con la siguiente lista. Si es nuevo en <em translate="no">flexbox</em>, esta será una suave introducción.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.container {
+  display: flex;               1
+}
+  
+.main {                        2
+  width: 70%;
+  background-color: #fff;
+  border-radius: 0.5em;
+}
+  
+.sidebar {                     2
+  width: 30%;
+  padding: 1.5em;
+  margin-left: 1.5em;          3
+  background-color: #fff;
+  border-radius: .5em;
+}
+          </code>
+          <small>Listado 3.11. Columnas de igual altura usando un flexbox</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aplica <span translate="no">flex display</span> al contenedor</li>
+          <li>Los elementos dentro del <span translate="no">flex container</span> no necesitan propiedades flotantes o de visualización especificadas.</li>
+          <li>Los márgenes funcionan como antes con los <span translate="no">floats</span></li>
+        </ol>
+        <p>
+          Al aplicar <code>display: flex</code> al contenedor, se convierte en un <em>contenedor flexible</em>. Sus elementos secundarios tendrán la misma altura de forma predeterminada. Puede establecer anchos y márgenes en los elementos; aunque esto sumaría más de un <code>100%</code>, el <em>flexbox</em> lo ordena. Esta lista muestra píxel por píxel lo mismo que el diseño de la tabla. No necesita el contenedor adicional y el CSS es un poco más simple.
+        </p>
+        <p>
+          Un <em>flexbox</em> proporciona muchas opciones, que profundizaré en el <b> capítulo 5</b>. Este ejemplo muestra todo lo que necesita para construir su primer diseño basado en <em>flexbox</em>.
+        </p>
+        <p>
+          <em>Nunca establezca explícitamente la altura de un elemento</em> a menos que no tenga otra opción. Siempre busque primero un enfoque alternativo. Establecer una altura conduce invariablemente a más complicaciones.
+        </p>
+        <h3 id="sub7">3.2.3. Usando <span translate="no">min-height</span> y <span translate="no">max-height</span></h3>
+        <p>
+          Dos propiedades que pueden ser de gran ayuda son <code>min-height</code> y <code>max-height</code>. En lugar de definir explícitamente una altura, puede usar estas propiedades para especificar un valor mínimo o máximo, lo que permite que el elemento tenga un tamaño natural dentro de esos límites.
+        </p>
+        <p>
+          Suponga que desea colocar su imagen principal detrás de un párrafo de texto más grande y le preocupa que <em>desborde</em> el contenedor. En lugar de establecer una altura explícita, puede especificar una altura mínima con <code>min-height</code>. Esto significa que el elemento será al menos tan alto como usted especifique, y si el contenido no encaja, el navegador permitirá que el elemento crezca de forma natural para <em>evitar el desbordamiento</em>.
+        </p>
+        <p>
+          La <b>figura 3.13</b> muestra tres elementos. El elemento de la izquierda no tiene un <code>min-height</code>, por lo que su altura se determina de forma natural, mientras que cada uno de los otros dos tiene un <code>min-height</code> de <code>3em</code>. El elemento en el medio tendría una altura natural más corta que eso, pero el valor de <code>min-height</code> lo ha llevado a una altura de <code>3em</code>. El elemento de la derecha tiene suficiente contenido que ha excedido los <code>3em</code>, y el contenedor ha crecido de forma natural para contener el contenido.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/13.jpg" alt="ibid">
+          <figcaption>Figura 3.13. Tres elementos: uno sin altura especificada y dos elementos con una altura mínima de 3 cm</figcaption>
+        </figure>
+        <p>
+          Del mismo modo, <code>max-height</code> permite que un elemento se dimensione de forma natural, hasta cierto punto. Si se alcanza ese tamaño, el elemento no se vuelve más alto y <em>el contenido se desbordará</em>. Las propiedades similares <code>min-width</code> y <code>max-width</code> restringen el ancho de un elemento.
+        </p>
+        <h3 id="sub8">3.2.4. Contenido centrado verticalmente</h3>
+        <p>
+          El centrado vertical en CSS es otro problema notorio. Históricamente, ha habido varias formas de lograr el <em>centrado vertical</em>, y cada una de ellas funciona solo en determinadas circunstancias. Con CSS, la respuesta a un problema a menudo es <em>"depende"</em>, y ese ciertamente puede ser el caso aquí.
+        </p>
+        <p>
+          Los desarrolladores a menudo se sienten frustrados cuando aplican <code>vertical-align: middle</code> a un elemento de bloque, esperando que centre el contenido del bloque. En cambio, el <em>navegador ignora esta declaración</em>.
+        </p>
+        <p>
+          Una declaración <code>vertical-align</code> solo afecta a los elementos de celda de tabla y en línea. Con elementos en línea, controla la alineación entre otros elementos en la misma línea. Puede usarlo para controlar cómo se alinea una imagen en línea con el texto vecino, por ejemplo.
+        </p>
+        <p>
+          Con elementos de celda de tabla, <code>vertical: align</code> controla la alineación del contenido dentro de la celda. Si un diseño de tabla CSS funciona para su página, entonces puede lograr un centrado vertical con <code>vertical-align</code>.
+        </p>
+        <p>
+          Gran parte del problema proviene de establecer la altura de un contenedor en un <em>valor constante</em> y luego intentar centrar una pieza de <em>contenido de tamaño dinámico</em> dentro de él. Cuando sea posible, intente lograr el efecto deseado permitiendo que el navegador determine las alturas de forma natural.
+        </p>
+        <p>
+          Esta es la forma más sencilla de centrar verticalmente en CSS: proporcione a un contenedor el mismo relleno superior e inferior y deje que tanto el contenedor como su contenido determinen su altura de forma natural <b>(figura 3.14)</b>. El <b>listado 3.12</b> muestra el código para esto. Puede agregar temporalmente este código a su hoja de estilo para verlo en su página (;asegúrese de eliminarlo después, ya que no forma parte de su diseño).
+        </p>
+        <figure>
+          <img src="../img_css/cap3/14.jpg" alt="ibid">
+          <figcaption>Figura 3.14. Usar relleno para centrar verticalmente el contenido</figcaption>
+        </figure>
+        <pre>
+          <code class="container__base-code">
+  header {
+    padding-top: 4em;         1
+    padding-bottom: 4em;      1
+    color: #fff;
+    background-color: #0072b0;
+    border-radius: .5em;
+  }
+          </code>
+          <small>Listado 3.12. Usar relleno para centrar el contenido verticalmente</small>
+        </pre>
+        <ol class="index-code">
+          <li>El relleno igual en la parte superior e inferior centra verticalmente el contenido de un elemento sin una altura fija.</li>
+        </ol>
+        <p>
+          Este enfoque funciona si el contenido dentro del contenedor está <em translate="no">inline</em>, <em translate="no">block</em> o de cualquier otro valor de <em translate="no">display</em>. A veces, sin embargo, es posible que deba establecer una cierta altura en el contenedor, o no tiene la opción de usar <code>padding</code> porque quiere otro <em translate="no">child</em> en el contenedor cerca de la parte superior o inferior.
+        </p>
+        <p>
+          El mejor enfoque para centrar el contenido dentro de un contenedor puede depender de una serie de factores basados en su escenario particular. Para ayudarle a decidir, <em>siga estas preguntas hasta que encuentre una solución que pueda utilizar</em>. Algunas de estas técnicas se tratarán en capítulos posteriores, por lo que le he indicado dónde puede encontrar la respuesta.
+        </p>
+        <ul>
+          <li><em>¿Puedes usar un contenedor de altura natural?</em> Aplique un relleno igual en la parte superior e inferior del recipiente para centrar su contenido.</li>
+          <li><em>¿Necesita un contenedor de altura específica o necesita evitar el uso de <span translate="no">padding</span>?</em> Utilice <code>display: table-cell</code> y <code>vertical-align: middle</code> en su contenedor.</li>
+          <li><em>¿Puedes usar <span translate="no">flexbox</span>?</em> Si no necesita ser compatible con IE9, puede centrar su contenido con <em translate="no">flexbox</em>. Ver <b>capítulo 5</b>.</li>
+          <li><em>¿El contenido interno es solo una línea de texto?</em> Establezca una altura de línea alta igual a la altura deseada del contenedor. Esto obligará al contenedor a crecer para contener la altura de la línea. Si los contenidos no están <em translate="no">inline</em>, es posible que deba configurarlos en <code>inline -block</code>.</li>
+          <li><em>¿Conoce la altura tanto del contenedor como del contenido interior?</em> Centrar el contenido con posicionamiento <em>absoluto</em>. Consulte el <b>capítulo 7</b>. (Solo recomiendo esto cuando todos los enfoques mencionados aquí fallan).</li>
+          <li><em>¿Qué pasa si no conoce la altura del elemento interior?</em> Utilice el posicionamiento <em>absoluto</em> junto con una transformación. Consulte el <b>capítulo 15</b> para ver un ejemplo. (Nuevamente, solo recomiendo esto si ha descartado todas las demás opciones).</li>
+        </ul>
+        <p>
+          En caso de duda, consulte https://howtocenterincss.com. Es un gran recurso. Puede completar varias opciones según su escenario exacto, y generará el código que puede usar para el centrado vertical.
+        </p>
+      </section>
+      <section id="tema3">
+        <h3>3.3. MARGENES NEGATIVOS</h3>
+        <p>
+          A diferencia del relleno y el ancho del borde, <em>puede asignar un valor negativo a los márgenes</em>. Esto tiene algunos usos peculiares, como permitir que los elementos se superpongan o se estiren más que sus contenedores.
+        </p>
+        <p>
+          El comportamiento exacto de un <em>margen negativo</em> depende del lado del elemento al que lo aplique. Puede ver esto ilustrado en la <b>figura 3.15</b>. Si se aplica a la izquierda o arriba, el <em>margen negativo</em> mueve el elemento hacia la izquierda o hacia arriba, respectivamente. Esto puede hacer que el elemento se superponga a otro elemento que lo precede en el flujo de documentos. Si se aplica al lado derecho o inferior, un <em>margen negativo</em> no desplaza el elemento; en su lugar, extrae cualquier elemento sucesivo. Darle a un elemento un margen inferior negativo no es diferente de darle al elemento(s) debajo de él un margen superior negativo.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/15.jpg" alt="ibid">
+          <figcaption>Figura 3.15. Comportamiento de márgenes negativos</figcaption>
+        </figure>
+        <p>
+          Cuando un elemento de bloque no tiene un ancho especificado, naturalmente llena el ancho de su contenedor. Sin embargo, un margen derecho negativo puede cambiar esto: mientras no se especifique el ancho, tira del borde del elemento hacia la derecha, llevándolo fuera del contenedor. Une esto con un margen izquierdo negativo igual, y ambos lados del elemento se extenderán fuera del contenedor. Esta peculiaridad es lo que le permitió cambiar el tamaño del diseño de la tabla en la <b>figura 3.12</b> para llenar el ancho de <code>&lt;body&gt;</code>, a pesar del espaciado de los bordes.
+        </p>
+        <p>
+          El uso de márgenes negativos para <em>superponer</em> elementos puede hacer que no se pueda hacer clic en algunos elementos si se mueven debajo de otros elementos.
+        </p>
+        <p>
+          Es posible que los márgenes negativos no sean algo que use con frecuencia, pero son útiles en algunas circunstancias. En particular, resultan útiles a la hora de crear <em>diseños de columnas</em>. Sin embargo, asegúrese de no usarlos con demasiada frecuencia, o puede que rápidamente pierda la noción de lo que sucede en la página.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>3.4. MÁRGENES COLAPSADOS</h2>
+        <p>
+          Eche otro vistazo a su página. <em>¿Notas algo extraño en los márgenes?</em> No ha aplicado ningún margen al encabezado o al contenedor, pero hay un espacio entre ellos <b>(figura 3.16)</b>. <em>¿Por qué hay esa brecha ahí?</em>
+        </p>
+        <figure>
+          <img src="../img_css/cap3/16.jpg" alt="ibid">
+          <figcaption>Figura 3.16. Brecha causada por el colapso de los márgenes</figcaption>
+        </figure>
+        <p>
+          Cuando los márgenes superior e inferior están contiguos, se <em>superponen</em> y se combinan para formar un único margen. Esto se conoce como <em>colapso</em>. El espacio debajo del encabezado en la figura 3.16 es el resultado de márgenes contraídos. Veamos cómo funciona esto.
+        </p>
+        <h3 id="sub9">3.4.1. Colapso entre texto</h3>
+        <p>
+          La razón principal de los márgenes colapsados tiene que ver con el espaciado de los bloques de texto. Los párrafos <code>(&lt;p&gt;)</code>, por defecto, tienen un margen superior de <code>1em</code> y un margen inferior de <em>1em</em>. Esto lo aplica la hoja de estilo del agente de usuario. Pero cuando apila dos párrafos, uno tras otro, sus márgenes no suman un espacio de <code>2em</code>. En su lugar, se colapsan y se superponen para producir solo <code>1em</code> de espacio entre los dos párrafos.
+        </p>
+        <p>
+          Puede ver este tipo de margen contraído en la columna izquierda de la página. El título (“¡Ven y únete a nosotros!”) En un <code>&lt;h2&gt;</code> tiene un margen inferior de <code>0.83em</code>, que se contrae con el margen superior del siguiente párrafo. Los márgenes de cada uno se ilustran en la <b>figura 3.17</b>. Observe cómo los márgenes de cada elemento ocupan el mismo espacio en la página.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/17.jpg" alt="ibid">
+          <figcaption>Figura 3.17. Márgenes delineados del encabezado (izquierda&) y párrafo (derecha)</figcaption>
+        </figure>
+        <p>
+          El tamaño del margen contraído es igual al mayor de los márgenes unidos. En este caso, el encabezado tiene un margen inferior de <code>19.92px</code> (tamaño de fuente de <code>24px × 0.83em</code>), y el párrafo tiene un margen superior de <code>16px</code> (tamaño de fuente de 16px × margen de 1em). El mayor de estos, <code>19.92px</code>, es la cantidad de espacio renderizado entre los dos elementos.
+        </p>
+        <h3 id="sub10">3.4.2. Colapso de múltiples márgenes</h3>
+        <p>
+          Los elementos no tienen que ser hermanos adyacentes para que sus márgenes colapsen. Incluso si envuelve el párrafo dentro de un <code>div</code> adicional, como en la siguiente lista, el resultado visual será el mismo. En ausencia de cualquier otro CSS que interfiera, todos los márgenes superiores e inferiores adyacentes colapsarán.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  &lt;main class="main"&gt;
+    &lt;h2&gt;Come join us!&lt;/h2&gt;
+    &lt;div&gt;                                         1   
+      &lt;p&gt;                                         1   
+        The Franklin Running club meets at 6:00pm       1
+        every Thursday at the town square. Runs         1
+        are three to five miles, at your own pace.      1
+      &lt;/p&gt;                                        1  
+    &lt;/div&gt;                                        1  
+  &lt;/main&gt;
+          </code>
+          <small>Listado 3.13. Párrafo envuelto en un div, con el mismo resultado</small>
+        </pre>
+        <ol class="index-code">
+          <li>Los márgenes aún se colapsan incluso con el párrafo envuelto dentro de otro div.</li>
+        </ol>
+        <p>
+          En este caso, hay tres márgenes diferentes colapsando juntos: el margen inferior de <code>&lt;h2&gt;</code>, el margen superior de <code>&lt;div&gt;</code> y el margen superior de <code>&lt;p&gt;</code>. Los valores calculados de estos son <code>19.92px</code>, <code>0px</code> y <code>16px</code>, respectivamente, por lo que el espacio entre los elementos sigue siendo <code>19.92px</code>, el más grande de los tres. De hecho, puede anidar el párrafo dentro de varios <code>div</code>, y seguirá representando lo mismo: <em>todos los márgenes se colapsan juntos</em>.
+        </p>
+        <p>
+          En resumen, los márgenes superior e inferior adyacentes se colapsarán juntos. Si agrega un <code>div</code> vacío y sin estilo (uno sin altura, borde o relleno) a la página, sus propios márgenes superior e inferior colapsarán.
+        </p>
+        <p>
+          El colapso de los márgenes <em>solo ocurre con los márgenes superior e inferior</em>. Los márgenes izquierdo y derecho no se contraen.
+        </p>
+        <p>
+          Los márgenes contraídos actúan como una especie de <em>"burbuja de espacio personal"</em>. Si dos personas paradas en una parada de autobús se sienten cómodas cada una con 3 pies de espacio personal entre ellas, felizmente estarán a 3 pies de distancia. No necesitan pararse a 6 pies de distancia para que ambos estén satisfechos.
+        </p>
+        <p>
+          Este comportamiento normalmente significa que puede aplicar estilo a los márgenes de varios elementos sin preocuparse mucho por lo que pueda aparecer por encima o por debajo de ellos. Si aplica un margen inferior de <code>1.5em</code> a los títulos, puede esperar el mismo espaciado después de los títulos, ya sea que el siguiente elemento sea un <code>&lt;p&gt;</code> con un margen superior de <code>1em</code> o un <code>div</code> sin margen superior. El margen contraído entre los elementos solo aparece más grande si el siguiente elemento requiere más espacio.
+        </p>
+        <h3 id="sub11">3.4.3. Colapso fuera de un contenedor</h3>
+        <p>
+          La forma en que colapsan tres márgenes consecutivos puede tomarlo desprevenido. El margen de un elemento que colapsa fuera de su contenedor normalmente produce un efecto no deseado si el contenedor tiene un fondo.
+        </p>
+        <p>
+          Observe nuevamente el espacio debajo del encabezado en la <b>figura 3.16</b>. El título de la página es <code>&lt;h1&gt;</code>, con un margen inferior de <code>0.67em (21.44 px)</code> aplicado por los estilos de agente de usuario. Ese título está dentro de un <code>&lt;header&gt;</code> sin márgenes. Los márgenes inferiores de ambos elementos son adyacentes, por lo que se colapsan, lo que da como resultado un margen inferior de <code>21.44px</code> en el encabezado. Lo mismo ocurre con los márgenes superiores de los dos elementos.
+        </p>
+        <p>
+          Esto es un poco extraño. En este caso, desea que el margen de <code>&lt;h1&gt;</code> permanezca dentro del <code>&lt;header&gt;</code>. Los márgenes no siempre se contraen exactamente en el lugar que desea. Afortunadamente, existen varias formas de prevenirlo. De hecho, ya lo ha arreglado para la sección principal de la página; observe que el margen sobre <em>"¡Únase a nosotros!"</em> no colapsa hacia arriba fuera de su contenedor. Eso se debe a que los márgenes de los elementos de <em translate="no">flexbox</em> no se contraen, y usted dispuso esa parte de la página utilizando <em translate="no">flexbox</em>.
+        </p>
+        <p>
+          El <code>padding</code> proporciona otra solución. Si agrega relleno superior e inferior al encabezado, los márgenes internos no se colapsarán hacia el exterior. Mientras lo hace, actualice el encabezado para que se vea como en la <b>figura 3.18</b>, y apliquemos el relleno izquierdo y derecho también. Para hacerlo, actualice su hoja de estilo para que coincida con la <b>lista 3.14</b>. Notarás que esto ahora significa que no hay margen entre el encabezado y el contenido principal. Volveremos a abordar eso en breve.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/18.jpg" alt="ibid">
+          <figcaption>Figura 3.18. Agregar relleno al encabezado evita que el margen se contraiga</figcaption>
+        </figure>
+        <pre>
+          <code class="container__base-code">
+header {
+  padding: 1em 1.5em;
+  color: #fff;
+  background-color: #0072b0;
+  border-radius: .5em;
+}
+          </code>
+          <small>Listado 3.14. Aplicar relleno al encabezado</small>
+        </pre>
+        <p>
+          A continuación, se muestran algunas formas de evitar que los márgenes colapsen:
+        </p>
+        <ul>
+          <li>La aplicación de <code>overflow: auto</code> (o cualquier valor que no sea <code>visible</code>) al contenedor evita que los márgenes dentro del contenedor se colapsen con los que están fuera del contenedor. Esta suele ser la solución menos intrusiva.</li>
+          <li>Agregar un borde o relleno entre dos márgenes evita que se contraigan.</li>
+          <li>Los márgenes no se colapsarán hacia el exterior de un contenedor que esté flotando, que sea un <code>inline-block</code> o que tenga una posición absoluta o fija.</li>
+          <li>Cuando se usa una caja <em translate="no">flexbox</em>, los márgenes no se colapsan entre los elementos que forman parte del diseño flexible. Este también es el caso del diseño de cuadrícula <b>(capítulo 6)</b>.</li>
+          <li>Los elementos con un <em translate="no">display</em> de <code>table-cell</code> no tienen margen, por lo que no se contraerán. Esto también se aplica a la <code>table-row</code> y a la mayoría de los otros tipos de visualización de tabla. Las excepciones son <code>table</code>, <code>table-inline</code> y <code>table-caption</code>.</li>
+        </ul>
+        <p>
+          Sin embargo, muchos de estos cambian el comportamiento de diseño del elemento, por lo que probablemente no desee aplicarlos a menos que produzcan el diseño que está buscando.
+        </p>
+      </section>
+      <section id="tema5">
+        <h2>3.5. ESPACIO DE ELEMENTOS DENTRO DE UN CONTENEDOR</h2>
+        <p>
+          La interacción entre el relleno de un contenedor y los márgenes de su contenido puede ser difícil de manejar. Pongamos algunos elementos en la barra lateral y solucionemos los problemas que puedan surgir. Al final, les mostraré una técnica útil que puede simplificar enormemente las cosas.
+        </p>
+        <p>
+          Agregará dos botones que enlazan con páginas de redes sociales y otro enlace menos importante a la barra lateral. Su objetivo es que la barra lateral se vea como la <b>figura 3.19</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/19.jpg" alt="ibid">
+          <figcaption>Figura 3.19. La barra lateral con contenido debidamente espaciado</figcaption>
+        </figure>
+        <p>
+          Comencemos con los dos enlaces sociales. Agréguelos a su barra lateral como se muestra en la siguiente lista. La clase de <code>button-link</code> será un buen objetivo para su selector de CSS.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;aside class="sidebar"&gt;
+  &lt;a href="/twitter" class="button-link"&gt;
+    follow us on Twitter
+  &lt;/a&gt;
+  &lt;a href="/facebook" class="button-link"&gt;
+    like us on Facebook
+  &lt;/a&gt;
+&lt;/aside&gt;
+          </code>
+          <small>Listado 3.15. Agregar dos botones sociales a la barra lateral</small>
+        </pre>
+        <p>
+          A continuación, aplicará estilos para la apariencia general de los botones. Los hará elementos <em translate="no">block</em> para que llenen el ancho del contenedor, y cada uno aparecerá en su propia línea. Agregue este CSS a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.button-link {
+  display: block;                1
+  padding: 0.5em;
+  color: #fff;
+  background-color: #0090C9;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+          </code>
+          <small>Listado 3.16. Configurar el tamaño, las fuentes y los colores de los botones de la barra lateral</small>
+        </pre>
+        <ol class="index-code">
+          <li>El elemento de bloque llena el ancho disponible y coloca cada vínculo en su propia línea.</li>
+        </ol>
+        <p>
+          Ahora los enlaces tienen el estilo correcto, pero aún necesita averiguar el espacio entre ellos. Sin márgenes, se apilarán directamente uno encima del otro, como lo hacen ahora. Tiene opciones: puede darles márgenes superior e inferior separados o ambos, donde se produciría el colapso de los márgenes entre los dos botones.
+        </p>
+        <p>
+          No importa qué enfoque elija, sin embargo, seguirá encontrando un problema: el margen debe funcionar junto con el relleno de la barra lateral. Si agrega <code>margin-top: 1.5em</code>, obtendrá el resultado que se muestra en la <b>figura 3.20</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/20.jpg" alt="ibid">
+          <figcaption>Figura 3.20. El margen superior agrega espacio al relleno del contenedor.</figcaption>
+        </figure>
+        <p>
+          Ahora tendrá espacio adicional en la parte superior del contenedor. El margen superior del primer botón más el <code>padding</code> superior del contenedor producen un espacio desigual con los otros tres lados del contenedor.
+        </p>
+        <p>
+          Puede solucionar este problema de varias formas. El <b>listado 3.17</b> muestra una de las soluciones más simples. Utiliza el combinador de hermanos adyacente <code>(+)</code> para apuntar solo a enlaces de botón que siguen inmediatamente a otros enlaces de botón como hermanos bajo el mismo elemento principal. Ahora el margen solo aparece entre dos botones.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .button-link {
+    display: block;
+    padding: .5em;
+    color: #fff;
+    background-color: #0090C9;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  
+  .button-link + .button-link {     1
+    margin-top: 1.5em;              1
+  }                                 1
+          </code>
+          <small>Listado 3.17. Usar un combinador hermano adyacente para aplicar un margen entre botones</small>
+        </pre>
+        <ol class="index-code">
+          <li>Solo aplique un margen superior a los enlaces de botón que siguen inmediatamente a otro enlace de botón</li>
+        </ol>
+        <p>
+          Esto parece funcionar <b>(figura 3.21)</b>. El primer botón ya no tiene un margen superior, por lo que el espaciado es uniforme.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/21.jpg" alt="ibid">
+          <figcaption>Figura 3.21. Se aplica un espaciado uniforme alrededor de los botones.</figcaption>
+        </figure>
+        <h3 id="sub12">3.5.1. Considerando cambiar el contenido</h3>
+        <p>
+          Estás en el camino correcto, pero el <em>problema de espaciado</em> vuelve a surgir tan pronto como agregas más contenido a la barra lateral. Agregue el tercer enlace a su página, como se muestra en la siguiente lista. Este tiene el enlace de patrocinador de la clase para que pueda aplicar diferentes estilos al enlace.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;aside class="sidebar"&gt;
+  &lt;a href="/twitter" class="button-link"&gt;
+    follow us on Twitter
+  &lt;/a&gt;
+  &lt;a href="/facebook" class="button-link"&gt;
+    like us on Facebook<
+    &lt;/a&gt;
+  &lt;a href="/sponsors" class="sponsor-link"&gt;    1
+    become a sponsor                                 1
+  &lt;/a&gt;                                         1
+&lt;/aside&gt;
+          </code>
+          <small>Listado 3.18. Agregar un tipo diferente de enlace a la barra lateral</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega un tipo diferente de enlace a la barra lateral</li>
+        </ol>
+        <p>
+          Dará estilo a este, pero de nuevo, tendrá que abordar la cuestión del espacio entre él y los otros botones. La <b>figura 3.22</b> muestra cómo se verá el enlace <em>antes</em> de arreglar el margen.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/22.jpg" alt="ibid">
+          <figcaption>Figura 3.22. El espacio entre el segundo botón y el enlace inferior está desactivado.</figcaption>
+        </figure>
+        <p>
+          Los estilos para esto se muestran en la siguiente lista. Agrégalos a tu hoja de estilo. Probablemente también esté tentado a agregar un margen superior al enlace; espere eso por ahora. A continuación, les mostraré una alternativa interesante.
+        </p>
+        <pre>
+          <code class="index-code">
+.sponsor-link {
+  display: block;
+  color: #0072b0;
+  font-weight: bold;
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 3.19. Agregar estilos para el enlace del patrocinador</small>
+        </pre>
+        <p>
+          Podría agregar un margen superior y se vería bien. Pero considere esto: HTML tiene la desagradable costumbre de cambiar. En algún momento, ya sea el próximo mes o el próximo año, será necesario mover o reemplazar algo en esta barra lateral. Quizás el enlace de patrocinio deba moverse a la parte superior de la barra lateral. O tal vez deba agregar un widget para suscribirse a un boletín informativo por correo electrónico.
+        </p>
+        <p>
+          Cada vez que las cosas cambian, tendrá que volver a examinar la cuestión de estos márgenes. Deberá asegurarse de que haya espacio entre cada artículo, pero no espacio extraño en la parte superior (o inferior) del contenedor.
+        </p>
+        <h3 id="sub13">3.5.2. Creando una solución más general: el selector de búhos lobotomizado</h3>
+        <p>
+          El diseñador web <em>Heydon Pickering</em> dijo una vez que los márgenes son "como aplicar pegamento a un lado de un objeto antes de que hayas determinado si realmente quieres pegarlo a algo o qué podría ser ese algo". En lugar de arreglar los márgenes del contenido de la página actual, vamos a arreglarlo de una manera que funcione sin importar cómo se reestructura la página. Harás esto con algo que Pickering llama un <em>selector de búhos lobotomizado</em>. Tiene este aspecto: <code>* + *</code>.
+        </p>
+        <p>
+          Es un selector universal <code>(*)</code> que apunta a todos los elementos, seguido de un combinador hermano adyacente <code>(+)</code>, seguido de otro selector universal. Se gana su nombre porque se asemeja a la mirada vacía de un búho. El búho lobotomizado no es diferente al selector que usaste antes:<code> .social-button + .social-button.</code> Excepto que, en lugar de apuntar a los botones que siguen inmediatamente a otros botones, apunta a cualquier elemento que siga inmediatamente a cualquier otro elemento. Es decir, selecciona todos los elementos de la página que no son el primer hijo de su padre.
+        </p>
+        <p>
+          Usemos el búho lobotomizado para agregar márgenes superiores a los elementos de su página. Si lo hace, espaciará uniformemente cada elemento en su barra lateral. También apuntará al contenedor principal porque un hermano sigue inmediatamente al encabezado, proporcionando el espacio que desea allí también. El resultado se muestra en la <b>figura 3.23</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/24.jpg" alt="ibid">
+          <figcaption>Figura 3.23. Todos los elementos hermanos adyacentes ahora tienen un margen superior</figcaption>
+        </figure>
+        <p>
+          Agregue el <b>listado 3.20</b> cerca de la parte superior de su hoja de estilo. He incluido el cuerpo al principio del selector. Esto restringe el selector para apuntar solo a elementos dentro del cuerpo. Si usa el <em>búho lobotomizado</em> por sí solo, apuntará al elemento <code>&lt;body&gt;</code> porque es un hermano adyacente del elemento <code>&lt;head&gt;</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body * + * {
+  margin-top: 1.5em;
+}
+          </code>
+          <small>Listado 3.20. Objetos apilados en el espacio global con el búho lobotomizado</small>
+        </pre>
+        <p>
+          Es posible que le preocupen las implicaciones de rendimiento del selector universal <code>(*)</code>. En IE6, era increíblemente lento, por lo que los desarrolladores evitaron usarlo. Hoy en día, esto ya no es una preocupación porque los navegadores modernos lo manejan bien. Además, usarlo en el <em>búho lobotomizado</em> reduce potencialmente la cantidad de selectores en su hoja de estilo, porque corrige globalmente la mayoría de los elementos. De hecho, podría ser más eficaz, dependiendo de los detalles de su hoja de estilo.
+        </p>
+        <p>
+          El margen superior del <em>búho lobotomizado</em> tiene un efecto secundario no deseado en la barra lateral. Debido a que la barra lateral es un hermano adyacente de la columna principal, también recibe un margen superior. Tendrás que revertir eso a cero. También tendrá que agregar relleno a las columnas principales porque aún no lo ha hecho. Actualice la parte correspondiente de su hoja de estilo para que coincida con la lista que se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .main {
+    width: 70%;
+    padding: 1em 1.5em;             1
+    background-color: #fff;
+    border-radius: .5em;
+  }
+  
+  .sidebar {
+    width: 30%;
+    padding: 1.5em;
+    margin-top: 0;                  2
+    margin-left: 1.5em;
+    background-color: #fff;
+    border-radius: .5em;
+  }
+          </code>
+          <small>Listado 3.21. Toques finales</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega relleno a la columna principal</li>
+          <li>Elimina el margen superior aplicado por el búho lobotomizado</li>
+        </ol>
+        <p>
+          Estos son los toques finales para tu página. Ahora debería verse como la <b>figura 3.24</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap3/25.jpg" alt="ibid">
+          <figcaption>Figura 3.24. Página final con un diseño de dos columnas</figcaption>
+        </figure>
+        <p>
+          Usar el <em>búho lobotomizado</em> de esta manera es una compensación. Simplifica muchos márgenes en toda la página, pero tendrá que anularlo en lugares donde no desee que se aplique. Por lo general, esto solo ocurrirá en lugares donde haya elementos uno al lado del otro, como con diseños de varias columnas. Dependiendo de su diseño, también deberá establecer los márgenes deseados en los párrafos y encabezados.
+        </p>
+        <p>
+          Usaré el <em>búho lobotomizado</em> en más ejemplos en los próximos capítulos para ayudarlo a tener una idea de las compensaciones involucradas. Es posible que el <em>búho lobotomizado</em> no sea la solución correcta para todos los proyectos, y es difícil agregarlo a un proyecto existente sin romper el diseño, pero considérelo la próxima vez que inicie un nuevo sitio web o aplicación web.
+        </p>
+        <pre>
+          <code class="container__base-code">
+:root {
+  box-sizing: border-box;
+}
+  
+*,
+::before,
+::after {
+  box-sizing: inherit;
+}
+  
+body {
+  background-color: #eee;
+  font-family: Helvetica, Arial, sans-serif;
+}
+  
+body * + * {
+  margin-top: 1.5em;
+}
+  
+header {
+  padding: 1em 1.5em;
+  color: #fff;
+  background-color: #0072b0;
+  border-radius: .5em;
+}
+  
+.container {
+  display: flex;
+}
+  
+.main {
+  width: 70%;
+  padding: 1em 1.5em;
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+.sidebar {
+  width: 30%;
+  padding: 1.5em;
+  margin-top: 0;
+  margin-left: 1.5em;
+  background-color: #fff;
+  border-radius: .5em;
+}
+  
+  .button-link {
+    display: block;
+    padding: .5em;
+    color: #fff;
+    background-color: #0090C9;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  
+.sponsor-link {
+  display: block;
+  color: #0072b0;
+  font-weight: bold;
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 3.22. Hoja de estilo final</small>
+        </pre>
+      </section>
+      <section id="resumen">
+        <h3>RESUMEN</h3>
+        <ul>
+          <li>Utilice siempre una corrección de <em translate="no">border-box</em> universal para un tamaño de elemento predecible.</li>
+          <li>Evite establecer explícitamente la altura de un elemento para evitar problemas de desbordamiento.</li>
+          <li>Utilice técnicas de diseño modernas como <code>display: table</code>  o <em translate="no">flexbox</em> para producir columnas de igual altura o para centrar el contenido verticalmente.</li>
+          <li>Si sus márgenes se comportan de manera extraña, tome medidas para evitar que se derrumben.</li>
+          <li>Considere usar el selector de <em>búho lobotomizado</em> en su página para aplicar márgenes globalmente entre elementos apilados.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Dificultades con <span translate="no">WIDTH</span></a></li>
+        <li><a href="#sub1">- Evitando los números mágicos</a></li>
+        <li><a href="#sub2">- Ajuste del modelo de caja</a></li>
+        <li><a href="#sub3">- Usando el <span translate="no">BORDER-BOX</span> universal</a></li>
+        <li><a href="#sub4">- Agregar un canalón entre columnas</a></li>
+        <li><a href="#tema2">Dificultades con <span translate="no">ELEMENT HEIGHT</span></a></li>
+        <li><a href="#sub5">- Controlar el comportamiento de <span translate="no">OVERFLOW</span></a></li>
+        <li><a href="#sub6">- Aplicar alternativas a las alturas basadas en porcentajes</a></li>
+        <li><a href="#sub7">- Usando <span translate="no">MIN-HEIGHT</span> y <span translate="no">MAX-HEIGHT</span></a></li>
+        <li><a href="#sub8">- Contenido centrado verticalmente</a></li>
+        <li><a href="#tema3">Márgenes Negativos</a></li>
+        <li><a href="#tema4">Márgenes Colapsados</a></li>
+        <li><a href="#sub9">- Colapso entre texto</a></li>
+        <li><a href="#sub10">- Colapso de múltiples márgenes</a></li>
+        <li><a href="#sub11">- Colapso fuera de un contenedor</a></li>
+        <li><a href="#tema5">Espacio de elementos dentro de un Contenedor</a></li>
+        <li><a href="#sub12">- Considerando cambiar el contenido</a></li>
+        <li><a href="#sub13">- Creando una solución más general: el selector de Búhos Lobotomizado</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Apéndice A</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Apéndice A. Referencia de selectores</h1>
+      <div>
+        <a href="ch_16.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="apendice_b.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <p>
+        Los selectores apuntan a elementos específicos de la página para aplicarles estilo. CSS proporciona una amplia gama de tipos de selectores.
+      </p>
+      <section id="tema1">
+        <h2>A.1. Selectores básicos</h2>
+        <ul>
+          <li><code>tagname</code> - Selector de tipo o selector de etiqueta. Este selector coincide con el nombre de etiqueta de los elementos a los que apuntar. Tiene una especificidad de 0,0,1. Ejemplos <code>p:; h1; strong</code>.</li>
+          <li><code>.class</code> - Selector de clases. Se dirige a elementos que tienen el nombre de clase especificado como parte de su atributo de clase. Tiene una especificidad de 0,1,0. Ejemplos: <code>.media; .nav-menu</code>.</li>
+          <li><code>#id</code> - Selector de ID. Apunta al elemento con el atributo de ID especificado. Tiene una especificidad de 1,0,0. Ejemplo: <code>#sidebar</code>.</li>
+          <li><code>*</code> - Selector universal. Apunta a todos los elementos. Tiene una especificidad de 0,0,0.</li>
+        </ul>
+      </section>
+      <section id="tema2">
+        <h2>A.2. Combinadores</h2>
+        <p>
+          Los combinadores unen múltiples selectores simples en un selector complejo. En el selector <code>.nav-menu li</code>, por ejemplo, el espacio entre los dos selectores simples se conoce como <em>combinador descendiente</em>. Indica que el objetivo <code>&lt;li></code> es descendiente de un elemento que tiene la <code>nav-menuclase</code>. Este es el combinador más común, pero hay algunos otros, cada uno de los cuales indica una relación particular entre los elementos indicados:
+        </p>
+        <ul>
+          <li><em>Combinador hijo</em> <code>( >)</code>: se dirige a elementos que son descendientes directos de otro elemento. Ejemplo: <code>.parent > .child</code>.</li>
+          <li><em>Combinador de hermanos adyacentes</em> <code>( +)</code>: apunta a elementos que siguen inmediatamente a otro. Ejemplo: <code>p + h2</code>.</li>
+          <li><em>Combinador general de hermanos</em> <code>( ~)</code>: apunta a todos los elementos hermanos que siguen a un elemento especificado. Tenga en cuenta que esto no se dirige a los hermanos que aparecen antes del elemento indicado. Ejemplo: <code>li.active ~ li</code>.</li>
+          <li></li>
+        </ul>
+        <h3>Selectores compuestos</h3>
+        <p>
+          Se pueden unir varios selectores simples (sin espacios ni otros combinadores) para formar un selector <em>compuesto</em> (por ejemplo, <code>h1.page-header</code>). Un selector compuesto apunta a elementos que coinciden con <em>todos</em> sus selectores simples. Por ejemplo, <code>.dropdown.is-active</code> apunta a <code>&lt;div class="dropdown is-active"></code> pero no <code>&lt;div class="dropdown"></code>.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>A.3. Selectores de pseudoclase</h2>
+        <p>
+          Los selectores de pseudoclases se utilizan para apuntar a elementos cuando se encuentran en un estado determinado. Este estado puede deberse a la interacción del usuario o la posición del elemento en relación con sus elementos principales o hermanos en el documento. Los selectores de pseudoclase siempre comienzan con dos puntos <code>(:)</code>. Estos tienen la misma especificidad que un selector de clases <code>(0,1,0)</code>.
+        </p>
+        <ul>
+          <li><code>:first-child</code>: Se dirige a los elementos que son el primer elemento dentro de su elemento principal.</li>
+          <li><code>:last-child</code>: Se dirige a los elementos que son el último elemento dentro de su elemento principal.</li>
+          <li><code>:only-child</code>: Se dirige a los elementos que son el único elemento dentro de su elemento principal (sin hermanos).</li>
+          <li><code>:nth-child(an+b)</code> - Se enfoca en elementos basados ​​en su posición entre sus hermanos. La fórmula , donde y son números enteros, indica a qué elementos apuntar. Para saber exactamente cómo funciona una fórmula, imagínese resolviéndola para todos los valores enteros de , comenzando con cero. Los resultados de esta ecuación indican a qué niños se dirige. Esta figura ilustra algunos ejemplos: <code>an+babn</code><img src="../img_css/apendice_a/01.jpg" alt=""></li>
+          <li><code>:nth-last-child(an+b)</code> - Similar a <code>:nth-child()</code>, pero en lugar de contar hacia adelante desde el primer elemento, este selector cuenta hacia atrás desde el último elemento. La fórmula entre paréntesis sigue el mismo patrón que en <code>:nth-child()</code>.</li>
+          <li><code>:first-of-type</code> - De naturaleza similar a <code>:first-child</code>, excepto que en lugar de considerar la posición entre todos los hijos, considera la posición numérica de un elemento solo entre otros hijos con el mismo nombre de etiqueta.</li>
+          <li><code>:last-of-type</code>: Se dirige al último elemento hijo de cada tipo.</li>
+          <li><code>:only-of-type</code>: Se dirige a elementos que son el único hijo de su tipo.</li>
+          <li><code>:nth-of-type(an+b)</code> - Se dirige a elementos de su tipo en función de su orden numérico y la fórmula especificada; similar a <code>:nth-child</code>.</li>
+          <li><code>:nth-last-of-type(an+b)</code> - Se dirige a elementos de su tipo basándose en una fórmula específica, contando desde el último de esos elementos hacia atrás; similar a <code>:nth-last-child</code>.</li>
+          <li><code>:not(&lt;selector>)</code>: Se dirige a elementos que no coinciden con el selector entre paréntesis. El selector dentro del paréntesis debe ser simple: solo puede hacer referencia al elemento en sí; no puede utilizar este selector para excluir antepasados. Tampoco debe contener otro selector de negación.</li>
+          <li><code>:empty </code> - Se dirige a elementos que no tienen hijos. Tenga en cuenta que esto no apunta a un elemento que contiene espacios en blanco, ya que el espacio en blanco se representa en el DOM como un nodo de texto secundario. En el momento de escribir este artículo, el W3C está considerando una pseudoclase <code>:blank</code> que se comporta de manera similar pero que también selecciona elementos que contienen solo espacios en blanco; <code>:blank</code> aún no es compatible con ningún navegador.</li>
+          <li><code>:focus</code>: Se dirige a elementos que han recibido el foco, ya sea mediante un clic del mouse, un toque en la pantalla o la navegación con la tecla Tab.</li>
+          <li><code>:hover</code>: Apunta a elementos mientras el cursor del ratón se desplaza sobre ellos.</li>
+          <li><code>:root</code>: Se dirige al elemento raíz del documento. En HTML, este es el elemento <code>&lt;html></code>. Pero CSS se puede aplicar a otros documentos XML o similares a XML, como SVG; en cuyo caso, este selector funciona de forma más genérica.</li>
+        </ul>
+        <p>
+          Varias otras pseudoclases se relacionan con los campos de formulario. Algunos de estos se introdujeron o perfeccionaron con la especificación de nivel 4 de selectores, por lo que no funcionan en IE10 y algunos otros navegadores. Compruebe <em>caniuse.com</em> de apoyo.
+        </p>
+        <ul>
+          <li><code>:disabled</code>: Se dirige a elementos deshabilitados, incluidas entradas, selecciones y botones.</li>
+          <li><code>:enabled</code>: Apunta a elementos habilitados, lo que significa que pueden activarse o aceptar el foco.</li>
+          <li><code>:checked</code>: Se dirige a las casillas de verificación seleccionadas, los botones de opción o las opciones de las casillas de selección.</li>
+          <li><code>:invalid</code>: Se dirige a elementos con valores de entrada no válidos, según lo definido por el tipo de entrada. Por ejemplo, an <code>&lt;input type="email"></code>, cuyo valor no es una dirección de correo electrónico válida. (Nivel 4).</li>
+          <li><code>:valid </code> - Se dirige a elementos con valores válidos (nivel 4).</li>
+          <li><code>:required</code> - Se dirige a elementos con un requiredconjunto de atributos (nivel 4).</li>
+          <li><code>:optional</code> - Se dirige a elementos que no tienen un requiredconjunto de atributos (Nivel 4).</li>
+        </ul>
+        <p>
+          Esta lista de pseudoclases no es exhaustiva. Consulte la documentación de MDN en <em>https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes</em> para obtener una lista completa.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>A.4. Selectores de pseudoelementos</h2>
+        <p>
+          Los pseudo-elementos son similares a las pseudo-clases, pero en lugar de seleccionar elementos con un estado especial, se dirigen a una determinada parte del documento que no corresponde directamente a un elemento particular en el HTML. Pueden apuntar solo a partes de un elemento o incluso inyectar contenido en la página donde el marcado no define ninguno.
+        </p>
+        <p>
+          Estos selectores comienzan con dos puntos <code>(::)</code>, aunque la mayoría de los navegadores también admiten una sintaxis de dos puntos por razones de compatibilidad con versiones anteriores. Los pseudoelementos tienen la misma especificidad que un selector de tipo (0,0,1).
+        </p>
+        <ul>
+          <li><code>::before</code>: Crea un pseudoelemento que se convierte en el primer elemento secundario del elemento coincidente. Este elemento está integrado de forma predeterminada. Puede usarse para insertar texto, imágenes u otras formas. La propiedad <code>content</code> debe especificarse para que aparezca este elemento. Ejemplo: <code>.menu::before</code>.</li>
+          <li><code>::after</code>: Crea un pseudoelemento que se convierte en el último hijo del elemento coincidente. Este elemento está integrado de forma predeterminada. Puede usarse para insertar texto, imágenes u otras formas. La contentpropiedad debe especificarse para que aparezca este elemento. Ejemplo: <code>.menu::after</code>.</li>
+          <li><code>::first-letter</code>: Permite especificar estilos solo para el primer carácter de texto dentro del elemento coincidente. Ejemplo: <code>h2::first-letter</code>.</li>
+          <li><code>::first-line</code>: Permite especificar estilos para la primera línea de texto dentro del elemento coincidente.</li>
+          <li><code>::selection</code>: Permite especificar estilos para cualquier texto que el usuario haya resaltado con el cursor. Esto se usa a menudo para cambiar el <code>background-color</code> texto seleccionado. Solo se pueden utilizar unas pocas propiedades; entre ellos se incluyen el color, el color de fondo, el cursor y la decoración del texto.</li>
+        </ul>
+      </section>
+      <section id="tema5">
+        <h2>A.5. Selectores de atributos</h2>
+        <p>
+          Los selectores de atributos se pueden utilizar para apuntar a elementos en función de sus atributos HTML. Estos tienen la misma especificidad que un selector de clases (0,1,0).
+        </p>
+        <ul>
+          <li><code>[attr]</code>: Se dirige a elementos que tienen el atributo especificado <code>attr</code>, independientemente de su valor. Ejemplo: <code>input[disabled]</code>.</li>
+          <li><code>[attr="value"]</code>: Se dirige a elementos que tienen el atributo especificado <code>attr</code> y su valor coincide con el valor de cadena especificado. Ejemplo: <code>input[type="radio"]</code>.</li>
+          <li><code>[attr^="value"]</code> - Selector de atributos “Empieza por”. Objetivos por atributo y valor, donde el valor comienza con el valor de cadena especificado. Ejemplo: <code>a[href^= "https"]</code>.</li>
+          <li><code>[attr$="value"]</code> - Selector de atributos "Termina con". Objetivos por atributo y valor, donde el valor termina con el valor de cadena especificado. Ejemplo: <code>a[href$= ".pdf"]</code>.</li>
+          <li><code>[attr*="value"]</code> - Selector de atributos “Contiene”. Objetivos por atributo y valor, donde el valor del atributo contiene el valor de cadena especificado. Ejemplo: <code>[class*="sprite-"]</code>.</li>
+          <li><code>[attr~="value"]</code> - Selector de atributos “Lista separada por espacios”. Objetivos por atributo y valor, donde el valor del atributo es una lista de valores separados por espacios, uno de los cuales coincide con el valor de cadena especificado. Ejemplo: <code>a[rel="author"]</code>.</li>
+          <li><code>[attr|="value"]</code>: Objetivos por atributo y valor, donde el valor coincide con la cadena especificada valueo comienza con ella y va seguida inmediatamente de un guión <code>(-)</code>. Útil para el atributo de idioma, que puede o no especificar un subcódigo de idioma (por ejemplo, español mexicano <code>es-MX</code>, o español en general es). Ejemplo: <code>[lang|="es"]</code>.</li>
+        </ul>
+        <h3>Selectores de atributos que no distinguen entre mayúsculas y minúsculas</h3>
+        <p>
+          Todos los selectores de atributos anteriores distinguen entre mayúsculas y minúsculas. La especificación de selectores de nivel 4 introduce un modificador que no distingue entre mayúsculas y minúsculas que se puede agregar a cualquier selector de atributo. Para hacer esto, agregue un iantes del corchete de cierre. Ejemplo: <code>input[value="search" i]</code>.
+        </p>
+        <p>
+          Muchos navegadores aún no lo admiten. Aquellos que no lo hagan, lo ignorarán. Por esta razón, si usa modificadores que no distinguen entre mayúsculas y minúsculas, asegúrese de agregar una alternativa a una versión normal que distinga entre mayúsculas y minúsculas.
+        </p>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Selectores básicos</a></li>
+        <li><a href="#tema2">Combinadores</a></li>
+        <li><a href="#tema3">Selectores de pseudoclase</a></li>
+        <li><a href="#tema4">Selectores de pseudoelementos</a></li>
+        <li><a href="#tema5">Selectores de atributos</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 5</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 5. <span translate="no">Flexbox</span></h1>
+      <div>
+        <a href="ch_04.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_06.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capitulo habla sobre:</em></h4>
+      <ul>
+        <li><span translate="no">flex-containers</span> y <span translate="no">flex-items</span></li>
+        <li><span translate="no">Main-axis</span> y <span translate="no">cross-axis</span></li>
+        <li>Tamaños de elementos en <span translate="no">flexbox</span></li>
+        <li>Alineación de elementos en <span translate>flexbox</span></li>
+      </ul>
+      <p>
+        Si ha estado en el mundo de CSS en los últimos años, es casi seguro que haya escuchado a alguien cantar alabanzas a <code>flexbox</code>. <span translate="no">Flexbox</span>, formalmente Diseño de caja flexible, es un nuevo método para diseñar elementos en la página. Es más predecible y ofrece un control mucho más específico que los <span translate="no">floats</span>. También es una solución simple a los problemas de larga data de centrado vertical y columnas de igual altura.
+      </p>
+      <p>
+        <span translate="no">Flexbox</span> estado en el horizonte durante varios años, y los desarrolladores que solo necesitan admitir navegadores de vanguardia lo han estado usando durante un tiempo. Pero ahora hemos llegado a un punto en el que es compatible con todos los navegadores principales, incluido el soporte parcial en IE10. De hecho, tiene un soporte más amplio que incluso la propiedad <code>border-radius</code> (que no es compatible con Opera Mini). Si ha estado esperando el momento adecuado para aprender <code>flexbox</code>, ese momento ha llegado. Este capítulo lo familiarizará.
+      </p>
+      <p>
+        Si <em translate="no">flexbox</em> tiene una debilidad, es la abrumadora cantidad de opciones que ofrece. Introduce 12 nuevas propiedades para CSS, incluidas algunas propiedades abreviadas. Eso puede ser mucho para asimilar a la vez. Cuando comencé a aprender <code>flexbox</code>, me sentí un poco como beber de una manguera contra incendios, y me costó mucho memorizar todas las nuevas propiedades. Voy a adoptar un enfoque diferente al enseñarles sobre <code>flexbox</code>; lo usaremos con facilidad.
+      </p>
+      <p>
+        Cubriré algunos principios básicos del diseño de <em translate="no">flexbox</em> que necesitará comprender, seguidos de ejemplos prácticos. No es necesario que aprenda las 12 propiedades nuevas para utilizar <em translate="no">flexbox</em>. He descubierto que solo unos pocos hacen la mayor parte del trabajo pesado, así que nos centraremos en ellos. El resto de las propiedades ofrecen opciones para alinear y espaciar elementos. Cerca del final del capítulo, los explicaré y proporcionaré una guía de referencia rápida a la que puede volver cuando la necesite.
+      </p>
+      <section id="tema1">
+        <h3>5.1. PRINCIPIOS DE <span translate="no">FLEXBOX</span></h3>
+        <p>
+          <em translate="no">Flexbox</em> comienza con la propiedad de <code>display</code>. Aplicar <code>display: flex</code> a un elemento lo convierte en un <em translate="no">flex container</em>, y sus hijos directos se convierten en <em translate="no">flex items</em>. De forma predeterminada, los <em translate="no">flex items</em> se alinean uno al lado del otro, de izquierda a derecha, todo en una fila. El <em translate="no">flex container</em> llena el ancho disponible como un elemento de bloque, pero los <em translate="no">flex items</em> pueden no necesariamente llenar el ancho de su <em translate="no">flex-container</em>. Los <em translate="no">flex-items</em> tienen todos la misma altura, determinada naturalmente por su contenido.
+        </p>
+        <p>
+          También puede usar <code>display: inline-flex</code>. Esto crea un <em translate="no">flex-container</em> que se comporta más como un elemento <em translate="no">inline-block</em> que como un <code>block</code>. Fluye en línea con otros elementos <code>inline</code>, pero no crecerá automáticamente al <code>100%</code> de ancho. Los elementos <em translate="no">flex</em> dentro de él generalmente se comportan de la misma manera que con <code>display: flex</code>. Hablando en términos prácticos, no necesitará usar esto con mucha frecuencia.
+        </p>
+        <p>
+          <em translate="no">Flexbox</em> es diferente a los valores de visualización anteriores (<code>inline, inline-block, </code>etc.), que solo afectan a los elementos a los que se aplican. En cambio, un <em translate="no">flex container</em> afirma el control sobre el diseño de los elementos que contiene. Un <em translate="no">flex container</em> y sus elementos se ilustran en la <b>figura 5.1</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/01.jpg" alt="ibid">
+          <figcaption>Figura 5.1.Un contenedor <span translate="no">flexbox</span> y sus elementos</figcaption>
+        </figure>
+        <p>
+          Los elementos se colocan a lo largo de una línea denominada <em translate="no">main-axis</em>, que va desde el <em translate="no">main-start</em> (izquierda) hasta el <em translate="no">main-end</em> (derecha). Perpendicular al <em translate="no">main-axis</em> está el <em translate="no">cross-axis</em>. Esto va desde el <em translate="no">cross-start</em> (arriba) hasta el <em translate="no">cross-end</em> (abajo). La dirección de estos ejes se puede cambiar; Le mostraré cómo hacer esto más adelante en el capítulo.
+        </p>
+        <p>
+          Debido a que el diseño de <em translate="no">flexbox</em> se define en términos del <em translate="no">main-axis</em> y el <em translate="no">cross-axis</em>, usaré los términos <em translate="no">start</em> y <em translate="no">end</em> en referencia a los ejes, en lugar de izquierda y derecha o superior e inferior.
+        </p>
+        <p>
+          Estos conceptos (<em translate="no">flex-container</em>, <em translate="no">flex-items</em> y los dos ejes) cubren mucho de lo que necesita saber sobre <code>flexbox</code>. La aplicación de <code>display: flex</code> te lleva bastante lejos antes de que tengas que elegir cualquiera de esas 12 propiedades nuevas. Para probarlo, creará la página que se muestra en la <b>figura 5.2</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/02.jpg" alt="ibid">
+          <figcaption>Figura 5.2. Página terminada con un diseño de <span translate="no">flexbox</span></figcaption>
+        </figure>
+        <p>
+          He estructurado esta página para cubrir varias formas de usar <code>flexbox</code>. Usaremos <code>flexbox</code> para el menú de navegación en la parte superior y para diseñar los tres cuadros blancos y el texto estilístico de <code>$20.00</code> en la parte inferior derecha.
+        </p>
+        <p>
+          Inicie una nueva página y vincúlela a una nueva hoja de estilo. Luego agregue este marcado a su página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;!doctype html&gt;
+&lt;head&gt;
+  &lt;title&gt;Flexbox example page&lt;/title&gt;
+  &lt;link href="styles.css" rel="stylesheet"
+    type="text/css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;header&gt;
+      &lt;h1&gt;Ink&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;nav&gt;
+      &lt;ul class="site-nav"&gt;                            1
+        &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;  1
+        &lt;li&gt;&lt;a href="/features"&gt;Features&lt;/a&gt;&lt;/li&gt; 1        
+        &lt;li&gt;&lt;a href="/pricing"&gt;Pricing&lt;/a&gt;&lt;/li&gt;    1       
+        &lt;li&gt;&lt;a href="/support"&gt;Support&lt;/a&gt;&lt;/li&gt;  1         
+        &lt;li class="nav-right"&gt;                            1
+          &lt;a href="/about"&gt;About&lt;/a&gt;                 1     
+        &lt;/li&gt;                                             1
+      &lt;/ul&gt;                                               1
+    &lt;/nav&gt;
+  
+    &lt;main class="flex"&gt;
+      &lt;div class="column-main tile"&gt;                 2
+        &lt;h1&gt;Team collaboration done right&lt;/h1&gt;  2          
+        &lt;p&gt;Thousands of teams from all over the          2 
+          world turn to &lt;b&gt;Ink&lt;/b&gt; to communicate 2        
+          and get things done.&lt;/p&gt;            2            
+      &lt;/div&gt;                                  2            
+  
+      &lt;div class="column-sidebar"&gt;             3           
+        &lt;div class="tile"&gt;
+          &lt;form class="login-form"&gt;
+            &lt;h3&gt;Login&lt;/h3&gt;
+            &lt;p&gt;
+              &lt;label for="username"&gt;Username&lt;/label&gt;
+              &lt;input id="username" type="text"
+                name="username"/&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+              &lt;label for="password"&gt;Password&lt;/label&gt;
+              &lt;input id="password" type="password"
+                name="password"/&gt;
+            &lt;/p&gt;
+            &lt;button type="submit"&gt;Login&lt;/button&gt;
+          &lt;/form&gt;
+        &lt;/div&gt;
+        &lt;div class="tile centered"&gt;
+          &lt;small&gt;Starting at&lt;/small&gt;
+          &lt;div class="cost"&gt;
+            &lt;span class="cost-currency"&gt;$&lt;/span&gt;
+            &lt;span class="cost-dollars"&gt;20&lt;/span&gt;
+            &lt;span class="cost-cents"&gt;.00&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;a class="cta-button" href="/pricing"&gt;
+            Sign up
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+          </code>
+          <small>Listado 5.1. Marcado para la página</small>
+        </pre>
+        <ol class="index-code">
+          <li>Menú de navegación</li>
+          <li>teja principal grande</li>
+          <li>Barra lateral que contiene dos mosaicos apilados</li>
+        </ol>
+        <p>
+          Para comenzar su hoja de estilo, ingrese este CSS. (Con suerte, estos estilos se están volviendo familiares a estas alturas).
+        </p>
+        <pre>
+          <code class="container__base-code">
+:root {                                             1
+  box-sizing: border-box;                           1
+}                                                   1
+                                                    1
+*,                                                  1
+::before,                                           1
+::after {                                           1
+  box-sizing: inherit;                              1
+}                                                   1
+
+body {                                              2
+  background-color: #709b90;                        2
+  font-family: Helvetica, Arial, sans-serif;        2
+}                                                   2
+
+body * + * {                                        3
+  margin-top: 1.5em;                                3
+}                                                   3
+
+.container {                                        4
+  max-width: 1080px;                                4
+  margin: 0 auto;                                   4
+}                                                   4              
+          </code>
+          <small>Listado 5.2. Estilos base para la página</small>
+        </pre>
+        <ol class="index-code">
+          <li>Corrección de tamaño de caja global (capítulo 3)</li>
+          <li>Establece el color de fondo verde y la fuente sans-serif para la página.</li>
+          <li>Márgenes globales (capítulo 3)</li>
+          <li>Contenedor doble para centrar el contenido de la página (capítulo 4)</li>
+        </ol>
+        <p>
+          Ahora que se inicia la página, comencemos a diseñar algunas cosas con <code>flexbox</code>. Comenzará con el menú de navegación en la parte superior.
+        </p>
+        <h3 id="sub1">5.1.1. Construyendo un menú básico <span translate="no">flexbox</span></h3>
+        <p>
+          Para este ejemplo, querrá que el menú de navegación se vea como la <b>figura 5.3</b>. La mayoría de los elementos del menú se alinearán a la izquierda, pero tirarás uno hacia el lado derecho.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/03.jpg" alt="ibid">
+          <figcaption>Figura 5.3. Menú de navegación con elementos dispuestos mediante <span translate="no">flexbox</span></figcaption>
+        </figure>
+        <p>
+          Para crear este menú, debe considerar qué elemento debe ser el <code>flex-container</code>; tenga en cuenta que sus elementos secundarios se convertirán en <em translate="no">flex items</em>. En el caso de nuestro menú de página, el <em translate="no">flex container</em> debería ser la lista desordenada <code>(&lt;ul&gt;)</code>. Sus hijos, los elementos de la lista <code>(&lt;li&gt;)</code>, serán los <em translate="no">flex-items</em>. Así es como se ve esto:
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;ul class="site-nav"&gt;
+  &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="/features"&gt;Features&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="/pricing"&gt;Pricing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="/support"&gt;Support&lt;/a&gt;&lt;/li&gt;
+  &lt;li class="nav-right"&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+          </code>
+        </pre>
+        <p>
+          Haremos algunos pasos en esto mientras lo guío a través de la construcción de este menú paso a paso. Primero, aplicará <code>display: flex</code> a la lista. También deberá anular los estilos de lista predeterminados de la hoja de estilo del agente de usuario y los márgenes superiores del <em>búho lobotomizado</em>. También aplicarás los colores. La <b>figura 5.4</b> muestra el resultado de estos pasos.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/04.jpg" alt="ibid">
+          <figcaption>Figura 5.4. Menú con <span translate="no">flexbox</span> y colores aplicados</figcaption>
+        </figure>
+        <p>
+          En el marcado, le dio a <code>&lt;ul&gt;</code> una clase <code>site-nav</code>, que luego puede usar para orientarla en los estilos. Agregue estas declaraciones a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.site-nav {
+  display: flex;                       1
+  padding-left: 0;                     2
+  list-style-type: none;               2
+  background-color: #5f4b44;
+}
+
+.site-nav &gt; li {
+  margin-top: 0;                       3
+}
+
+.site-nav &gt; li > a {
+  background-color: #cc6b5a;
+  color: white;
+  text-decoration: none;               4
+}
+          </code>
+          <small>Listado 5.3. Aplicar <span translate="no">flexbox</span> y colores al menú</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que la navegación del sitio sea el contenedor flexible y sus hijos los elementos flexibles</li>
+          <li>Elimina el relleno izquierdo y las viñetas de lista en los estilos de agente de usuario</li>
+          <li>Anula el margen superior del búho lobotomizado</li>
+          <li>Elimina el subrayado del texto del enlace en los estilos de agente de usuario</li>
+        </ol>
+        <p>
+          Tenga en cuenta que está trabajando con tres niveles de elementos aquí: la lista de <code>site-nav</code> (el <em translate="no">flex-container</em>), los elementos de la lista (los <em translate="no">flex-items</em>) y las etiquetas de anclaje (los <em translate="no">links</em>) dentro de ellos. He usado combinadores descendientes directos <code>(&gt;)</code> para asegurarme de que solo apuntes a elementos secundarios directos. Probablemente esto no sea estrictamente necesario; es decir, es poco probable que los cambios futuros agreguen una lista anidada dentro del menú de navegación, pero no está de más ir a lo seguro. Si no está familiarizado con este combinador, consulte el <b>apéndice A</b> para obtener más información.
+        </p>
+        <p>
+          Si usa <em translate="no">flexbox</em> en un navegador más antiguo, como IE10 o Safari 8, encontrará que no funciona. Eso se debe a que los navegadores más antiguos requieren prefijos de proveedor en los atributos de <em translate="no">flexbox</em>. Así es como los navegadores han admitido varias características nuevas de CSS antes de que la especificación fuera estable. En lugar de implementar <code>display: flex</code>, por ejemplo, las versiones anteriores de Safari implementaron <code>display: -webkit-flex</code>. Deberá agregar esta declaración para que <code>flexbox</code> funcione en Safari 8, seguida de la normal:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.site-nav {
+  display: -webkit-flex;
+  display: flex;
+}
+          </code>
+        </pre>
+        <p>
+          Un navegador ignora las declaraciones que no comprende, por lo que en Safari 8, el valor en cascada será <code>-webkit-flex</code>, que se comporta igual que <code>flex</code> en versiones más recientes. Lo mismo ocurre con los nombres de las propiedades y los valores. Por ejemplo, deberá declarar la propiedad <code>flex</code> (que cubriré más adelante en este capítulo) de esta manera:
+        </p>
+        <pre>
+          <code class="container__base-code">
+-webkit-flex: 1;
+flex: 1;
+          </code>
+        </pre>
+        <p>
+          Para IE10, se vuelve aún más complicado, ya que ese navegador implementa una versión anterior de la especificación <code>flexbox</code>. Para agregar soporte para esta versión, necesitará conocer los nombres de propiedad más antiguos (por ejemplo, <code>flexbox</code> en lugar de <code>flex</code>) y luego agregar versiones prefijadas de esos:
+        </p>
+        <pre>
+          <code class="container__base-code">
+display: -ms-flexbox;
+display: -webkit-flex;
+display: flex;
+          </code>
+        </pre>
+        <p>
+          Para simplificar, dejo los prefijos fuera de los ejemplos de este capítulo. Los ejemplos funcionarán en todos los navegadores modernos, pero cuando se trata de código listo para producción, primero ejecute su código a través de Autoprefixer para que funcione con una gama más amplia de versiones de navegador.
+        </p>
+        <p>
+          También es importante saber que el concepto de prefijos está desapareciendo. Todos los principales navegadores han cambiado (o están en proceso de cambiar) a un nuevo método para admitir características inestables que están por venir detrás de una opción de <em translate="no">"características experimentales"</em>. Lo guiaré a través de esto en el capítulo 6.
+        </p>
+        <h3 id="sub2">5.1.2. Agregar relleno y espaciado</h3>
+        <p>
+          Nuestro menú parece bastante escuálido en este momento. Vamos a desarrollarlo un poco con algo de <code>padding</code>. Agregará <code>padding</code> tanto al contenedor como a los <code>links</code> del menú. Después de este paso, su menú se verá como la <b>figura 5.5</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/05.jpg" alt="ibid">
+          <figcaption>Figura 5.5. Menú con <span translate="no">padding</span> y estilos de enlace agregados</figcaption>
+        </figure>
+        <p>
+          Si no está muy familiarizado con la creación de este tipo de menú (ya sea con <code>flexbox</code> o cualquier otro método de diseño), es importante que tenga en cuenta cómo hacerlo. En los ejemplos, aplicará el relleno de elementos de menú a los elementos <code>&lt;a&gt;</code> internos, no a los elementos <code>&lt;li&gt;</code>. Necesitará que toda el área que parece un enlace de menú se comporte como un enlace cuando el usuario haga clic en él. Debido a que el comportamiento del enlace proviene de hacer clic en el elemento <code>&lt;a&gt;</code>, no desea convertir el <code>&lt;li&gt;</code> en un botón grande y atractivo, sino que solo tiene un área de destino pequeña en la que se puede hacer clic (el <code>&lt;a&gt;</code>) dentro de él.
+        </p>
+        <p>
+          Actualice sus estilos para que coincidan con los de esta lista. Esto llenará el relleno del menú.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.site-nav {
+  display: flex;
+  padding: .5em;                        1
+  background-color: #5f4b44;
+  list-style-type: none;
+  border-radius: .2em;
+}
+
+.site-nav > li {
+  margin-top: 0;
+}
+
+.site-nav > li > a {
+  display: block;                       2
+  padding: .5em 1em;                    3
+  background-color: #cc6b5a;
+  color: white;
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 5.4. Agregar <span translate="no">padding</span> al menú y sus enlaces</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega relleno al menú, fuera de los enlaces</li>
+          <li>Hace que los enlaces estén a nivel de bloque para que se sumen a la altura de los elementos principales.</li>
+          <li>3 Agrega relleno dentro de los enlaces</li>
+        </ol>
+        <p>
+          Notará que convirtió los enlaces en un <code>display-block</code>. Si permanecieran <code>inline</code>, la altura que contribuirían a su elemento principal se derivaría de la altura de la línea, no de su <code>paddding</code> y contenido, que es el comportamiento que desea para esta página. También aplicó un poco más de <code>padding</code> horizontal que vertical, que generalmente es más agradable estéticamente.
+        </p>
+        <p>
+          A continuación, deberá agregar espacio entre los elementos del menú. Los márgenes antiguos regulares funcionarán. Aún mejor, <code>flexbox</code> le permite usar <code>margin: auto</code> para llenar el espacio disponible entre los <em translate="no">flex items</em>. También puede usar esto para mover el elemento de menú final al lado derecho. Después de aplicar los márgenes, el menú estará completo <b>(figura 5.6)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/06.jpg" alt="ibid">
+          <figcaption>Figura 5.6. Los márgenes aplican espaciado entre los <span translate="no">flex-items</span></figcaption>
+        </figure>
+        <p>
+          Vea los estilos para esto en el <b>listado 5.5</b>, donde aplicará un margen entre cada elemento, pero no en los bordes exteriores. Puede lograr este diseño utilizando la propiedad <code>margin-left</code> y un combinador de hermanos adyacente, que es un método similar al búho lobotomizado del <b>capítulo 3</b>. También aplicará un margen izquierdo automático al último botón, lo que hace que el margen se reduzca llene todo el espacio disponible, presionando el último botón completamente hacia la derecha. Agregue este listado a su hoja de estilo.
+        </p>
+        <pre>
+          <code>
+  .site-nav > li + li {             1  
+    margin-left: 1.5em;
+  }
+  
+  .site-nav > .nav-right {
+    margin-left: auto;              2 
+  }
+          </code>
+          <small>Listado 5.5. Usar márgenes para espaciar los elementos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Apunta a todos los elementos de la lista que siguen a otro elemento de la lista (es decir, todos menos el primero)</li>
+          <li>Los márgenes automáticos dentro de una caja flexible llenarán el espacio disponible.</li>
+        </ol>
+        <p>
+          Aplicó el margen automático a un solo elemento (<em translate="no">About</em>). En su lugar, puede aplicarlo al elemento del menú <em translate="no">Support</em> para desplazarlo y el elemento <em translate="no">About</em> a la derecha.
+        </p>
+        <p>
+          Los márgenes funcionan bien aquí porque desea un espaciado diferente entre estos elementos. Si desea un espacio igual entre los elementos, la propiedad <code>justify-content</code> sería un mejor enfoque. Volveré a esto en un momento.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>5.2. TAMAÑOS DE LOS <span translate="no">FLEX-ITEMS</span></h2>
+        <p>
+          La lista anterior usaba márgenes para espaciar los <em translate="no">flex items</em>. Para definir su tamaño, puede usar las propiedades familiares de <code>width</code> y <code>height</code>, pero <em translate="no">flexbox</em> proporciona más opciones para el tamaño y el espaciado que las propiedades familiares de <code>margin</code>, <code>width</code> y <code>height</code> por sí solas. Veamos una de las propiedades de <code>flexbox</code> más útiles, <code>flex</code>.
+        </p>
+        <p>
+          La propiedad <code>flex</code> controla el tamaño de los <em translate="no">flex items</em> a lo largo del <em translate="no">main axis</em> (es decir, el ancho). En el <b>listado 5.6</b>, aplicará un diseño flexible al área principal de la página, luego usará la propiedad <code>flex</code> para controlar el tamaño de las columnas. Inicialmente, su área principal se verá como la <b>figura 5.7</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/07.jpg" alt="ibid">
+          <figcaption>Figura 5.7. Área principal con un diseño flexible aplicado</figcaption>
+        </figure>
+        <pre>
+          <code class="container__base-code">
+.tile {                         1
+  padding: 1.5em;               1
+  background-color: #fff;       1
+}                               1
+
+.flex {                         2
+  display: flex;                2
+}                               2
+
+.flex > * + * {                 3
+  margin-top: 0;                3
+  margin-left: 1.5em;           3
+}                               3                      
+          </code>
+          <small>Listado 5.6. Aplicar flexbox al contenedor principal</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega un color de fondo y relleno a los tres mosaicos</li>
+          <li>Aplica un diseño de caja flexible al contenedor principal</li>
+          <li>Elimina el margen superior y aplica espacio entre los elementos flexibles</li>
+        </ol>
+        <p>
+          Ahora su contenido está dividido en dos columnas: a la izquierda está el área más grande para el contenido principal de la página, y a la derecha hay un formulario de inicio de sesión y un pequeño cuadro de precios. Todavía no ha hecho nada para especificar el ancho de las dos columnas, por lo que se ajustarán a sí mismas de forma natural, en función de su contenido. En mi pantalla <b>(figura 5.7)</b>, esto significa que no llenan completamente el ancho del espacio disponible, aunque este no es necesariamente el caso con un tamaño de ventana más pequeño.
+        </p>
+        <p>
+          Cuando se trata de CSS, es importante considerar no solo el contenido específico que tiene en la página ahora, sino también lo que sucederá a medida que ese contenido cambie o cuando la hoja de estilo se aplique a páginas similares. Debe decidir cómo desea que se comporten cosas como estas dos columnas en diversas circunstancias.
+        </p>
+        <p>
+          La propiedad <code>flex</code>, que se aplica a los <em translate="no">flex items</em>, le brinda varias opciones. Primero apliquemos el caso de uso más básico para familiarizarnos con él. Utilizará las clases <code>column-main</code> y <code>column-sidebar</code> para apuntar a las columnas, usando <code>flex</code> para aplicar anchos de dos tercios y un tercio. Agregue lo siguiente a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.column-main {
+  flex: 2;
+}
+  
+.column-sidebar {
+  flex: 1;
+}
+          </code>
+          <small>Listado 5.7. Usar la propiedad <code>flex</code> para establecer el ancho de las columnas</small>
+        </pre>
+        <p>
+          Ahora las dos columnas crecen para llenar el espacio, por lo que juntas tienen el mismo ancho que la barra de navegación, con la columna principal dos veces más ancha que la barra lateral. <em translate="no">Flexbox</em> tuvo la amabilidad de encargarse de las matemáticas por usted. Echemos un vistazo más de cerca a lo que está sucediendo.
+        </p>
+        <p>
+          La propiedad <code>flex</code> es una abreviatura de tres propiedades de tamaño diferentes: <code>flex-grow</code>, <code>flex-shrink</code> y <code>flex-base</code>. En esta lista, solo proporcionó <code>flex-grow</code>, dejando las otras dos propiedades con sus valores predeterminados (1 y 0% respectivamente). Entonces <code>flex: 2</code> es equivalente a <code>flex: 2 1 0%</code>. Por lo general, se prefieren estas declaraciones taquigráficas, pero también puede declarar las tres individualmente:
+        </p>
+        <pre>
+          <code class="container__base-code">
+flex-grow: 2;
+flex-shrink: 1;
+flex-basis: 0%;
+          </code>
+        </pre>
+        <p>
+          Veamos qué significan estas tres propiedades, una a la vez. Comenzaremos con la <code>flex-basis</code>, ya que los otros dos se basan en ella.
+        </p>
+        <h3 id="sub3">5.2.1. Usando la propiedad de <span translate="no">flex-basis</span></h3>
+        <p>
+          La <em translate="no">flex basis</em> define una especie de punto de partida para el tamaño de un elemento: un <em>"tamaño principal"</em> inicial. La propiedad de <code>flex-basis</code> se puede establecer en cualquier valor que se aplique al ancho, incluidos los valores en px, ems o porcentajes. Su valor inicial es auto, lo que significa que el navegador buscará si el elemento tiene un ancho declarado. Si es así, el navegador usa ese tamaño; si no, determina el tamaño del elemento de forma natural por el contenido. Esto significa que el <code>widht</code> se ignorará para los elementos que tengan una base flexible que no sea auto. La <b>figura 5.8</b> ilustra esto.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/08.jpg" alt="ibid">
+          <figcaption>Figura 5.8. Tres <code>flex-items</code> con una <code>flex-basis</code> del 20%, lo que da a cada uno un tamaño principal inicial (ancho) del 20%</figcaption>
+        </figure>
+        <p>
+          Una vez que se establece este tamaño principal inicial para cada <em translate="no">flex item</em>, es posible que deban crecer o encogerse para ajustarse (o llenar) el <em translate="no">flex container</em> a lo largo del <em translate="no">main axis</em>. Ahí es donde entran en juego el <code>flex-grow</code> y el <code>flex-shrink</code>.
+        </p>
+        <h3 id="sub4">5.2.2. Usando <span translate="no">flex-grow</span></h3>
+        <p>
+          Una vez que se <code>flex-basis</code> flexible para cada <em translate="no">flex-item</em>, estos (más los márgenes entre ellos) se sumarán a algo de ancho. Este ancho puede no necesariamente llenar el ancho del <em translate="no">flex container</em>, dejando un resto <b>(figura 5.8)</b>.
+        </p>
+        <p>
+          El espacio restante (o el resto) será consumido por los <em translate="no">flex items</em> en función de sus valores de <code>flex-grow</code>, que siempre se especifica como un número entero no negativo. Si un artículo tiene un <code>flex-grow</code> de 0, no crecerá más allá de su base flexible. Si algún elemento tiene un factor de crecimiento distinto de cero, esos elementos crecerán hasta que se agote todo el espacio restante. Esto significa que los <code>flex-items</code> llenarán el ancho del contenedor <b>(figura 5.9)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/09.jpg" alt="ibid">
+          <figcaption>Figura 5.9. Ancho restante dividido uniformemente entre elementos con valores iguales de <code>flex-grow</code></figcaption>
+        </figure>
+        <p>
+          Declarar un valor de <code>flex-grow</code> más alto le da a ese elemento más <em>"peso"</em>; tomará una porción mayor del resto. Un artículo con <code>flex-grow: 2</code> crecerá el doble que un artículo con <code>flex-grow: 1</code> <b>(figura 5.10)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/10.jpg" alt="ibid">
+          <figcaption>Figura 5.10. Los artículos con un valor de <code>flex-grow</code> más alto consumen una mayor proporción del ancho disponible restante.</figcaption>
+        </figure>
+        <p>
+          Esto es lo que hiciste en tu página. Las declaraciones abreviadas <code>flex: 2</code> y <code>flex: 1</code> establecen una base flexible de <code>0%</code>, por lo que el <code>100%</code> del ancho del contenedor es el resto (menos el margen de <code>1.5em</code> entre las dos columnas). El resto se distribuye luego a las dos columnas: dos tercios a la primera columna y el tercio restante a la segunda <b>(figura 5.11)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/11.jpg" alt="ibid">
+          <figcaption>Figura 5.11. Las dos columnas llenan el ancho del <code>flex-container</code>.</figcaption>
+        </figure>
+        <p>
+          Favorezca el uso de la propiedad <code>flex</code> abreviada en lugar de declarar individualmente <code>flex-grow</code>, <code>flex-shrink</code> o <code>flex-base</code>. A diferencia de la mayoría de las propiedades abreviadas, estas no se establecen en sus valores iniciales cuando se omiten. En cambio, la abreviatura asigna valores predeterminados útiles para cualquiera de los tres que omite: <code>flex-grow</code> de 1, <code>flex-shrink</code> de 1 y una <code>flex-basis</code> de 0%. Por lo general, estos son los que necesitará.
+        </p>
+        <h3 id="sub5">5.2.3. Usando <span translate="no">flex-shrink</span></h3>
+        <p>
+          La propiedad <code>flex-shrink</code> sigue principios similares a <code>flex-grow</code>. Después de determinar el tamaño principal inicial de los <code>flex-items</code>, podrían exceder el tamaño disponible en el <code>flex-container</code>. Sin <code>flex-shrink</code>, esto resultaría en un desbordamiento <b>(figura 5.12)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/12.jpg" alt="ibid">
+          <figcaption>Figura 5.12. Los <code>flex-items</code> pueden tener un tamaño inicial superior al del <code>flex-container</code>.</figcaption>
+        </figure>
+        <p>
+          El valor de <code>flex-shrink</code> de cada artículo indica si debe contraerse para evitar el <em>desbordamiento</em>. Si un elemento tiene un valor de <code>flex-shrink: 0</code>, no se encogerá. Los elementos con un valor mayor que 0 se reducirán hasta que no haya <em>desbordamiento</em>. Un artículo con un valor más alto se encogerá más que un artículo con un valor más bajo, proporcional a los valores de <code>flex-shrink</code>.
+        </p>
+        <p>
+          Como un enfoque alternativo para su página, podría lograr el tamaño de las dos columnas confiando en <code>flex-shrink</code>. Para hacer esto, especifique la base flexible para cada columna usando el porcentaje deseado (66.67% y 33.33%). El ancho más el canalón de <code>1.5em</code> se desbordaría en <code>1.5em</code>. Dale a ambas columnas un <code>flex-shrink</code> de 1, y se restan <code>0.75em</code> del ancho de cada una, lo que permite que quepan en el contenedor. La siguiente lista muestra cómo se vería este código.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .column-main {
+    flex: 66.67%;             1
+  }
+  
+  .column-sidebar {
+    flex: 33.33%;             2
+  }
+          </code>
+          <small>Listado 5.8. Usando la propiedad <code>flex</code> para establecer anchos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Equivalente a flex: 1 1 66,67%</li>
+          <li>Equivalente a flex: 1 1 33,33%</li>
+        </ol>
+        <p>
+          Este es un enfoque diferente para obtener efectivamente el mismo resultado que antes <b>(listado 5.7)</b>. Cualquiera de los dos se adapta a nuestros propósitos para esta página.
+        </p>
+        <p>
+          Si observa los detalles esenciales, hay una ligera discrepancia entre los resultados de la <b>lista 5.7</b> y la <b>lista 5.8</b>. La razón de esto es un poco complicada, pero en resumen, se debe a que la <code>column-main</code> tiene <code>padding</code>, pero la <code>column-sidebar</code> no. El <code>padding</code> cambia la forma en que se determina el tamaño principal inicial del <em translate="no">flex item</em> cuando la <code>flex-basis</code> es <code>0%</code>. Por lo tanto, la columna principal del <b>listado 5.7</b> es <code>3em</code> más ancha que la del <b>listado 5.8</b>, el tamaño de su <code>padding</code> izquierdo y derecho. Si necesita que sus medidas sean precisas, asegúrese de que los <code>padding</code> sean iguales o utilice el método de <em translate="no">flex basis</em> que se muestra en el <b>listado 5.8</b>.
+        </p>
+        <h3 id="sub6">5.2.4. Algunos usos prácticos</h3>
+        <p>
+          Puede hacer uso de la propiedad <code>flex</code> de innumerables formas. Puede definir columnas proporcionales utilizando valores de <code>flex-grow</code> o porcentajes de <code>flex-basis</code> como lo hizo en su página. Puede definir columnas de ancho fijo y columnas <em>"fluidas"</em> que se escalan con la ventana gráfica. Puede construir un sistema de cuadrícula, muy parecido al que construyó en el <b>capítulo 4</b>, usando <em translate="no">flexbox</em> en lugar de <em translate="no">float</em>. La <b>figura 5.13</b> ilustra algunos de los diseños que puede crear con <em translate="no">flexbox</em>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/13.jpg" alt="ibid">
+          <figcaption>Figura 5.13. Maneras de definir el tamaño de los artículos usando <code>flex</code></figcaption>
+        </figure>
+        <p>
+          El tercer ejemplo ilustra parte del diseño del <em>"Santo Grial"</em>. Este es un diseño que ha sido notoriamente difícil en CSS. Las dos barras laterales tienen un ancho fijo, mientras que la columna central es <em>"fluida"</em>, lo que significa que crecerá para llenar el espacio disponible. En particular, las tres columnas tienen la misma altura, según lo determinado por su contenido. Aunque este diseño es posible usando <em translate="no">floats</em>, requiere el uso de algunos trucos oscuros y frágiles. Como puede imaginar, puede mezclar y combinar estos diseños de varias formas, con cualquier número diferente de <em translate="no">flex-items</em>.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>5.3.<span translate="no">FLEX DIRECTION</span></h2>
+        <p>
+          Otra opción importante en <em translate="no">flexbox</em> es la capacidad de cambiar la dirección de los ejes. La propiedad <code>flex-direction</code>, aplicada al <em translate="no">flex container</em>, controla esto. Su valor inicial <code>(row)</code> hace que los elementos fluyan de izquierda a derecha. Especificar <code>flex-direction: column</code> hace que los <code>flex-items</code> se apilen verticalmente (de arriba a abajo) en su lugar. Flexbox también admite <code>row-reverse</code> para hacer fluir los elementos de derecha a izquierda y <code>column-reverse</code> para hacer que los elementos fluyan de abajo hacia arriba <b>(figura 5.14)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/14.jpg" alt="ibid">
+          <figcaption>Figura 5.14. Cambiar <code>flex-direction</code> cambia el eje principal. El eje transversal también cambia para permanecer perpendicular al eje principal.</figcaption>
+        </figure>
+        <p>
+          Lo usará en la columna de la derecha de la página, donde se apilan dos mosaicos uno encima del otro. Esto puede parecer innecesario; después de todo, las dos fichas de nuestra columna de la derecha ya están apiladas. Los elementos de bloque normales se comportan así. Pero hay un problema con el diseño de la página que no es obvio de inmediato. Aparece si agrega más contenido al mosaico principal. Esto se muestra en la <b>figura 5.15</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/15.jpg" alt="ibid">
+          <figcaption>Figura 5.15. El mosaico principal crece más allá de la altura de los mosaicos en la columna de la derecha (la línea discontinua indica el tamaño de la barra lateral de la columna).</figcaption>
+        </figure>
+        <p>
+          Agregue algunos encabezados y párrafos más a la columna principal de su código. Verá que el mosaico principal crece más allá de la parte inferior de los mosaicos de la derecha. Se supone que <em translate="no">Flexbox</em> proporciona columnas de igual altura, entonces, ¿por qué no funciona?
+        </p>
+        <p>
+          La <b>figura 5.15</b> muestra (por el contorno punteado que agregué) que los <code>flex-items</code> tienen la misma altura. El problema es que los mosaicos dentro del elemento flexible derecho no crecen para llenarlo.
+        </p>
+        <p>
+          El diseño ideal sería el que se muestra en la <b>figura 5.16</b>. Los dos mosaicos de la derecha crecen para llenar la columna, incluso cuando el contenido de la izquierda es más largo. Antes de <em translate="no">flexbox</em>, este efecto era imposible de lograr usando CSS (aunque fue posible con un poco de ayuda de JavaScript).
+        </p>
+        <figure>
+          <img src="../img_css/cap5/16.jpg" alt="ibid">
+          <figcaption>Figura 5.16. El diseño ideal: los mosaicos en la columna de la derecha se alinean con el mosaico grande de la izquierda.</figcaption>
+        </figure>
+        <h3 id="sub7">5.3.1. Cambiar la <span translate="no">flex-direction</span></h3>
+        <p>
+          Lo que necesita es que las dos columnas crezcan si es necesario para llenar la altura del contenedor. Para hacer esto, convierta la columna derecha (la <code>column-sidebar</code>) en un <em translate="no">flex-container</em> con una <code>flex-direction: column</code>. Luego, aplique un valor de <code>flex-grow</code> distinto de cero dentro de ambos mosaicos. La siguiente lista muestra el código para esto. Actualice su hoja de estilo para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.column-sidebar {                    1
+  flex: 1;                           1
+  display: flex;                     1
+  flex-direction: column;            1
+}                                    1
+
+.column-sidebar > .tile {
+  flex: 1;                           2
+}.
+          </code>
+          <small>Listado 5.9. Creando una columna flexible a la derecha</small>
+        </pre>
+        <ol class="index-code">
+          <li>Un artículo flexible para la caja flexible exterior y un contenedor flexible para la nueva interior</li>
+          <li>Aplica flex-grow a los elementos dentro</li>
+        </ol>
+        <p>
+          Ahora tiene <em>cajas flexibles anidadas</em>. El elemento <code>&lt;div class = "column-sidebar"&gt;</code> es un <em translate="no">flex item</em> para la caja flexible exterior y es el contenedor flexible para la caja flexible interior. La estructura general de estos elementos se ve así (con el texto eliminado por brevedad&gt;:
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;main class="flex"&gt;
+  &lt;div class="column-main tile"&gt;
+    ...
+  &lt;/div&gt;
+  &lt;div class="column-sidebar"&gt;
+    &lt;div class="tile"&gt;...&lt;/div&gt;
+    &lt;div class="tile"&gt;...&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+          </code>
+        </pre>
+        <p>
+          El <em translate="no">flexbox</em> interno aquí tiene una <em translate="no">flex direction</em> de <code>column</code>, por lo que se gira el <em translate="no">main axis</em>. Fluye de arriba hacia abajo (y el eje transversal ahora fluye de izquierda a derecha). Esto significa que para esos <em translate="no">flex items</em>, <code>flex-basis</code>, <code>flex-grow</code> y <code>flex-shrink</code> ahora se aplican a la altura del elemento en lugar del ancho. Al especificar <code>flex: 1</code>, la altura de estos elementos se estirará si es necesario para llenar el contenedor. Ahora, independientemente de qué lado sea más alto, la parte inferior de la baldosa grande y la parte inferior de la segunda baldosa más pequeña se alinean.
+        </p>
+        <p>
+          Cuando se trabaja con un <em translate="no">flexbox</em> vertical (<code>column</code> o <code>column-reverse</code>), se aplican los mismos conceptos generales para las filas, pero hay una diferencia a tener en cuenta: en CSS, trabajar con altura es fundamentalmente diferente que trabajar con anchos. Un contenedor flexible tendrá el 100% del ancho disponible, pero la altura está determinada naturalmente por su contenido. Este comportamiento no cambia cuando gira el eje principal.
+        </p>
+        <p>
+          La altura del <em translate="no">flex container</em> está determinada por sus <em translate="no">flex items</em>. Lo llenan a la perfección. En un <code>flexbox</code> vertical, <code>flex-grow</code> y <code>flex-shrink</code> aplicados a los elementos no tendrán ningún efecto a menos que algo más fuerce la altura del <em translate="no">flex container</em> a un tamaño específico. En su página, ese <em>"algo"</em> es la altura derivada de <em translate="no">flexbox</em> exterior.
+        </p>
+        <h3 id="sub8">5.3.2. Aplicar estilo al formulario de inicio de sesión</h3>
+        <p>
+          Ahora ha aplicado el diseño general a toda la página. Todo lo que queda es diseñar los elementos más pequeños en los dos mosaicos de la derecha: el formulario de inicio de sesión y el enlace de registro. No necesita <code>flexbox</code> para el formulario de inicio de sesión, pero para completarlo, lo guiaré brevemente. Posteriormente, el formulario debería verse como la <b>figura 5.17</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/17.jpg" alt="ibid">
+          <figcaption>Figura 5.17. Formulario de inicio de sesión</figcaption>
+        </figure>
+        <p>
+          El <code>&lt;form&gt;</code> tiene <code>login-form</code> de clase, por lo que lo usará para orientarlo en su CSS. Agregue el código de este listado a su hoja de estilo. Esto le dará estilo al formulario de inicio de sesión en tres partes: el encabezado, los campos de entrada y el botón.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.login-form h3 {                                                  1
+  margin: 0;                                                      1
+  font-size: .9em;                                                1
+  font-weight: bold;                                              1
+  text-align: right;                                              1
+  text-transform: uppercase;                                      1
+}                                                                 1
+
+.login-form input:not([type=checkbox]):not([type=radio]) {        2
+  display: block;
+  width: 100%;
+  margin-top: 0;
+}
+
+.login-form button {                                              3
+  margin-top: 1em;                                                3
+  border: 1px solid #cc6b5a;                                      3
+  background-color: white;                                        3
+  padding: .5em 1em;                                              3
+  cursor: pointer;                                                3
+}                                                                 3                    
+          </code>
+          <small>Listado 5.10. Estilos de formulario de inicio de sesión</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que el título esté en negrita, alineado a la derecha y todo en mayúsculas</li>
+          <li>Estilos de todas las entradas similares a texto (no casillas de verificación ni botones de opción)</li>
+          <li>Estilos del botón</li>
+        </ol>
+        <p>
+          Primero está el encabezado, que usa propiedades de fuente con las que debería estar familiarizado. Usó <code>text-align</code> para desplazar el texto hacia la derecha y <code>text-transform</code> para hacer que todo el texto esté en mayúsculas. Observe que no estaba en mayúsculas en el HTML. Cuando el uso de mayúsculas es simplemente una decisión de estilo, como es, normalmente lo usaría de acuerdo con las reglas gramaticales estándar en el HTML y usaría CSS para manipularlo. De esta manera, puede cambiarlo en el futuro sin tener que volver a escribir partes del HTML en mayúsculas adecuadas.
+        </p>
+        <p>
+          El segundo conjunto de reglas aplica estilos a los cuadros de entrada. El selector aquí es peculiar, principalmente porque el elemento <code>&lt;input&gt;</code> es peculiar. El elemento de entrada se utiliza para entradas de texto y contraseñas, así como una serie de otras entradas HTML5 que se ven similares, como números, correos electrónicos y fechas. También se utiliza para elementos de entrada de formularios que se ven completamente diferentes; a saber, botones de opción y casillas de verificación.
+        </p>
+        <p>
+          He combinado la pseudoclase <code>:not()</code> con los selectores de atributos <code>[type = checkbox]</code> y <code>[type = radio]</code> &lt;consulte el <b>apéndice A</b> para obtener más detalles&gt;. Esto apunta a todos los elementos de entrada excepto las casillas de verificación y los botones de opción. Es un enfoque de lista negra, excluyendo aquello a lo que no quiero apuntar. Alternativamente, podría usar un enfoque de lista blanca, usando múltiples selectores de atributos para nombrar cada tipo de entrada que desea apuntar, pero esto puede ser bastante largo.
+        </p>
+        <p>
+          El formulario de esta página solo utiliza una entrada de texto y una entrada de contraseña, pero es importante que considere otras marcas a las que se podría aplicar CSS en el futuro e intente tener en cuenta eso.
+        </p>
+        <p>
+          Dentro del conjunto de reglas, haces que las entradas muestren en <code>block</code>, por lo que aparecen en su propia línea. También tenía que especificar un ancho del <code>100%</code>. Normalmente, los elementos del bloque de visualización llenan automáticamente el ancho disponible, pero <code>&lt;input&gt;</code> es un poco diferente. Su ancho está determinado por el atributo de <code>size</code>, que indica aproximadamente el número de caracteres que debe contener sin desplazarse. Este atributo vuelve a un valor predeterminado si no se especifica. Puede forzar un ancho específico con la propiedad de <code>width</code> de CSS.
+        </p>
+        <p>
+          El tercer conjunto de reglas diseña el botón Iniciar sesión. Estos estilos son en su mayoría sencillos; sin embargo, es posible que la propiedad del cursor no le resulte familiar. Controla la apariencia del cursor del mouse cuando el cursor está sobre el elemento. El puntero de valor convierte el cursor en una mano con un dedo señalador, como el cursor predeterminado cuando apunta a enlaces. Esto le comunica al usuario que puede hacer clic en el elemento. Le da un último detalle de pulido al botón.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>5.4. ALINEACIÓN, ESPACIO Y OTROS DETALLES</h2>
+        <p>
+          Ahora debería tener un conocimiento sólido de las partes más esenciales de <em translate="no">flexbox</em>. Pero como mencioné anteriormente, existe una amplia gama de opciones que ocasionalmente necesitará. Estos pertenecen principalmente a la alineación o el espaciado de los elementos flexibles dentro del contenedor flexible. También puede habilitar el ajuste de línea o reordenar artículos flexibles individuales. Las propiedades que los controlan se ilustran en las siguientes páginas: la tabla 5.1 enumera todas las propiedades que se pueden aplicar a un <em translate="no">flex container</em>, y la <b>tabla 5.2</b> enumera todas las propiedades de los <em translate="no">flex items</em>.
+        </p>
+        <div>
+          <table>
+            <tr>
+              <th><em>Valores (valores iniciales en negrita)</em></th>
+              <th><em>Propiedad</em></th>
+            </tr>
+            <tr>
+              <td><b>flex-direction</b><br>
+                Esto especifica la dirección del eje principal. El eje transversal será perpendicular al eje principal.</td>
+              <td>
+                <img src="../img_css/cap5/18.jpg" alt="ibid">
+              </td>
+            </tr>
+            <tr>
+              <td><b>flex-wrap</b><br>
+              Esto especifica si los flex-items se ajustarán a una nueva fila dentro del flex-container (o a una nueva columna si la flex-direction es columna o columna inversa).</td>
+              <td>
+                <img src="../img_css/cap5/19.jpg" alt="ibid">
+              </td>
+            </tr>
+            <tr>
+              <td><b>flex-flow</b></td>
+              <td>Equivale a &lt;flex-direction&gt; &lt;flex-wrap&gt;</td>
+            </tr>
+            <tr>
+              <td><b>justify-content</b><br>
+              Controla cómo se colocan los elementos a lo largo del eje principal.</td>
+              <td>
+                <img src="../img_css/cap5/20.jpg" alt="ibid"/>
+              </td>
+            </tr>
+            <tr>
+              <td><b>align-items<br></b><br>
+              Controla cómo se colocan los elementos a lo largo del eje transversal.</td>
+              <td>
+                <img src="../img_css/cap5/21.jpg" alt="ibid">
+              </td>
+            </tr>
+            <tr>
+              <td><b>align-content</b><br>
+              Si flex-wrap está habilitado, esto controla el espaciado de las filas flexibles a lo largo del eje transversal. Si los artículos no se envuelven, esta propiedad se ignora.</td>
+              <td>
+                <img src="../img_css/cap5/22.jpg" alt="ibid">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">Cuadro 5.1. Propiedades del flex-container</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th><em>Propiedad</em></th>
+              <th><em>Valor</em></th>
+            </tr>
+            <tr>
+              <td><b>flex-grow</b><br>
+              Un número entero que especifica el "factor de crecimiento", que determina cuánto crecerá el elemento a lo largo del eje principal para llenar el espacio no utilizado.</td>
+              <td>
+                <img src="../img_css/cap5/24.jpg" alt="ibid">
+              </td>
+            </tr>
+            <tr>
+              <td><b>flex-shrink</b><br>
+              Un número entero que especifica el "factor de contracción", que determina cuánto se contraerá el elemento a lo largo del eje principal, si es necesario, para evitar el desbordamiento. Se ignora si el contenedor tiene habilitado flex-shrink.
+              </td>
+              <td>
+                <img src="../img_css/cap5/23.jpg" alt="ibid">
+              </td>
+            </tr>
+            <tr>
+              <td><b>flex-basis</b><br>
+              Especifica el tamaño inicial del elemento antes de aplicar flex-grow o flex-shrink.</td>
+              <td>
+                &lt;length&gt; o &lt;percent&gt;
+              </td>
+            </tr>
+            <tr>
+              <td><b>flex</b></td>
+              <td>
+                Equivale a: &lt;flex-grow&gt; &lt;flex-shrink&gt; &lt;flex-basis&gt;
+              </td>
+            </tr>
+            <tr>
+              <td><b>align-self</b><br>
+              Controla cómo se alinea el elemento en el eje transversal. Esto anulará el valor de align-items del contenedor para elementos específicos. Se ignora si el elemento tiene un margen automático establecido en el eje transversal.</td>
+              <td>
+                <img src="../img_css/cap5/25.jpg" alt="ibid">
+              </td>
+            </tr>
+            <tr>
+              <td><b>order</b><br>
+              Un número entero que mueve un elemento flexible a una posición específica entre sus hermanos, sin tener en cuenta el orden de origen.</td>
+            </tr>
+            <tr>
+              <td colspan="2">Cuadro 5.2 Propiedades del flex-item</td>
+            </tr>
+          </table>
+        </div>
+        <p>
+          En general, comenzará un <em translate="no">flexbox</em> con los métodos que ya hemos cubierto:
+        </p>
+        <ul>
+          <li>Identifique un contenedor y sus artículos y use <code>display: flex</code> en el contenedor</li>
+          <li>Si es necesario, establezca <code>flex-direction</code> en el contenedor.</li>
+          <li>Declare márgenes y / o valores <code>flex</code> para los <em translate="no">flex items</em> cuando sea necesario para controlar su tamaño</li>
+        </ul>
+        <p>
+          Una vez que haya colocado los elementos aproximadamente donde pertenecen, puede agregar otras propiedades de <em translate="no">flexbox</em> cuando sea necesario. Mi sugerencia es familiarizarse con los conceptos que hemos cubierto hasta ahora. Continúe y lea el resto de este capítulo para tener una idea de las otras opciones de <em translate="no">flexbox</em>, pero no se preocupe por memorizarlas todas hasta que las necesite. Cuando encuentre que los necesita, regrese aquí como referencia. La mayoría de estas opciones finales son bastante sencillas, aunque solo las necesitará ocasionalmente.
+        </p>
+        <h3 id="sub9">5.4.1 Entendiendo la propiedades de <span translate="no">flex-container</span></h3>
+        <p>
+          Se pueden aplicar varias propiedades a un flex-container para controlar el diseño de sus flex-items. La primera es la <code>flex-direction</code>, que ya he cubierto en la <b>sección 5.3</b>. Veamos algunos otros.
+        </p>
+        <h4><span translate="no">Flex-wrap property</span></h4>
+        <p>
+          La propiedad <code>flex-wrap</code> se puede usar para permitir que los <em translate="no">flex items</em> se ajusten a una nueva fila (o <code>rows</code>). Esto se puede establecer en <code>nowrap</code> (el valor inicial), <code>wrap</code> o <code>wrap-reverse</code>. Cuando la envoltura está habilitada, los elementos no se encogen de acuerdo con sus valores de <code>flex-shrink</code>. En cambio, cualquier artículo que se desborde del contenedor flexible se envuelve en una nueva línea.
+        </p>
+        <p>
+          Si la <code>flex-direction</code> es <code>column</code> o <code>column-reverse</code>, entonces <code>flex-wrap</code> permitirá que los elementos flexibles se desborden en una nueva columna. Sin embargo, esto solo ocurre si algo limita la altura del contenedor; de lo contrario, crece para contener sus <em translate="no">flex items</em>.
+        </p>
+        <h4><span translate="no">flex-flow property</span></h4>
+        <p>
+          La propiedad <code>flex-flow</code> es una abreviatura de <code>flex-direction</code> y <code>flex-wrap</code>. Por ejemplo, <code>flex-flow: column wrap</code> especifica que los <em translate="no">flex items</em> fluirán de arriba hacia abajo, envolviéndose en una nueva columna si es necesario.
+        </p>
+        <h4><code>justify-content</code></h4>
+        <p>
+          La propiedad <code>justify-content</code> controla cómo se espacian los elementos a lo largo del eje principal si no ocupan el tamaño del contenedor. Los valores admitidos incluyen varias palabras clave nuevas: <code>flex-start</code>, <code>flex-end</code>, <code>center</code>, <code>space-between</code> y <code>space-around</code>. Un valor de <code>flex-start</code> (el predeterminado) apila los elementos contra el comienzo del eje principal, el lado izquierdo en una dirección de fila normal. No habrá espacio entre ellos a menos que los elementos tengan márgenes especificados. Un valor de <code>flex-end</code> apila los elementos al final del eje principal y, en consecuencia, <code>center</code> en el centro.
+        </p>
+        <p>
+          El valor <code>space-between</code> coloca el primer flex-item al principio del eje principal y el último elemento al final. Los elementos restantes se colocan uniformemente entre ellos. El valor de <code>space-around</code> es similar, pero también agregará un espacio uniforme antes del primer elemento y después del último.
+        </p>
+        <p>
+          El espaciado se aplica después de calcular los márgenes y los valores <code>flex-grow</code>. Esto significa que si algún elemento tiene un valor de <code>flex-grow</code> distinto de cero, o algún elemento tiene un margen automático en el eje principal, entonces el <code>justify-content</code> no tiene ningún efecto.
+        </p>
+        <h4><span translate="no">align-items property</span></h4>
+        <p>
+          Mientras que <code>justify-content</code> controla la alineación de los elementos a lo largo del eje principal, <code>align-items</code> ajustan su alineación a lo largo del eje transversal. El valor inicial para esto es <code>stretch</code>, lo que hace que todos los elementos llenen la altura del contenedor en un diseño de fila o el ancho en un diseño de columna. Esto proporciona columnas de igual altura.
+        </p>
+        <p>
+          Los otros valores permiten que los flex-items se dimensionen por sí mismos de forma natural, en lugar de llenar el tamaño del contenedor. (Esto es similar conceptualmente a la propiedad de <code>vertical-align</code>).
+        </p>
+        <ul>
+          <li><code>flex-start</code> y <code>flex-end</code> alinean los elementos a lo largo del inicio o el final del eje transversal (parte superior o inferior de una fila, respectivamente).</li>
+          <li><code>center</code> centra los elementos</li>
+          <li><code>baseline</code> alinea los elementos de modo que la línea de base de la primera fila de texto en cada elemento flexible esté alineada.</li>
+        </ul>
+        <p>
+          La <code>baseline</code> de valor es útil si desea que la línea de base de un encabezado en un elemento con una fuente grande se alinee con la línea de base de texto más pequeño en los otros elementos flexibles.
+        </p>
+        <p>
+          Es fácil confundir los nombres de las propiedades <code>justify-content</code> y <code>align-items</code>. Los recuerdo pensando en darle estilo al texto: puedes <em>"justificar"</em> el texto para distribuirlo horizontalmente de borde a borde. Y, al igual que la <code>vertical-align</code>, puede <em>"alinear"</em> elementos en línea verticalmente.
+        </p>
+        <p>
+          Si habilita la envoltura (usando <code>flex-wrap</code>) esta propiedad controla el espaciado de cada fila dentro del contenedor flexible a lo largo del eje transversal. Los valores admitidos son <code>flex-start</code>, <code>flex-end</code>, <code>center</code>, <code>stretch</code> (el valor inicial), <code>space-between</code> y <code>space-around</code>. Estos valores aplican un espaciado similar a la forma descrita anteriormente para <code>justify-content</code>.
+        </p>
+        <h3 id="sub10">5.4.2. Comprender las propiedades de los elementos flexibles</h3>
+        <p>
+          He descrito <code>flex-grow</code>, <code>flex-shrink</code>, <code>flex-base</code> y su abreviatura colectiva, <code>flex</code> (sección 5.2). A continuación, veremos dos propiedades adicionales para los elementos flexibles: <code>align -self</code> y <code>order</code>.
+        </p>
+        <h4><span translate="no">align-self property</span></h4>
+        <p>
+          Esta propiedad controla la alineación de un elemento flexible a lo largo del eje transversal de su contenedor. Esto hace lo mismo que la propiedad del contenedor flexible <code>align-items</code>, excepto que le permite alinear elementos flexibles individuales de manera diferente. Especificar el valor <code>auto</code> se diferirá al valor de alinear elementos del contenedor; este es el valor inicial. Cualquier otro valor anula la configuración del contenedor. La propiedad <code>align-self</code> admite los mismos valores de palabras clave que <code>align-items: flex-start</code>, <code>flex-end</code>, <code>center</code>, <code>stretch</code> y <code>baseline</code>.
+        </p>
+        <h4><span translate="no">order property</span></h4>
+        <p>
+          Normalmente, los elementos se distribuyen en el orden en que aparecen en la fuente HTML. Se apilan a lo largo del eje principal, comenzando por el inicio del eje. Al utilizar la propiedad de pedido, puede cambiar el orden en que se apilan los artículos. Puede especificar cualquier número entero, positivo o negativo. Si varios elementos tienen el mismo valor, aparecerán según el orden de origen.
+        </p>
+        <p>
+          Inicialmente, todos los elementos tienen un orden de 0. Especificar un valor de <code>-1</code> a un elemento lo moverá al principio de la lista, y un valor de <code>1</code> lo moverá al final. Puede especificar valores de pedido para cada artículo para reorganizarlos como desee. No es necesario que los números sean consecutivos.
+        </p>
+        <p>
+          Tenga cuidado con el uso del <code>order</code>. Hacer que el orden del diseño visual en la pantalla sea drásticamente diferente del orden de origen puede dañar la accesibilidad de su sitio. La navegación con la tecla Tab seguirá el orden de origen en la mayoría de los navegadores, lo que puede resultar confuso. El software de lectura de pantalla para usuarios con discapacidad visual también seguirá el orden de origen en la mayoría de los casos.
+        </p>
+        <h3 id="sub11">5.4.3. Usar propiedades de alineación</h3>
+        <p>
+          Usemos un par de estas propiedades para terminar su página. El mosaico final tiene un precio estilizado y un botón de llamada a la acción (CTA). Cuando haya terminado, el último paso de la página debería mostrarse como en la <b>figura 5.18</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap5/27.jpg" alt="ibid">
+          <figcaption>Figura 5.18. Texto estilizado usando <code>flexbox</code></figcaption>
+        </figure>
+        <p>
+          El marcado de esta sección ya está en su página. Es como sigue:
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="tile centered"&gt;
+  &lt;small&gt;Starting at&lt;/small&gt;
+  &lt;div class="cost"&gt;
+    &lt;span class="cost-currency"&gt;$&lt;/span&gt;
+    &lt;span class="cost-dollars"&gt;20&lt;/span&gt;
+    &lt;span class="cost-cents"&gt;.00&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;a class="cta-button" href="/pricing"&gt;
+    Sign up
+  &lt;/a&gt;
+&lt;/div&gt;
+          </code>
+        </pre>
+        <p>
+          El texto <code>$20.00</code> está envuelto en un <code>&lt;div class = "cost"&gt;</code>, que usará como contenedor flexible. Tiene tres elementos flexibles para las tres partes diferentes del texto que desea alinear($, 20 y .00). He elegido <code>span</code> para estos, en lugar de <code>div</code>, porque están integrados de forma predeterminada. Si por alguna razón el CSS no se carga, o el navegador no es compatible con <code>flexbox</code>, el texto <code>$20.00</code> seguirá apareciendo en una línea.
+        </p>
+        <p>
+          En la siguiente lista, usará <code>justify-content</code> para centrar horizontalmente los elementos dentro del contenedor. Luego, usarás <code>align-items</code> y <code>align-self</code> para controlar su alineación vertical. Agregue este código a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.centered {
+  text-align: center;
+}
+
+.cost {
+  display: flex;
+  justify-content: center;          1
+  align-items: center;              1
+  line-height: .7;
+}
+
+.cost > span {
+  margin-top: 0;                    2
+}
+
+.cost-currency {
+  font-size: 2rem;                  3
+}
+.cost-dollars {
+  font-size: 4rem;                  3
+}
+.cost-cents {
+  font-size: 1.5rem;                3
+  align-self: flex-start;           4
+}
+
+.cta-button {
+  display: block;
+  background-color: #cc6b5a;
+  color: white;
+  padding: .5em 1em;
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 5.11. Establecer estilos para el mosaico de costos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Centra los elementos flexibles en los ejes principal y transversal</li>
+          <li>Anula los márgenes del búho lobotomizado</li>
+          <li>Establece diferentes tamaños de fuente para cada parte del costo.</li>
+          <li>Anula la alineación de elementos para este elemento, alineándolo en la parte superior en lugar de en el centro</li>
+        </ol>
+        <p>
+          Este código establece el <em translate="no">flexbox</em> para los <code>$20.00</code>, además de definir una clase <code>centered</code> para centrar el resto del texto, y una clase <code>cta-button</code> para el botón CTA.
+        </p>
+        <p>
+          La única declaración extraña aquí es <code>line-height: .7</code>. Esto se debe a que la altura de la línea del texto dentro de cada elemento flexible es lo que determina la altura de cada elemento. Esto significa que los elementos tenían un poco más de altura que la altura del texto en sí; una altura de <code>em</code> incluye descendientes, que este texto no tiene, por lo que los caracteres aquí tienen en realidad un poco menos de <code>1 em</code> de altura. Llegué a este valor simplemente por ensayo y error hasta que las puntas de 20 y .00 se alinearon visualmente. Consulte el <b>capítulo 13</b> para obtener más información sobre cómo trabajar con texto.
+        </p>
+      </section>
+      <section id="tema5">
+        <h2>5.5. UN PAR DE COSAS PARA TENER EN CUENTA</h2>
+        <p>
+          <em translate="no">Flexbox</em> es un gran paso adelante para CSS. Una vez que esté familiarizado con él, es posible que sienta la tentación de comenzar a usarlo para todo lo que aparece en la página. Le advierto que confíe en el flujo de documentos normal y solo agregue <em translate="no">flexbox</em> donde sepa que lo necesitará. No hay razón para evitarlo; pero no te vuelvas loco tratando todo como un clavo en su martillo.
+        </p>
+        <h3 id="sub12">5.5.1. <span translate="no">Flexbugs</span></h3>
+        <p>
+          La implementación de <em translate="no">flexbox</em> no es perfecta en todos los navegadores, especialmente IE10 e IE11. <em translate="no">Flexbox</em> funciona bien en la mayoría de los casos, pero hay algunos errores que puede encontrar si tiene las circunstancias incorrectas en su página. Asegúrese siempre de probar sus implementaciones de <code>flexbox</code> en los navegadores más antiguos que desee admitir.
+        </p>
+        <p>
+          En lugar de dedicar mucho tiempo a discutir errores con los que puede o no necesitar lidiar alguna vez, lo recomendaré a un gran recurso llamado <em translate="no">Flexbugs</em>. Visítelo en https://github.com/philipwalton/flexbugs. Esta es una lista actualizada de todos los errores conocidos del navegador <em translate="no">Flexbox</em> (14 en total al momento de escribir este artículo). Explica exactamente qué circunstancias los causan y, en la mayoría de los casos, ofrece una solución para solucionar el error. Si alguna vez encuentra que su diseño de <em translate="no">flexbox</em> se comporta de manera extraña en un navegador en particular, visite esta página y vea si se ha encontrado con uno de estos errores de navegador.
+        </p>
+        <h3 id="sub13">5.5.2. Diseño de página completa</h3>
+        <p>
+          Una de las cosas interesantes de <em translate="no">flexbox</em> es cómo se calculan los tamaños en función de la cantidad de elementos y la cantidad (y tamaño) de contenido dentro de ellos. Esto puede provocar un comportamiento extraño si su página es grande o se carga a través de una conexión lenta.
+        </p>
+        <p>
+          A medida que el navegador carga contenido, lo muestra progresivamente en la pantalla, incluso mientras continúa descargando el resto de la página. Suponga que tiene un diseño de tres columnas, construido usando un <em translate="no">flexbox</em> (<code>flex-direction: row</code>). Si se carga el contenido de dos de estas columnas, el navegador puede representarlas antes de cargar el contenido de la tercera columna. Luego, cuando se carga el resto del contenido, el navegador vuelve a calcular los tamaños de cada elemento flexible y vuelve a mostrar la página. El usuario verá momentáneamente un diseño de dos columnas, luego las columnas cambiarán de tamaño (quizás drásticamente) y aparecerá la tercera columna.
+        </p>
+        <p>
+          <em>Jake Archibald</em>, un defensor de los desarrolladores de Google Chrome, ha escrito sobre esto en https://jakearchibald.com/2014/dont-use-flexbox-for-page-layout/. Puedes ver ejemplos de esto sucediendo en ese artículo. Una sugerencia que da es favorecer el diseño de cuadrícula para el diseño de página completa (que cubriré en el próximo capítulo).
+        </p>
+        <p>
+          Este comportamiento es solo un problema con varias columnas en una fila. No ocurre con varias filas en una columna (<code>flex-direction: column</code>) para el diseño de la página principal.
+        </p>
+      </section>
+      <section id="resumen">
+        <h3>RESUMEN</h3>
+        <ul>
+          <li>Use <em translate="no">flexbox</em> para un diseño versátil y fácil de controlar del contenido de la página.</li>
+          <li><span translate="no">Autoprefixer</span> puede simplificar la compatibilidad con <code>flexbox</code> para navegadores más antiguos.</li>
+          <li>Use <code>flex</code> para especificar casi cualquier combinación imaginable de tamaños de artículos.</li>
+          <li>Utilice <em translate="no">flexboxes</em> anidadas para armar diseños más complicados y llenar las alturas de cajas de tamaño natural.</li>
+          <li><em translate="no">Flexbox</em> crea automáticamente columnas de igual altura.</li>
+          <li>Use <code>align-items</code> o <code>align-self</code> para centrar verticalmente un elemento dentro de su contenedor.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Principios de <span translate="no">FLEXBOX</span></a></li>
+        <li><a href="#sub1">- Construyendo un menú básico <span translate="no">FLEXBOX</span></a></li>
+        <li><a href="#sub2">- Agregar relleno y espaciado</a></li>
+        <li><a href="#tema2">Tamaños de los <span translate="no">FLEX-ITEMS</span></a></li>
+        <li><a href="#sub3">- Usando la propiedad de <span translate="no">FLEX-BASIS</span></a></li>
+        <li><a href="#sub4">- Usando <span translate="no">FLEX-GROW</span></a></li>
+        <li><a href="#sub5">- Usando <span translate="no">FLEX-SHRINK</span></a></li>
+        <li><a href="#sub6">- Algunos usos prácticos</a></li>
+        <li><a href="#tema3"><span translate="no">FLEX DIRECTION</span></a></li>
+        <li><a href="#sub7">- Cambiar la <span translate="no">FLEX-DIRECTION</span></a></li>
+        <li><a href="#sub8">- Aplicar estilo al formulario de inicio de sesión</a></li>
+        <li><a href="#tema4">Alineción, Espacio y otros detalles</a></li>
+        <li><a href="#sub9">- Entendiendo la propiedades de <span translate="no">FLEX-CONTAINER</span></a></li>
+        <li><a href="#sub10">- Comprender las propiedades de los <span translate="no">FLEX-ITEMS</span></a></li>
+        <li><a href="#sub11">- Usar propiedades de alineación</a></li>
+        <li><a href="#tema5">Un par de cosas para tener en cuenta</a></li>
+        <li><a href="#sub12">- <span translate="no">Flexbugs</span></a></li>
+        <li><a href="#sub13">- Diseño de página completa</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

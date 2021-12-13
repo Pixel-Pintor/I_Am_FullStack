@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 16</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 16. Animaciones</h1>
+      <div>
+        <a href="ch_15.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="apendice_a.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capítulo habla sobre:</em></h4>
+      <ul>
+        <li>Agregar movimiento complejo a la página con animaciones de fotogramas clave</li>
+        <li>Reproduciendo animaciones cuando se carga la página</li>
+        <li>Usar una animación giratoria para proporcionar comentarios</li>
+        <li>Llamar la atención sobre un botón de guardar para recordar al usuario que guarde</li>
+      </ul>
+      <p>
+        En los dos capítulos anteriores, creó varias transiciones que movieron elementos de un estado a otro. Esto aporta movimiento a la página e interés visual en la experiencia del usuario. Pero a veces una transición no es suficiente.
+      </p>
+      <p>
+        En lugar de hacer la transición directamente de un lugar a otro, es posible que desee que un elemento tome un camino indirecto en el camino. Otras veces, es posible que desee animar un elemento y hacer que termine donde comenzó. Estas cosas no se pueden hacer con una transición. Para un control más explícito sobre los cambios en la página, CSS ofrece animación de <em translate="no">keyframe</em>.
+      </p>
+      <p>
+        Un <em translate="no">keyframe</em> se refiere a un punto específico de una animación. Usted define una cierta cantidad de fotogramas clave y el navegador completa o interpola todos los fotogramas intermedios <b>(figura 16.1)</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap16/01.jpg" alt="ibid">
+        <figcaption>Figura 16.1. Usted define los fotogramas clave y el navegador interpola todos los fotogramas intermedios.</figcaption>
+      </figure>
+      <p>
+        Una transición es conceptualmente similar a una animación de fotogramas clave: usted define el primer fotograma (punto de inicio) y el último (punto final), y el navegador calcula todos los valores intermedios para que el elemento pueda realizar una transición suave entre ellos. Sin embargo, con la animación de fotogramas clave, no está limitado a definir solo dos puntos. Puedes definir tantos como quieras. El navegador completa los valores de uno a otro, hasta que llega al fotograma clave final, produciendo una serie de transiciones sin problemas.
+      </p>
+      <p>
+        En este capítulo final, le mostraré cómo crear animaciones de fotogramas clave. Agregará algunos a la página que comenzó en el capítulo anterior y luego explorará algunas otras formas en que se pueden usar. Las animaciones no son algo que agregue a una página para animarla; también pueden transmitir comentarios significativos al usuario.
+      </p>
+      <section id="tema1">
+        <h2>16.1 <span translate="no">KEYFRAMES</span></h2>
+        <p>
+          Las animaciones en CSS contienen dos partes: <code>@keyframes</code>, que define una animación, y la propiedad <code>animation</code>, que aplica esa animación a un elemento.
+        </p>
+        <p>
+          Creemos una animación básica para familiarizarnos con la sintaxis. Esta animación tendrá tres fotogramas clave, que se muestran en la <b>figura 16.2</b>. En el primer cuadro, el elemento es rojo. En el segundo fotograma, es de color azul claro y se desplazó a la derecha <code>100px</code>. En el cuadro final, es de color violeta claro y ha vuelto a su posición inicial a la izquierda.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/02.jpg" alt="ibid">
+          <figcaption>Figura 16.2. Tres fotogramas clave que animan el color y la posición del elemento.</figcaption>
+        </figure>
+        <p>
+          Esta animación aplica cambios a dos propiedades: <code>background-color</code> y <code>transform</code>. La regla de fotogramas clave para esto se muestra en la siguiente lista. Cree una nueva hoja de estilo, styles.css, y agregue este código.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@keyframes over-and-back {                 1
+  0% {
+    background-color: hsl(0, 50%, 50%);    2
+    transform: translate(0);               2
+  }
+
+  50% {                                    3
+    transform: translate(50px);
+  }
+
+  100% {                                   4
+    background-color: hsl(270, 50%, 90%);  4
+    transform: translate(0);               4
+  }                                        4
+}
+          </code>
+          <small>Listado 16.1. Definición de una regla de fotograma clave</small>
+        </pre>
+        <ol class="index-code">
+          <li>Nombra la animación</li>
+          <li>Primeras declaraciones de fotogramas clave</li>
+          <li>El segundo fotograma clave ocurre a la mitad de la animación.</li>
+          <li>Fotograma clave final</li>
+        </ol>
+        <p>
+          Una animación de fotogramas clave necesita un nombre; este ejemplo define una animación llamada <code>over-and-back</code>. Luego define tres fotogramas clave usando porcentajes. Estos porcentajes indican en qué momento de la animación ocurre cada <em translate="no">keyframe</em>: uno al comienzo de la animación <code>(0%)</code>, uno en el medio <code>(50%)</code> y uno al final <code>(100%)</code>. Las declaraciones dentro de cada uno de estos bloques definen cómo aparece ese fotograma clave.
+        </p>
+        <p>
+          Este ejemplo anima dos propiedades al mismo tiempo, pero observe que no se especifican ambas en cada fotograma clave. La transformación desplaza el elemento desde su posición inicial, hacia la derecha y luego hacia atrás. Sin embargo, el color de fondo no se especifica en el fotograma clave del <code>50%</code>. Esto significa que el elemento se animará suavemente de rojo (al 0%) a violeta claro (al 100%). Al <code>50%</code>, será el valor directamente entre estos dos colores.
+        </p>
+        <p>
+          Agreguemos esto a una página para que funcione. Cree un nuevo documento HTML y agregue este marcado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;!doctype html>
+&lt;html lang="en">
+  &lt;head>
+    &lt;link rel="stylesheet" href="styles.css">
+  &lt;/head>
+  &lt;body>
+    &lt;div class="box">&lt;/div>                 1
+  &lt;/body>
+&lt;/html>
+          </code>
+          <small>Listado 16.2. Página con un solo elemento de cuadro para animación</small>
+        </pre>
+        <ol class="index-code">
+          <li>El elemento que animarás</li>
+        </ol>
+        <p>
+          A continuación, agregue estilos a su hoja de estilo para diseñar el cuadro y aplicar la animación. Copie los de la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.box {
+  width: 100px;                             1
+  height: 100px;                            1
+  background-color: green;
+  animation: over-and-back 1.5s linear 3;   2
+}
+          </code>
+          <small>Listado 16.3. Aplicar la animación a la caja</small>
+        </pre>
+        <ol class="index-code">
+          <li>Le da al elemento una altura y un ancho para fines de demostración.</li>
+          <li>Aplica la animación al elemento</li>
+        </ol>
+        <p>
+          Abra la página en su navegador. Debería ver que la animación se repite tres veces y luego se detiene. La propiedad <code>animation</code> es una abreviatura de varias propiedades. En esta demostración, ha especificado cuatro de ellos:
+        </p>
+        <ul>
+          <li><code>animation-name(over-and-back)</code>: indica el nombre de la animación según lo definido por la regla <code>@keyframes</code>.</li>
+          <li><code>animation-duration (1,5 s)</code>: indica cuánto dura la animación; en este caso, 1,5 segundos.</li>
+          <li><code>animation-timing-function(linear)</code>: indica una función de temporización que describe cómo se acelera y / o desacelera la animación. Puede ser una curva de Bézier o un valor de palabra clave, como una función de tiempo de transición (<code>ease-in</code>, <code>ease-out</code>, etc.).</li>
+          <li><code>animation-iteration-count(3)</code>: indica el número de veces que se repite la animación. Si se omite, se utiliza el valor inicial de 1.</li>
+        </ul>
+        <p>
+          Vuelva a cargar la página para ver la reproducción de la animación nuevamente. Observemos un par de cosas sobre el comportamiento de la animación.
+        </p>
+        <p>
+          Primero, el color cambia suavemente del rojo al <code>0%</code> al violeta claro al <code>100%</code>, pero luego vuelve inmediatamente al rojo a medida que se repite la animación. Si planea repetir una animación, debe asegurarse de que los valores finales coincidan con los valores iniciales si desea que este cambio sea fluido.
+        </p>
+        <p>
+          En segundo lugar, después de la iteración final, el color de fondo cambia a verde: el valor especificado en el conjunto de reglas regular. Pero tenga en cuenta que durante la duración de la animación, esta declaración es anulada por las de <code>@keyframes</code>. En términos de cascada, las reglas aplicadas por una animación tienen prioridad sobre otras declaraciones.
+        </p>
+        <p>
+          Si recuerda el <b>capítulo 1</b> (sección 1.1.1), la primera parte de la cascada es el origen de la hoja de estilo. Los estilos de autor tienen prioridad sobre los estilos de agente de usuario porque tienen un origen de mayor prioridad. Sin embargo, las declaraciones aplicadas por una animación se consideran un origen de prioridad aún mayor. Mientras se anima una propiedad, anula los estilos aplicados en otras partes de la hoja de estilo, independientemente de la especificidad del selector. Esto asegura que todas las declaraciones en los fotogramas clave se animen en concierto entre sí, independientemente de qué otras reglas se puedan aplicar al elemento fuera de la animación.
+        </p>
+        <p>
+          Las animaciones son compatibles con el navegador, pero algunos navegadores móviles requieren el uso del prefijo <code>-webkit-</code>, tanto en la propiedad de animación <code>(-webkit-animation)</code> como en los fotogramas clave en la regla <code>(@ -webkit-keyframes)</code>. Esto requiere duplicar todo este código, con y sin el prefijo. Utilice Autoprefixer para hacer esto (consulte la barra lateral sobre <em>"Prefijos de proveedores"</em> en el capítulo 5).
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>16.2. TRANSFORMACIONES 3D DE ANIMACIÓN</h2>
+        <p>
+          A continuación, agregará una animación a la página que comenzó en el capítulo anterior. Después de enumerar 15.10, debería tener una página con un fondo azul y un menú de navegación en el lado izquierdo. Completarás el resto de esta página con varias tarjetas de contenido. Primero, obtendrá el diseño construido en una forma general del diseño general, luego agregará la animación.
+        </p>
+        <h3 id="sub1">16.2.1. Construyendo el diseño sin animaciones</h3>
+        <p>
+          En esta demostración, agregará algunas tarjetas en el área principal de la página <b>(figura 16.3)</b>. Luego, agregará una animación para hacerlos volar usando transformaciones 3D.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/03.jpg" alt="ibid">
+          <figcaption>Figura 16.3. Tarjetas adicionales para la región principal de la página</figcaption>
+        </figure>
+        <p>
+          El marcado de este contenido se muestra a continuación. Agregue esto a su página después del elemento <code>&lt;nav&gt;</code>. (He resumido el texto dentro de las tarjetas en esta lista para ahorrar espacio. Siéntase libre de agregar más contenido si desea hacer coincidir la captura de pantalla en la <b>figura 16.3</b> más de cerca).
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;main class="flyin-grid">                                 1
+  &lt;div class="flyin-grid__item card">                     2
+    &lt;img src="images/chicken1.jpg" alt="a chicken"/>
+    &lt;h4>Mrs. Featherstone&lt;/h4>
+    &lt;p>
+      She may be a bit frumpy, but Mrs Featherstone gets
+      the job done. She lays her largish cream-colored
+      eggs on a daily basis. She is gregarious to a fault.
+    &lt;/p>
+  &lt;/div>
+  &lt;div class="flyin-grid__item card">                     2
+    &lt;img src="images/chicken2.jpg" alt="a chicken"/>
+    &lt;h4>Hen Solo&lt;/h4>
+    &lt;p>
+      Though the most recent addition to our flock, Hen
+      Solo is a fast favorite among our laying brood.
+    &lt;/p>
+  &lt;/div>
+  &lt;div class="flyin-grid__item card">                     2
+    &lt;img src="images/chicken3.jpg" alt="a chicken"/>
+    &lt;h4>Cluck Norris&lt;/h4>
+    &lt;p>
+      Every brood has its brawler. Cluck Norris is our
+      feistiest hen, frequently picking fights with other
+      hens about laying territory and foraging space.
+    &lt;/p>
+  &lt;/div>
+  &lt;div class="flyin-grid__item card">                     2
+    &lt;img src="images/chicken4.jpg" alt="a chicken"/>
+    &lt;h4>Peggy Schuyler&lt;/h4>
+    &lt;p>
+      Peggy was our first and friendliest hen. She is the
+      most likely to greet visitors to the yard, and
+      frequently to be found nesting in the coop.
+    &lt;/p>
+  &lt;/div>
+&lt;/main>
+          </code>
+          <small>Listado 16.4. Construyendo el flyin-grid y varias cartas</small>
+        </pre>
+        <ol class="index-code">
+          <li><span translate="no">Grid container</span></li>
+          <li>Las cartas también son elementos de la cuadrícula.</li>
+        </ol>
+        <p>
+          Esta parte de la página consta de dos módulos. El módulo exterior, <em translate="no">Flyin-Grid</em>, proporciona el diseño de los elementos en una cuadrícula, incluido un efecto de vuelo 3D que cubriré en un momento. Cada elemento de la cuadrícula es también una instancia del módulo interno, la Tarjeta. El módulo Tarjeta proporciona la apariencia estilizada: fondo blanco, relleno y color de fuente.
+        </p>
+        <p>
+          Este diseño es un excelente ejemplo de diseño de cuadrícula, así que eso es lo que usará. También debe considerar tanto el diseño móvil como un respaldo basado en <em translate="no">flexbox</em> para navegadores más antiguos que no admiten cuadrículas. Hará el diseño móvil primero, luego la capa en estilos de caja flexible seguidos de estilos basados en cuadrículas.
+        </p>
+        <p>
+          El diseño móvil se muestra en la <b>figura 16.4</b>. En pantallas pequeñas, las tarjetas llenarán el ancho de la pantalla, con un pequeño margen agregado a los lados izquierdo y derecho.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/04.jpg" alt="ibid">
+          <figcaption>Figura 16.4. En el diseño móvil, las tarjetas llenarán el ancho de la pantalla, apiladas debajo del menú.</figcaption>
+        </figure>
+        <p>
+          Agregue estos estilos móviles a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.flyin-grid {
+  margin: 0 1rem;                                    1
+}
+
+.card {
+  margin-bottom: 1em;
+  padding: 0.5em;                                    2
+  background-color: white;                           2
+  color: hsl(210, 15%, 20%);                         2
+  box-shadow: 0.2em 0.5em 1em rgba(0, 0, 0, 0.3);    2
+}
+.card > img {
+  width: 100%;                                       3
+}
+          </code>
+          <small>Listado 16.5. Estilos móviles para las tarjetas</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega un pequeño margen izquierdo y derecho alrededor del contenedor</li>
+          <li>Aplica colores de tarjeta y otros detalles</li>
+          <li>Especifica que la imagen debe ocupar el ancho de la tarjeta</li>
+        </ol>
+        <p>
+          El <em translate="no">flyin-grid</em> no necesita mucha atención en este tamaño de pantalla porque sus elementos se apilarán correctamente como elementos de bloque normales. Los estilos de tarjeta aplican el fondo blanco y el aspecto general de cada tarjeta. Aplicará los diseños más complejos dentro de una consulta de medios momentáneamente.
+        </p>
+        <p>
+          A continuación, colocará capas en el diseño de reserva usando <em>flexbox</em>, aplicado solo a puntos de interrupción más grandes. Esto lo acercará al diseño final <b>(figura 16.3)</b>. Agregue este CSS a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.flyin-grid {
+  margin: 0 1rem;
+}
+
+@media (min-width: 30em) {         1
+  .flyin-grid {
+    display: flex;                 2
+    flex-wrap: wrap;               2
+    margin: 0 5rem;                3
+  }
+
+  .flyin-grid__item {
+    flex: 1 1 300px;               4
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    max-width: 600px;
+  }
+}
+          </code>
+          <small>Listado 16.6. Aplicar un diseño alternativo basado en flexbox</small>
+        </pre>
+        <ol class="index-code">
+          <li>Punto de interrupción de respuesta</li>
+          <li>Establece el contenedor flexible con envoltura</li>
+          <li>Aumenta el acolchado en los lados</li>
+          <li>4 Habilita el <span translate="no">flex-grow</span> y establece <span translate="no">flex-basis</span> de 300 px</li>
+        </ol>
+        <p>
+          Este listado establece un diseño receptivo usando <em translate="no">flexbox</em>. Al aplicar <code>flex-wrap: wrap</code>, la línea de elementos flexibles se ajusta cuando no caben en la misma línea. La base flexible de 300 px establece un ancho mínimo, mientras que el <code>max-widht</code> establece uno máximo; Los elementos se ajustarán según sea necesario para ajustarse a estas restricciones. El <code>flex-grow</code> de 1 permite que las cartas se estiren para llenar el espacio restante.
+        </p>
+        <p>
+          El módulo Tarjeta no necesita cambiar en absoluto más allá de los estilos para dispositivos móviles que ya ha agregado; todos los colores y elementos estilísticos parecen iguales.
+        </p>
+        <p>
+          En ciertos tamaños de pantalla, las tarjetas aparecen exactamente como nuestro diseño final. Pero cuando la última fila de tarjetas tiene menos tarjetas que las de las líneas anteriores, los anchos de las tarjetas no siempre serán iguales. Este problema se muestra en la <b>figura 16.5</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/05.jpg" alt="ibid">
+          <figcaption>Figura 16.5. Flexbox no siempre hace que las tarjetas de la última fila coincidan con el ancho de las de arriba.</figcaption>
+        </figure>
+        <p>
+          En este ancho de ventana gráfica (alrededor de 1000 px), tres tarjetas caben en la fila superior, dejando solo una para la segunda fila. Este elemento final crece hasta el <code>max-width</code> de <code>600px</code>, lo que lo hace más grande que el resto. Cuando el tamaño de la pantalla permite dos filas de dos tarjetas cada una, todas serán del mismo tamaño, ya que cada fila es equivalente. Pero otros tamaños de pantalla pueden provocar este problema. También variará, dependiendo de cuántas cartas haya: seis cartas encajarían perfectamente en dos filas de tres, pero las pantallas grandes verían una fila de cuatro seguida de una fila de dos.
+        </p>
+        <p>
+          Este diseño de caja flexible todavía funciona, ya que todo es utilizable y comprensible, pero no es ideal. Tiene dos opciones para lidiar con esto: puede tomarse el tiempo para averiguar varios puntos de interrupción y aplicar un control más específico sobre los anchos de los elementos flexibles o puede llamar a esto <em>"suficientemente bueno"</em> como un comportamiento alternativo y anular el <em translate="no">flexbox</em> con un diseño de cuadrícula para navegadores que admiten cuadrícula.
+        </p>
+        <p>
+          Hagamos la segunda opción aquí. Después del diseño de la caja flexible, usará una consulta de funciones para probar la compatibilidad con la cuadrícula y agregar estilos primordiales. Actualice su hoja de estilo para que coincida con este CSS.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 30em) {
+  .flyin-grid {
+    display: flex;                                                   1
+    flex-wrap: wrap;
+    margin: 0 5rem;
+  }
+
+  .flyin-grid__item {
+    flex: 1 1 300px;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    max-width: 600px;
+  }
+
+  @supports (display: grid) {                                        2
+    .flyin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));   3
+      grid-gap: 2em;
+    }
+
+    .flyin-grid__item {
+      max-width: initial;
+      margin: 0;                                                     4
+    }
+  }
+}
+          </code>
+          <small>Listado 16.7. Aplicar un diseño de cuadrícula para navegadores que lo admitan</small>
+        </pre>
+        <ol class="index-code">
+          <li>Los estilos alternativos permanecen sin cambios</li>
+          <li>Consultas para soporte de cuadrícula dentro de un bloque de consulta de medios</li>
+          <li>Define anchos de columna</li>
+          <li>Elimina los márgenes aplicados por el diseño de reserva.</li>
+        </ol>
+        <p>
+          Ahora los últimos navegadores utilizarán el diseño ideal. Las columnas de cuadrícula garantizan que todos los elementos de la cuadrícula tengan el mismo ancho. El uso de <code>repeat()</code> y <code>auto-fit</code> permite que la cuadrícula determine cuántas columnas caben en el ancho actual de la ventana gráfica. Esta solución se degradará graciosamente al diseño de <em>flexbox</em> para navegadores más antiguos, y las ventanas pequeñas aún mostrarán el diseño móvil aún más simple.
+        </p>
+        <h3 id="sub2">16.2.2. Agregar animación al diseño</h3>
+        <p>
+          La página ahora tiene el diseño y la disposición en su lugar, así que trabajemos en algunas animaciones. Cuando se cargue la página, volará en las tarjetas, como se ilustra en la <b>figura 16.6</b>. Comenzarán para que aparezcan en la distancia, girados 90 grados alrededor de un eje vertical. Luego, las tarjetas volarán hacia el espectador y, cerca del final de la animación, girarán para mirar al usuario directamente. La <b>Figura 16.6</b> muestra los tres fotogramas clave que definen esta animación.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/06.jpg" alt="ibid">
+          <figcaption>Figura 16.6. Utilice transformaciones 3D para volar en las cartas desde lejos en la distancia.</figcaption>
+        </figure>
+        <p>
+          Esta animación involucra dos transformaciones: <code>translateZ()</code> hace que las cartas vuelvan a la distancia y <code>rotateY()</code> las rota. El código para esto se muestra en el <b>listado 16.8</b>. Esto establece una perspectiva en el contenedor <em translate="no">flyin-grid</em>, define los fotogramas clave y agrega la animación a cada elemento flyin-grid. También agregué opacidad, por lo que los elementos se desvanecen junto con los efectos de transición.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.flyin-grid {
+  margin: 0 1rem;
+  perspective: 500px;                               1
+}
+
+.flyin-grid__item {
+  animation: fly-in 600ms ease-in;                  2
+}
+
+@keyframes fly-in {
+  0% {
+    transform: translateZ(-800px) rotateY(90deg);   3
+    opacity: 0;
+  }
+  56% {
+    transform: translateZ(-160px) rotateY(87deg);   4
+    opacity: 1;
+  }
+  100% {
+    transform: translateZ(0) rotateY(0);            5
+  }
+}
+          </code>
+          <small>Listado 16.8. Añadiendo la animación fly-in</small>
+        </pre>
+        <ol class="index-code">
+          <li>Establece una perspectiva compartida en el contenedor.</li>
+          <li>Aplica animación a cada elemento</li>
+          <li>Comienza en la distancia, girado</li>
+          <li>Mucho más cerca, pero aún mayormente girado</li>
+          <li>Termina en posición normal</li>
+        </ol>
+        <p>
+          Este CSS establece una perspectiva en el contenedor, por lo que todos los elementos comparten la misma perspectiva. Luego aplica la animación a cada elemento. Cargue la página para ver la animación.
+        </p>
+        <p>
+          La animación comienza colocando el elemento girado nuevamente en la distancia. Entre el fotograma clave inicial y el fotograma clave central, el elemento se acerca la mayor parte del camino (de 800 px a 160 px), y la opacidad se desvanece de transparente a completamente opaca. Desde el fotograma clave del medio hasta el final, finaliza el último bit de zoom, mientras que tiene lugar la mayor parte de la rotación.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>16.3. RETARDO DE ANIMACIÓN Y MODO DE LLENADO</h2>
+        <p>
+          Las animaciones se pueden retrasar utilizando la propiedad <code>animation-delay</code>, que se comporta de manera muy similar a la propiedad <code>transition-delay</code>. Puede usar esto para escalonar las animaciones, de manera similar a como escaló las transiciones del menú de navegación en el capítulo anterior. Al escalonar la animación de cada elemento durante períodos de tiempo ligeramente diferentes, puede hacerlos volar uno tras otro, como se muestra en la <b>figura 16.7</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/07.jpg" alt="ibid">
+          <figcaption>Figura 16.7. Elementos volando con animación escalonada.</figcaption>
+        </figure>
+        <p>
+          El siguiente código aplica estos retrasos a los cuatro elementos de la cuadrícula. Pero no funcionará como usted quiere. Agregue el código a su hoja de estilo, luego veremos el problema y cómo solucionarlo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.flyin-grid__item {
+  animation: fly-in 600ms ease-in;
+}
+
+.flyin-grid__item:nth-child(2) {
+  animation-delay: 0.15s;               1
+}
+.flyin-grid__item:nth-child(3) {
+  animation-delay: 0.3s;                1
+}
+.flyin-grid__item:nth-child(4) {
+  animation-delay: 0.45s;               1
+}
+          </code>
+          <small>Listado 16.9. Escalonando las horas de inicio de la animación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Escalona el inicio de la animación de cada elemento un poco más que el elemento anterior</li>
+        </ol>
+        <p>
+          Si carga esta página en su navegador, es posible que observe el problema. Las animaciones se reproducen a la hora prevista, pero algunos elementos están visibles en la página de antemano. Después de un momento desaparecen y se reproduce su animación <b>(figura 16.8)</b>. Esto es un poco discordante y no parece el efecto que buscamos. En cambio, queremos que todos los elementos sean invisibles inicialmente y solo aparezcan durante el transcurso de sus respectivas animaciones.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/08.jpg" alt="ibid">
+          <figcaption>Figura 16.8. Los elementos posteriores aparecen en su posición final antes de que se reproduzcan sus animaciones.</figcaption>
+        </figure>
+        <p>
+          Este problema se produce porque las propiedades <code>transform</code> y <code>opacity</code> solo se aplican durante la animación. Antes de que comience la animación, los elementos de la cuadrícula están visibles en la página, en sus posiciones normales. Luego, cuando comienza la animación, saltan a sus valores aplicados en el fotograma clave al 0%. Necesita que los estilos de animación se apliquen hacia atrás en el tiempo, como si estuviera en pausa en el primer fotograma hasta que comience la animación. Esto se puede hacer con la propiedad <code>animation-fill-mode</code> <b>(figura 16.9)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/09.jpg" alt="ibid">
+          <figcaption>Figura 16.9. Utilice <span translate="no">animation-fill-mode</span> para aplicar estilos de animación antes o después de que se reproduzca la animación.</figcaption>
+        </figure>
+        <p>
+          Los cuadros oscuros aquí representan la duración de la animación. El valor inicial de <code>animation-fill-mode</code> es <code>none</code>, lo que significa que los estilos de animación no se aplican al elemento antes o después de la animación. Al aplicar <code>animation-fill-mode: backwards</code>, el navegador toma los valores del primer fotograma de la animación y los aplica al elemento antes de que se reproduzca la animación. El uso de <code>forwards</code> continúa aplicando los valores del último fotograma después de que se completa la animación. El uso de <code>both</code> se llena tanto hacia atrás como hacia adelante.
+        </p>
+        <p>
+          Agregue un modo de relleno hacia atrás a su página para corregir el salto al comienzo de la animación. Actualice su hoja de estilo para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.flyin-grid__item {
+  animation: fly-in 600ms ease-in;
+  animation-fill-mode: backwards;          1
+}
+          </code>
+          <small>Listado 16.10. Aplicar un modo de relleno de animación hacia atrás</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aplica los estilos de animación del primer fotograma antes de que comience la animación.</li>
+        </ol>
+        <p>
+          Esto efectivamente hace que la animación se pause inicialmente en el primer fotograma, esperando que se reproduzca la animación. Ahora, antes de que comience la animación, el elemento de la cuadrícula se traduce hacia atrás <code>800px</code>, se gira 90 grados y se establece en opacidad 0, listo para que comience la animación.
+        </p>
+        <p>
+          Debido a que la animación termina con el elemento en su posición natural, no es necesario que avance; la tarjeta ya pasa sin problemas desde el fotograma final de la animación a la posición estática del elemento.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>16.4. TRANSMITIR SIGNIFICADO A TRAVÉS DE LA ANIMACIÓN</h2>
+        <p>
+          Un error común sobre la animación es que se agrega a la página por diversión y que no tiene ningún propósito práctico. Este es a veces el caso (como en nuestro último ejemplo), pero no siempre es así. Las mejores animaciones no se agregan como una ocurrencia tardía. En cambio, están integrados en la experiencia. Transmiten un significado específico al usuario sobre algo en la página.
+        </p>
+        <h3 id="sub3">16.4.1. Responder a la interacción del usuario</h3>
+        <p>
+          La animación puede indicar al usuario que se ha hecho clic en un botón o se ha recibido un mensaje. Si alguna vez ha enviado un formulario y se pregunta si el clic del mouse se registró, sabe lo importante que puede ser.
+        </p>
+        <p>
+          En una página nueva, creemos un formulario pequeño con un botón de envío. Luego, agregará un indicador giratorio para que el usuario sepa que el formulario se está publicando y que el navegador está esperando una respuesta del servidor. El formulario se muestra en la <b>figura 16.10</b>. Consta de una etiqueta, un área de texto y un botón.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/10.jpg" alt="ibid">
+          <figcaption>Figura 16.10. Un formulario simple con un botón Guardar</figcaption>
+        </figure>
+        <p>
+          Cree una página nueva y una hoja de estilo en blanco para este formulario. Agregue el HTML que se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;!doctype html>
+&lt;html lang="en">
+  &lt;head>
+    &lt;link rel="stylesheet" href="style.css">
+  &lt;/head>
+  &lt;body>
+    &lt;form>
+      &lt;label for="trip">Tell us about your first trip to the zoo:&lt;/label>
+      &lt;textarea id="trip" name="about-my-trip" rows="5">&lt;/textarea>        1
+      &lt;button type="submit" id="submit-button">Save&lt;/button>               2
+    &lt;/form>
+  &lt;/body>
+&lt;/html>
+          </code>
+          <small>Listado 16.11. Formulario con botón Guardar</small>
+        </pre>
+        <ol class="index-code">
+          <li>Área de texto</li>
+          <li>Botón Enviar</li>
+        </ol>
+        <p>
+          Primero, agregará algo de CSS para que todo esté organizado y con el estilo apropiado. Después de eso, trabajará en algunas animaciones significativas para mejorar la experiencia del usuario. Agregue esto a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+form {
+  max-width: 500px;                         1
+}
+
+label,
+textarea {
+  display: block;
+  margin-bottom: 1em;
+}
+
+textarea {
+  width: 100%;
+  font-size: inherit;
+}
+
+button {
+  padding: 0.6em 1em;
+  border: 0;
+  background-color: hsl(220, 50%, 50%);     2
+  color: white;                             2
+  font: inherit;
+  transition: background-color 0.3s linear;
+}
+button:hover {
+  background-color: hsl(220, 45%, 40%);     3
+}
+          </code>
+          <small>Listado 16.12. Diseñar y estilizar la forma.</small>
+        </pre>
+        <ol class="index-code">
+          <li>Limita el ancho del formulario</li>
+          <li>Botón azul con texto blanco</li>
+          <li>Botón de oscurecimiento para el estado de desplazamiento</li>
+        </ol>
+        <p>
+          Supongamos que este formulario es parte de una aplicación web más grande. Cuando el usuario hace clic en el botón Guardar, enviará los datos al servidor y, quizás, recibirá una respuesta y luego agregará contenido nuevo a la página. Pero esperar a la red lleva tiempo. Mientras el usuario espera esta respuesta, puede ser reconfortante para él si ve alguna indicación visual de que su contenido ha sido enviado y pronto aparecerá una respuesta. La animación es una forma común de proporcionar esta indicación.
+        </p>
+        <p>
+          Puede modificar el botón Guardar, dándole un estado de <em translate="no">"is-loading"</em>. Esto oculta la etiqueta Guardar, reemplazándola con un icono giratorio <b>(figura 16.11)</b>. Cuando el usuario envía el formulario, utilizará JavaScript para agregar la clase <code>is-loading</code> al botón, y ejecutará la animación.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/11.jpg" alt="ibid">
+          <figcaption>Figura 16.11. Cuando el usuario hace clic en Guardar, aparece un control giratorio de carga en el botón.</figcaption>
+        </figure>
+        <p>
+          Puede diseñar una ruleta de varias formas. Este es un enfoque que me gusta: una forma de media luna giratoria es mínima en apariencia pero efectiva. Agregar esta ruleta requiere dos cambios en el CSS: crear la forma de la media luna usando un borde y un radio de borde, luego aplicar una animación para hacerla girar. También necesitará un poco de JavaScript para agregar la clase <code>is-loading</code> a fin de aplicar los estilos cuando se hace clic en el botón.
+        </p>
+        <p>
+          El CSS para esto se muestra a continuación. Este marcado agrega la animación a un pseudo-elemento absolutamente posicionado en el botón. Agréguelo a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+button.is-loading {
+  position: relative;
+  color: transparent;                     1
+}
+button.is-loading::after {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 1.4em;
+  height: 1.4em;
+  top: 50%;                               2
+  left: 50%;                              2
+  margin-left: -0.7em;                    2
+  margin-top: -0.7em;                     2
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 0.5s linear infinite;   3
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);            4
+  }
+}
+          </code>
+          <small>Listado 16.13. Definición de la animación de giro y el estado de carga</small>
+        </pre>
+        <ol class="index-code">
+          <li>Oculta el texto del botón</li>
+          <li>Posiciones del pseudoelemento en el centro del botón</li>
+          <li>Bucles hacen girar la animación repetidamente</li>
+          <li>Define una rotación completa por iteración</li>
+        </ol>
+        <p>
+          Esto define un estado <code>is-loading</code> para el botón. Cuando se aplica, el texto del botón se hace invisible con el <code>color: transparent</code>, y su pseudoelemento se coloca en el centro del botón utilizando un posicionamiento absoluto.
+        </p>
+        <p>
+          El posicionamiento aquí es un poco complicado: las propiedades <code>top</code> e <code>left</code> mueven el pseudoelemento hacia abajo la mitad de la altura del botón y hacia la derecha la mitad del ancho del botón. Esto coloca el pseudoelemento de modo que su esquina superior izquierda esté en el centro del botón. Luego, los márgenes negativos tiran del pseudoelemento hacia arriba y lo dejan <code>0.7em</code>, que es exactamente la mitad de su alto y ancho. Juntas, estas cuatro propiedades centran el pseudo elemento vertical y horizontalmente dentro del botón. Agregue la clase <code>is-loading</code> temporalmente y juegue con estos valores en las DevTools de su navegador para tener una idea de cómo funcionan juntos para centrar el pseudo-elemento.
+        </p>
+        <p>
+          Después de colocar el pseudoelemento, aplica la animación. Esto usa una nueva palabra clave para el recuento de iteraciones de animación: <code>infinite</code>. Esto significa que la animación se repite sin cesar siempre que se aplique la clase <code>is-loading</code> al botón. La animación aplica una transformación de rotación, de 0 grados a 360 grados. Esto hace girar el pseudoelemento una rotación completa. El final de esta animación deja el elemento exactamente donde comenzó, visualmente, por lo que la transición es perfecta a medida que se repite la animación.
+        </p>
+        <p>
+          Agregue la etiqueta de secuencia de comandos de la siguiente lista a su página. Esto proporciona la funcionalidad de JavaScript para agregar la clase <code>is-loading</code> cuando se hace clic en el botón. Coloque esto antes de la etiqueta de cierre <code>&lt;/body&gt;</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;script type="text/javascript">
+  var input = document.getElementById('trip');
+  var button = document.getElementById('submit-button');
+
+  button.addEventListener('click', function(event) {
+    event.preventDefault();                           1
+    button.classList.add('is-loading');               2
+    button.disabled = true;
+    input.disabled = true;
+                                                      3
+  });
+&lt;/script>
+          </code>
+          <small>Listado 16.14. Agregar una clase is-loading al botón cuando se hace clic</small>
+        </pre>
+        <ol class="index-code">
+          <li>Evita el envío de formularios</li>
+          <li>Muestra la ruleta de carga</li>
+          <li>El código aquí enviaría datos del formulario usando JavaScript</li>
+        </ol>
+        <p>
+          Cuando se hace clic en el botón Guardar, detiene el envío normal del formulario usando <code>preventDefault()</code>. Esto permite al usuario permanecer en la misma página sin tener que navegar mientras la aplicación envía los datos del formulario usando JavaScript. Mientras tanto, las entradas están deshabilitadas y la clase <code>is-loading</code> se agrega al botón, mostrando el indicador giratorio. Cargue la página y haga clic en el botón para que aparezca la ruleta.
+        </p>
+        <p>
+          No está enviando datos de formulario aquí porque no hay ningún servidor al que enviar en esta demostración. Pero, en una aplicación real, una vez que el servidor responde, puede volver a habilitar las entradas del formulario y eliminar la clase <code>is-loading</code>. Para los propósitos de esta demostración, puede actualizar la página para restablecer el formulario y eliminar la clase <code>is-loading</code>.
+        </p>
+        <h3 id="sub4">16.4.2. Llamar la atención del usuario</h3>
+        <p>
+          La animación también se puede utilizar para llamar la atención del usuario sobre algo. Si esperaba que el usuario escribiera más de un par de oraciones en el área de texto, podría alentarlo a guardar su trabajo con frecuencia mientras redacta su respuesta. Si usa una animación para agitar el botón por un momento, eso puede servir como un recordatorio para que el usuario guarde su trabajo <b>(figura 16.12)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap16/12.jpg" alt="ibid">
+          <figcaption>Figura 16.12. Mueva el botón hacia la izquierda y hacia la derecha rápidamente para agitarlo.</figcaption>
+        </figure>
+        <p>
+          Esta <em>sacudida</em> se puede lograr transformando rápidamente el elemento hacia la izquierda y hacia la derecha varias veces. Definirá una animación de <em translate="no">keyframe</em> que haga eso y aplicará la animación al elemento del botón mediante una clase de <code>shake</code>. Agregue esto a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.shake {
+  animation: shake 0.7s linear;
+}
+
+@keyframes shake {
+  0%,                                1
+  100% {                             1
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateX(-0.4em);   2
+  }
+  20%,
+  40%,
+  60% {
+    transform: translateX(0.4em);    3
+  }
+  80% {                              4
+    transform: translateX(0.3em);    4
+  }                                  4
+  90% {                              4
+    transform: translateX(-0.3em);   4
+  }                                  4
+}
+          </code>
+          <small>Listado 16.15. Definición de la animación de batido</small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza la misma definición de fotograma clave en varios puntos durante la animación</li>
+          <li>Desplaza el elemento a la izquierda</li>
+          <li>Desplaza el elemento a la derecha</li>
+          <li>Reduce el movimiento para el batido final.</li>
+        </ol>
+        <p>
+          Hice algo nuevo en esta animación: apliqué las mismas definiciones de fotogramas clave varias veces a lo largo de la animación.
+        </p>
+        <p>
+          En los fotogramas clave inicial (0%) y final (100%), el elemento está en su posición predeterminada. Debido a que ambos fotogramas clave usan el mismo valor, puede separarlos con una coma y definir sus valores de propiedad una vez. He hecho lo mismo con los fotogramas clave del 10%, 30%, 50% y 70%, que traducen el elemento que queda. El 20%, 40% y 60% traducen cada uno el elemento a la derecha. Los fotogramas clave del 80% y 90% traducen el elemento a la derecha y a la izquierda, respectivamente, pero en menor grado.
+        </p>
+        <p>
+          En conjunto, esta animación sacude el elemento de lado a lado cuatro veces, y el cuarto movimiento es un poco menos pronunciado para simular una desaceleración al final del movimiento. Puede agregar temporalmente la clase de agitación al botón para ver la reproducción de la animación cuando se carga la página.
+        </p>
+        <p>
+          Una animación se puede usar varias veces a lo largo de la hoja de estilo, por lo que su definición no necesariamente tiene que estar ubicada con el código del módulo que la usa. Me gusta mantener todas mis definiciones de <code>@keyframe</code> juntas en un solo lugar, cerca del final de mi hoja de estilo.
+        </p>
+        <p>
+          Finalmente, puede usar JavaScript para reproducir la animación cuando crea que el usuario podría necesitar guardar su trabajo. Puede usar un detector de eventos de teclado y una función de tiempo de espera para hacer esto: cuando el usuario escribe un carácter en el área de texto, establecerá una función de tiempo de espera de un segundo, que agregará la clase <code>shake</code> al botón. Si el usuario ingresa otro carácter antes de que transcurra el segundo, borrará el tiempo de espera y establecerá uno nuevo. Actualice la etiqueta <code>script</code> en su página para que coincida con esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;script type="text/javascript">
+  var input = document.getElementById('trip');
+  var button = document.getElementById('submit-button');
+
+  var timeout = null;                                    1
+
+  button.addEventListener('click', function(event) {
+    event.preventDefault();
+    clearTimeout(timeout);                               2
+    button.classList.add('is-loading');
+    button.disabled = true;
+    input.disabled = true;
+  });
+
+  input.addEventListener('keyup', function() {
+    clearTimeout(timeout);                               2
+    timeout = setTimeout(function() {                    3
+      button.classList.add('shake');                     3
+    }, 1000);                                            3
+  });
+  button.addEventListener('animationend', function() {   4
+    button.classList.remove('shake');                    4
+  });                                                    4
+&lt;/script>
+          </code>
+          <small>Listado 16.16. Agregar la clase de batido después de un segundo de retraso</small>
+        </pre>
+        <ol class="index-code">
+          <li>Define una variable para referirse a su tiempo de espera</li>
+          <li>Cancela el tiempo de espera pendiente (si está presente)</li>
+          <li>Agrega la clase <span translate="no">shake</span> después de una espera de 1 segundo</li>
+          <li>Elimina la clase <span translate="no">shake</span> después de que finaliza la animación.</li>
+        </ol>
+        <p>
+          Ahora cargue la página y escriba algo en el área de texto. Espere un segundo y el botón Guardar temblará. Mientras continúe escribiendo, el temporizador se reiniciará continuamente y la animación de agitación no se reproducirá hasta la próxima vez que se detenga durante más de 1 segundo. De esta manera, el temblor no distrae constantemente al usuario, sino que solo ocurre cuando hace una pausa.
+        </p>
+        <p>
+          También hizo uso de un evento de JavaScript, <code>animationend</code>. Este evento se activa cuando la animación de agitación termina de reproducirse. Cuando esto sucede, la clase <code>shake</code> se elimina del botón para que pueda agregarse nuevamente la próxima vez que el usuario escriba y luego pausa, reproduciendo la animación por segunda vez.
+        </p>
+        <p>
+          Agregar y eliminar clases como esta es quizás la forma más sencilla de interactuar con animaciones usando JavaScript. Pero, si está lo suficientemente familiarizado con el lenguaje, hay una API completa para interactuar con las animaciones CSS, incluida la capacidad de pausarlas, cancelarlas y revertirlas. Para obtener más información sobre esta API, consulte la documentación de MDN en https://developer.mozilla.org/en-US/docs/Web/API/Animation.
+        </p>
+        <p>
+          Estas animaciones, el indicador de carga y el botón Guardar que se agita, comunican mucho al usuario. Lo hacen sin que el usuario lea ninguna explicación. Indican su significado al instante, lo que hace que la IU sea menos molesta.
+        </p>
+        <p>
+          A medida que continúe creando aplicaciones web, considere siempre si una animación, incluso una animación sutil, puede proporcionar comentarios útiles al usuario. Quizás al enviar un correo electrónico, el área de texto puede volar por el costado de la pantalla. O, al eliminar un borrador, la animación puede hacer que el borrador se reduzca y desaparezca. No es necesario que las animaciones sean obvias o extravagantes para asegurar a los usuarios que sus acciones hicieron lo que pretendían.
+        </p>
+        <p>
+          Para obtener un fantástico conjunto de fotogramas clave predefinidos que puede utilizar, visite https://animista.net/. Esto tiene una gran biblioteca de animaciones para elegir, que incluyen rebotar, desplegarse y bambolearse como gelatina.
+        </p>
+      </section>
+      <section id="tema5">
+        <h2>16.5. UN CONSEJO FINAL</h2>
+        <p>
+          Para muchos desarrolladores web, CSS es un lenguaje intimidante. Tiene un pie plantado en el mundo del diseño y otro en el mundo del código. Algunas partes del idioma no son intuitivas, especialmente si eres autodidacta en la materia. Espero que este libro le haya ayudado a encontrar su camino.
+        </p>
+        <p>
+          Hemos analizado en profundidad las partes más fundamentales del lenguaje y algunas de las partes más confusas del diseño de página. Hemos cubierto mucho terreno, desde la organización de CSS para facilitar el mantenimiento del código hasta los métodos de diseño más nuevos. Nos hemos aventurado en el mundo del diseño y hemos creado una interfaz que no solo es utilitaria, sino también intuitiva y agradable.
+        </p>
+        <p>
+          Mi último consejo para ti es que tengas curiosidad. Le he mostrado una amplia gama de herramientas en el conjunto de herramientas CSS. Pero las formas en que estas herramientas se pueden combinar y combinar son infinitas. Cuando encuentre una página web que le cautive, abra las DevTools de su navegador e intente averiguar cómo funciona. Siga a los desarrolladores y diseñadores en línea que ofrecen demostraciones creativas u ofrecen interesantes tutoriales. Probar cosas nuevas. Y sigue aprendiendo.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Puede utilizar animaciones de fotogramas clave para definir puntos clave en una animación.</li>
+          <li>Utilice los modos de relleno hacia atrás y hacia adelante para hacer que una animación comience o termine sin problemas.</li>
+          <li>Con JavaScript, puede activar animaciones en el momento adecuado.</li>
+          <li>El uso de animaciones agrega significado, no solo florecimiento, a la interacción del usuario en la página web.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1"><span translate="no">KEYFRAMES</span></a></li>
+        <li><a href="#tema2">Transformaciones 3D de Animación</a></li>
+        <li><a href="#sub1">- Construyendo el diseño sin Animaciones</a></li>
+        <li><a href="#sub2">- Agregar Animación al Diseño</a></li>
+        <li><a href="#tema3">Retardo de Animación y Modo de Llenado</a></li>
+        <li><a href="#tema4">Transmitir significado a través de Animación</a></li>
+        <li><a href="#sub3">- Responder a la interacción del usuario</a></li>
+        <li><a href="#sub4">- Llamar la atención del usuario</a></li>
+        <li><a href="#tema5">Un consejo Final</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

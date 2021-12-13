@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Apéndice B</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Apéndice B. Preprocesadores</h1>
+      <div>
+        <a href="apendice_a.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_01.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h2>Apéndice B. Preprocesadores</h2>
+      <p>
+        El uso de un preprocesador es una parte vital de un flujo de trabajo CSS moderno. Un preprocesador proporciona una serie de comodidades para agilizar su escritura y ayudarlo a mantener su base de código. Por ejemplo, puede escribir un fragmento de código una vez y luego reutilizarlo en su hoja de estilo.
+      </p>
+      <p>
+        Un preprocesador funciona tomando un archivo fuente, que usted escribe, y traduciéndolo en un archivo de salida, que es una hoja de estilo CSS normal. En la mayoría de los casos, el archivo de origen se parece mucho al CSS normal, pero con características adicionales agregadas. Un ejemplo simple que usa una variable de preprocesador se ve así
+      </p>
+      <pre>
+        <code class="container__base-code">
+$brand-blue: #0086b3;
+
+a:link {
+  color: $brand-blue;
+}
+
+.page-heading {
+  font-size: 1.6rem;
+  color: $brand-blue;
+}
+        </code>
+      </pre>
+      <p>
+        Este fragmento de código define una variable nombrada <code>$brand-blue</code>, que se usa en dos lugares separados más adelante en la hoja de estilo. Cuando se ejecuta a través del preprocesador de Sass, la variable se reemplaza en toda la hoja de estilo, produciendo el siguiente CSS como salida:
+      </p>
+      <pre>
+        <code class="container__base-code">
+a:link {
+  color: #0086b3;
+}
+
+.page-heading {
+  font-size: 1.6rem;
+  color: #0086b3;
+}
+        </code>
+      </pre>
+      <p>
+        Es importante tener en cuenta que, debido a que la salida final es CSS normal, un preprocesador no agrega características nuevas al idioma en lo que respecta al navegador. Sin embargo, le proporciona comodidades útiles como desarrollador.
+      </p>
+      <p>
+        En el ejemplo, usar una variable para representar el color le permite reutilizar el color innumerables veces sin tener que copiar y pegar el código hexadecimal exacto. El preprocesador realiza la copia por usted cuando genera el archivo de salida. También significa que puede editar el valor en un solo lugar y hacer que ese cambio se propague por toda la hoja de estilo.
+      </p>
+      <p>
+        Los dos preprocesadores más populares son Sass <em>(httpss://sass-lang.com/)</em> y Less <em>(https://lesscss.org/)</em>, aunque también hay varios otros. Sass es el más popular, así que me centraré principalmente en eso en este apéndice. Pero Sass y Less son similares, con diferencias sintácticas en su mayoría menores que los distinguen entre sí. Por ejemplo, Sass usa un <code>$</code> para denotar variables <code>($brand-blue)</code>, mientras que Less usa un <code>@</code> <code>(@brand-blue)</code>. Todas las funciones de Sass que se tratan en este apéndice también se admiten en Less; consulte la documentación de Less para ver las diferencias de sintaxis.
+      </p>
+      <section id="tema1">
+        <h2>B.1 Sass</h2>
+        <p>
+          Al comenzar con Sass, deberá tomar algunas decisiones. Primero es qué implementación usar. Sass está escrito en Ruby, pero esta implementación es un poco lenta cuando se compilan hojas de estilo grandes, por lo que recomiendo algo llamado <em>LibSass</em>, que es un puerto C/C++ del compilador Sass.
+        </p>
+        <p>
+          Si se siente cómodo con JavaScript y el entorno Node, puede obtener <em>LibSass</em> instalando el paquete <em>node-sass</em> a través del administrador de paquetes npm. Si aún no tiene Node.js instalado, puede encontrarlo (es gratis) en <em>https://nodejs.org</em>. Descárguelo e instálelo de acuerdo con las instrucciones que se dan allí. Le mostraré los comandos necesarios para esto, pero si desea obtener más información sobre npm o necesita ayuda para solucionar cualquier problema, visite <em>https://docs.npmjs.com/getting-started/</em>.
+        </p>
+        <h3 id="sb1">B.1.1. Instalación de Sass</h3>
+        <p>
+          Para instalar Sass, cree un nuevo directorio de proyecto y navegue hasta él en su terminal. Luego ejecute los siguientes dos comandos:
+        </p>
+        <ul>
+          <li><code>npm init</code> - y Inicializa un nuevo proyecto npm, creando un archivo <em>package.json</em>. Consulte el <b>Capítulo 10 (sección 10.1.1)</b> para obtener más información sobre este archivo.</li>
+          <li><code>npm install --save-dev node-sass</code> - Instala el paquete <code>node-sass</code> y lo agrega a <em>package.json</em> como una dependencia de desarrollo.</li>
+        </ul>
+        <p>
+          La segunda decisión que deberá tomar es qué sintaxis utilizar. Sass admite dos: <em>Sass</em> y <em>SCSS</em>. Ambos ofrecen las mismas características, pero la sintaxis de Sass omite todos los rizos.llaves y punto y coma, usando estrictamente sangría para indicar la estructura de su código. Por ejemplo:
+        </p>
+        <pre>
+          <code class="container__base-code">
+body
+  font-family: Helvetica, sans-serif
+  color: black
+          </code>
+        </pre>
+        <p>
+          Esto es similar a los lenguajes de programación con espacios en blanco significativos, como Ruby y Python. La sintaxis de SCSS usa llaves y punto y coma, por lo que se parece más al CSS normal. Por ejemplo:
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  font-family: Helvetica, sans-serif;
+  color: black;
+}
+          </code>
+        </pre>
+        <p>
+          SCSS se usa más comúnmente. Si no está seguro, le sugiero que utilice SCSS, que es lo que utilizaré en este apéndice.
+        </p>
+        <h3 id="sb2">B.1.2. Corriendo Sass</h3>
+        <p>
+          Ahora que Sass está instalado, usémoslo para crear una hoja de estilo. En el directorio de su proyecto, cree dos subdirectorios llamados sass y build. Colocará sus archivos fuente en el directorio sass, y Sass usará esos archivos para producir un archivo CSS en el directorio de compilación. A continuación, edite el archivo package.json. Cambie la scriptsentrada para que coincida con este listado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+"scripts": {
+  "sass": "sass sass/index.scss build/styles.css"
+},
+          </code>
+          <small>Listado B.1. Agregar un comando sass a package.json</small>
+        </pre>
+        <p>
+          Esto define un comando <code>sass</code> que, cuando se ejecuta, compila el archivo en <em>sass/index.scss</em> en un nuevo archivo en <em>build/styles.css</em>. El archivo <em>sass/index.scss</em> aún no existe en su proyecto. Adelante, créalo. Tu código Sass entrará en este archivo. La ejecución <code>npm run sass</code> ejecuta el comando, produciendo (o sobrescribiendo) la hoja de estilo en <em>build/styles.css</em>.
+        </p>
+        <p>
+          Los complementos como <code>gulp-sass</code> están disponibles para corredores de tareas comunes como Grunt, Gulp y Webpack. Si desea utilizar un complemento, busque uno que integre Sass o Less en el flujo de trabajo con el que esté más familiarizado.
+        </p>
+        <h3 id="sb3">B.1.3. Comprender las características importantes de Sass</h3>
+        <p>
+          Te he mostrado un ejemplo de una variable Sass <code>($brand-blue)</code>. Agregue el código en la siguiente lista a su archivo <em>index.scss</em> para que Sass lo compile.
+        </p>
+        <pre>
+          <code class="container__base-code">
+$brand-blue: #0086b3;            1
+
+a:link {
+  color: $brand-blue;            2
+}
+
+.page-heading {
+  font-size: 1.6rem;
+  color: $brand-blue;            3
+}
+          </code>
+          <small>Listado B.2. Una variable de Sass</small>
+        </pre>
+        <ol class="index-code">
+          <li>Define una variable</li>
+          <li>Usa la variable</li>
+          <li>Usa la variable</li>
+        </ol>
+        <p>
+          Ejecutar <code>npm run sass</code> para compilar esto en CSS. El archivo de salida <em>(build/styles.css)</em> se verá así:
+        </p>
+        <pre>
+          <code class="container__base-code">
+a:link {
+  color: #0086b3; }
+
+.page-heading {
+  font-size: 1.6rem;
+  color: #0086b3; }
+
+<span>/*# sourceMappingURL=styles.css.map */</span>
+          </code>
+        </pre>
+        <p>
+          Las variables se han reemplazado con el valor hexadecimal, por lo que ahora el navegador puede entenderlo. Sass también produjo un archivo de mapa de origen y agregó un comentario al final de la hoja de estilo, dando una <em>ruta al mapa de origen</em>.
+        </p>
+        <p>
+          <em>mapa fuente:</em> un archivo que la computadora usa para rastrear cada línea de código generada (CSS, en nuestro caso) hasta el código fuente que lo produjo (Sass). Algunos depuradores pueden utilizar este archivo de mapa, incluidas las DevTools del navegador.
+        </p>
+        <p>
+          Tenga en cuenta que el código compilado no tiene un formato tan limpio; las llaves de cierre se colocan en la línea anterior y, en algunos casos, se eliminan las líneas vacías. Esto está bien porque los espacios en blanco no son importantes para el navegador. Pero, para el resto de los ejemplos en este apéndice, limpiaré el formato de salida para que su significado sea claro.
+        </p>
+        <h3>Computación en línea</h3>
+        <p>
+          Sass también soporta aritmética en línea usando +, -, *, /, y % (para la división modular). Esto le permite derivar varios valores a partir de un valor de origen, como se muestra a continuación.
+        </p>
+        <pre>
+          <code class="container__base-code">
+$padding-left: 3em;
+
+.note-author {
+  left-padding: $padding-left;           1
+  font-weight: bold;
+}
+
+.note-body {
+  left-padding: $padding-left * 2;       2
+}
+          </code>
+          <small>Listado B.3. Usar cálculos en línea</small>
+        </pre>
+        <ol class="index-code">
+          <li>Usa una variable</li>
+          <li>Multiplica la variable por dos</li>
+        </ol>
+        <p>
+          Úse <code>npm run sass</code> para compilar esto, que produce la salida:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.note-author {
+  left-padding: 3em;
+  font-weight: bold;
+}
+
+.note-body {
+  left-padding: 6em;
+}
+          </code>
+        </pre>
+        <p>
+          Esta función es útil cuando dos valores están relacionados, pero no son iguales. En este caso, a <code>note-body</code> siempre tendrá el doble de relleno izquierdo que a <code>note-author</code>, independientemente del valor de <code>$padding-left</code>.
+        </p>
+        <h3>Selectores anidados</h3>
+        <p>
+          Sass le permite anidar selectores dentro de otros bloques de declaración. Puede utilizar el anidamiento para agrupar el código relacionado en el mismo bloque, como se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.site-nav {
+  display: flex;
+
+  > li {                 1
+    margin-top: 0;
+
+    &.is-active {        2
+      display: block;
+    }
+  }
+}
+          </code>
+          <small>Listado B.4. Selectores de anidamiento</small>
+        </pre>
+        <ol>
+          <li>Selector anidado</li>
+          <li>Ampersand indica dónde se agregará el selector externo.</li>
+        </ol>
+        <p>
+          Sass fusiona selectores anidados con los selectores de los bloques de declaración externos. Este ejemplo se compila para:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.site-nav {
+  display: flex;
+}
+
+.site-nav > li {
+  margin-top: 0;
+}
+
+.site-nav > li.is-active {
+  font-weight: bold;
+}
+          </code>
+        </pre>
+        <p>
+          De forma predeterminada, el selector <code>.site-nav</code> externo se antepone a cada selector en el código compilado y se agrega un espacio donde se unen los selectores. Para cambiar esto, use un ampersand (&) para indicar dónde desea que se inserte el selector externo.
+        </p>
+        <p>
+          El anidamiento aumenta la especificidad de los selectores resultantes. Tenga cuidado al anidar y evite anidar a varios niveles de profundidad.
+        </p>
+        <pre>
+          <code class="container__base-code">
+html {
+  font-size: 1rem;
+
+  @media (min-width: 45em) {           1
+    font-size: 1.25rem;
+  }
+}
+          </code>
+          <small>Listado B.5. Anidar una consulta de medios</small>
+        </pre>
+        <ol>
+          <li>Consulta de medios dentro de un bloque de declaración</li>
+        </ol>
+        <p>
+          Esto se compila a:
+        </p>
+        <pre>
+          <code class="container__base-code">
+html {
+  font-size: 1rem;
+}
+
+@media (min-width: 45em) {
+  html {
+    font-size: 1.25rem;
+  }
+}
+          </code>
+        </pre>
+        <p>
+          De esta forma, si cambia un selector, no tendrá que acordarse de cambiar el selector correspondiente en una consulta de medios para que coincida.
+        </p>
+        <h3>Parciales (@import)</h3>
+        <p>
+          Los parciales le permiten dividir sus estilos en varios archivos separados, y Sass los concatenará todos juntos en un solo archivo. Con los parciales, puede organizar sus archivos como desee, pero solo sirve un archivo al navegador, lo que reduce la cantidad de solicitudes de red.
+        </p>
+        <p>
+          Cree un nuevo archivo en su proyecto como <em>sass/button.scss</em>. Agregue los estilos que se muestran aquí a este archivo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.button {
+  padding: 1em 1.25em;
+  background-color: #265559;
+  color: #333;
+}
+          </code>
+        </pre>
+        <p>
+          Luego, en <em>index.scss</em>, importe la hoja de estilo parcial usando la <code>@import</code> a la regla como se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@import "button";            1
+          </code>
+        </pre>
+        <ol>
+          <li>Ruta al archivo parcial</li>
+        </ol>
+        <p>
+          Cuando ejecute Sass, el archivo parcial se compilará e insertará donde indicó con la regla <code>@import</code>.
+        </p>
+        <p>
+          En mi opinión, esta es la característica más importante de un preprocesador. A medida que su hoja de estilo crece, resulta difícil de manejar desplazarse por miles de líneas de código para encontrar la parte apropiada de la hoja de estilo. Esta función le permite dividir la hoja de estilo en pequeños módulos lógicos, sin incurrir en una pérdida de rendimiento en la red. Consulte la barra lateral <b>"Preprocesadores y CSS modular"</b> en el <b>capítulo 9</b> para obtener más información al respecto.
+        </p>
+        <h3>Mixins</h3>
+        <p>
+          Un <em>mixin</em> es una pequeña parte de CSS que puede reutilizar en su hoja de estilo. Esto es útil cuando tiene un estilo de fuente en particular que necesita hacer coincidir en varios lugares, o para reglas que se repiten comúnmente, como <code>clearfix</code> (discutido en el <b>capítulo 4</b> , <b>sección 4.2</b>).
+        </p>
+        <p>
+          Un mixin se define usando una regla <code>@mixin</code> y se usa con una regla <code>@include</code>. Aquí hay un ejemplo de un mixin clearfix.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@mixin clearfix {                1
+  &::before {                    2
+    display: table;
+    content: " ";
+  }
+
+  &::after {                     2
+    clear: both;
+  }
+}
+
+.media {
+  @include clearfix;             3
+  background-color: #eee;
+}
+          </code>
+          <small>Listado B.8. Mixin Clearfix</small>
+        </pre>
+        <ol>
+          <li>Define un mixin llamado clearfix</li>
+          <li>Selectores anidados</li>
+          <li>Aplica el mixin</li>
+        </ol>
+        <p>
+          El preprocesador toma el código del mixin y lo copia en lugar de la regla <code>@include</code>. El código resultante se ve así:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.media {
+  background-color: #eee;
+}
+.media::before {
+  display: table;
+  content: " ";
+}
+.media::after {
+  clear: both;
+}
+          </code>
+        </pre>
+        <p>
+          Tenga en cuenta que no se menciona <code>clearfix</code> en el código resultante. El contenido del mixin solo se agrega a la hoja de estilo en el lugar o lugares donde se usa.
+        </p>
+        <p>
+          También puede definir mixins que toman parámetros, al igual que una función en la programación convencional. La siguiente lista muestra un mixin que define un cuadro de alerta. Toma dos parámetros, <code>$color</code> y <code>$bg-color</code>, que son variables definidas dentro del alcance del mixin.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@mixin alert-variant($color, $bg-color) {     1
+  padding: 0.3em 0.5em;
+  border: 1px solid $color;                   2
+  color: $color;                              2
+  background-color: $bg-color;                2
+}
+
+.alert-info {
+  @include alert-variant(blue, lightblue)     3
+}
+
+.alert-danger {
+  @include alert-variant(red, pink)           3
+}
+          </code>
+          <small>Listado B.9. Mixin con parámetros</small>
+        </pre>
+        <ol>
+          <li>Define un mixin con dos parámetros</li>
+          <li>Se pueden utilizar 2 variables de parámetro dentro del mixin.</li>
+          <li>Pasa valores al mixin</li>
+        </ol>
+        <p>
+          Cada vez que se usa el mixin, se pasan valores diferentes. Estos valores se asignan a las dos variables en consecuencia. Este fragmento produce la siguiente salida CSS:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.alert-info {
+  padding: 0.3em 0.5em;
+  border: 1px solid blue;
+  color: blue;
+  background-color: lightblue;
+}
+
+.alert-danger {
+  padding: 0.3em 0.5em;
+  border: 1px solid red;
+  color: red;
+  background-color: pink;
+}
+          </code>
+        </pre>
+        <p>
+          Nuevamente, el mixin le permite reutilizar el mismo fragmento de código varias veces, pero en este caso, produjo dos variaciones del mismo código. Estas diferencias se basan en los valores que pasó.
+        </p>
+        <p>
+          Históricamente, un uso común de los mixins ha sido mezclar versiones de una propiedad con prefijo de proveedor. Por ejemplo, un <code>border-radius</code> mixin podría especificar las propiedades <code>-webkit-border-radius</code>, <code>-moz-border-radius</code> y <code>border-radius</code>. Te animo a que no uses mixins para esto; utilice Autoprefixer en su lugar (para obtener más información sobre esto, consulte la sección <em>"PostCSS"</em> más adelante en este apéndice).
+        </p>
+        <h3>Ampliar</h3>
+        <p>
+          Sass también es compatible con una regla <code>@extend</code>. Esto es similar a un mixin, pero la forma en que se compila es diferente. En lugar de copiar las mismas declaraciones varias veces, Sass agrupa a los selectores para que estén todos en el mismo conjunto de reglas. Esto se explica mejor con un ejemplo. En la siguiente lista, el conjunto <code>.message</code> de reglas se amplía con los otros dos conjuntos de reglas.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.message {
+  padding: 0.3em 0.5em;
+  border-radius: 0.5em;
+}
+
+.message-info {
+  @extend .message;             1
+  color: blue;
+  background-color: lightblue;
+}
+
+.message-danger {
+  @extend .message;             1
+  color: red;
+  background-color: pink;
+}
+          </code>
+          <small>Listado B.10. Ampliando una clase base</small>
+        </pre>
+        <ol>
+          <li>Comparte estilos con la clase .message</li>
+        </ol>
+        <p>
+          Esto produce la siguiente salida:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.message,
+.message-info,
+.message-danger {
+  padding: 0.3em 0.5em;
+  border-radius: 0.5em;
+}
+
+.message-info {
+  color: blue;
+  background-color: lightblue;
+}
+
+.message-danger {
+  color: red;
+  background-color: pink;
+}
+          </code>
+        </pre>
+        <p>
+          Observe que Sass copió los selectores <code>.message-info</code> y <code>.message-danger</code> en el primer conjunto de reglas. El beneficio de esto es que su marcado solo necesita hacer referencia a una clase en lugar de dos: <code>&lt;div class="message message-info"></code> se convierte en <code>&lt;div class= "message-info"></code> porque la message-infoclase ahora también incluye todos los estilos para la messageclase, lo que hace que el uso de la messageclase sea redundante.
+        </p>
+        <p>
+          A diferencia de un mixin, <code>@extend</code> mueve el selector a una ubicación anterior en la hoja de estilo. Esto significa que es posible que el orden de origen de sus declaraciones no coincida con el esperado, lo que puede afectar la cascada.
+        </p>
+        <p>
+          La longitud de la salida de <code>@extend</code> es generalmente más corta que la de un mixin. Es fácil ver esto y pensar que es mejor porque la hoja de estilo resultante es más pequeña (y, por lo tanto, más rápida en la red). Pero es importante tener en cuenta que los mixins producen una gran cantidad de código repetido, y el código repetitivo se comprime muy bien cuando se comprime con gzip. Siempre que su servidor esté haciendo gzip en todo el tráfico de la red (lo que debería), estas ganancias suelen ser mucho menores de lo que cabría esperar.
+        </p>
+        <p>
+          No evite los mixins y utilícelos exclusivamente <code>@extend</code> para proporcionar algún tipo de optimización del rendimiento. Considere la organización de su código y cuál, combinado o extendido, tiene más sentido de usar caso por caso. En general, probablemente deberías preferir los mixins. Úselo solo <code>@extend</code> cuando desee acortar el número de nombres de clases necesarios en su HTML, como en el listado B.10.
+        </p>
+        <h3>Manipulación de color</h3>
+        <p>
+          Otra característica útil de Sass es una serie de funciones que le permiten manipular colores. Si necesita dos colores relacionados (por ejemplo, una versión más clara y más oscura del mismo verde), puede usar las funciones en la siguiente lista para producir los colores que necesita.
+        </p>
+        <pre>
+          <code class="container__base-code">
+$green: #63a35c;
+
+$green-dark: darken($green, 10%);        1
+$green-light: lighten($green, 10%);      2
+
+$green-vivid: saturate($green, 20%);     3
+$green-dull: desaturate($green, 20%);    3
+
+$purple: adjust-hue($green, 180deg);     4
+$yellow: adjust-hue($green, -70deg);     4
+
+$green-transparent: rgba($green, 0.5);   5
+          </code>
+          <small>Listado B.11. Funciones de color Sass</small>
+        </pre>
+        <ol>
+          <li>Se oscurece en un 10%</li>
+          <li>Aclara en un 10%</li>
+          <li>Ajusta la saturación del color</li>
+          <li>Gira el tono alrededor de la rueda de colores.</li>
+          <li>Ajusta la transparencia</li>
+        </ol>
+        <p>
+          Al usar estas funciones, puede editar el valor de una variable, pero permitir que el cambio afecte a otros colores relacionados. No tiene que almacenar el valor en una variable. Puede editarlo directamente en la propiedad donde lo necesite:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.page-header {
+  color: $green;
+  background-color: lighten($green, 50%);
+}
+          </code>
+        </pre>
+        <p>
+          Si necesita realizar manipulaciones más avanzadas, hay varias funciones de color más. Consulte <em>https://jackiebalzer.com/color</em> para obtener una referencia completa.
+        </p>
+        <h3>Bucles</h3>
+        <p>
+          Utilice bucles para iterar sobre un valor, produciendo ligeras variaciones. En el <b>capítulo 15</b>, utilicé varios <code>:nth-child()</code> selectores para apuntar a elementos de menú consecutivos, dando a cada uno un poco diferente <code>transition-delay</code> ( <b>listado 15.10</b>). Este tipo de código se puede hacer de manera más sucinta con un bucle Sass, que usa una regla <code>@for</code> arroba como se muestra en la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@for $index from 2 to 5 {                       1
+  .nav-links > li:nth-child(#{$index}) {        2
+    transition-delay: (0.1s * $index) – 0.1s;   3
+  }
+}
+          </code>s
+          <small>Listado B.12. Iterando sobre una serie de valores</small>
+        </pre>
+        <ol>
+          <li>Itera el valor del índice $ de 2 a 4</li>
+          <li>Usa la variable en el selector</li>
+          <li>Multiplica la variable por un valor de tiempo</li>
+        </ol>
+        <p>
+          Esto representa el mismo bloque de código varias veces, cada vez incrementando la variable <code>$index</code>. Observe que usé la variable en el selector, escapándola con la notación <code>#{}</code>. El código resultante se ve así:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav-links > li:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.nav-links > li:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.nav-links > li:nth-child(4) {
+  transition-delay: 0.3s;
+}
+          </code>
+        </pre>
+        <p>
+          En CSS simple, realizar cambios en este patrón puede resultar tedioso. Si decidiera incrementar el retardo de transición en 0,15 segundos, tendría que cambiar manualmente cada una de estas declaraciones a 0,15 segundos, 0,3 segundos y 0,45 segundos, sucesivamente. O, si quisiera agregar otra iteración, tendría que copiar manualmente un bloque y cambiar todos los valores. Pero con el ciclo Sass, estos cambios son una cuestión de editar la fórmula matemática o cambiar el recuento de iteraciones.
+        </p>
+        <h3>Es todo CSS</h3>
+        <p>
+          Los preprocesadores no cambian los fundamentos de CSS. Todo lo que cubrí en este libro todavía se aplica. No utilicé Sass en todo el libro porque quería dejar claro que los temas tratados son los elementos esenciales del lenguaje en sí, no de un preprocesador. Aún necesita comprender CSS para usar Sass. Pero Sass (o Less) puede eliminar gran parte del trabajo ocupado cuando se trabaja con CSS. Sass es una herramienta extremadamente útil. Te animo a que te familiarices con él.
+        </p>
+        <h2 id="tema2">B.2. PostCSS</h2>
+        <p>
+          PostCSS <em>(https://postcss.org/)</em> es un tipo diferente de preprocesador. Como Sass o Less, analiza un archivo fuente y genera un archivo CSS procesado. PostCSS, sin embargo, está completamente basado en complementos. Sin complementos, el archivo de salida sería una copia sin cambios del archivo de origen.
+        </p>
+        <p>
+          La funcionalidad que obtiene de PostCSS está totalmente determinada por los complementos que utiliza. Puede usar varios complementos que brinden la misma funcionalidad que Sass, o puede usar uno o dos complementos y ejecutar su código a través de Sass y PostCSS. Y, si lo desea, incluso puede escribir sus propios complementos en JavaScript.
+        </p>
+        <p>
+          Es importante tener en cuenta que PostCSS ejecuta complementos de forma secuencial. Si configura varios complementos, el orden en que se ejecutan es a veces significativo y puede ser necesario un poco de prueba y error para que PostCSS funcione de la manera deseada. Consulte la documentación de PostCSS para obtener ayuda con esta configuración.
+        </p>
+        <h4>Nota</h4>
+        <p>
+          Inicialmente, PostCSS se denominó posprocesador porque generalmente se ejecuta después del preprocesador. Sin embargo, PostCSS se ha alejado de este término en particular, ya que implica un alcance más limitado de todo lo que la herramienta puede ofrecer.
+        </p>
+        <h3 id="sb4">B.2.1. Usando Autoprefixer</h3>
+        <p>
+          Quizás el complemento más importante para PostCSS es Autoprefixer. Este complemento agrega todos los prefijos de proveedores apropiados a su CSS. Para obtener más información sobre los prefijos de proveedores, consulte la barra lateral <em>"Prefijos de proveedores"</em> en el <b>capítulo 5</b>.
+        </p>
+        <p>
+          Si su código fuente se ve así:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.example {
+    display: flex;
+    transition: all 0.5s;
+    background: linear-gradient(to bottom, white, black);
+}
+          </code>
+        </pre>
+        <p>
+          Autoprefixer agrega declaraciones adicionales, proporcionando alternativas con prefijos del proveedor a los navegadores más antiguos, y luego genera:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.example {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+    background: -webkit-gradient(linear, left top, left bottom, from(white),
+    to(black));
+    background: linear-gradient(to bottom, white, black);
+}
+          </code>
+        </pre>
+        <p>
+          Si tuviera que escribir todos estos prefijos de proveedores a mano, sería tedioso y propenso a errores. También agrega mucho desorden a su código fuente en el que probablemente preferiría no tener que pensar cuando trabaja.
+        </p>
+        <p>
+          Puede configurar Autoprefixer con una lista de navegadores que desea admitir, y agregará prefijos de proveedores cuando sea necesario para admitir esos navegadores. Por ejemplo, configurarlo con la matriz <code>["ie >= 10", "last 2"]</code> garantiza que su código sea compatible (cuando sea posible) con IE10 y versiones posteriores, y las dos últimas versiones de todos los demás navegadores. Autoprefixer utiliza los datos más recientes de la base de datos <em>caniuse.com</em> para determinar cuándo se necesitan prefijos.
+        </p>
+        <p>
+          Le recomiendo encarecidamente que utilice Autoprefixer, incluso si no utiliza ningún otro complemento de PostCSS. A lo largo del libro, no incluyo prefijos de proveedores en mis ejemplos de código, suponiendo que usará Autoprefixer para hacer esto por usted.
+        </p>
+        <h3 id="sb5">B.2.2. Usando cssnext</h3>
+        <p>
+          Otro complemento popular de PostCSS (o más bien, un paquete de complementos) es cssnext <em>(https://cssnext.io/)</em>. Estos complementos intentan emular sintaxis CSS futuras que aún no son compatibles con todos los navegadores (y algunas de las cuales no están finalizadas en la especificación CSS). En muchos sentidos, esto es como usar un polyfill para futuras funciones de CSS.
+        </p>
+        <p>
+          Muchas de las características de este complemento son similares a las proporcionadas por Sass: selectores de anidamiento, comportamiento similar al mixin usando una regla <code>@apply</code> y funciones de manipulación de color. Autoprefixer también se incluye en este paquete. Consulte <em>https://cssnext.io/features/</em> para obtener una lista completa de las funciones del complemento.
+        </p>
+        <p>
+          Tenga en cuenta que algunas de estas características aún se encuentran en las primeras etapas de desarrollo del W3C y es casi seguro que cambiarán antes de ser finalizadas. Utilice cssnext si desea familiarizarse con algunas funciones de CSS emergentes, pero no lo recomiendo como su único conjunto de reglas de preprocesador. Como los navegadores agregan soporte nativo para algunas de las características de cssnext, puede ser difícil pasar de procesarlas usando PostCSS a usarlas de forma nativa en el navegador; Es una buena idea mantener las reglas del preprocesador separadas de las reglas con relleno múltiple.
+        </p>
+        <h3 id="sb6">B.2.3. Usando cssnano</h3>
+        <p>
+          cssnano <em>(https://cssnano.co/)</em> es un minificador basado en PostCSS. Un minificador elimina todos los espacios en blanco extraños de su código y lo hace lo más pequeño posible, sin dejar de mantener el mismo significado sintáctico.
+        </p>
+        <h4>Nota</h4>
+        <p>
+          La minificación no reemplaza la compresión gzip, que debe aplicar su servidor. En general, es una buena práctica tanto minificar como gzip CSS para que la red acelere el tiempo de carga.
+        </p>
+        <p>
+          Hay varios minificadores de CSS disponibles, pero podría tener más sentido hacer esto como parte de su proceso de compilación de PostCSS, en lugar de en un paso separado. cssnano le permite hacer esto.
+        </p>
+        <h3 id="sb7">B.2.4. Usando PreCSS</h3>
+        <p>
+          PreCSS <em>(https://github.com/jonathantneal/precss)</em> es un paquete de complementos PostCSS que proporciona varias funciones similares a las de Sass. Esto incluye variables <code>$</code>, cálculo en línea, bucles y mixins.
+        </p>
+        <p>
+          Si se siente ineficiente ejecutar su código a través de un preprocesador de Sass y PostCSS, considere reemplazar Sass con el paquete de complementos PreCSS para PostCSS. Sin embargo, no es perfectamente idéntico a Sass, así que consulte la documentación de PreCSS si elige seguir esta ruta. También es una herramienta más nueva y puede que no sea tan estable como Sass.
+        </p>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Sass</a></li>
+        <li><a href="#sb1">- Instalación de Sass</a></li>
+        <li><a href="#sb2">- Corriendo Sass</a></li>
+        <li><a href="#sb3">- Comprender las características importantes de Sass</a></li>
+        <li><a href="#tema2">PostCSS</a></li>
+        <li><a href="#sb4">- Usando Autoprefixer</a></li>
+        <li><a href="#sb5">- Usando cssnext</a></li>
+        <li><a href="#sb6">- Usando cssnano</a></li>
+        <li><a href="#sb7">- Usando PreCSS</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 8</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 8. Diseño Responsivo</h1>
+      <div>
+        <a href="ch_07.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_09.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este Capítulo habla sobre:</em></h4>
+      <ul>
+        <li>Creación de páginas web para varios dispositivos y tamaños de pantalla</li>
+        <li>Uso de <em translate="no">media queries</em> para modificar su diseño según el tamaño de la ventana gráfica</li>
+        <li>Adopción del enfoque <em translate="no">"mobile first"</em></li>
+        <li>Imágenes <em translate="no">Responsive</em></li>
+      </ul>
+      <p>
+        En nuestro mundo moderno, la web está en todas partes. Lo usamos en nuestro escritorio en nuestra oficina. Nos acostamos en la cama navegando en nuestra tableta. Incluso está en algunas de nuestras pantallas de televisión en la sala de estar. Y lo llevamos a todas partes con nosotros en nuestros teléfonos inteligentes. La plataforma web de <em>HTML, CSS y JavaScript</em> es un ecosistema universal que no se parece a nada que haya existido antes.
+      </p>
+      <p>
+        Esto plantea un problema interesante para nosotros como desarrolladores web: ¿cómo diseñamos nuestro sitio para que sea utilizable y atractivo en cualquier dispositivo que nuestros usuarios puedan usar para acceder a él? Inicialmente, muchos desarrolladores abordaron este problema creando dos sitios web: escritorio y móvil. Luego, el servidor redirigió los dispositivos móviles de https://www.wombatcoffee.com a https://m.wombatcoffee.com. Este sitio web móvil generalmente ofrecería una experiencia más mínima y un diseño optimizado para pantallas más pequeñas.
+      </p>
+      <p>
+        Este enfoque comenzó a fallar a medida que aparecían más y más dispositivos en el mercado. ¿Dirige una tableta al sitio web móvil o al escritorio? ¿Qué tal un gran teléfono "phablet"? ¿Un iPad Mini? ¿Qué sucede si un usuario móvil desea realizar una acción que solo tiene disponible en la versión de escritorio de su sitio? Al final, una dicotomía forzada entre el escritorio y el móvil causa más problemas de los que resuelve. Además, debe mantener un sitio web adicional para que funcione.
+      </p>
+      <p>
+        Un enfoque mucho mejor es ofrecer el mismo <em>HTML y CSS</em> a todos sus usuarios. Mediante el uso de algunas técnicas clave, puede hacer que su contenido se represente de manera diferente, según el tamaño de la ventana gráfica del navegador de su usuario (o, ocasionalmente, según la resolución de la pantalla). De esta forma, no necesita dos sitios web distintos. Creas un sitio web que funciona en un teléfono inteligente, una tableta o cualquier otra cosa que le eches. Este enfoque, popularizado por el diseñador web <em>Ethan Marcotte</em>, se denomina <em translate="no">responsive design</em>.
+      </p>
+      <p>
+        Mientras navega por la web, tome nota de los diseños receptivos que encuentre. Vea cómo los sitios web responden a los diferentes anchos de navegador. Los sitios de periódicos son particularmente interesantes porque tienen mucho contenido abarrotado en la página. En el momento de escribir este artículo, <em>www.bostonglobe.com/</em> es un gran ejemplo, que ofrece un diseño de una, dos o tres columnas según el ancho de la ventana de su navegador. Por lo general, puede cambiar el tamaño del ancho de la ventana del navegador y ver que el diseño de la página responde de inmediato. Este es un diseño receptivo en el trabajo.
+      </p>
+      <p>
+        Los tres principios clave del <em translate="no">responsive design</em>:
+      </p>
+      <ol>
+        <li>Un <em translate="no">mobile first</em> enfoque del diseño. Esto significa que crea la versión móvil antes de construir el diseño del escritorio.</li>
+        <li>La regla de <code>@media</code>. Con esta regla, puede adaptar sus estilos para ventanas gráficas de diferentes tamaños. Esta sintaxis (a menudo llamada <em translate="no">media queries</em>) le permite escribir estilos que solo se aplican bajo ciertas condiciones.</li>
+        <li>El uso de diseños fluidos. Este enfoque permite que los contenedores se escalen a diferentes tamaños según el ancho de la ventana gráfica.</li>
+      </ol>
+      <p>
+        Este capítulo analiza estos tres principios. Comencemos por crear una página <em translate="no">responsive</em>, y las descompondré a medida que avanzamos. Después de eso, también echaremos un vistazo a las imágenes, que requieren consideraciones especiales en los sitios <em translate="no">responsive</em>.
+      </p>
+      <section id="tema1">
+        <h2>8.1 <span translate="no">MOBILE FIRST</span></h2>
+        <p>
+          El primer principio del diseño <em translate="no">responsive</em> es el <em translate="no">mobile first</em>. Como se mencionó, esto significa exactamente lo que parece: usted crea su diseño móvil antes de construir el escritorio. Esta es la mejor manera de asegurarse de que ambas versiones funcionen.
+        </p>
+        <p>
+          Desarrollar para dispositivos móviles es un ejercicio de limitaciones. El espacio de la pantalla es limitado. La red suele ser más lenta. El usuario de un dispositivo móvil utiliza un conjunto diferente de controles interactivos. Escribir es posible, pero engorroso. El usuario no puede pasar el cursor sobre los elementos para activar efectos. Si comienza diseñando un sitio web interactivo completo y luego intenta reducirlo para cumplir con estas limitaciones, a menudo fracasará.
+        </p>
+        <p>
+          En cambio, el enfoque <em translate="no">mobile first</em> dicta que diseñe su sitio con estas limitaciones en mente desde el principio. Una vez que su experiencia móvil funcione (o al menos esté planificada), puede utilizar la <em>"mejora progresiva"</em> para aumentar la experiencia de los usuarios de pantallas grandes.
+        </p>
+        <p>
+          La Figura 8.1 muestra la página que va a crear. Lo adivinaste, ese es el diseño móvil.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/01.jpg" alt="ibid">
+          <figcaption>Figura 8.1. Diseño de página móvil</figcaption>
+        </figure>
+        <p>
+          Esta página tiene tres componentes principales: un <code>header</code>, la imagen principal con un poco de texto superpuesto y el contenido principal. También puede mostrar un menú oculto tocando o haciendo clic en el icono en la parte superior derecha (figura 8.2). Este ícono, con tres líneas horizontales, a menudo se llama ícono de <em translate="no">hamburger</em> porque se parece a los bollos y la hamburguesa de una hamburguesa.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/02.jpg" alt="ibid">
+          <figcaption>Figura 8.2. Página móvil con el menú abierto al hacer clic o tocar el ícono de hamburguesa</figcaption>
+        </figure>
+        <p>
+          Un diseño móvil es principalmente un diseño sencillo. Aparte del menú interactivo, este diseño está muy centrado en el contenido. En pantallas más grandes, puede permitirse dedicar mucho espacio a cosas como el <code>header</code>, la imagen principal y el menú. Pero en los dispositivos móviles, los usuarios suelen estar más orientados a las tareas. Es posible que salgan con sus amigos y quieran encontrar rápidamente el horario de la tienda u otra información específica, como un precio o una dirección.
+        </p>
+        <p>
+          Un diseño móvil tiene que ver con el contenido. Considere un diseño de escritorio que tiene un artículo en un lado y una barra lateral en el otro, donde la barra lateral tiene enlaces y elementos menos importantes. Deberá asegurarse de que el artículo aparezca primero en el diseño del dispositivo móvil. Esto significa que querrá que el contenido más importante aparezca primero en el HTML. Convenientemente, esto coincide con las preocupaciones de accesibilidad: un lector de pantalla accede directamente a las <em>"cosas buenas"</em>, o un usuario que navega a través del teclado llega a los enlaces del artículo antes que a los de la barra lateral.
+        </p>
+        <p>
+          Dicho esto, esta no siempre es una regla estricta y rápida. Probablemente podrías argumentar que tu imagen principal no es tan importante como el contenido que se encuentra debajo. Pero es una parte sorprendente del diseño; entonces, en este caso, creo que vale la pena tener esa imagen cerca de la parte superior de la página. También contiene poco contenido, por lo que se necesita un esfuerzo mínimo para navegar más allá de él.
+        </p>
+        <p>
+          Al escribir el HTML para un diseño <em translate="no">responsive</em>, es importante asegurarse de que tenga todo lo que necesita para cada tamaño de pantalla. Puede aplicar CSS diferente para cada instancia, pero todas deben compartir el mismo HTML.
+        </p>
+        <p>
+          Ahora, consideremos nuestro diseño para ventanas gráficas más grandes. Primero codificará el diseño para dispositivos móviles, pero tener en cuenta su diseño general lo ayudará a guiar sus decisiones mientras lo hace. Para este ejercicio, agregará un <em translate="no">breakpoint</em> mediano y grande. La figura 8.3 muestra el diseño del medio.
+        </p>
+        <p>
+          <em translate="no">Breakpoint:</em> es un punto particular en el que los estilos de página cambian para proporcionar el mejor diseño posible para el tamaño de la pantalla.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/03.jpg" alt="ibid">
+          <figcaption>Figura 8.3. Página en ventana gráfica de tamaño mediano</figcaption>
+        </figure>
+        <p>
+          Con este tamaño de ventana gráfica, tiene un poco más de espacio para trabajar. El encabezado y la imagen pueden permitirse más <code>padding</code>. Los elementos del menú pueden caber uno al lado del otro en una línea, por lo que ya no es necesario ocultarlos y el icono de la hamburguesa desaparece porque no lo necesita para abrir el menú. Ahora el contenido principal se puede organizar en tres columnas de igual ancho. La mayoría de los elementos se llenan hasta <code>1me</code> de los lados de la ventana gráfica.
+        </p>
+        <p>
+          La ventana gráfica más grande será la misma, pero aumentará los márgenes a los lados de la página y hará que la imagen principal sea aún más grande. Este diseño se muestra en la figura 8.4.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/04.jpg" alt="ibid">
+          <figcaption>Figura 8.4. Página en ventana gráfica grande</figcaption>
+        </figure>
+        <p>
+          Debido a que primero creará el diseño <em translate="no">mobile first</em>, es importante tener una idea de cómo se verán las ventanas gráficas más grandes, ya que eso puede influir en la estructura del <em>HTML</em>. Cree una nueva página web y hoja de estilo. Vincule la hoja de estilo y agregue la lista 8.1 al <code>&lt;body&gt;</code> del <em>HTML</em>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;header id="header" class="page-header"&gt;
+  &lt;div class="title"&gt;
+    &lt;h1&gt;Wombat Coffee Roasters&lt;/h1&gt;
+    &lt;div class="slogan"&gt;We love coffee&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+
+&lt;nav class="menu" id="main-menu"&gt;
+  &lt;button class="menu-toggle" id="toggle-menu"&gt;             1
+    toggle menu
+  &lt;/button&gt;
+  &lt;div class="menu-dropdown"&gt;                               2
+    &lt;ul class="nav-menu"&gt;
+      &lt;li&gt;&lt;a href="/about.html"&gt;About&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/shop.html"&gt;Shop&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/menu.html"&gt;Menu&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/brew.html"&gt;Brew&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;aside id="hero" class="hero"&gt;
+  Welcome to Wombat Coffee Roasters! We are
+  passionate about our craft, striving to bring you
+  the best hand-crafted coffee in the city.
+&lt;/aside&gt;
+
+&lt;main id="main"&gt;
+  &lt;div class="row"&gt;                                         3
+    &lt;section class="column"&gt;                                3
+      &lt;h2 class="subtitle"&gt;Single-origin&lt;/h2&gt;
+      &lt;p&gt;We have built partnerships with small farms
+        around the world to hand-select beans at the
+        peak of season. We then carefully roast in
+        &lt;a href="/batch-size.html"&gt;small batches&lt;/a&gt;
+        to maximize their potential.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section class="column"&gt;                                3
+      &lt;h2 class="subtitle"&gt;Blends&lt;/h2&gt;
+      &lt;p&gt;Our tasters have put together a selection of
+        carefully balanced blends. Our famous
+        &lt;a href="/house-blend.html"&gt;house blend&lt;/a&gt;
+        is available year round.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section class="column"&gt;                                3
+      &lt;h2 class="subtitle"&gt;Brewing Equipment&lt;/h2&gt;
+      &lt;p&gt;We offer our favorite kettles, French
+        presses, and pour-over cones. Come to one of
+        our &lt;a href="/classes.html"&gt;brewing
+        classes&lt;/a&gt; to learn how to brew the perfect
+        pour-over cup.&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+          </code>
+          <small>Listado 8.1. Marcado de página para un diseño receptivo</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega el botón de hamburguesa para un menú móvil</li>
+          <li>Menú principal que estará oculto por defecto en dispositivos móviles</li>
+          <li>Agrega filas y columnas para ventanas gráficas medianas y grandes</li>
+        </ol>
+        <p>
+          En este marcado, el <em>botón para alternar</em> el menú para pantallas móviles está dentro del elemento de navegación. El <code>nav-menu</code> se coloca donde puede satisfacer sus necesidades para diseños móviles y de escritorio. Y las clases de <code>row</code> y <code>column</code> están en su lugar para permitir el diseño de escritorio. (Es posible que no sepa todo esto desde el principio, lo cual está bien).
+        </p>
+        <p>
+          Comencemos a diseñar la página. Primero, agregará algunos de los estilos más simples, como la fuente, los títulos y los colores, como se muestra en la figura 8.5. Debido a que en este momento nos preocupan los estilos de dispositivos móviles, cambie el tamaño de su navegador a un tamaño más estrecho para imitar un dispositivo móvil. Esto ayuda a mostrarle cómo se verá la página en una pantalla pequeña.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/05.jpg" alt="ibid">
+          <figcaption>Figura 8.5. Se aplicó el primer conjunto de estilos</figcaption>
+        </figure>
+        <p>
+          Estos estilos se dan en el listado 8.2. Agréguelos a su hoja de estilo para establecer el tamaño del <code>border-box</code>, la fuente y los colores de los enlaces. La lista agrega el tamaño de fuente <em translate="no">responsive</em> basado en la ventana gráfica que aprendió en el capítulo 2 6#40;sección 2.4.1). Luego, define estilos para el encabezado y el cuerpo principal de la página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+:root {
+  box-sizing: border-box;
+  font-size: calc(1vw + 0.6em);                  1
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+a:link {
+  color: #1476b8;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:visited {
+  color: #1430b8;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  color: #b81414;
+}
+
+.page-header {                                   2
+  padding: 0.4em 1em;
+  background-color: #fff;
+}
+
+.title &gt; h1 {                                    2
+  color: #333;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  margin: 0.2em 0;
+}
+
+.slogan {                                        2
+  color: #888;
+  font-size: 0.875em;
+  margin: 0;
+}
+
+.hero {
+  padding: 2em 1em;
+  text-align: center;
+  background-image: url(coffee-beans.jpg);       3
+  background-size: 100%;
+  color: #fff;
+  text-shadow: 0.1em 0.1em 0.3em #000;           4
+}
+
+main {                                          5
+  padding: 1em;
+}
+
+.subtitle {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+          </code>
+          <small>Listado 8.2. Agregar estilos iniciales para la página</small>
+        </pre>
+        <ol class="index-code">
+          <li>El tamaño de fuente base se escala ligeramente con la ventana gráfica.</li>
+          <li>Encabezado y título de la página</li>
+          <li>Agrega la imagen principal a la página</li>
+          <li>Una sombra de texto oscura ayuda a que el texto claro siga siendo legible frente a un fondo complejo.</li>
+          <li>Contenido principal</li>
+        </ol>
+        <p>
+          Estos estilos son en su mayoría sencillos. Transforman el título de la página y los subtítulos en el cuerpo a mayúsculas. Añaden algunos márgenes y relleno, y ajustan los tamaños de fuente para los distintos componentes de la página.
+        </p>
+        <p>
+          La propiedad <code>text-shadow</code> en la imagen principal puede ser nueva para ti. Consiste en varios valores que juntos definen una sombra para agregar detrás del texto. Los dos primeros valores son <em>coordenadas cartesianas</em>, que indican qué tan lejos debe desplazarse la sombra de la posición del texto. Los valores <code>0.1em 0.1em</code> desplazan la sombra ligeramente hacia la derecha y hacia abajo. El tercer valor <code>(0.3em)</code> indica cuánto difuminar la sombra. Finalmente, <code>#000</code> define el color de la sombra.
+        </p>
+        <h3 id="sub1">8.1.1. Creando un menú móvil</h3>
+        <p>
+          En este punto, te quedas con la parte más complicada de la página: el menú. Construyamos eso ahora. Cuando haya terminado, se verá como la figura 8.6.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/05.jpg" alt="ibid">
+          <figcaption>Figura 8.6. Menú de navegación abierto en un dispositivo móvil</figcaption>
+        </figure>
+        <p>
+          Escribir código en cualquier idioma es a menudo un proceso iterativo y CSS no es diferente. Para esta página, el menú tomó una cuidadosa consideración. Originalmente intenté colocar el <code>&lt;nav&gt;</code> dentro del <code>&lt;header&gt;</code> porque ahí es donde quería que apareciera el botón de <em>hamburguesa</em>. Pero después de comenzar con CSS, me di cuenta de que debería mantener los dos elementos como hermanos porque esto les permite apilarse naturalmente en el diseño del escritorio. A veces se necesitan algunas pasadas sobre ciertas partes del HTML para hacerlo bien.
+        </p>
+        <p>
+          Funcionalmente, este menú es muy parecido al menú desplegable que creó en el último capítulo (listado 7.6). Inicialmente, ocultará el <code>menu-dropdown</code>. Luego, en lugar de usar un efecto de <code>hover</code>, agregará algunas funciones de JavaScript adecuadas. Cuando el usuario hace clic (o toca) el <code>menu-toggle</code>, aparecerá el menú desplegable. Al hacer clic por segunda vez, se oculta el menú.
+        </p>
+        <p>
+          Los lectores de pantalla utilizan ciertos elementos HTML5 como <code>&lt;form&gt;, &lt;main&gt;, &lt;nav&gt;</code> y <code>&lt;aside&gt;</code> como puntos de referencia. Esto ayuda a los usuarios con problemas de visión a navegar rápidamente por la página. Es importante que coloque el botón para revelar su menú dentro de <code>&lt;nav&gt;</code> para que sea rápidamente visible cuando el usuario navegue allí. De lo contrario, el usuario saltaría al <code>&lt;nava&gt;</code> solo para encontrarlo vacío (el lector de pantalla ignora el menú desplegable cuando se aplica <code>display: none</code>).
+        </p>
+        <p>
+          Los menús de hamburguesas se han vuelto populares en los últimos años. Pueden resolver el problema de colocar más en una pantalla pequeña, pero tienen un costo. Se ha demostrado que ocultar elementos importantes (como el menú de navegación principal) reduce la interacción del usuario con esos elementos.
+        </p>
+        <p>
+          Estas son consideraciones que deberá evaluar con su equipo o diseñador. A veces son la elección correcta; otras veces, puede que no lo sean. Independientemente, es importante conocer las técnicas involucradas en la creación de un menú de hamburguesas.
+        </p>
+        <p>
+          En el listado 8.1, observe que el <code>&lt;nav&gt;</code> aparece después del <code>&lt;header&gt;</code> como un elemento hermano. Esto significa que fluirá hacia el espacio debajo del encabezado. Tendrá que hacer una cosa inusual aquí para que coincida con el diseño: usará el posicionamiento absoluto para tirar del botón de <code>menu-toggle</code> hacia arriba para que aparezca dentro del elemento del encabezado. Agregue este listado a su hoja de estilo para diseñar el menú.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.menu {
+  position: relative;                    1
+}
+
+.menu-toggle {
+  position: absolute;
+  top: -1.2em;                           2
+  right: 0.1em;
+
+  border: 0;                             3
+  background-color: transparent;
+
+  font-size: 3em;
+  width: 1em;
+  height: 1em;
+  line-height: 0.4;
+  text-indent: 5em;                      4
+  white-space: nowrap;
+  overflow: hidden;
+}
+.menu-toggle::after {
+  position: absolute;
+  top: 0.2em;
+  left: 0.2em;
+  display: block;
+  content: "\2261";                      5
+  text-indent: 0;
+}
+
+.menu-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: 0;
+}
+
+.menu.is-open .menu-dropdown {
+  display: block;                       6
+}
+          </code>
+          <small>Listado 8.3. Estilos de menú para móviles</small>
+        </pre>
+        <ol class="index-code">
+          <li>Establece un bloque de contención para ambos niños en posición absoluta</li>
+          <li>Una parte superior negativa tira del botón hacia arriba fuera de su bloque contenedor.</li>
+          <li>Anula los estilos de los botones del agente de usuario</li>
+          <li>Oculta el contenido de texto del botón y fija su tamaño en 1em</li>
+          <li>Superpone el botón con un símbolo Unicode, el icono de hamburguesa</li>
+          <li>Muestra el menú desplegable cuando la clase está abierta se agrega al menú</li>
+        </ol>
+        <p>
+          Están sucediendo muchas cosas aquí, pero se trata principalmente de una serie de técnicas que ya ha visto. El menú está relativamente posicionado para establecer un bloque contenedor para sus dos elementos secundarios: el botón de alternancia y el menú desplegable. El botón de alternancia se tira hacia arriba con una parte superior negativa, y la propiedad derecha lo coloca en el lado derecho de la pantalla. Esto hace que aparezca en el encabezado a la derecha del título de la página.
+        </p>
+        <p>
+          Luego, usa un truco de reemplazo en el botón: un ancho restringido, una sangría de texto grande y un desbordamiento oculto funcionan juntos para ocultar el texto del botón (<em translate="no">toggle menu</em>). Luego le da al pseudo-elemento <code>::after</code> del botón un carácter Unicode (\2261) para su contenido. Este carácter es un símbolo matemático con tres líneas horizontales: un menú de <em>hamburguesa</em>. Si desea personalizar aún más el icono, puede usar una imagen de fondo en el pseudoelemento.
+        </p>
+        <p>
+          Si no está seguro de por qué se utiliza alguno de estos estilos en particular, coméntelos y observe el efecto que tienen en la página. La página se verá un poco divertida en una ventana gráfica grande; cambie el tamaño de la ventana de su navegador a un tamaño más estrecho para una mejor aproximación del aspecto móvil.
+        </p>
+        <p>
+          La clase <code>is-open</code> es un nuevo <em>"truco"</em>. Cuando esta clase está presente, el selector final <code>(.menu.is-open .menu-dropdown)</code> apunta al menú desplegable. Cuando esta clase está ausente, el selector no lo hará. Esto habilita la funcionalidad del menú desplegable. La Figura 8.7 muestra el menú desplegable antes de que se aplique el resto del estilo (observe los cuatro enlaces frente a la imagen principal de la izquierda).
+        </p>
+        <figure>
+          <img src="../img_css/cap8/07.jpg" alt="ibid">
+          <figcaption>Figura 8.7. Botón de hamburguesa funcionando</figcaption>
+        </figure>
+        <p>
+          El JavaScript en el listado 8.4 agrega y elimina la clase <code>is-open</code> cuando se presiona el botón de alternancia. Agréguelo a su página antes de la etiqueta de cierre <code>&lt;body&gt;</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;script type="text/javascript"&gt;
+(function () {
+  var button = document.getElementById('toggle-menu');
+  button.addEventListener('click', function(event) {         1
+    event.preventDefault();
+    var menu = document.getElementById('main-menu');
+    menu.classList.toggle('is-open');                        2
+  });
+})();
+&lt;/script&gt;
+          </code>
+          <small>Listado 8.4. JavaScript para la funcionalidad desplegable</small>
+        </pre>
+        <ol class="index-code">
+          <li><em translate="no">Click-event listener</em> (también se activa en un evento de toque de pantalla táctil)</li>
+          <li>2 Alterna la clase <code>is-open</code> en el menú</li>
+        </ol>
+        <p>
+          Ahora, cuando haga clic en el icono de la <em>hamburguesa</em>, debería abrir el menú desplegable. Puede ver el texto del menú delante del contenido detrás de él. Vuelva a hacer clic en la <em>hamburguesa</em> para cerrarla. De esta forma, el CSS hará el trabajo de mostrar y ocultar los elementos correctos; <em>JavaScript</em> solo necesita cambiar el nombre de una clase.
+        </p>
+        <p>
+          Ahora que el menú desplegable funciona, el <code>nav-menu</code> necesita algo de estilo. Agregue este listado a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav-menu {
+  margin: 0;
+  padding-left: 0;
+  border: 1px solid #ccc;
+  list-style: none;
+  background-color: #000;
+  color: #fff;
+}
+
+.nav-menu &gt; li + li {              1
+  border-top: 1px solid #ccc;
+}
+
+.nav-menu &gt; li &gt; a {
+  display: block;
+  padding: 0.8em 1em;              2
+  color: #fff;
+  font-weight: normal;
+}
+          </code>
+          <small>Listado 8.5. Aplicar estilo al menú de navegación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aplica un borde entre cada elemento del menú</li>
+          <li>Utiliza una buena cantidad de acolchado para garantizar una gran área en la que se puede hacer clic</li>
+        </ol>
+        <p>
+          Una vez más, esto no es nada nuevo. Como el menú es una lista <code>(&lt;ul&gt;)</code>, anula el relleno izquierdo del agente de usuario y elimina las viñetas de la lista. El combinador de hermanos adyacente apunta a todos los elementos del menú excepto al primero, agregando un borde entre cada elemento.
+        </p>
+        <p>
+          Una cosa importante a tener en cuenta aquí es el relleno en los enlaces de los elementos del menú. Está diseñando para dispositivos móviles, que normalmente son pantallas táctiles. Las áreas clave en las que se puede hacer clic deben ser grandes y fáciles de tocar con un dedo.
+        </p>
+        <p>
+          Al diseñar para dispositivos móviles con pantalla táctil, asegúrese de que todos los elementos de acción clave sean lo suficientemente grandes como para tocarlos fácilmente con un dedo. No haga que sus usuarios se acerquen para tocar con precisión un botón o enlace diminuto.
+        </p>
+        <h3 id="sub2">8.1.2. Agregar la metaetiqueta de la ventana gráfica</h3>
+        <p>
+          En esta etapa, el diseño de su dispositivo móvil está completo, pero falta un detalle importante: la <em>metaetiqueta</em> de la ventana gráfica. Se trata de una etiqueta HTML que le indica a los dispositivos móviles que diseñó intencionalmente para pantallas pequeñas. Sin él, un navegador móvil asume que su página no responde e intentará emular un navegador de escritorio. Todo su arduo trabajo en un diseño móvil será en vano. No queremos eso. Actualice el <code>&lt;head&gt;</code> de su HTML para incluir la <em>metaetiqueta</em> como se muestra en la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport"                                1
+    content="width=device-width, initial-scale=1"&gt;     1
+  &lt;title&gt;Wombat Coffee Roasters&lt;/title&gt;
+  &lt;link href="styles.css" /&gt;
+&lt;/head&gt;
+          </code>
+          <small>Listado 8.6. Agregar la metaetiqueta de la ventana gráfica para la capacidad de respuesta móvil</small>
+        </pre>
+        <ol class="index-code">
+          <li>1 metaetiqueta de ventana gráfica</li>
+        </ol>
+        <p>
+          El atributo de contenido de la <em>metaetiqueta</em> indica dos cosas. Primero, le dice al navegador que use el ancho del dispositivo como el ancho asumido al interpretar el CSS, en lugar de pretender ser un navegador de escritorio de tamaño completo. En segundo lugar, utiliza <code>initial-scale</code> para establecer el nivel de zoom al <code>100%</code> cuando se carga la página.
+        </p>
+        <p>
+          Las <em>DevTools</em> en los navegadores modernos brindan la capacidad de emular un navegador móvil, incluido un tamaño de ventana gráfica más pequeño y el comportamiento de la <em>metaetiqueta</em> de la ventana gráfica. Estas son herramientas útiles para probar su diseño receptivo. Para obtener más información sobre estos modos, consulte https://developers.google.com/web/tools/chrome-devtools/device-mode/ (Chrome) o https://developer.mozilla.org/en-US/docs/ Herramientas / Responsive_Design_Mode (Firefox).
+        </p>
+        <p>
+          Hay otras opciones disponibles, pero lo más probable es que las configuraciones aquí sean las que desee. Por ejemplo, puede establecer explícitamente <code>width=320</code> para que el navegador asuma un ancho de ventana de 320 píxeles. Sin embargo, esto generalmente no es preferible, ya que los dispositivos móviles vienen en una amplia gama de tamaños. El uso del <code>device-widht</code> permite que el contenido se procese en el tamaño más apropiado.
+        </p>
+        <p>
+          Una tercera opción común que muchos desarrolladores agregan al atributo de <code>content</code> es <code>user-scalable=no</code>, que prohíbe al usuario usar dos dedos para acercar y alejar la imagen en su dispositivo móvil. Incluir esto es generalmente una <em>mala práctica</em> y desaconsejo su uso. Si un enlace es demasiado pequeño para tocarlo, o el usuario quiere ver más de cerca una imagen, esta configuración evitaría que usen el zoom para ayudar.
+        </p>
+        <p>
+          Para obtener más información sobre la etiqueta meta viewport, consulte la documentación de MDN en https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag.
+        </p>
+      </section>
+      <section>
+        <h2 id="tema2">8.2 <span translate="no">MEDIA QUERIES</span></h2>
+        <p>
+          El segundo componente del diseño <em translate="no">responsive</em> es el uso de <em translate="no">media queries</em>. Las <em translate="no">media queries</em> le permiten escribir un conjunto de estilos que solo se aplican a la página bajo ciertas condiciones. Esto le permite adaptar sus estilos de manera diferente, según el tamaño de la pantalla. Puede definir un conjunto de estilos que se apliquen a dispositivos pequeños, otro conjunto para dispositivos de tamaño mediano y, además, un tercer conjunto para pantallas grandes para permitir la disposición de partes de la página de manera diferente.
+        </p>
+        <p>
+          <em translate="no">Media queries</em> utilizan la regla <code>@media</code> para apuntar a dispositivos que coinciden con una función específica. Una <em translate="no">media querie</em> básica se ve así:
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 560px) {
+  .title > h1 {
+    font-size: 2.25rem;
+  }
+}
+          </code>
+        </pre>
+        <p>
+          Cualquier conjunto de reglas se puede definir dentro del conjunto exterior de llaves. La regla <code>@media</code> es una verificación condicional que debe ser verdadera para que cualquiera de estos estilos se aplique a la página. En este caso, el navegador busca un <code>min-width: 560px</code>. El relleno solo se aplicará a un elemento de <code>page-header</code> si el dispositivo del usuario tiene un ancho de ventana de visualización de <code>560px</code> o más. Si la ventana gráfica es menor que esto, se ignoran las reglas internas.
+        </p>
+        <p>
+          Las reglas dentro de una <em translate="no">media querie</em> aún siguen las reglas normales de la cascada. Pueden anular reglas fuera de la <em translate="no">media querie</em> (según la especificidad del selector o el orden de origen), o pueden anularse por esas reglas. La <em translate="no">media querie</em> en sí no afecta la <em>especificidad</em> de los selectores dentro.
+        </p>
+        <p>
+          Debe utilizar <em>ems</em> para los <em translate="no">breakpoints</em> de las <em translate="no">media queries</em>. Es la única unidad que funciona de manera constante en todos los navegadores principales si el usuario hace zoom en la página o cambia el tamaño de fuente predeterminado. Los <em translate="no">breakpoint</em> basados en <em>píxeles</em> y <em>rem</em> son menos fiables en <em>Safari</em>. <em>Ems</em> también tiene la ventaja de escalar hacia arriba o hacia abajo con el tamaño de fuente predeterminado del usuario, que generalmente es preferible.
+        </p>
+        <p>
+          Usé <em>px</em> en el ejemplo, pero es una mejor idea usar <em>ems</em> en tus <em translate="no">media queries</em>, según el tamaño de fuente predeterminado del navegador (generalmente 16px). En lugar de <code>560px</code>, debes usar <em>35em (560/16)</em>.
+        </p>
+        <p>
+          Busque los estilos <code>.title</code> en su hoja de estilo e inserte la <em translate="no">media querie</em> en esta lista para agregar un comportamiento <em translate="no">responsive</em> al encabezado de la página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.title &gt; h1 {
+  color: #333;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  margin: .2em 0;
+}
+
+@media (min-width: 35em) {         1
+  .title &gt; h1 {
+    font-size: 2.25rem;            2
+  }
+}
+          </code>
+          <small>Listado 8.7. Agregar un <span translate="no">breakpoint</span> a los estilos de título de la página</small>
+        </pre>
+        <ol class="index-code">
+          <li>Objetivos puntos de corte por encima de 35em</li>
+          <li>Anula el tamaño de fuente móvil (1,5 rem) por uno más grande</li>
+        </ol>
+        <p>
+          Ahora el título tiene dos tamaños de fuente diferentes, según el tamaño de la ventana gráfica. Será de <code>1,5rem</code> para las ventanas gráficas por debajo de <code>35em</code> y de <code>2,25rem</code> para las de arriba.
+        </p>
+        <p>
+          Puede probar estos estilos cambiando el tamaño del ancho de la ventana de su navegador. Hazlo más estrecho y verás el título para móviles más pequeño. Luego, expanda lentamente la ventana de su navegador. Verá que el tamaño de fuente cambia de manera fluida debido al tamaño de fuente adaptable <code>(calc())</code> aplicado a la página (lista 8.2). Una vez que alcanza un ancho de <code>35em</code> (o <code>560px</code>), el tamaño de fuente del título se ajustará a uno más grande de <code>2,25rem</code>.
+        </p>
+        <p>
+          Este punto, donde la ventana tiene <code>560px</code> de ancho, se conoce como <em translate="no">breakpoint</em>. La mayoría de las veces, reutilizará los mismos <em translate="no">breakpoints</em> en varias <em translate="no">media queries</em> a lo largo de su hoja de estilo. Discutiremos cómo elegir estos <em>breakpoints</em> más adelante en el capítulo.
+        </p>
+        <h3 id="sub3">8.2.1. Comprender los tipos de <span translate="no">media query</span></h3>
+        <p>
+          Puede refinar aún más una <em translate="no">media query</em> uniendo las dos cláusulas con la palabra clave <code>and</code>:
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 20em) and (max-width: 35em) { ... }
+          </code>
+        </pre>
+        <p>
+          Esta <em translate="no">media query</em> combinada solo se dirige a dispositivos que cumplen con ambos criterios. Si desea una <em translate="no">media query</em> que se dirija a uno de varios criterios, use una coma:
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (max-width: 20em), (min-width: 35em) { ... }
+          </code>
+        </pre>
+        <p>
+          Este ejemplo se dirige tanto a las ventanas gráficas de <code>20em</code> y más estrechas como a las de <code>35em</code> y más anchas.
+        </p>
+        <p>
+          En las fichas, usó el <code>min-width</code>, que se orienta a los dispositivos con una ventana gráfica por encima de un ancho determinado, y el <code>max-width</code>, que se orienta a los dispositivos por debajo de un ancho determinado. Cada uno de estos se denomina funciones multimedia (<em translate="no">media feature</em>).
+        </p>
+        <p>
+          <code>min-width</code> y <code>max-width</code> son los más comunes que usará con diferencia. Pero también puede utilizar otros tipos de funciones multimedia. A continuación, se muestran algunos ejemplos:
+        </p>
+        <ul>
+          <li>(<code>min-height: 20em</code>): se orienta a las ventanas gráficas de <code>20em</code> o más</li>
+          <li>(<code>max-height: 20em</code>): se orienta a las ventanas gráficas de <code>20em</code> o más</li>
+          <li>(<code>orientation: landscape</code>): se orienta a las ventanas gráficas que son más anchas que altas</li>
+          <li>(<code>orientation: portrait)</code>: se dirige a las ventanas gráficas que son más altas que anchas</li>
+          <li>(<code>min-resolution: 2dppx)</code>: se dirige a dispositivos con una resolución de pantalla de 2 puntos por píxel o más; objetivos pantallas de retina</li>
+          <li>(<code>max-resolution: 2dppx)</code>: se dirige a dispositivos con una resolución de pantalla de hasta 2 puntos por píxel</li>
+        </ul>
+        <p>
+          Consulte la documentación de MDN en https://developer.mozilla.org/en-US/docs/Web/CSS/@media para obtener una lista completa de las características de los medios.
+        </p>
+        <p>
+          Las <em translate="no">media queries</em> basadas en resolución pueden ser un poco complicadas, ya que la compatibilidad con el navegador es más reciente. Algunos navegadores tienen soporte limitado y / o requieren una sintaxis propietaria. IE9-11 y Opera Mini, por ejemplo, no son compatibles con la unidad <code>dppx</code>, por lo que deberá utilizar la unidad <code>ppp</code> (puntos por pulgada) en su lugar (por ejemplo, 192 ppp en lugar de 2 dppx). Safari y iOS Safari admiten la función de medios patentada <code>-webkit-min-device-pixel-ratio</code>. En resumen, la mejor manera de apuntar a una pantalla de alta resolución (retina) es combinar las dos:
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (-webkit-min-device-pixel-ratio: 2),
+      (min-resolution: 192dpi) { ... }
+          </code>
+        </pre>
+        <p>
+          Este enfoque funcionará en todos los navegadores modernos. Úselo cuando desee mostrar imágenes o íconos de mayor resolución en pantallas que puedan beneficiarse de ellos. De esta manera, los usuarios con pantallas de menor resolución no desperdiciarán ancho de banda cargando imágenes más grandes cuando no podrán ver la diferencia. Veremos más en imágenes <em translate="no">responsive</em> más adelante en este capítulo.
+        </p>
+        <p>
+          También puede colocar una <em translate="no">media query</em> en la etiqueta <code>&lt;link&gt;</code>. Si agrega <code>&lt;link rel = "stylesheet" media = "(min-width: 45em)" href = "large-screen.css" /&gt;</code> a su página, se aplicará el contenido del archivo <em>large-screen.css</em> a la página solo si la <em translate="no">media query</em> de <code>min-width</code> es verdadera. Tenga en cuenta que la hoja de estilo siempre se descargará, independientemente del ancho de la ventana gráfica, por lo que esta es simplemente una táctica para la organización del código, no para la reducción del tráfico de la red.
+        </p>
+        <p>
+          Una última opción disponible en sus <em translate="no">media queries</em> es la capacidad de apuntar al tipo de medio (<em translate="no">media type</em>). Los dos tipos de medios en los que generalmente tendrá que pensar son <code>screen</code> y <code>print</code>. El uso de una <em>media query</em> de <code>print</code> le permite controlar cómo se distribuirá su página si el usuario imprime la página, por lo que puede hacer cosas como eliminar imágenes de fondo (para ahorrar tinta6#41; y ocultar la navegación innecesaria. Cuando un usuario imprime la página, normalmente solo quiere el texto de la página principal.
+        </p>
+        <p>
+          Para escribir estilos de impresión que se apliquen solo al imprimir, use la consulta <code>@media print</code>. No se necesitan paréntesis como con el <code>min-width</code> y otras características de los medios. Para apuntar solo a la pantalla, use <code>@media screen</code>.
+        </p>
+        <p>
+          Cuando se trata del desarrollo de CSS, los estilos de impresión suelen ser una ocurrencia tardía, si es que se tienen en cuenta. Sin embargo, es bueno considerar si sus usuarios podrían querer imprimir alguna de sus páginas. Para ayudar con la impresión, hay algunos pasos comunes que debe seguir. En la mayoría de los casos, será útil aplicar estilos de impresión básicos dentro de una <em translate="no">media query</em> <code>@media print {...}</code>.
+        </p>
+        <p>
+          Use <code>display: none</code> para ocultar partes no esenciales de la página, como menús de navegación y pies de página. Si un usuario está imprimiendo una página, es casi seguro que solo se preocupará por el contenido principal de la página.
+        </p>
+        <p>
+          También puede cambiar globalmente los colores de fuente a negro y eliminar todas las imágenes y colores de fondo detrás de bloques de texto. En muchos casos, un selector universal hace el trabajo para esto. Utilizo <code>!important</code> aquí, así que no tengo que preocuparme de que la cascada lo anule:
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media print {
+  * {
+    color: black !important;
+    background: none !important;
+  }
+}
+          </code>
+        </pre>
+        <p>
+          Dedicar incluso una pequeña cantidad de tiempo a los estilos de impresión puede ser un gran servicio para sus usuarios. Si está trabajando en un sitio donde espera mucha impresión (por ejemplo, un sitio de recetas), querrá dedicar más tiempo a asegurarse de que todo se imprima correctamente.
+        </p>
+        <h3 id="sub4">8.2.2. Agregar puntos de <span translate="no">breakpoints</span> a la página</h3>
+        <p>
+          En términos prácticos, un enfoque centrado en los dispositivos móviles ( significa que el tipo de <em translate="no">media query</em> que utilizará con mayor frecuencia debe ser de <code>min-width</code>. Primero, escribirás los estilos de tu dispositivo móvil, fuera de las <em translate="no">media queries</em>. Luego, avanzará hacia los <em translate="no">breakpoints</em> más grandes. Esto sigue la estructura general que se muestra en el listado 8.8. (No es necesario que agregue esto a su página todavía).
+        </p>
+        <pre>
+          <code class="container__base-code">
+.title {                        1
+  ...
+}
+
+@media (min-width: 35em) {      2
+  .title {
+    ...
+  }
+}
+
+@media (min-width: 50em) {      3
+  .title {
+    ...
+  }
+}
+          </code>
+          <small>Listado 8.8. Estructura general de CSS <span translate="no">responsive</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Estilos móviles; aplicado a todos <span translate="no">breakpoints</span></li>
+          <li><span translate="no">Breakpoint</span> medio; anula ciertos estilos para dispositivos móviles</li>
+          <li>Gran <span translate="no">breakpoint</span>; anula la selección de estilos de <span>breakpoints</span> pequeños y medianos</li>
+        </ol>
+        <p>
+          Los estilos móviles son lo primero. Debido a que están fuera de las <em translate="no">media queries</em>, estas reglas se aplican a todos los <em>breakpoints</em>. A esto le sigue una <em translate="no">media query</em> para apuntar a pantallas medianas con reglas que anulan y se basan en los estilos móviles. La última es una <em translate="no">media query</em> para apuntar a pantallas grandes, donde agrega la capa final.
+        </p>
+        <p>
+          Dependiendo de su diseño, puede tener solo un <em translate="no">breakpoint</em> o puede tener varios. Para muchos elementos de su página, es posible que no necesite agregar estilos para cada <em translate="no">breakpoint</em>; las reglas en los <em translate="no">breakpoints</em> pequeños o medianos pueden estar completas para tener en cuenta también los <em translate="no">breakpoints</em> más grandes.
+        </p>
+        <p>
+          En ocasiones, sus estilos solo para dispositivos móviles pueden ser complejos. Puede resultar tedioso anular estas reglas en un <em translate="no">breakpoint</em> mayor. En este caso, podría tener sentido contener estos estilos en una <em translate="no">media query</em> de <code>max-width</code> para que solo se apliquen en el <em translate="no">breakpoint</em> más pequeño. Sin embargo, demasiadas <em translate="no">media queries</em> de <code>max-width</code> podrían ser una señal de que no ha seguido el enfoque <em translate="no">mobile first</em>. Deberían ser una excepción y no la regla.
+        </p>
+        <p>
+          Agreguemos el resto de los estilos para el <em translate="no">breakpoint</em> medio. En una pantalla más grande, hay más espacio para trabajar, por lo que puede aflojar el espacio. En la lista 8.9, agregará un poco más de relleno al encabezado y a los elementos principales. Luego, agregará mucho más relleno a la imagen principal para que <em>"resalte"</em> y agregue más interés visual a la página. Ya no necesita ocultar el menú de navegación, por lo que también ocultará el botón de <em>hamburguesa</em> y revelará el menú en todo momento (lista 8.10). Finalmente, puede cambiar el contenido principal a un diseño de tres columnas (listado 8.116#41;. Posteriormente, la página se verá como la figura 8.8.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/08.jpg" alt="ibid">
+          <figcaption>Figura 8.8. Página en el <span translate="no">breakpoint</span> medio</figcaption>
+        </figure>
+        <p>
+          Varios de estos cambios son sencillos, como ligeros aumentos en el relleno o el tamaño de la fuente. Por lo general, es mejor agregar cada cambio inmediatamente siguiendo las reglas de los selectores asociados. Para simplificar, los he consolidado en la lista 8.9. Agrégalos a tu hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.page-header {
+  padding: 0.4em 1em;
+  background-color: #fff;
+}
+
+@media (min-width: 35em) {
+  .page-header {
+    padding: 1em;                        1
+  }
+}
+
+.hero {
+  padding: 2em 1em;
+  text-align: center;
+  background-image: url(coffee-beans.jpg);
+  background-size: 100%;
+  color: #fff;
+  text-shadow: 0.1em 0.1em 0.3em #000;
+}
+
+@media (min-width: 35em) {
+  .hero {
+    padding: 5em 3em;                    2
+    font-size: 1.2rem;
+  }
+}
+
+main {
+  padding: 1em;
+}
+
+@media (min-width: 35em) {
+  main {
+    padding: 2em 1em;                    3
+  }
+}
+          </code>
+          <small>Listado 8.9. Ajustes de relleno y fuente para el <span translate="no">breakpoint</span> medio</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aumenta el relleno del encabezado</li>
+          <li>Aumenta el tamaño de fuente y el relleno de la imagen de héroe</li>
+          <li>3 Aumenta el <span translate="no">padding</span> en el <span translate="no">main</span></li>
+        </ol>
+        <p>
+          Asegúrese siempre de que cada <em translate="no">media querie</em> viene después de los estilos que anula, de modo que los estilos dentro de la <em translate="no">media querie</em> tengan prioridad. Cambie el tamaño de su navegador de estrecho a ancho para ver estos cambios encajar en su lugar por encima de <code>35em</code>.
+        </p>
+        <p>
+          A continuación, trabajemos en el menú. Esto implicará dos cambios: primero, eliminará el comportamiento de apertura y cierre del menú desplegable para que esté siempre visible. En segundo lugar, cambiará el menú de <em>enlaces apilados</em> verticalmente a otros horizontales. Ambos están hechos a continuación. Agregue estos bloques de <em translate="no">media query</em> a su hoja de estilo siguiendo los estilos que ya tiene para <code>.menu</code> y <code>.nav-menu</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 35em) {
+  .menu-toggle {
+    display: none;                 1
+  }
+
+  .menu-dropdown {
+    display: block;                1
+    position: static;              2
+  }
+}
+
+@media (min-width: 35em) {
+  .nav-menu {
+    display: flex;                 3
+    border: 0;
+    padding: 0 1em;
+  }
+
+  .nav-menu &gt; li {
+    flex: 1;                       3
+  }
+  .nav-menu &gt; li + li {
+    border: 0;
+  }
+
+  .nav-menu &gt; li &gt; a {
+    padding: 0.3em;
+    text-align: center;
+  }
+}
+          </code>
+          <small>Listado 8.10. Reestructurar el menú de navegación para un <span translate="no">breakpoint</span> medio</small>
+        </pre>
+        <ol class="index-code">
+          <li>Oculta el botón de alternancia y revela el contenido del menú desplegable</li>
+          <li>Anula el posicionamiento absoluto</li>
+          <li>Cambia el menú a un contenedor flexible y permite que los elementos crezcan hasta llenar el ancho de la pantalla</li>
+        </ol>
+        <p>
+          A pesar de que el menú tenía muchos estilos complicados para que el diseño móvil funcionara, no se necesita mucho para anularlos y revertir el diseño a un elemento de visualización en bloque estático. No necesitará anular las propiedades <code>top</code>, <code>left</code> y <code>right</code> de los estilos para dispositivos móviles, ya que ahora no tienen ningún efecto con el <em>posicionamiento estático</em>.
+        </p>
+        <p>
+          <em translate="no">Flexbox</em> hace un gran enfoque aquí para los elementos de la lista; crecerán para llenar el ancho disponible. También ha ajustado el relleno de los elementos del menú como lo hizo con otros elementos; pero esta vez, ha reducido el <code>padding</code>. Con un <em translate="no">breakpoint</em> medio, puede asumir que el usuario no está en un teléfono pequeño, por lo que no necesita que las áreas en las que se puede hacer clic sean tan grandes.
+        </p>
+        <h3 id="sub5">8.2.3. Agregar columnas <span translate="no">responsive</span></h3>
+        <p>
+          El cambio final que se debe realizar para el <em translate="no">breakpoint</em> medio es la introducción de varias columnas. Esto se hace exactamente como los diseños de varias columnas que ha creado en los capítulos anteriores. Simplemente debe incluirlos en una <em translate="no">media query</em> para que no se apliquen por debajo de un determinado <em translate="no">breakpoint</em>.
+        </p>
+        <p>
+          Cuando escribió su marcado, agregó una clase de <code>row</code> y <code>column</code> en la que anticipó un diseño de tres columnas. Definamos los estilos para esos ahora. Agregue este listado a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 35em) {
+  .row {
+    display: flex;                1
+    margin-left: -.75em;          2
+    margin-right: -.75em;
+  }
+
+  .column {
+    flex: 1;                     1
+    margin-right: 0.75em;        3
+    margin-left: 0.75em;
+  }
+}
+          </code>
+          <small>Listado 8.11. Diseño de tres columnas dentro de una <span translate="no">media query</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza flexbox para columnas de igual ancho</li>
+          <li>Utiliza márgenes negativos para ampliar el contenedor de filas para compensar los márgenes de las columnas (capítulo 4, sección 4.5.2)</li>
+          <li>Agrega canaletas de columna</li>
+        </ol>
+        <p>
+          Ahora, cambie el tamaño de su navegador para ver las columnas encajar en su lugar en el <em translate="no">breakpoint</em>. No se aplican estilos específicos a estos elementos por debajo del <em translate="no">breakpoint</em>, por lo que se apilan unos sobre otros de acuerdo con el flujo normal de documentos. Por encima del <em translate="no">breakpoint</em>, se convierten en un contenedor flexible con elementos flexibles.
+        </p>
+        <p>
+          Una gran cantidad de diseño <em translate="no">responsive</em> se reducirá a este tipo de enfoque: cuando su diseño requiera elementos uno al lado del otro, solo colóquelos uno al lado del otro en pantallas más grandes. En pantallas más pequeñas, permita que sus elementos se sienten en su propia línea y llenen el ancho de la pantalla. Esta técnica se puede aplicar a columnas, objetos multimedia o cualquier otro elemento que se sienta apretado en una pantalla estrecha. Quizás se pregunte cómo llegué a un punto de ruptura de <code>35em</code> en el listado 8.7. Lo elegí porque este es el punto donde las tres columnas comenzaron a sentirse abarrotadas. En este caso, por debajo de <code>35ems</code>, las columnas eran demasiado estrechas.
+        </p>
+        <p>
+          El diseñador web <em>Brad Frost</em> ha compilado una lista de patrones <em translate="no">responsive</em> que puede explorar en https://bradfrost.github.io/this-is-responsive/patterns.html. Puede organizar sus columnas para un diseño <em translate="no">responsive</em> como una columna ancha y una columna estrecha, columnas de igual ancho o un diseño de dos o tres columnas, por nombrar algunos ejemplos. En última instancia, estos arreglos se reducen a una variación de nuestro enfoque aquí, con una combinación de columnas o anchos de columna.
+        </p>
+        <p>
+          A veces, ni siquiera necesitará las <em translate="no">media queries</em>, ya que el ajuste de línea natural se encargará de eso por usted. Los diseños de <em>Flexbox</em> que usan <code>flex-wrap: wrap</code> y una <code>flex-basis</code> razonable son una excelente manera de hacer esto. De manera similar, un diseño de cuadrícula con columnas de cuadrícula con <code>auto-fit</code> o <code>auto-fill</code> determinará cuántos elementos encajarán en una fila antes de pasar a una nueva. También puede usar elementos de bloque en línea, aunque en ese caso, no crecerán para llenar el ancho del contenedor.
+        </p>
+        <p>
+          Comencé este capítulo llevándote primero a través de los elementos <em>responsive</em> más simples de la página, para que te acostumbres a usar las <em translate="no">media queries</em>. La mayoría de las veces, querrá comenzar a establecer <em translate="no">breakpoints</em> con las partes de su diseño que tienen varias columnas. Pruebe varios <em translate="no">breakpoint</em> hasta que encuentre uno que se sienta bien. Asegúrese de que sus columnas no sean demasiado estrechas por encima de ese límite.
+        </p>
+        <p>
+          Es fácil dejarse atrapar pensando en dispositivos específicos. Un <em>iPhone 7</em> tiene tantos píxeles de ancho; una determinada tableta es esa cantidad. Trate de no preocuparse por eso. Encontrarás cientos de dispositivos con cientos de resoluciones de pantalla diferentes; nunca los probarás todos. Elija los <em translate="no">breakpoints</em> que tengan sentido para su diseño y funcionará bien, independientemente del dispositivo que tenga el usuario.
+        </p>
+        <p>
+          Las <em translate="no">Media queries</em> crean diseños <em translate="no">responsive</em> basados en el tamaño de la ventana gráfica, pero durante varios años, los desarrolladores y los proveedores de navegadores han estado tratando de encontrar una mejor manera. La característica que a muchos desarrolladores les gustaría ver son las <em translate="no">container queries</em> (llamadas <em translate="no">element queries</em>).
+        </p>
+        <p>
+          En lugar de responder a la ventana gráfica, este tipo de consulta permitiría que los estilos respondieran al tamaño del contenedor de un elemento. Considere el objeto multimedia que construyó en el capítulo 4.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/09.jpg" alt="ibid">
+        </figure>
+        <p>
+          Un objeto multimedia con imagen y texto uno al lado del otro.
+        </p>
+        <p>
+          Esto funciona en una pantalla más grande cuando hay espacio para un diseño lado a lado de la imagen y el contenido. Pero en un diseño móvil, este tipo de patrón a menudo se divide para que la imagen se apile sobre el texto.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/10.jpg" alt="ibid">
+        </figure>
+        <p>
+          Una versión apilada del objeto multimedia puede ser más apropiada cuando el espacio horizontal es limitado.
+        </p>
+        <p>
+          De vez en cuando, es posible que desee este diseño móvil en un gran <em translate="no">breakpoint</em>. Considere lo que sucedería si este objeto multimedia se colocara dentro de una columna estrecha (como las del listado 8.11): el contenedor sería demasiado estrecho para permitir el diseño de lado a lado, incluso por encima del punto de interrupción. En cambio, sería más apropiado si pudiera definir el comportamiento de respuesta del objeto multimedia basado no en el ancho de la ventana gráfica, sino más bien en el ancho de su contenedor. Desafortunadamente, esto no es posible directamente. La única forma de lograr este diseño es mediante el uso de selectores descendientes cuidadosamente construidos que tengan en cuenta este escenario (por ejemplo, <code>.column .media> .media-image</code>), pero este enfoque puede ser frágil.
+        </p>
+        <p>
+          Esté atento a las <em translate="no">container queries</em> para abordar esta necesidad. Las <em translate="no">container queries</em> son difíciles de implementar en el navegador, por lo que esta función aún no ha aparecido, pero tiene una gran demanda. Es de esperar que las <em>container queries</em>, o algo que pueda lograr el mismo resultado, lleguen a los navegadores en los próximos años.
+        </p>
+      </section>
+      <section>
+        <h2 id="tema3">8.3. DISEÑOS FLUIDOS</h2>
+        <p>
+          El tercer y último principio del diseño <em>responsive</em> es el <em translate="no">fluid layout</em>. El diseño fluido (a veces llamado <em translate="no">liquid layout</em>) se refiere al uso de contenedores que crecen y se encogen de acuerdo con el ancho de la ventana gráfica. Esto contrasta con un diseño fijo, donde las columnas se definen mediante píxeles o ems. Un contenedor fijo (por ejemplo, uno con <code>widht: 800px</code>) desbordará la ventana gráfica en dispositivos más pequeños, forzando la necesidad de desplazamiento horizontal. Un recipiente de líquido se contrae automáticamente para ajustarse.
+        </p>
+        <p>
+          En un diseño fluido, el contenedor de la página principal normalmente no tiene un ancho explícito o tiene uno definido mediante un porcentaje. Sin embargo, puede tener <code>padding</code> izquierdo y derecho, o <code>margin</code> izquierdo y derecho automáticos para agregar espacio para respirar entre sus bordes y los bordes de la ventana gráfica. Esto significa que puede ser un poco más estrecho que la ventana gráfica, pero nunca más ancho.
+        </p>
+        <p>
+          Dentro de los contenedores principales, las columnas se definen mediante un porcentaje (por ejemplo, una columna principal del 70% de ancho y una barra lateral del 30% de ancho). De esta manera, no importa cuál sea el ancho de la pantalla, los contenedores caben dentro. Un <em translate="no">flexbox</em> también funciona, asumiendo que los elementos flexibles tienen valores de <code>flex-grow</code> y, lo que es más importante, valores de <code>flex-shrink</code> que permiten que los elementos se ajusten independientemente del ancho de la pantalla. Acostúmbrese a pensar en los anchos de los contenedores en porcentajes en lugar de en cualquier tamaño fijo.
+        </p>
+        <p>
+          La página web de este capítulo no es el único ejemplo de <em translate="no">flui container</em> que ha visto. De hecho, he estado usando diseños fluidos casi exclusivamente a lo largo de este libro. A estas alturas, ya debería estar algo familiarizado con este enfoque.
+        </p>
+        <p>
+          Una página web es <em translate="no">responsive</em> de forma predeterminada. Antes de aplicar cualquier CSS, los elementos a nivel de bloque no son más anchos que la ventana gráfica y el ajuste de línea de los elementos en línea para evitar el desbordamiento horizontal. A medida que agrega estilos, es su trabajo mantener la naturaleza <em translate="no">responsive</em> de la página. A veces es más fácil decirlo que hacerlo, pero me resulta útil saber que siempre empiezo en un buen estado.
+        </p>
+        <h3 id="sub6">8.3.1. Agregar estilos para una ventana gráfica grande</h3>
+        <p>
+          Agreguemos más <em translate="no">media queries</em> para su próximo <em translate="no">breakpoint</em>. Mientras lo hace, observe cómo en cada <em translate="no">breakpoint</em> nunca arregla el ancho de los contenedores. Les permite crecer de forma natural al 100% (menos algo de <code>padding</code> y / o <code>margin</code>). Y, en el caso de la parte de tres columnas de la página, usa <em translate="no">flexbox</em> para permitir que las columnas alcancen columnas un tercio del ancho de la ventana gráfica.
+        </p>
+        <p>
+          El diseño final y grande de la ventana gráfica de su página se muestra en la figura 8.9. Es similar a la ventana gráfica mediana, pero hay mucho más espacio para trabajar aquí. Puedes ser liberal con el <code>padding</code>, así que eso es exactamente lo que harás.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/11.jpg" alt="ibid">
+          <figcaption>Figura 8.9. Diseño de página en una ventana gráfica grande</figcaption>
+        </figure>
+        <p>
+          El <code>padding</code> a lo largo de los bordes izquierdo y derecho se ha aumentado de <code>1em</code> a <code>4em</code>. El <code>padding</code> en todos los lados del texto de la imagen principal también se ha aumentado, lo que permite un gráfico más grande. Los estilos adicionales se muestran en el listado 8.12.
+        </p>
+        <p>
+          Agregue todos los bloques de <em translate="no">media queries</em> (<code>min-width: 50em</code>) a su hoja de estilo. Nuevamente, asegúrese de que aparezcan debajo de las reglas equivalentes en <em translate="no">breakpoints</em> más pequeños (para <code>.page-header</code>, <code>.hero</code> y <code>main</code>) para que los estilos de estas <em translate="no">media queries</em> puedan anularlos.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 50em) {
+  .page-header {
+    padding: 1em 4em;         1
+  }
+}
+
+@media (min-width: 50em) {
+  .hero {
+    padding: 7em 6em;         2
+  }
+}
+
+@media (min-width: 50em) {
+  main {
+    padding: 2em 4em;         1
+  }
+}
+
+@media (min-width: 50em) {
+  .nav-menu {
+    padding: 0 4em;           1
+  }
+}
+          </code>
+          <small>Listado 8.12. Aumento de <span translate="no">padding</span> para grandes puntos de interrupción</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aumenta el <span translate="no">padding</span> izquierdo y derecho en los bordes de la página a 4em</li>
+          <li>Aumenta el <span translate="no">padding</span> de héroe en todos los lados para una imagen de héroe más grande</li>
+        </ol>
+        <p>
+          Se necesita un último ajuste. Ha definido un tamaño de fuente <em translate="no">responsive</em> en el elemento raíz: <code>font-size: calc(1vw + 0.6em)</code>. En pantallas grandes, esto se vuelve demasiado grande para mi gusto. Para solucionarlo, puede aplicar un límite superior a este tamaño de fuente en su punto de interrupción más alto. Actualice su hoja de estilo para que coincida con esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+:root {
+  box-sizing: border-box;
+  font-size: calc(1vw + 0.6em);
+}
+
+@media (min-width: 50em) {
+  :root {
+    font-size: 1.125em;             1
+  }
+}
+          </code>
+          <small>Listado 8.13. Agregar un límite superior al tamaño de fuente adaptable</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aplica un tamaño de fuente sin escala por encima del <span translate="no">breakpoint</span> más alto</li>
+        </ol>
+        <p>
+          Ahora tiene una página <em translate="no">responsive</em> con tres <em translate="no">breakpoints</em>. Anímate y experimenta con él. Cambie los anchos de los <em translate="no">breakpoints</em> y vea cómo afecta su experiencia de navegación.
+        </p>
+        <h3 id="sub7">8.3.2. Lidiar con las tablas</h3>
+        <p>
+          Las tablas son particularmente problemáticas para el diseño fluido en dispositivos móviles. Si una tabla tiene más de un puñado de columnas, puede desbordar fácilmente el ancho de la pantalla (figura 8.10).
+        </p>
+        <figure>
+          <img src="../img_css/cap8/12.jpg" alt="ibid">
+          <figcaption>Figura 8.10. Borde derecho de una tabla recortada en un dispositivo móvil</figcaption>
+        </figure>
+        <p>
+          Si es posible, te recomiendo que encuentres otra forma de organizar los datos para los usuarios de dispositivos móviles. Por ejemplo, puede mover los datos de cada fila a su propio mosaico y luego permitir que los mosaicos se apilen unos sobre otros. O bien, puede crear un gráfico visual o un cuadro que se adapte bien a las ventanas gráficas más pequeñas. A veces, sin embargo, solo necesitas una tabla.
+        </p>
+        <p>
+          Un enfoque que puede tomar es forzar a la tabla a mostrarse como elementos de bloque normales. La figura 8.11 muestra un ejemplo de esto.
+        </p>
+        <figure>
+          <img src="../img_css/cap8/13.jpg" alt="ibid">
+          <figcaption>Figura 8.11. Datos tabulares con <code>display: block</code> aplicado a cada fila y celda</figcaption>
+        </figure>
+        <p>
+          Este diseño se compone de elementos <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code> y <code>&lt;td&gt;</code>, pero se ha aplicado la declaración <code>display: block</code>, anulando sus valores normales de visualización de tabla, fila de tabla y celda de tabla. Puede utilizar una <em translate="no">media query</em> de <code>max-width</code> para limitar estos cambios a ventanas gráficas pequeñas. El CSS de esta tabla se muestra en la siguiente lista. (Puede aplicar esto a cualquier marcado <code>&lt;table&gt;</code> para ver los resultados).
+        </p>
+        <pre>
+          <code class="container__base-code">
+table {
+  width: 100%;
+}
+
+@media (max-width: 30em) {
+  table, thead, tbody, tr, th, td {
+    display: block;                  1
+  }
+
+  thead tr {
+    position: absolute;              2
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    margin-bottom: 1em;              3
+  }
+}
+          </code>
+          <small>Listado 8.14. Forzar un diseño de tabla <span translate="no">responsive</span> en un dispositivo móvil</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que todos los elementos de la tabla se muestren en bloque</li>
+          <li>Oculta la fila de títulos moviéndola fuera de la pantalla</li>
+          <li>Agrega un pequeño espacio entre cada conjunto de datos de la tabla</li>
+        </ol>
+        <p>
+          Esto hace que cada celda se apile una encima de la otra, luego agrega un margen entre cada <code>&lt;tr&gt;</code>. Este enfoque hace que la fila <code>&lt;thead&gt;</code> ya no se alinee con las columnas debajo de ella, por lo que uso un posicionamiento absoluto para eliminar la fila del encabezado de la vista. Evito <code>display: none</code> por accesibilidad: quiero que los títulos permanezcan presentes en un lector de pantalla. Esta no es una solución perfecta de ninguna manera, pero cuando todo lo demás falla, podría ser el mejor enfoque.
+        </p>
+      </section>
+      <section  id="tema4">
+        <h2>8.4 IMAGENES <span translate="no">RESPONSIVE</span></h2>
+        <p>
+          En el diseño <em translate="no">responsive</em>, las imágenes necesitan una atención especial. No solo necesita colocarlos en la pantalla, también debe considerar las limitaciones de ancho de banda de los usuarios móviles. Las imágenes tienden a estar entre los recursos más grandes utilizados en una página. Lo primero que debes hacer es asegurarte siempre de que tus imágenes estén bien comprimidas. Use la opción Guardar para web en su editor de imágenes, que reducirá en gran medida el tamaño del archivo de la imagen, o use otra herramienta de compresión de imágenes como https://tinypng.com/.
+        </p>
+        <p>
+          También debe asegurarse de que no tengan una resolución superior a la necesaria. Sin embargo, determinar qué significa <em>"necesario"</em> depende del tamaño de la ventana gráfica. No es necesario publicar un archivo tan grande en pantallas más pequeñas porque de todos modos se reducirán.
+        </p>
+        <h3 id="sub8">8.4.1. Usar varias imágenes para diferentes tamaños de ventana gráfica</h3>
+        <p>
+          La mejor práctica es crear algunas copias de una imagen, cada una con una resolución diferente. Si sabe, según las <em translate="no">media queries</em>, que la pantalla tiene un tamaño determinado, no tiene sentido enviar una imagen extremadamente grande; el navegador tendrá que reducir su escala para que encaje.
+        </p>
+        <p>
+          Utilice técnicas <em translate="no">responsive</em> para ofrecer cada una a los usuarios con el tamaño de pantalla adecuado. Para la imagen principal de su página, se parece al CSS que se muestra aquí. Agregue esto a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.hero {
+  padding: 2em 1em;
+  text-align: center;
+  background-image: url(coffee-beans-small.jpg);         1
+  background-size: 100%;
+  color: #fff;
+  text-shadow: 0.1em 0.1em 0.3em #000;
+}
+
+@media (min-width: 35em) {
+  .hero {
+    padding: 5em 3em;
+    font-size: 1.2rem;
+    background-image: url(coffee-beans-medium.jpg);      2
+  }
+}
+
+@media (min-width: 50em) {
+  .hero {
+    padding: 7em 6em;
+    background-image: url(coffee-beans.jpg);             3
+  }
+}
+          </code>
+          <small>Listado 8.15. Agregar una imagen de fondo <span translate="no">responsive</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza la imagen más pequeña en dispositivos móviles</li>
+          <li>Utiliza una imagen más grande en pantallas de tamaño mediano|</li>
+          <li>Utiliza la imagen de resolución completa en pantallas grandes</li>
+        </ol>
+        <p>
+          Si carga esto en su navegador, no notará ninguna diferencia. Y ese es exactamente el punto. Si se encuentra en un punto de interrupción pequeño, su pantalla no es lo suficientemente ancha para mostrar la imagen de resolución completa de todos modos. Pero descargó decenas o incluso cientos de kilobytes menos que la imagen de resolución completa. En una página con muchas imágenes, esto puede sumarse y causar una diferencia notable en el tiempo de carga de la página.
+        </p>
+        <h3 id="sub9">8.4.2. Usando srcset para servir la imagen correcta</h3>
+        <p>
+          Las <em translate="no">media queries</em> resuelven el problema cuando la imagen se incluye a través de CSS, pero ¿qué pasa con las imágenes agregadas a través de la etiqueta HTML <code>&lt;img&gt;</code>? Para las imágenes en línea, es necesario un enfoque diferente: el atributo <code>srcset</code> (abreviatura de <em translate="no">"source set"</em>).
+        </p>
+        <p>
+          Este atributo es una adición más reciente a HTML. Le permite especificar varias URL de imagen para una etiqueta <code>&lt;img&gt;</code>, especificando la resolución de cada una. Luego, el navegador determinará qué imagen necesita y la descargará.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;img alt="A white coffee mug on a bed of coffee beans"
+    src="coffee-beans-small.jpg"                         1
+    srcset="coffee-beans-small.jpg 560w,                 2
+            coffee-beans-medium.jpg 800w,                2
+            coffee-beans.jpg 1280w"                      2
+/&gt;
+          </code>
+          <small>Listado 8.16. Imagen srcset <span translate="no">responsive</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Proporciona un src normal para navegadores que no admiten srcset (por ejemplo, IE y Opera Mini)</li>
+          <li>URL de cada imagen y su ancho</li>
+        </ol>
+        <p>
+          La mayoría de los navegadores ahora son compatibles con <code>srcset</code>, pero los que no lo hacen recurrirán al <code>src</code> especificado y cargarán la URL que se especifique allí. Esto le permite optimizar para múltiples tamaños de pantalla. Aún mejor, el navegador hará ajustes para pantallas de mayor resolución. Si la pantalla del dispositivo tiene una densidad de píxeles de 2x, puede descargar una imagen de mayor resolución en consecuencia.
+        </p>
+        <p>
+          Para ver más de cerca las imágenes receptivas, visite https://jakearchibald.com/2015/anatomy-of-responsive-images/. Este artículo cubre algunas otras opciones útiles, como ajustar el tamaño de la pantalla según la imagen que se cargue.
+        </p>
+        <p>
+          Como parte de un diseño fluido, siempre debe asegurarse de que las imágenes no desborden el ancho de su contenedor. Hágase un favor y agregue siempre esta regla a su hoja de estilo para evitar que eso suceda: <code>img {max-width: 100%; }</code>.
+        </p>
+        <p>
+          La estructuración de regiones de la página en diseño <em translate="no">responsive</em> se puede realizar de innumerables formas. La construcción de cualquiera de ellos se reduce a la aplicación de los tres principios: <em translate="no">mobile first</em>, <em translate="no">media queries</em> y <em translate="no">fluid layout</em>.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Siempre cree sus diseños <span translate="no">mobile first</span> primero.</li>
+          <li>Utilice <span translate="no">media queries</span> para mejorar progresivamente la página en ventanas gráficas cada vez más grandes.</li>
+          <li>Utilice <span translate="no">fluid layouts</span> que se ajusten a la pantalla en cualquier tamaño de navegador.</li>
+          <li>Utilice imágenes <span translate="no">responsive</span> para adaptarse a la limitación de ancho de banda de los dispositivos móviles.</li>
+          <li>No olvide incluir su metaetiqueta de ventana gráfica.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1"><span translate="no">MOBILE FIRST</span></a></li>
+        <li><a href="#sub1">- Creando un menú móvil</a></li>
+        <li><a href="#sub2">- Agregar la Meta etiqueta del <span translate="no">VIEWPORT</span></a></li>
+        <li><a href="#tema2"><span translate="no">MEDIA QUERIES</span></a></li>
+        <li><a href="#sub3">- Comprender los tipos de <span translate="no">MEDIA QUERY</span></a></li>
+        <li><a href="#sub4">- Agregar <span translate="no">BREAKPOINTS</span> a la página</a></li>
+        <li><a href="#sub5">- Agregar columnas <span translate="no">RESPONSIVE</span></a></li>
+        <li><a href="#tema3">Diseños Fluidos</a></li>
+        <li><a href="#sub6">- Agregar estilos para un <span translate="no">VIEWPORT</span> grande</a></li>
+        <li><a href="#sub7">- Lidiar con las tablas</a></li>
+        <li><a href="#tema4">Imagenes <span translate="no">RESPONSIVE</span></a></li>
+        <li><a href="#sub8">- Usar varias imágenes para diferentes tamaños de ventana gráfica</a></li>
+        <li><a href="#sub9">- Usando SRCSET para servir la imagen correcta</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

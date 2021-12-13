@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 1</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 1. Cascada, Especificidad y Herencia</h1>
+      <div>
+        <a href="apendice_b.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_02.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <section>
+        <p><em>Este cápitulo habla sobre:</em></p>
+        <ul>
+          <li>Las cuatro partes que componen la cascada</li>
+          <li>La diferencia entre la cascada y la herencia.</li>
+          <li>Cómo controlar qué estilos se aplican a qué elementos</li>
+          <li>Malentendidos comunes sobre declaraciones taquigráficas</li>
+        </ul>
+        <p>
+          CSS es diferente a muchas cosas en el mundo del desarrollo de software. No es un lenguaje de programación, estrictamente hablando, pero requiere un pensamiento abstracto. No es simplemente una herramienta de diseño, pero requiere algo de creatividad. Proporciona una sintaxis declarativa engañosamente simple, pero si ha trabajado con ella en proyectos grandes, sabe que puede convertirse en una complejidad difícil de manejar.
+        </p>
+        <p>
+          Si bien es útil conocer algunos "trucos" o recetas útiles que puede seguir, dominar CSS requiere comprender los principios que hacen posibles esas prácticas. Este libro está lleno de ejemplos, pero es principalmente un libro de principios.
+        </p>
+        <p>
+          <span><em>La Parte 1</em></span> comienza con los principios más fundamentales del lenguaje: la cascada, el modelo de caja y la amplia gama de tipos de unidades disponibles. La mayoría de los desarrolladores web conocen la cascada y el modelo de caja. Conocen las unidades de píxeles y es posible que hayan escuchado que <span><em>"deberían usar ems en su lugar"</em></span>. La verdad es que hay mucho en estos temas, y una comprensión superficial de ellos solo te lleva hasta cierto punto. Si alguna vez va a dominar CSS, primero debe conocer los fundamentos y conocerlos en profundidad.
+        </p>
+        <p>
+          Sé que está emocionado de comenzar a aprender lo último y mejor que CSS tiene para ofrecer. Eso es lo emocionante. Pero primero, volveremos a los fundamentos. Revisaré rápidamente los conceptos básicos, con los que probablemente ya esté familiarizado, y luego profundizaré en cada tema. Mi objetivo es fortalecer la base sobre la que se construye el resto de su CSS.
+        </p>
+        <p>
+          En este capítulo, comenzamos con la <span><em>C en CSS</em></span>: la cascada. Explicaré cómo funciona y luego le mostraré cómo trabajar con él de manera práctica. Luego miramos un tema relacionado, la herencia. Lo seguiré con un vistazo a las propiedades de la taquigrafía y algunos malentendidos comunes que las rodean.
+        </p>
+        <p>
+          Juntos, estos temas tratan de aplicar los estilos que desea a los elementos que desea. Aquí hay muchos "errores" que a menudo hacen tropezar a los desarrolladores. Una buena comprensión de estos temas le dará un mejor control sobre cómo hacer que su CSS haga lo que usted quiere que haga. Con un poco de suerte, también podrá apreciar mejor e incluso disfrutar trabajando con CSS.
+        </p>
+      </section>
+      <section id="tema1">
+        <h2>1.1 LA CASCADA</h2>
+        <p>
+          Básicamente, CSS se trata de declarar reglas: bajo diversas condiciones, queremos que sucedan ciertas cosas. Si esta clase se agrega a ese elemento, aplique estos estilos. Si el elemento <span><em>X</em></span> es hijo del elemento <span><em>Y</em></span>, aplique esos estilos. Luego, el navegador toma estas reglas, determina cuáles se aplican en cada lugar y las usa para representar la página.
+        </p>
+        <p>
+          Cuando observa pequeños ejemplos, este proceso suele ser sencillo. Pero a medida que su hoja de estilo crece o aumenta el número de páginas a las que la aplica, su código puede volverse complejo sorprendentemente rápido. A menudo hay varias formas de lograr lo mismo en CSS. Dependiendo de la solución que use, puede obtener resultados muy diferentes cuando cambia la estructura del HTML o cuando los estilos se aplican a diferentes páginas. Una parte clave del desarrollo de CSS se reduce a escribir reglas de tal manera que sean predecibles.
+        </p>
+        <p>
+          El primer paso hacia esto es comprender cómo exactamente el navegador da sentido a sus reglas. Cada regla puede ser sencilla por sí sola, pero <span><em>¿qué sucede cuando dos reglas proporcionan información contradictoria sobre cómo diseñar un elemento?</em></span> Es posible que descubra que una de sus reglas no hace lo que espera porque otra regla entra en conflicto con ella. Predecir cómo se comportan las reglas requiere una comprensión de la cascada.
+        </p>
+        <p>
+          Para ilustrarlo, creará un encabezado de página básico como el que podría ver en la parte superior de una página web (Figura 1.1). Tiene el título del sitio web encima de una serie de enlaces de navegación verde azulado. El último enlace es de color naranja para que se destaque como una especie de enlace destacado.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/01.jpg" alt="ibid">
+          <figcaption>Figure 1.1.Page heading and navigate links</figcaption>
+        </figure>
+        <p>
+          A medida que cree el encabezado de esta página, probablemente se familiarizará con la mayor parte del CSS involucrado. Esto nos permitirá centrarnos en aspectos de CSS que podría dar por sentado o comprender solo parcialmente.
+        </p>
+        <p>
+          Para comenzar, cree un documento HTML y una hoja de estilo llamada <span><em>styles.css</em></span>. Agregue el código en el listado 1.1 al HTML.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  &lt;!doctype html&gt;
+  &lt;head&gt;
+  &lt;link href="styles.css" rel="stylesheet" type="text/css" &gt;
+  &lt;head&gt;
+  &lt;body&gt;
+    &lt;header class="page-header"&gt;                                     
+      &lt;h1 id="page-title" class="title"&gt;Wombat Coffee Roasters&lt;/gt;  <span>1</span>
+      &lt;nav&gt;
+        &lt;ul id="main-nav" class="nav"&gt;                               <span>2</span>
+          &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="/coffees"&gt;Coffees&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="/brewers"&gt;Brewers&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="/specials" class="featured"&gt;Specials&lt;/a&gt;&lt;/li&gt; <span>3</span>
+        &lt;/ul&gt;
+      &lt;/nav&gt;
+    &lt;/header&gt;
+  &lt;/body&gt;
+          </code>
+          <small>Listado 1.1. Marcado para el encabezado de la página</small>
+        </pre>
+        <ol class="index-code">
+          <li>Titulo de la pagina</li>
+          <li>Lista de links de navegación</li>
+          <li>Enlace destacado</li>
+        </ol>
+        <p>
+          Cuando dos o más reglas apuntan al mismo elemento en su página, las reglas pueden proporcionar declaraciones contradictorias. La siguiente lista muestra cómo esto es posible. Muestra tres conjuntos de reglas, cada uno de los cuales especifica un estilo de fuente diferente para el título de la página. El título no puede tener tres fuentes diferentes a la vez. Cual sera? Agregue esto a su archivo CSS para verlo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  h1 {                        <span>1</span>
+    font-family: serif;
+  }
+  
+  #page-title {                <span>2</span>
+    font-family: sans-serif;
+  }
+  
+  .title {                     <span>3</span>
+    font-family: monospace;
+  }
+          </code>
+          <small>Listado 1.2. Declaraciones contradictorias</small>
+        </pre>
+        <ol class="index-code">
+          <li>Selector de etiqueta (o tipo)</li>
+          <li>Selector de ID</li>
+          <li>Selector de clase</li>
+        </ol>
+        <p>
+          Los tres conjuntos de reglas intentan establecer una familia de fuentes diferente para este encabezado. ¿Quién ganará? Para determinar la respuesta, el navegador sigue un conjunto de reglas, por lo que el resultado es predecible. En este caso, las reglas dictan que la segunda declaración, que tiene un selector de ID, gana; el título tendrá una fuente sans-serif (figura 1.2).
+        </p>
+        <figure>
+          <img src="../img_css/cap1/02.jpg" alt="ibid">
+          <figcaption>Figure 1.2.El selector ID gana sobre los otros conjuntos de reglas</figcaption>
+        </figure>
+        <p>
+          La <span><em>cascada</em></span> es el nombre de este conjunto de reglas. Determina cómo se resuelven los conflictos y es una parte fundamental del funcionamiento del idioma. Aunque los desarrolladores más experimentados tienen un sentido general de la cascada, algunas partes de ella a veces se malinterpretan.
+        </p>
+        <p>
+          Desempaquetamos la cascada. Cuando las declaraciones entran en conflicto, la cascada considera tres cosas para resolver la diferencia:
+        </p>
+        <ol>
+          <li><em>Origen de la hoja de estilo:</em> de dónde provienen los estilos. Sus estilos se aplican junto con los estilos predeterminados del navegador.</li>
+          <li><em>Especificidad del selector:</em> qué selectores tienen prioridad sobre cuáles.</li>
+          <li><em>Orden de origen:</em> orden en el que se declaran los estilos en la hoja de estilo.</li>
+        </ol>
+        <p>
+          Las reglas de la cascada se consideran en este orden. La figura 1.3 muestra cómo se aplican a un nivel superior.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/03.jpg" alt="Diagrama de aplicacion de CSS">
+          <figcaption>Figura 1.3.Diagrama de flujo que muestra la precedencia de las declaraciones</figcaption>
+        </figure>
+        <p>
+          Estas reglas permiten que los navegadores se comporten de manera predecible al resolver cualquier ambigüedad en el CSS. Repasemos uno por uno.
+        </p>
+      </section>
+      <section>
+        <h3 id="sub1">1.1.1 Comprender el origen de la hoja de estilo</h3>
+        <p>
+          Las hojas de estilo que agrega a su página web no son las únicas que aplica el navegador. Hay diferentes tipos u orígenes de hojas de estilo. Los suyos se llaman <span><em>estilos de autor</em></span>; también hay estilos de agente de usuario, que son los estilos predeterminados del navegador. Los estilos de agente de usuario tienen menor prioridad, por lo que sus estilos los anulan.
+        </p>
+        <p>
+          Algunos navegadores permiten a los usuarios definir una hoja de <span><em>estilo de usuario</em></span>. Esto se considera un tercer origen, con una prioridad entre el agente de usuario y los estilos de autor. Los estilos de usuario rara vez se utilizan y están fuera de su control, por lo que los he dejado fuera por simplicidad.
+        </p>
+        <p>
+          Los estilos de agente de usuario varían ligeramente de un navegador a otro, pero generalmente hacen lo mismo: los encabezados (<code>&lt;h1&gt;</code> a <code>&lt;h6&gt</code>;) y los párrafos (<code>&lt;p&gt;</code>) tienen un margen superior e inferior, listas (<code>&lt;ol&gt;</code> y <code>&lt;ul&gt;</code>) tienen un relleno a la izquierda y se establecen los colores de los enlaces y los tamaños de fuente predeterminados.
+        </p>
+        <p>
+          A continuación se muestra una línea de CSS. A esto se le llama declaración. Esta declaración se compone de una propiedad (<code>color</code>) y un valor (<code>black</code>):
+        </p>
+        <pre>
+          <code class="container__base-code">
+color: black;
+          </code>
+        </pre>
+        <p>
+          Las propiedades no deben confundirse con los <span><em>atributos</em></span>, que forman parte de la sintaxis HTML. Por ejemplo, en el elemento <code>&lt;a href="/"&gt;</code>, <code>href</code> es un atributo de la etiqueta <code>a</code>.
+        </p>
+        <p>
+          Un grupo de declaraciones entre llaves se denomina bloque de declaración (<span><em>declaration block</em></span>). Un bloque de declaración está precedido por un selector (en este caso, el <code>body</code>):
+        </p>
+        <pre>
+          <code class="container__base-code">
+  body {
+    color: black;
+    font-family: Helvetica;
+  }
+          </code>
+        </pre>
+        <p>
+          Juntos, el selector y el bloque de declaración se denominan conjunto de reglas (<span><em>ruleset</em></span>). Un conjunto de reglas también se denomina regla, aunque observo que la regla rara vez se usa con tanta precisión y generalmente se usa en plural para referirse a un conjunto más amplio de estilos.
+        </p>
+        <p>
+          Finalmente, las <span translate="no"><em>at-rules</em></span> son construcciones de lenguaje que comienzan con un símbolo "arroba", como las reglas <code>@import</code> o las <code>@media queries</code>.
+        </p>
+        <p>
+          Veamos nuevamente la página de ejemplo (figura 1.4). El título es <span><em>sans-serif</em></span> debido a los estilos que agregó. Varias otras cosas están determinadas por los estilos de agente de usuario: la lista tiene un relleno a la izquierda y un tipo <code>disc</code> de <code>list-style-type</code> para producir las viñetas. Los enlaces son azules y están subrayados. El encabezado y la lista tienen márgenes superior e inferior.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/04.jpg" alt="ibid">
+          <figcaption>Figura 1.4.Estilos predeterminados en la web</figcaption>
+        </figure>
+        <p>
+          Una vez que se consideran los estilos del agente de usuario, el navegador aplica sus estilos: los estilos de autor. Esto permite que las declaraciones que especifique anulen las establecidas por la hoja de estilo del agente de usuario. Si enlaza a varias hojas de estilo en su HTML, todas tienen el mismo origen: <span><em>el autor</em></span>.
+        </p>
+        <p>
+          Los estilos de agente de usuario establecen las cosas que normalmente desea, por lo que no hacen nada completamente inesperado. Cuando no le guste lo que le hacen a una propiedad determinada, establezca su propio valor en su hoja de estilo. Hagámoslo ahora. Puede anular algunos de los estilos de agente de usuario que no son los que desea para que su página se vea como la figura 1.5.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/05.jpg" alt="ibid">
+          <figcaption>Figure 1.5.Los estilos de autor anulan los estilos predeterminados</figcaption>
+        </figure>
+        <p>
+          En la siguiente lista, eliminé las declaraciones de familias de fuentes en conflicto del ejemplo anterior y agregué otras nuevas para establecer colores y anular los márgenes del agente de usuario y el relleno de la lista y las viñetas. Edite su hoja de estilo para que coincida con estos cambios.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  html body header h1 {                 <span>1</span>
+    color: blue;
+  }
+  
+  body header.page-header h1 {          <span>2</span>
+    color: orange;
+  }
+  
+  .page-header .title {                 <span>3</span>
+    color: green;
+  }
+  
+  #page-title {                         <span>4</span>
+    color: red;
+  }
+          </code>
+          <small>Listado 1.3. Anulación de estilos de agente de usuario</small>
+        </pre>
+        <ol class="index-code">
+          <li>Reduce los margenes</li>
+          <li>Remueve los estilos de agente de usuario</li>
+          <li>Hace que los elementos de la lista aparezcan uno al lado del otro en lugar de apilados</li>
+          <li>Proporciona una apariencia similar a un botón para los enlaces de navegación.</li>
+        </ol>
+        <p>
+          Si ha trabajado con CSS durante mucho tiempo, probablemente esté acostumbrado a anular los estilos de agente de usuario. Cuando lo hace, está utilizando la parte de origen de la cascada. Sus estilos siempre anularán los estilos del agente de usuario porque los orígenes son diferentes.
+        </p>
+        <p>
+          Puede notar que utilicé selectores de ID en este código. Hay razones para evitar hacer esto, que cubriré en un momento.
+        </p>
+        <p>
+          Existe una excepción a las reglas de origen de estilo: declaraciones que están marcadas como <span translate="no"><em>important</em></span>. Una declaración se puede marcar como importante agregando <code>!important</code> al final de la declaración, antes del punto y coma:
+        </p>
+        <pre>
+          <code class="container__base-code">
+color: red !important;
+          </code>
+        </pre>
+        <p>
+          Las declaraciones marcadas con <code>!important</code> se tratan como un origen de mayor prioridad, por lo que el orden general de preferencia, en orden decreciente, es el siguiente:
+        </p>
+        <ol>
+          <li>Autor importante</li>
+          <li>Autor</li>
+          <li>Agente usuario</li>
+        </ol>
+        <p>
+          La cascada resuelve de forma independiente los conflictos de cada propiedad de cada elemento de la página. Por ejemplo, si establece una fuente en negrita en un párrafo, el margen superior e inferior de la hoja de estilo del agente de usuario aún se aplica (a menos que los anule explícitamente). El concepto de origen del estilo entrará en juego cuando lleguemos a las transiciones y animaciones porque introducen más orígenes en esta lista. La anotación <code>!important</code> es una peculiaridad interesante de CSS, a la que volveremos en breve.
+        </p>
+        <h3 id="sub2">1.1.2 Entendiendo la especificidad</h3>
+        <p>
+          Si las declaraciones en conflicto no se pueden resolver en función de su origen, el navegador intenta resolverlas examinando su <span><em>especificidad</em></span>. Comprender la especificidad es esencial. Puede recorrer un largo camino sin comprender el origen de la hoja de estilo porque el 99% de los estilos en su sitio web provienen del mismo origen. Pero si no comprendes la especificidad, te morderá. Lamentablemente, a menudo se pasa por alto un concepto.
+        </p>
+        <p>
+          El navegador evalúa la especificidad en dos partes: estilos aplicados en línea en el HTML y estilos aplicados mediante un selector.
+        </p>
+        <p>
+          Si usa un atributo de estilo HTML para aplicar estilos, las declaraciones se aplican solo a ese elemento. Estas son, en efecto, declaraciones de "alcance", que anulan cualquier declaración aplicada desde su hoja de estilo o una etiqueta <code>&lt;style&gt;</code>. Los estilos en línea no tienen selector porque se aplican directamente al elemento al que apuntan.
+        </p>
+        <p>
+          En su página, desea que el enlace de Especiales destacados en el menú de navegación sea naranja, como se muestra en la figura 1.6. Evaluaré varias formas en que puede lograr esto, comenzando con los estilos en línea en la lista 1.4.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/01.jpg" alt="ibid">
+          <figcaption>Figura 1.6. La aplicación de estilos en línea anula los estilos aplicados mediante selectores.</figcaption>
+        </figure>
+        <p>
+          Para ver esto en su navegador, edite su página para que coincida con el código que se proporciona aquí. (Deshacerás este cambio en un momento).
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;li&gt;
+  &lt;a href="/specials" class="featured"
+    style="background-color: orange;"&gt;            <span>1</span>
+    Specials
+  &lt;/a&gt;
+&lt;/li&gt;
+          </code>
+          <small>Listado 1.4. Estilos en línea que anulan las declaraciones aplicadas en otros lugares</small>
+        </pre>
+        <ol class="index-code">
+          <li>Estilo en línea aplicado mediante el atributo de <code>style</code></li>
+        </ol>
+        <p>
+          Para anular las declaraciones en línea en su hoja de estilo, deberá agregar un <code>!important</code> a la declaración, cambiándolo a un origen de mayor prioridad. Si los estilos en línea están marcados como importantes, nada puede anularlos. Es preferible hacer esto desde dentro de la hoja de estilo. Deshaga este cambio y buscaremos mejores enfoques.
+        </p>
+        <p>
+          La segunda parte de la especificidad la determinan los selectores. Por ejemplo, un selector con dos nombres de clase tiene una mayor especificidad que un selector con solo uno. Si una declaración establece un fondo en naranja, pero otra con mayor especificidad lo establece en verde azulado, el navegador aplica el color verde azulado.
+        </p>
+        <p>
+          Para ilustrarlo, veamos qué sucede cuando intentamos convertir el enlace destacado en naranja con un selector de clase simple. Actualice la parte final de su hoja de estilo para que coincida con el código que se proporciona aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+#main-nav a {                       <span>1</span>
+  color: white;
+  background-color: #13a4a4;        <span>2</span>
+  padding: 5px;
+  border-radius: 2px;
+  text-decoration: none;
+}
+
+.featured {                         <span>3</span>
+  background-color: orange;
+}
+          </code>
+          <small>Listado 1.5. Selectores con diferentes especificidades</small>
+        </pre>
+        <ol class="index-code">
+          <li>Selector de mayor especifidad</li>
+          <li>Color de fondo verde azulado</li>
+          <li>La declaración de fondo naranja no anulará el verde azulado debido a la especificidad del selector</li>
+        </ol>
+        <p>
+          ¡No funciona! Todos los enlaces siguen siendo verde azulado. ¿Por qué? El primer selector aquí es más específico que el segundo. Está compuesto por un ID y un nombre de etiqueta, mientras que el segundo está compuesto por un nombre de clase. Sin embargo, hay más en esto que simplemente ver qué selector es más largo.
+        </p>
+        <p>
+          Los diferentes tipos de selectores también tienen diferentes especificidades. Un selector de ID tiene una mayor especificidad que un selector de clase, por ejemplo. De hecho, una sola ID tiene una mayor especificidad que un selector con cualquier número de clases. De manera similar, un selector de clases tiene una especificidad más alta que un selector de etiquetas (también llamado selector de tipo).
+        </p>
+        <p>
+          Las reglas exactas de especificidad son:
+        </p>
+        <ul>
+          <li>Si un selector tiene más ID, gana (es decir, es más específico).</li>
+          <li>Si eso resulta en un empate, el selector con más clases gana.</li>
+          <li>Si eso resulta en un empate, el selector con más nombres de etiquetas gana.</li>
+        </ul>
+        <p>
+          Considere los selectores que se muestran en la siguiente lista (pero no los agregue a su página). Estos están escritos en orden de especificidad creciente.
+        </p>
+        <pre>
+          <code class="container__base-code">
+html body header h1 {                 <span>1</span>
+  color: blue;
+}
+
+body header.page-header h1 {          <span>2</span>
+  color: orange;
+}
+
+.page-header .title {                 <span>3</span>
+  color: green;
+}
+
+#page-title {                         <span>4</span>
+  color: red;
+}
+          </code>
+          <small>Listado 1.6. Selectores con especificidades crecientes</small>
+        </pre>
+        <ol class="index-code">
+          <li>Cuatro etiquetas</li>
+          <li>Tres etiquetas y una clase</li>
+          <li>Dos clases</li>
+          <li>Un ID</li>
+        </ol>
+        <p>
+          El selector más específico aquí es <b>4</b>, con un ID, por lo que su declaración de color rojo se aplica al título. El siguiente específico es <b>3</b>, con dos nombres de clase. Esto se aplicaría si el selector de ID <b>4</b> estuviera ausente. El selector <b>3</b> tiene una mayor especificidad que el selector <b>2</b>, a pesar de su longitud: dos clases son más específicas que una clase. Finalmente, <b>1</b> es el menos específico, con cuatro tipos de elementos (es decir, nombres de etiquetas) pero sin ID ni clases.
+        </p>
+        <p>
+          Los selectores de pseudoclase (por ejemplo,<code>:hover</code>) y los selectores de atributos (por ejemplo, <code>[type = "input"]</code>) tienen cada uno la misma especificidad que un selector de clase. El selector universal (<code>*</code>) y los combinadores (<code>&gt;, +, ~</code>) no tienen ningún efecto sobre la especificidad.
+        </p>
+        <p>
+          Si agrega una declaración a su CSS y parece no tener ningún efecto, a menudo se debe a que una regla más específica la anula. Muchas veces los desarrolladores escriben selectores usando ID, sin darse cuenta de que esto crea una mayor especificidad, una que es difícil de anular más adelante. Si necesita anular un estilo aplicado con un ID, debe utilizar otro ID.
+        </p>
+        <p>
+          Es un concepto simple, pero si no comprende la especificidad, puede volverse loco tratando de averiguar por qué una regla funciona y otra no.
+        </p>
+        <p>
+          Una forma común de indicar la especificidad es en forma numérica, a menudo con comas entre cada número. Por ejemplo, "1,2,2" indica una especificidad de un ID, dos clases y dos etiquetas. Los ID que tienen la prioridad más alta se enumeran primero, seguidos de las clases y luego las etiquetas.
+        </p>
+        <p>
+          El selector <code>#page-header #page-title</code> tiene dos ID, sin clases y sin etiquetas. Podemos decir que tiene una especificidad de <code>2,0,0</code>. El selector <code>ul li</code>, con dos etiquetas pero sin ID ni clases, tiene una especificidad de <code>0,0,2</code>.
+        </p>
+        <p>
+          Ahora es cuestión de comparar los números para determinar qué selector es más específico. Una especificidad de <code>1,0,0</code> tiene prioridad sobre una especificidad de <code>0,2,2</code> e incluso sobre <code>0,10,0</code> (aunque no recomiendo nunca escribir selectores tan largos como uno con 10 clases), porque el primer número (ID) es de mayor prioridad.
+        </p>
+        <p>
+          Ocasionalmente, las personas usan una notación de cuatro números con un 0 o 1 en el dígito más significativo para representar si una declaración se aplica a través de estilos en línea. En este caso, un estilo en línea tiene una especificidad de <code>1,0,0,0</code>. Esto anularía los estilos aplicados a través de selectores, que podrían indicarse con especificidades de <code>0,1,2,0</code> (una ID y dos clases) o algo similar.
+        </p>
+        <p>
+          Cuando intentó aplicar el fondo naranja con el selector <code>.featured</code>, no funcionó. El selector <code>#main-nav a</code> tiene un ID que anula el selector de clase (especificidades 1,0,1 y 0,1,0). Para corregir esto, tiene algunas opciones a considerar. Veamos varias posibles soluciones.
+        </p>
+        <p>
+          La solución más rápida es agregar un <code>!important</code> a la declaración que desea favorecer. Cambie la declaración para que coincida con la que se proporciona aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  #main-nav a {
+    color: white;
+    background-color: #13a4a4;
+    padding: 5px;
+    border-radius: 2px;
+    text-decoration: none;
+  }
+  
+  .featured {
+    background-color: orange !important;        <span>1</span>
+  }
+          </code>
+          <small>Listado 1.7. Posible arreglo uno</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que la declaración sea <code>!important</code> ahora es un origen de mayor prioridad.</li>
+        </ol>
+        <p>
+          Esto funciona porque la anotación <code>!important</code> eleva la declaración a un origen de mayor prioridad. Claro, es fácil, pero también es una solución ingenua. Puede que funcione ahora, pero puede causarle problemas en el futuro. Si comienza a agregar <code>!important</code> a varias declaraciones, ¿qué sucede cuando necesita triunfar sobre algo que ya está configurado como importante? Cuando le da a varias declaraciones un <code>!important</code>, entonces los orígenes coinciden y se aplican las reglas de especificidad regulares. En última instancia, esto lo dejará de nuevo donde comenzó; una vez que introduce un <code>!important</code>, es probable que le sigan más.
+        </p>
+        <p>
+          Busquemos una mejor manera. En lugar de tratar de eludir las reglas de la especificidad del selector, intentemos que funcionen para nosotros. ¿Y si elevaras la especificidad de tu selector? Actualice los conjuntos de reglas en su CSS para que coincidan con esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  #main-nav a {                          <span>1</span>
+    color: white;
+    background-color: #13a4a4;
+    padding: 5px;
+    border-radius: 2px;
+    text-decoration: none;
+  }
+  
+  #main-nav .featured {                  <span>2</span>
+    background-color: orange;            <span>3</span>
+  }
+          </code>
+          <small>Listado 1.8. Posible solución dos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Especificidad permanece en 1,0,1</li>
+          <li>Incrementa la especificidad a 1,1,0</li>
+          <li>El <code>!important</code> no es necesario</li>
+        </ol>
+        <p>
+          Esta solución también funciona. Ahora, su selector tiene una ID y una clase, lo que le da una especificidad de <code>1,1,0</code>, que es mayor que <code>#main-nav</code> a (una especificidad de <code>1,0,1</code>), por lo que el color de fondo naranja se aplica a el elemento.
+        </p>
+        <p>
+          Sin embargo, aún puedes mejorar esto. En lugar de <span><em>aumentar</em></span> la especificidad del segundo selector, veamos si podemos <span><em>reducir</em></span> la especificidad del primero. El elemento también tiene una clase: <code>&lt;ul id = "main-nav" class = "nav"&gt;</code>, por lo que puede cambiar su CSS para apuntar al elemento por su nombre de clase en lugar de su ID. Cambie <code>#main-nav</code> a <code>.nav</code> en sus selectores como se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .nav {                               <span>1</span>
+    margin-top: 10px;
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .nav li {                            <span>1</span>
+    display: inline-block;
+  }
+  
+  .nav a {                             <span>2</span>
+    color: white;
+    background-color: #13a4a4;
+    padding: 5px;
+    border-radius: 2px;
+    text-decoration: none;
+  }
+  
+  .nav .featured {                    <span>3</span>
+    background-color: orange;
+  }
+          </code>
+          <small>Listado 1.9. Posible solución tres</small>
+        </pre>
+        <ol class="index-code">
+          <li>Cambia "# main-nav" a ".nav" en toda la hoja de estilo</li>
+          <li>Disminuye la primera especificidad (0,1,1)</li>
+          <li>3 Aumenta la segunda especificidad (0,2,0)</li>
+        </ol>
+        <p>
+          Ha reducido la especificidad de los selectores. El fondo naranja es lo suficientemente alto como para anular el verde azulado.
+        </p>
+        <p>
+          Como puede ver en estos ejemplos, la especificidad tiende a convertirse en una especie de carrera armamentista. Este es particularmente el caso de los grandes proyectos. Por lo general, es mejor mantener la especificidad baja cuando sea posible, de modo que cuando necesite anular algo, sus opciones estarán abiertas.
+        </p>
+        <h3>1.1.3. Comprender el orden de origen</h3>
+        <p>
+          El tercer y último paso para resolver la cascada es el orden de origen. Si el origen y la especificidad son los mismos, entonces la declaración que aparece más adelante en la hoja de estilo, o aparece en una hoja de estilo incluida más adelante en la página, tiene prioridad.
+        </p>
+        <p>
+          Esto significa que puede manipular el orden de la fuente para diseñar su enlace destacado. Si logra que los dos selectores en conflicto sean iguales en especificidad, el que aparezca en último lugar gana. Consideremos la cuarta opción que se muestra en la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .nav a {                             <span>1</span>
+    color: white;
+    background-color: #13a4a4;
+    padding: 5px;
+    border-radius: 2px;
+    text-decoration: none;
+  }
+  
+  a.featured {                         <span>1</span>
+    background-color: orange;
+  }
+          </code>
+          <small>Listado 1.10. Posible solución cuatro</small>
+        </pre>
+        <ol>
+          <li>Iguala las especificidades (0,1,1)</li>
+        </ol>
+        <p>
+          En esta solución, las especificidades son iguales. El orden de origen determina qué declaración se aplica a su enlace, lo que da como resultado un botón destacado de color naranja.
+        </p>
+        <p>
+          Esto resuelve su problema pero, potencialmente, también introduce uno nuevo: aunque un botón destacado dentro del navegador parece correcto, ¿qué sucede si desea usar la clase destacada en otro enlace en otra parte de la página, fuera de su navegador? Obtendrá una combinación extraña de estilos: el fondo naranja, pero no el color del texto, el relleno o el radio del borde de los enlaces de navegación (figura 1.7).
+        </p>
+        <figure>
+          <img src="../img_css/cap1/06.jpg" alt="ibid">
+          <figcaption>Figure 1.7.La clase destacada fuera de la declaración de navegación produce resultados extraños</figcaption>
+        </figure>
+        <p>
+          El listado 1.11 muestra el marcado que crea este comportamiento. Ahora hay un elemento al que apunta solo el segundo selector, pero no el primero, lo que produce un resultado no deseado. Tendrá que decidir si desea que este estilo de botón naranja funcione fuera del <code>nav</code> y, si lo hace, deberá asegurarse de que todos los estilos deseados se apliquen también.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;header class="page-header"&gt;
+  &lt;h1 id="page-title" class="title"&gt;Wombat Coffee Roasters&lt;/h1&gt;
+  &lt;nav&gt;
+    &lt;ul id="main-nav" class="nav"&gt;
+      &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/coffees"&gt;Coffees&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/brewers"&gt;Brewers&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/specials" class="featured"&gt;Specials&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;p&gt;
+    Be sure to check out
+    &lt;a href="/specials" class="featured"&gt;our specials&lt;/a&gt;           <span>1</span>
+  &lt;/p&gt;
+&lt;/main&gt;
+          </code>
+          <small>Listado 1.11. Enlace destacado fuera de la navegación</small>
+        </pre>
+        <ol class="index-code">
+          <li>El enlace destacado fuera de la navegación tendrá un estilo parcial</li>
+        </ol>
+        <p>
+          Sin otra información sobre sus necesidades en este sitio, me inclinaría a seguir con la solución número tres (lista 1.9). Idealmente, en su sitio web, podrá hacer algunas conjeturas fundamentadas sobre sus necesidades en otros lugares. Quizás sepa que es probable que necesite un enlace destacado en otros lugares. En ese caso, quizás arreglar cuatro (listado 1.10) sería lo que desea, con la adición de estilos para admitir la clase <code>featured</code> en otra parte de la página.
+        </p>
+        <p>
+          Muy a menudo en CSS, como dije antes, la mejor respuesta es "depende". Hay muchos caminos hacia el mismo resultado final. Vale la pena considerar varias opciones y pensar en las ramificaciones de cada una. Cuando me enfrento a un problema de estilo, a menudo lo abordo en dos fases: Primero, averigüe qué declaraciones harán que se vea bien. En segundo lugar, piense en las posibles formas de estructurar los selectores y elija la que mejor se adapte a sus necesidades.
+        </p>
+        <p>
+          Cuando comenzó a estudiar CSS, es posible que haya aprendido que los selectores para los enlaces de estilo deben ir en un orden determinado. Eso es porque el orden de origen afecta la cascada. Esta lista muestra estilos para enlaces en una página en el orden "correcto".
+        </p>
+        <pre>
+          <code class="container__base-code">
+  a:link {
+    color: blue;
+    text-decoration: none;
+  }
+  
+  a:visited {
+    color: purple;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  a:active {
+    color: red;
+  }
+          </code>
+          <small>Listado 1.12. Estilos de enlace</small>
+        </pre>
+        <p>
+          La cascada es la razón por la que este orden es importante: dada la misma especificidad, los estilos posteriores anulan los estilos anteriores. Si dos o más de estos estados son verdaderos para un elemento al mismo tiempo, el último puede anular a los demás. Si el usuario se desplaza sobre un enlace visitado, los estilos de desplazamiento tienen prioridad. Si el usuario activa el enlace (es decir, hace clic en él) mientras se desplaza sobre él, los estilos activos tienen prioridad.
+        </p>
+        <p>
+          Un mnemónico útil para recordar este orden es <span translate="no"><em>LoVe/HAte- link, visited, hover, active</em></span>. Tenga en cuenta que si cambia uno de los selectores para que tenga una especificidad diferente a los demás, esto se romperá y es posible que obtenga resultados inesperados.
+        </p>
+        <p>
+          El navegador sigue estos tres pasos: origen, especificidad y orden de origen para resolver todas las propiedades de cada elemento de la página. Una declaración que "gana" la cascada se llama valor en cascada. Hay como máximo un valor en cascada por propiedad por elemento. Un párrafo en particular (<code>&lt;p&gt;</code>) en la página puede tener un margen superior y un margen inferior, pero no puede tener dos márgenes superiores diferentes o dos márgenes inferiores diferentes. Si el CSS especifica diferentes valores para una propiedad, la cascada elegirá solo uno al representar el elemento. Este es el valor en cascada.
+        </p>
+        <p>
+          <span translate="no"><em>cascaded value</em></span> un valor para una propiedad particular que se aplica a un elemento como resultado de la cascada.
+        </p>
+        <p>
+          Si nunca se especifica una propiedad para un elemento, no tiene un valor en cascada para esa propiedad. El mismo párrafo, por ejemplo, puede no tener un borde o relleno especificado.
+        </p>
+      </section>
+      <section>
+        <h3 id="sub3">1.1.4. Dos reglas generales</h3>
+        <p>
+          Como sabrá, existen dos reglas generales comunes para trabajar con la cascada. Debido a que pueden ser útiles, aquí hay un recordatorio:
+        </p>
+        <ol>
+          <li><em>No utilice ID en su selector.</em> Incluso una identificación aumenta mucho la especificidad. Cuando necesita anular el selector, a menudo no tiene otro ID significativo que pueda usar, por lo que termina teniendo que copiar el selector original y agregar otra clase para distinguirlo de la que está tratando de anular.</li>
+          <li><em>No use <span translate="no">!important</span>.</em> Esto es incluso más difícil de anular que un ID, y una vez que lo use, deberá agregarlo cada vez que desee anular la declaración original, y luego tendrá que lidiar con la especificidad.</li>
+        </ol>
+        <p>
+          Estas dos reglas pueden ser un buen consejo, pero no se aferre a ellas para siempre. Hay excepciones en las que pueden estar bien, pero nunca las uses en una reacción instintiva para ganar una batalla de especificidad.
+        </p>
+        <p>
+          Si está creando un módulo JavaScript para distribución (como un paquete NPM), le recomiendo encarecidamente que no aplique estilos en línea a través de JavaScript si se puede evitar. Si lo hace, está obligando a los desarrolladores que usan su paquete a aceptar sus estilos exactamente o usar! Important para cada propiedad que quieran cambiar.
+        </p>
+        <p>
+          En su lugar, incluya una hoja de estilo en su paquete. Si su componente necesita realizar cambios de estilo dinámicamente, casi siempre es preferible usar JavaScript para agregar y quitar clases a los elementos. Luego, los usuarios pueden usar su hoja de estilo y tienen la opción de editarla como quieran sin luchar contra la especificidad.
+        </p>
+        <p>
+          En los últimos años ha surgido una serie de metodologías prácticas para ayudar a gestionar la especificidad del selector. Los veremos en detalle en el capítulo 9. Allí hablaré más sobre cómo lidiar con la especificidad, incluido un lugar en el que! Importante está bien. Pero ahora que tiene claro cómo se comporta la cascada, podemos seguir adelante.
+        </p>
+      </section>
+      <section id="tema2">
+        <h3>1.2 HERENCIA</h3>
+        <p>
+          Existe una última forma en que un elemento puede recibir <span><em>styles- inheritance</em></span>. La cascada se confunde con frecuencia con el concepto de herencia. Aunque los dos temas están relacionados, debe comprender cada uno de ellos individualmente.
+        </p>
+        <p>
+          Si un elemento no tiene un valor en cascada para una propiedad determinada, puede heredar uno de un elemento ancestro. Es común aplicar una <code>font-family</code> al elemento <code>&lt;body&gt;</code>. Todos los elementos ancestrales dentro heredarán esta fuente; no tiene que aplicarlo explícitamente a cada elemento de la página. La Figura 1.8 muestra cómo la herencia fluye hacia abajo en el árbol DOM.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/07.jpg" alt="diagrama herencia HTML5">
+          <figcaption>Figure 1.8.Las propiedades heredadas se transmiten por el árbol DOM de los nodos principales a sus descendientes.</figcaption>
+        </figure>
+        <p>
+          Sin embargo, no todas las propiedades se heredan. De forma predeterminada, solo algunos lo son. En general, estas son las propiedades que querrá heredar. Son principalmente propiedades que pertenecen al texto: <code>color, font, font-family, font-size, font-weight, font-variant, font-style, line-height, letter-spacing, text-align, text-indent, text-transform, white-space</code> y <code>word-spacing</code>.
+        </p>
+        <p>
+          Algunos otros también heredan, como las propiedades de la lista: <code>list-style</code>, <code>list-style -type</code>, <code>list-style-position</code>, and <code>list-style-image</code>.Las propiedades del borde de la tabla, <code>border-collapse</code> y <code>border-spacing</code>, también se heredan; tenga en cuenta que estos controlan el comportamiento de los bordes de las tablas, no las propiedades más comúnmente utilizadas para especificar bordes para elementos que no son de tabla. (No quisiéramos que un <code>&lt;div&gt</code>; pasara su borde a cada elemento descendiente). Esta no es una lista completa, pero está muy cerca.
+        </p>
+        <p>
+          Puede usar la herencia a su favor en su página aplicando una fuente al elemento del cuerpo, permitiendo que sus elementos descendientes hereden ese valor (figura 1.9).
+        </p>
+        <figure>
+          <img src="../img_css/cap1/08.jpg" alt="ibid">
+          <figcaption>Figure 1.9. Aplique una familia de fuentes al cuerpo y deje que todos los elementos descendientes hereden el mismo valor.</figcaption>
+        </figure>
+        <pre>
+          <code class="container__base-code">
+  body {
+    font-family: sans-serif;           <span>1</span>
+  }
+          </code>
+        </pre>
+        <ol>
+          <li>También se aplicará una propiedad heredada a los elementos descendientes.</li>
+        </ol>
+        <p>
+          Esto se aplica a toda la página agregándolo al cuerpo. Pero también puede apuntar a un elemento específico en la página, y solo heredará sus elementos descendientes. La herencia pasará de un elemento a otro hasta que sea anulada por un valor en cascada.
+        </p>
+        <p>
+          Un nido complicado de valores que se heredan y se reemplazan entre sí puede volverse rápidamente difícil de rastrear. Si aún no está familiarizado con las herramientas de desarrollo de su navegador, acostúmbrese a usarlas.
+        </p>
+        <p>
+          <span><em>DevTools</em></span> proporciona visibilidad de exactamente qué reglas se aplican a qué elementos y por qué. La cascada y la herencia son conceptos abstractos; Las <span><em>DevTools</em></span> son la mejor forma que conozco para orientarme. Ábralas haciendo clic con el botón derecho en un elemento y seleccionando Inspeccionar o Inspeccionar elemento en el menú contextual. A continuación, se muestra un ejemplo de lo que verá.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/09.jpg" alt="ibid">
+        </figure>
+        <p>
+          El inspector de estilo muestra todos los selectores que apuntan al elemento inspeccionado, ordenados por especificidad. Debajo están todas las propiedades heredadas. Esto muestra toda la cascada y la herencia del elemento de un vistazo.
+        </p>
+        <p>
+          Hay muchas características sutiles que le ayudarán a entender lo que sucede con los estilos de un elemento. Los estilos más cercanos a la parte superior anulan a los de abajo. Los estilos anulados están tachados. La hoja de estilo y el número de línea de cada conjunto de reglas se muestran a la derecha, por lo que puede encontrarlos en su código fuente. Esto le dice exactamente qué elemento heredó, qué estilos y dónde se originaron. También puede escribir en el cuadro Filtro en la parte superior para ocultar todas las declaraciones excepto un cierto conjunto.
+        </p>
+      </section>
+      <section id="tema3">
+        <h3>1.3 VALORES ESPECIALES</h3>
+        <p>
+          Hay dos valores especiales que puede aplicar a cualquier propiedad para ayudar a manipular la cascada: <code>inherit</code> e <code>initial</code>. Echemos un vistazo a estos.
+        </p>
+        <h4 id="sub4">1.3.1. Usando la palabra clave <span translate="no">INHERIT</span></h4>
+        <p>
+          A veces, querrá que la herencia tenga lugar cuando un valor en cascada lo impida. Para hacer esto, puede usar la palabra clave <code>inherit</code>. Puede anular otro valor con esto, y hará que el elemento herede ese valor de su padre.
+        </p>
+        <p>
+          Suponga que agrega un pie de página gris claro a su página. En el pie de página, puede haber algunos enlaces, pero no desea que se destaquen demasiado porque el pie de página no es una parte importante de la página. Por lo tanto, hará que los enlaces en el pie de página sean de color gris oscuro (figura 1.10).
+        </p>
+        <figure>
+          <img src="../img_css/cap1/10.jpg" alt="ibid">
+          <figcaption>Figura 1.10. El enlace Condiciones de uso cuando hereda el texto gris colo</figcaption>
+        </figure>
+        <p>
+          Agregue este marcado al final de su página. Una página normal tendría más contenido entre esto y el encabezado, pero esto cumplirá el propósito.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  &lt;footer class="footer"&gt;
+    &copy; 2016 Wombat Coffee Roasters &mdash;
+    &lt;a href="/terms-of-use"&gt;Terms of use&lt;/a&gt;
+  &lt;/footer&gt;
+          </code>
+          <small>Listado 1.14. Pie de página con enlace</small>
+        </pre>
+        <p>
+          Por lo general, tendrá un color de fuente establecido para todos los enlaces de la página (y si no lo tiene, los estilos de agente de usuario establecen uno), y ese color también se aplica al enlace de los Términos de uso. Para que el vínculo del pie de página sea gris, deberá anularlo. Agregue este código a su hoja de estilo para hacer eso.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  a:link {                             <span>1</span>
+    color: blue;                       <span>1</span>
+  }                                    <span>1</span>
+  ...
+  .footer {
+    color: #666;                       <span>2</span>
+    background-color: #ccc;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .footer a {
+    color: inherit;                    <span>3</span>
+    text-decoration: underline;
+  }
+          </code>
+          <small>Listado 1.15. El valor heredado</small>
+        </pre>
+        <ol class="index-code">
+          <li>Color de enlace global para la página</li>
+          <li>El color del texto del pie de página se establece en gris</li>
+          <li>Hereda el color de fuente del pie de página</li>
+        </ol>
+        <p>
+          El tercer conjunto de reglas aquí anula el color del enlace azul, dando al enlace en el pie de página un valor en cascada de <code>inherit</code>. Por lo tanto, hereda el color de su padre, <code>&lt;footer&gt;</code>.
+        </p>
+        <p>
+          El beneficio aquí es que el vínculo del pie de página cambiará junto con el resto del pie de página en caso de que algo lo altere. (Editar el segundo conjunto de reglas puede hacer esto, u otro estilo en otro lugar podría anularlo). Si, por ejemplo, el texto del pie de página en ciertas páginas es de un gris más oscuro, entonces el enlace cambiará para coincidir.
+        </p>
+        <p>
+          También puede utilizar la palabra clave <code>inherit</code> para forzar la herencia de una propiedad que normalmente no se hereda, como el borde o el relleno. Hay pocos usos prácticos para esto, pero verá un caso útil en el capítulo 3 cuando analicemos el tamaño de las cajas.
+        </p>
+        <h4 id="sub5">1.3.2. Usando la palabra clave <span translate="no">initial</span></h4>
+        <p>
+          A veces, encontrará que tiene estilos aplicados a un elemento que desea deshacer. Puede hacer esto especificando la palabra clave <code>initial</code>. Cada propiedad CSS tiene un valor inicial o predeterminado. Si asigna el valor <code>initial</code> a esa propiedad, entonces efectivamente se restablece a su valor predeterminado. Es como un restablecimiento completo de ese valor. La figura 1.11 muestra cómo se representa su pie de página si le asigna un valor <code>initial</code> en lugar de <code>inherit</code>.
+        </p>
+        <p>
+          La palabra clave <code>initial</code> no es compatible con ninguna versión de Internet Explorer u Opera Mini. Funciona en todos los demás navegadores principales, incluido Edge, el sucesor de Microsoft de IE11.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/11.jpg" alt="ibid">
+          <figcaption>Figura 1.11. El valor inicial de la propiedad de color es negro.</figcaption>
+        </figure>
+        <p>
+          El CSS de la figura 1.11 se muestra en la siguiente lista. Debido a que el negro es el valor inicial de la propiedad de color en la mayoría de los navegadores, <code>color: initial</code> es equivalente a <code>color: black</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .footer a {
+    color: initial;
+    text-decoration: underline;
+  }
+          </code>
+          <small>Listado 1.16. El valor inicial</small>
+        </pre>
+        <p>
+          El beneficio de esto es que no tiene que pensar tanto en ello. Si desea eliminar un borde de un elemento, establezca <code>border: initial</code>. Si desea restaurar un elemento a su ancho predeterminado, establezca el <code>width: initial</code>.
+        </p>
+        <p>
+          Es posible que tenga la costumbre de usar el valor <code>auto</code> para hacer este tipo de reinicio. De hecho, puede usar <code>width: auto</code> para lograr el mismo resultado. Esto se debe a que el valor predeterminado de ancho es <code>auto</code>.
+        </p>
+        <p>
+          Sin embargo, es importante tener en cuenta que <code>auto</code> no es el valor predeterminado para todas las propiedades. Ni siquiera es válido para muchas propiedades; por ejemplo, <code>border-width: auto</code> y <code>padding: auto</code> no son válidos y, por lo tanto, no tienen ningún efecto. Puede tomarse el tiempo para desenterrar el valor inicial de estos, pero a menudo es más fácil usar <code>initial</code>.
+        </p>
+        <p>
+          Declarar <code>display: initial</code> es equivalente a <code>display: inline</code>. No se evaluará para <code>display: block</code>, independientemente del tipo de elemento al que lo aplique. Eso se debe a que <code>initial</code> se restablece al valor inicial de la propiedad, no al elemento; <code>inline</code> es el valor predeterminado para la propiedad de visualización.
+        </p>
+      </section>
+      <section id="tema4">
+        <h3>1.4 PROPIEDADES <span translate="no">SHORTHAND</span></h3>
+        <p>
+          Las propiedades abreviadas (<span><em>Shortland properties</em></span>) son propiedades que le permiten establecer los valores de varias otras propiedades al mismo tiempo. Por ejemplo, <code>font</code> es una propiedad abreviada que le permite establecer varias propiedades de fuente. Esta declaración especifica <code>font-style, font-weight, font-size, line-height</code>, y <code>font-family</code>:
+        </p>
+        <pre>
+          <code class="container__base-code">
+  font: italic bold 18px/1.2 "Helvetica", "Arial", sans-serif;
+          </code>
+        </pre>
+        <p>
+          Similar,
+        </p>
+        <ul>
+          <li><code>background</code> es una propiedad abreviada para múltiples propiedades de fondo: <code>background-color, background-image, background-size, background-repeat, background-position, background-origin, background-chip</code> y <code>background-attachment</code>.</li>
+          <li><code>border</code> es una forma abreviada de <code>border-width, border-style</code> y <code>border-color</code>, que a su vez también son propiedades taquigráficas.</li>
+          <li><code>border-width</code> es la abreviatura de los anchos de borde superior, derecho, inferior e izquierdo.</li>
+        </ul>
+        <p>
+          Las propiedades abreviadas son útiles para mantener su código conciso y claro, pero algunas peculiaridades sobre ellas no son evidentes.
+        </p>
+        <h3>1.4.1. Tenga cuidado con los taquigrafía que anulan silenciosamente otros estilos</h3>
+        <p>
+          La mayoría de las propiedades abreviadas le permiten omitir ciertos valores y solo especificar los bits que le interesan. Sin embargo, es importante saber que hacer esto aún establece los valores omitidos; se establecerán implícitamente en su valor inicial. Esto puede anular silenciosamente los estilos que especifique en otro lugar. Si, por ejemplo, utilizara la propiedad de <code>font</code> abreviada para el título de la página sin especificar un <code>font-weight</code>, aún se establecería un peso de fuente <code>normal</code> (figura 1.12).
+        </p>
+        <figure>
+          <img src="../img_css/cap1/12.jpg" alt="ibid">
+          <figcaption>Figura 1.12. Las propiedades abreviadas establecerán los valores omitidos en su valor inicial.</figcaption>
+        </figure>
+        <p>
+          Agregue el código de esta lista a su hoja de estilo para ver un ejemplo de cómo funciona.
+        </p>
+        <pre>
+          <code class="container__base-code">
+h1 {
+  font-weight: bold;
+}
+
+.title {
+  font: 32px Helvetica, Arial, sans-serif;
+}
+          </code>
+          <small>Listado 1.17. Propiedad abreviada que especifica todos los valores asociados</small>
+        </pre>
+        <p>
+          A primera vista, puede parecer que <code>&lt;h1 class = "title"&gt;</code> resultaría en un encabezado en negrita, pero no es así. Estos estilos son equivalentes a este código.
+        </p>
+        <pre>
+          <code class="container__base-code">
+h1 {
+  font-weight: bold;
+}
+
+.title {
+  font-style: normal;          <span>1</span>
+  font-variant: normal;        <span>1</span>
+  font-weight: normal;         <span>1</span>
+  font-stretch: normal;        <span>1</span>
+  line-height: normal;         <span>1</span>
+  font-size: 32px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+          </code>
+          <small>Listado 1.18. Equivalente ampliado a la abreviatura del listado 1.17</small>
+        </pre>
+        <ol class="index-code">
+          <li>Valores iniciales de esas propiedades</li>
+        </ol>
+        <p>
+          Esto significa que aplicar estos estilos a <code>&lt;h1&gt;</code> da como resultado un grosor de fuente normal, no negrita. También puede anular otros estilos de fuente que de otro modo se heredarían de un elemento ancestro. De todas las propiedades abreviadas, <code>font</code> es la más notoria por causar problemas, ya que establece una amplia gama de propiedades. Por esta razón, evito usarlo excepto para establecer estilos generales en el elemento <code>&lt;body&gt;</code>. Aún puede encontrar este problema con otras propiedades abreviadas, así que tenga en cuenta esta posibilidad.
+        </p>
+        <h3 id="sub6">1.4.2. Comprender el orden de los valores taquigráficos</h3>
+        <p>
+          Las propiedades abreviadas intentan ser indulgentes cuando se trata del orden de los valores que especifica. Puede configurar el <code>border: 1px solid black</code> o el <code>borde: black 1px solid</code> y ambos funcionarán. Esto se debe a que el navegador tiene claro qué valor especifica el ancho, cuál especifica el color y cuál especifica el estilo del borde.
+        </p>
+        <p>
+          Pero hay muchas propiedades donde los valores pueden ser más ambiguos. En estos casos, el orden de los valores es significativo. Es importante comprender este orden para las propiedades abreviadas que utiliza.
+        </p>
+        <p>
+          El orden abreviado de las propiedades molesta especialmente a los desarrolladores cuando se trata de propiedades como margen y relleno, o algunas de las propiedades de borde que especifican valores para cada uno de los cuatro lados de un elemento. Para estas propiedades, los valores están en el orden de las agujas del reloj, comenzando por la parte superior.
+        </p>
+        <p>
+          Recordar esta orden puede evitarle problemas. De hecho, la palabra <span translate="no"><em>TrouBle</em></span> es un mnemotécnico que puede utilizar para recordar el orden: <span translate="no"><em>top, right, bottom, left</em></span>.
+        </p>
+        <p>
+          Puede utilizar este mnemónico para establecer el relleno en los cuatro lados de un elemento. Los enlaces que se muestran en la figura 1.13 tienen un relleno superior de 10 px, un relleno derecho de 15 px, un relleno inferior de 0 y un relleno izquierdo de 5 px. Esto parece desigual, pero ilustra el principio.
+        </p>
+        <figure>
+          <img src="../img_css/cap1/13.jpg" alt="ibid">
+          <figcaption>Figura 1.13. Elementos con varios acolchados en cada lado</figcaption>
+        </figure>
+        <p>
+          Este listado muestra el CSS de estos enlaces.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav a {
+  color: white;
+  background-color: #13a4a4;
+  padding: 10px 15px 0 5px;            <span>1</span>
+  border-radius: 2px;
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 1.19. Especificar el relleno a cada lado de un elemento</small>
+        </pre>
+        <ol class="index-code">
+          <li>Arriba, derecha, abajo e izquierda, relleno</li>
+        </ol>
+        <p>
+          Las propiedades cuyos valores siguen este patrón también admiten notaciones truncadas. Si la declaración termina antes de que se le dé un valor a uno de los cuatro lados, ese lado toma su valor del lado opuesto. Especifique tres valores, y el lado izquierdo y derecho usarán el segundo. Especifique dos valores, y la parte superior e inferior utilizarán el primero. Si especifica solo un valor, se aplicará a los cuatro lados. Por lo tanto, las siguientes declaraciones son todas equivalentes:
+        </p>
+        <pre>
+          <code class="container__base-code">
+padding: 1em 2em;
+padding: 1em 2em 1em;
+padding: 1em 2em 1em 2em;
+          </code>
+        </pre>
+        <p>
+          Estos también son equivalentes entre sí:
+        </p>
+        <pre>
+          <code class="container__base-code">
+padding: 1em;
+padding: 1em 1em;
+padding: 1em 1em 1em;
+padding: 1em 1em 1em 1em;
+          </code>
+        </pre>
+        <p>
+          Para muchos desarrolladores, el más problemático es cuando se dan tres valores. Recuerde, esto especifica la parte superior, derecha e inferior. Debido a que no se da ningún valor a la izquierda, tomará el mismo valor que a la derecha; el segundo valor se aplicará tanto a la izquierda como a la derecha. Por lo tanto, el <code>padding: 10px 15px 0</code> aplica un relleno de 15 px tanto en el lado izquierdo como en el derecho, mientras que el relleno superior es 10 px y el relleno inferior es 0.
+        </p>
+        <p>
+          Sin embargo, la mayoría de las veces necesitará dos valores. En elementos más pequeños en particular, a menudo es mejor tener más acolchado en los lados que en la parte superior e inferior. Este enfoque se ve bien en los botones o, en su página, en los enlaces de navegación (figura 1.14).
+        </p>
+        <figure>
+          <img src="../img_css/cap1/14.jpg" alt="ibid">
+          <figcaption>Figura 1.14. Muchos elementos se ven mejor con un relleno más horizontal.</figcaption>
+        </figure>
+        <p>
+          Actualice su hoja de estilo para que coincida con esta lista. Utiliza la propiedad abreviada para aplicar primero el relleno vertical y luego el horizontal.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav a {
+  color: white;
+  background-color: #13a4a4;
+  padding: 5px 15px;              <span>1</span>
+  border-radius: 2px;
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 1.20. Especificar dos valores de relleno</small>
+        </pre>
+        <ol class="index-code">
+          <li>Acolchado superior e inferior, luego acolchado izquierdo y derecho</li>
+        </ol>
+        <p>
+          Debido a que muchas propiedades comunes siguen este patrón, vale la pena memorizar este orden.
+        </p>
+        <p>
+          El mnemónico <span translate="no"><em>TRouBle</em></span> solo se aplica a las propiedades que se aplican individualmente a los cuatro lados de la caja. Otras propiedades solo admiten hasta dos valores. Estas incluyen propiedades como <code>background-position, box-shadow</code> y <code>text-shadow</code> (aunque no son propiedades abreviadas, estrictamente hablando). En comparación con las propiedades de cuatro valores como el <code>padding</code>, el orden de estos valores se invierte. Mientras que <code>padding: 1em 2em</code> especifica primero los valores vertical superior / inferior, seguidos de los valores horizontales derecho / izquierdo, <code>background-position: 25% 75%</code> especifica primero los valores horizontales derecho / izquierdo, seguidos de los valores verticales superior / inferior.
+        </p>
+        <p>
+          Aunque parece contrario a la intuición que estos sean opuestos, la razón de esto es sencilla: los dos valores representan una cuadrícula cartesiana. Las medidas de la cuadrícula cartesiana se dan típicamente en el orden x, y (horizontal y luego vertical). Si, por ejemplo, desea aplicar una sombra como la que se muestra en la figura 1.15, primero debe especificar el valor x 6#40;horizontal).
+        </p>
+        <figure>
+          <img src="../img_css/cap1/15.jpg" alt="ibid">
+          <figcaption>Figura 1.15. Sombra de cuadro colocada en 10px 2px</figcaption>
+        </figure>
+        <p>
+          Los estilos de este elemento se dan aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav .featured {
+  background-color: orange;
+  box-shadow: 10px 2px #6f9090;          <span>1</span>
+}
+          </code>
+          <small>Listado 1.21. Box-shadow especifica el valor de x y luego el valor de y</small>
+        </pre>
+        <ol class="index-code">
+          <li>Desplazamiento de sombra 10px hacia la derecha y 2px hacia abajo</li>
+        </ol>
+        <p>
+          El primer valor (mayor) se aplica al desplazamiento horizontal, mientras que el segundo valor (menor) se aplica a la vertical.
+        </p>
+        <p>
+          Si está trabajando con una propiedad que especifica dos medidas desde una esquina, piense en "cuadrícula cartesiana". Si está trabajando con uno que especifica medidas para cada lado alrededor de un elemento, piense en "reloj".
+        </p>
+      </section>
+      <section id="resumen">
+        <h3>RESUMEN</h3>
+        <ul>
+          <li>Mantenga la especificidad del selector bajo control.</li>
+          <li>No confunda cascada con herencia.</li>
+          <li>Algunas propiedades se heredan, incluidas las de texto, listas y bordes de tablas.</li>
+          <li>No confunda los valores <code>init</code> y <code>auto</code>.</li>
+          <li>Manténgase alejado de <span translate="no"><em>TRouBle</em></span> con propiedades taquigráficas.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">La Cascada</a></li>
+        <li><a href="#sub1">- Comprender el origen de la hoja de estilo</a></li>
+        <li><a href="#sub2">- Entendiendo la especificidad</a></li>
+        <li><a href="#sub3">- Dos reglas generales</a></li>
+        <li><a href="#tema2">Herencia</a></li>
+        <li><a href="#tema3">Valores Especiales</a></li>
+        <li><a href="#sub4">- Usando la palabra clave <span translate="no">INHERIT</span></a></li>
+        <li><a href="#sub5">- Usando la palabra clave <span translate="no">INITIAL</span></a></li>
+        <li><a href="#tema4">Propiedades <span translate="no">SHORTHAND</span></a></li>
+        <li><a href="#sub6"> - Comprender el order de los valores taquigraficos</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

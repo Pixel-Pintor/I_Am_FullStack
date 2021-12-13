@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 10</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 10. Bibliotecas de Patrones</h1>
+      <div>
+        <a href="ch_09.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_11.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capitulo habla sobre:</em></h4>
+      <ul>
+        <li>Construyendo una biblioteca de patrones para documentar sus módulos</li>
+        <li>Incorporar una biblioteca de patrones en su proceso de desarrollo</li>
+        <li>Aplicar un enfoque de <span translate="no">CSS First</span> a la escritura de estilos</li>
+        <li>Editar y eliminar CSS de forma segura</li>
+        <li>Utilizando <span translate="no">frameworks</span> CSS como Bootstrap</li>
+      </ul>
+      <p>
+        Una vez que comience a escribir su CSS de forma modular, comenzará a cambiar la forma en que aborda la tarea de crear páginas web y aplicaciones web. Al principio, es posible que las páginas que cree no parezcan diferentes. Pero en algún momento, deberá armar una página en particular y encontrará que ya ha creado muchos de los módulos que requiere. Por ejemplo, si necesita un objeto multimedia, o un menú desplegable o de navegación, y ya ha creado uno, ya tiene los estilos listos para ello. Solo necesitará agregar los nombres de clase correctos a algunos elementos estructurados de la manera correcta.
+      </p>
+      <p>
+        Debido a que los módulos son <em>reutilizables</em>, podrá crear esas partes de la página sin agregar ningún CSS nuevo a su hoja de estilo. En lugar de escribir una página HTML y luego aplicar estilos, se encontrará tomando módulos que ya existen y usándolos para armar una nueva página. Cuanto más avance en el proyecto, menos tendrá que escribir CSS nuevo. En lugar de nuevos estilos, lo que necesitará es un <em>inventario</em> de todos los módulos que ya están disponibles en su hoja de estilo.
+      </p>
+      <p>
+        Se está convirtiendo en una práctica estándar en proyectos grandes reunir un conjunto de documentación que proporcione este inventario. Este conjunto de documentación se denomina <em>biblioteca de patrones</em> o <em>guía de estilo</em>. No forma parte de su sitio web ni de su aplicación; en cambio, es un conjunto separado de páginas HTML, que muestra cada módulo CSS. Esta es una herramienta de desarrollo que usted y su equipo utilizarán al crear el sitio.
+      </p>
+      <p>
+        En este capítulo, le mostraré cómo crear una <em>biblioteca de patrones</em>. Hay innumerables herramientas disponibles para ayudar con esto (aunque se puede hacer completamente sin herramientas, si es lo suficientemente emprendedor). Le mostraré una de esas herramientas, llamada <em>KSS</em>, aunque mi enfoque se extenderá más allá de esto para incluir principios que se aplican independientemente de la herramienta que utilice.
+      </p>
+      <p>
+        Una vez que comience su <em>biblioteca de patrones</em>, destacaré los beneficios clave que brinda y cómo puede mejorar su proceso de desarrollo, especialmente para proyectos grandes. Este capítulo es una continuación del <b>capítulo 9</b>, por lo que si avanzó hasta este punto, le animo a que vuelva atrás y lea ese capítulo primero.
+      </p>
+      <p>
+        Algunas bibliotecas de patrones a menudo se denominan <em>guía de estilo</em> (o <em>"guía de estilo viviente"</em>). De hecho, la guía de estilo es probablemente la más común; sin embargo, hay una distinción.
+      </p>
+      <p>
+        El nombre <em>guía de estilo</em> implica no solo instrucciones técnicas sobre cómo usar los módulos, sino también una dirección obstinada sobre cuándo y por qué debe o no debe usarlos. Esta dirección suele ser para guiar al desarrollador a través de los requisitos de la marca del producto.
+      </p>
+      <p>
+        Si la instrucción de marca es relevante en su proyecto, no dude en agregarla a su biblioteca de patrones. Pero eso entra en el ámbito del marketing en lugar del desarrollo. Debido a que este capítulo se centra en el aspecto de la documentación técnica, utilizaré la <em>biblioteca de patrones de nombres</em> en su lugar.
+      </p>
+      <section id="tema1">
+        <h2>10.1. INTRODUCCIÓN A KSS</h2>
+        <p>
+          A lo largo del libro, me he propuesto no hablar mucho sobre herramientas. Los principios más importantes de CSS se aplican independientemente de su conjunto de herramientas, y quería que la atención se centrara en esos principios, no en qué preprocesador o herramienta de compilación utiliza.
+        </p>
+        <p>
+          La creación de una <em>biblioteca de patrones</em>, aunque es posible sin ninguna herramienta en particular, es mucho más fácil con la ayuda de las herramientas. Varias de estas bibliotecas están disponibles para ayudar con esto; ejecute una búsqueda en la web de <em>"generador de guías de estilo"</em> y encontrará muchas. No existe un líder claro de la industria, pero uno que permanece constantemente cerca de la parte superior de la lista es <em>KSS</em>. Esto significa hojas de estilo Knyle ("Knyle" es una referencia a <em>Kyle Neath</em>, el autor).
+        </p>
+        <p>
+          Le mostraré cómo configurar y ejecutar <em>KSS</em>. Una vez que está configurado, escanea su hoja de estilo en busca de bloques de comentarios que tengan una determinada anotación de guía de estilo. Utilizará cada uno de estos bloques de comentarios para describir el propósito y el uso de cada módulo; <em>KSS</em> usa esto para construir la documentación HTML. El comentario también puede incluir un fragmento de HTML, que ilustra el marcado necesario para representar el módulo. <em>KSS</em> usa esto para hacer una demostración en vivo del módulo en la documentación, similar a la captura de pantalla en la <b>figura 10.1</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap10/01.jpg" alt="ibid">
+          <figcaption>Figura 10.1. Documentación de KSS renderizada de un módulo desplegable</figcaption>
+        </figure>
+        <p>
+          En esta captura de pantalla, puede ver un menú a la izquierda que enumera las secciones de la biblioteca de patrones. A la derecha está la documentación del módulo desplegable (como el que construyó en el <b>capítulo 9</b>). Esto incluye una versión renderizada de un menú desplegable, más el HTML utilizado para construirlo. Con esto como guía, cualquier persona versada en HTML puede luego replicar este marcado en una página, y su hoja de estilo aplicaría esta apariencia.
+        </p>
+        <h3 id="sub1">10.1.1. Configuración de KSS</h3>
+        <p>
+          KSS se escribió originalmente como una aplicación Ruby. Pero, debido a que se encuentra en el ámbito del desarrollo de <em>front-end</em>, es probable que esté más familiarizado con JavaScript, por lo que lo guiaré a través de la instalación de una implementación de <em>Node.js</em> de KSS.
+        </p>
+        <p>
+          Si no tiene <em>Node.js</em> instalado, puede encontrarlo gratis en https://nodejs.org. Descárguelo e instálelo de acuerdo con las instrucciones que se dan allí. Node viene con un administrador de paquetes (llamado npm), que usará para instalar KSS. Le mostraré los comandos necesarios para esto, pero si desea obtener más información sobre npm o necesita ayuda para solucionar cualquier problema, visite https://docs.npmjs.com/getting-started/.
+        </p>
+        <p>
+          Una vez que Node y npm estén instalados, cree un directorio para su proyecto donde prefiera en su sistema de archivos. Navega hasta él en la terminal. Ejecute <code>npm init -y</code> para inicializar un nuevo proyecto. El indicador <code>-y</code> establece automáticamente los valores predeterminados para el nombre del proyecto, la licencia y otros valores. (Si omite el indicador <code>-y</code>, npm le solicita que ingrese estos valores).
+        </p>
+        <p>
+          Al inicializar su proyecto, npm crea un archivo llamado <em>package.json</em>. Este archivo contiene los metadatos npm de su proyecto en formato <em>JSON</em>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+{
+  "name": "pattern-library",                1
+  "version": "1.0.0",                       2
+  "description": "",                        3
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Keith J. Grant",
+  "license": "ISC"
+}
+          </code>
+          <small>Listado 10.1. Archivo package.json generado</small>
+        </pre>
+        <ol class="index-code">
+          <li>Breve nombre de su proyecto npm</li>
+          <li>Número de versión</li>
+          <li>Aquí se puede completar una descripción más extensa del proyecto.</li>
+        </ol>
+        <p>
+          Con su paquete inicializado, puede instalar KSS como una dependencia. Ingrese <code>npm install --save-dev kss</code> en la terminal. Esto hace dos cosas: crea un directorio <code>node_modules</code> en su proyecto, donde se instalan KSS y sus dependencias, y agrega "kss" a una lista de dependencias de desarrollo <code>(devDependencies)</code> en el archivo <em>package.json</em>.
+        </p>
+        <p>
+          KSS necesitará un archivo de configuración. Este archivo le da a KSS las rutas a algunos directorios y archivos que usará para construir la biblioteca de patrones. Cree un archivo en el directorio de su proyecto llamado <em>kss-config.json</em>. Copie la siguiente lista en este archivo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+{
+  "title": "My pattern library",
+  "source": [
+    "./css"                         1
+  ],
+  "destination":  "docs/",          2
+  "css": [
+    "../css/styles.css"             3
+  ],
+  "js": [
+    "../js/docs.js"                 4
+  ]
+}
+          </code>
+          <small>Listado 10.2. Archivo de configuración de KSS (kss-config.json)</small>
+        </pre>
+        <ol class="index-code">
+          <li>Ruta al directorio de archivos de origen CSS (que KSS escaneará)</li>
+          <li>Ruta a donde se escribirá la biblioteca de patrones generada</li>
+          <li>Ruta a la hoja de estilo (relativa al directorio de destino)</li>
+          <li>Ruta a cualquier javascript (relativo al directorio de destino)</li>
+        </ol>
+        <p>
+          La ruta de origen le dice a KSS dónde encontrar sus archivos de origen CSS, que escanea en busca de comentarios de documentación. Luego usa los comentarios para producir páginas de la biblioteca de patrones en el directorio de destino.
+        </p>
+        <p>
+          Los archivos enumerados en las claves <code>css</code> y <code>js</code> se agregarán a las páginas de la biblioteca de patrones. He configurado cada uno de estos para un directorio <code>css</code> y <code>js</code>, respectivamente. Continúe y cree estos directorios y archivos fuente en ellos (css/styles.css y js/docs.js). Deje los archivos vacíos por ahora; los agregará en breve.
+        </p>
+        <p>
+          En nuestro caso, la hoja de estilo que aparece en la clave css está en el mismo directorio que el directorio de origen. Cuando utiliza un preprocesador, como <em>SASS</em> o <em>Less</em>, el directorio de origen debe apuntar a sus archivos <em>SASS</em> o <em>Less</em>, pero la clave css debe hacer referencia a la hoja de estilo CSS compilada.
+        </p>
+        <p>
+          Como última parte de la configuración, agregará un comando al archivo <em>package.json</em> que le indica a KSS que cree la biblioteca de patrones. Agregue un nuevo elemento a la sección de scripts de su archivo <em>package.json</em> para que coincida con la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+"scripts": {
+  "build": "kss --config kss-config.json",                1
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
+          </code>
+          <small>Listado 10.3. Agregar un script de compilación a package.json</small>
+        </pre>
+        <ol class="index-code">
+          <li>1 Define un comando de construcción</li>
+        </ol>
+        <p>
+          Esto agrega un comando de compilación a su paquete. Ahora, ejecutar <code>npm run build</code> en la terminal le dirá a NPM que ejecute KSS (desde el directorio node_modules), pasándole la ruta al archivo de configuración de KSS que creó. Ejecute <code>npm run build</code> ahora y verá un error: <em>"Error: No se descubrió documentación de KSS en los archivos de origen"</em>. KSS está buscando documentación. Démosle un poco.
+        </p>
+        <h3 id="sub2">10.1.2. Redacción de documentación de KSS</h3>
+        <p>
+          Agregará algunos módulos del <b>capítulo 9</b> a su biblioteca de patrones. El primero de ellos será el objeto multimedia, como se muestra en la <b>figura 10.2</b>. Cuando KSS cree esta página, agregará Media a la tabla de contenido a la izquierda y renderizará la documentación a la derecha.
+        </p>
+        <figure>
+          <img src="../img_css/cap10/02.jpg" alt="ibid">
+          <figcaption>Figura 10.2. Documentación para el módulo de medios</figcaption>
+        </figure>
+        <p>
+          KSS busca comentarios en su hoja de estilo que sigan un patrón particular. Esto incluye un título (generalmente el nombre del módulo), texto descriptivo, HTML de ejemplo y una anotación de la guía de estilo que indica a dónde pertenece el módulo en la tabla de contenido. Una línea en blanco debe separar cada uno de estos elementos para que KSS los distinga. Estrictamente hablando, la anotación final de <code>Styleguide</code> es la única pieza que requiere KSS, pero normalmente también debería incluir el resto.
+        </p>
+        <p>
+          Agregue el código que se muestra en la siguiente lista a su hoja de estilo en <em>css/styles.css</em>. Esto incluye algunos estilos básicos y el módulo <code>media</code>. Por encima de los estilos del módulo está el bloque de comentarios CSS para KSS.
+        </p>
+        <pre>
+          <code class="container__base-code">
+:root {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+/*
+Media                                                 1
+
+Displays an image on the left and body content        2
+on the right.
+
+Markup:                                               3
+&lt;div class="media">
+  &lt;img class="media__image"
+    src="https://placehold.it/150x150" />
+  &lt;div class="media__body">
+    &lt;h4>Strength&lt;/h4>
+    &lt;p>
+      Strength training is an important part of
+      injury prevention. Focus on your core—
+      especially your abs and glutes.
+    &lt;/p>
+  &lt;/div>
+&lt;/div>
+
+Styleguide Media                                      4
+*/
+.media {
+  padding: 1.5em;
+  background-color: #eee;
+  border-radius: 0.5em;
+}
+.media::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.media__image {
+  float: left;
+  margin-right: 1.5em;
+}
+
+.media__body {
+  overflow: auto;
+  margin-top: 0;
+}
+
+.media__body > h4 {
+  margin-top: 0;
+}
+          </code>
+          <small>Listado 10.4. Objeto <span translate="no">media</span> con comentario de documentación de KSS</small>
+        </pre>
+        <ol class="index-code">
+          <li>Título (nombre del módulo)</li>
+          <li>Descripción del módulo y su uso</li>
+          <li>Ejemplo HTML que ilustra el uso del módulo</li>
+          <li>Anotación de la guía de estilo, agregando esto a la tabla de contenido como <span translate="no">media</span></li>
+        </ol>
+        <p>
+          Ahora, ejecute <code>npm run build</code> en su terminal. KSS genera un directorio de documentos que incluye un archivo <em>section-media.html</em>. Abra esta página en su navegador para ver la biblioteca de patrones. KSS también registra una advertencia: "No se encontró contenido de página de inicio en homepage.md". Te mostraré cómo solucionar este problema en un momento. Por ahora, echemos un vistazo más de cerca a las partes del comentario de la documentación. Las primeras líneas se ven así:
+        </p>
+        <pre>
+          <code class="container__base-code">
+/*
+Media
+
+Displays an image on the left and body content
+on the right.
+          </code>
+        </pre>
+        <p>
+          La primera línea del comentario define el título (<em>Media</em>) para esta sección de la documentación, y luego un texto que describe el propósito del módulo. Esta descripción puede estar escrita en formato <em translate="no">markdown</em>, por lo que puede agregarle el formato que desee. La descripción puede tener varios párrafos.
+        </p>
+        <p>
+          <em translate="no">markdown:</em> un formato de texto común que admite anotaciones para el formato básico. Rodee el texto con asteriscos para ponerlo en cursiva; envolver texto con tildes (`) para formatearlo como código. Consulte https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet para obtener una referencia completa.
+        </p>
+        <p>
+          Cuando cree un módulo, utilice la descripción para transmitir a otros desarrolladores todo lo que necesiten saber sobre su uso. A veces, una simple oración es suficiente. A veces, deberá indicar que el módulo requiere JavaScript o está destinado a utilizarse junto con otro módulo. Esta es su documentación sobre el uso de su hoja de estilo.
+        </p>
+        <p>
+          Después de la descripción es una <code>Markup:</code> anotación. A esto le sigue un bloque de código HTML que ilustra el uso del módulo. KSS procesa este HTML en la biblioteca de patrones para que el lector pueda obtener una vista previa. Luego, muestra el HTML en formato legible para que el lector pueda copiarlo:
+        </p>
+        <pre>
+          <code class="container__base-code">
+Markup:
+&lt;div class="media">
+  &lt;img class="media__image"
+    src="https://placehold.it/150x150" />
+  &lt;div class="media__body">
+    &lt;h4>Strength&lt;/h4>
+    &lt;p>
+      Strength training is an important part of
+      injury prevention. Focus on your core—
+      especially your abs and glutes.
+    &lt;/p>
+  &lt;/div>
+&lt;/div>
+          </code>
+        </pre>
+        <p>
+          El texto y las imágenes exactos utilizados en el ejemplo no son importantes, siempre que ilustren al desarrollador cómo funciona el módulo. En este caso, utilicé una imagen de marcador de posición genérica del sitio web https://placehold.it. Cuando el desarrollador usa este módulo, puede agregar el contenido que necesita.
+        </p>
+        <p>
+          Sin embargo, es importante que no haya líneas vacías en el medio del HTML, ya que esto le indica a KSS que la sección de marcado está completa.
+        </p>
+        <p>
+          La última línea del comentario de KSS debe incluir la anotación de la guía de estilo, seguida de la etiqueta de la tabla de contenido (en este caso, <span translate="no">Media</span>):
+        </p>
+        <pre>
+          <code class="container__base-code">
+Styleguide Media
+*/
+          </code>
+        </pre>
+        <p>
+          Esta debe ser la última línea del comentario. Sin él, KSS ignorará todo el bloque de comentarios.
+        </p>
+        <p>
+          Cuando actualice una hoja de estilo, actualice la documentación para que coincida. Tener la documentación allí mismo en el código fuente hace que esto sea fácil de hacer. Cuando agregue un nuevo módulo, agregue un bloque de documentación con él. Una vez que haya realizado los cambios, ejecute <code>npm run build</code> nuevamente para generar una copia nueva de la biblioteca de patrones.
+        </p>
+        <p>
+          KSS no elimina las páginas antiguas cuando genera otras nuevas. Si cambia el nombre o mueve una parte de la documentación en su código fuente, el archivo correspondiente en el directorio <em>docs</em> permanecerá en su lugar, junto con el nuevo. Cuando actualice su navegador, asegúrese de no volver a cargar el archivo anterior.
+        </p>
+        <p>
+          Debido a que la biblioteca de patrones <em>“vive”</em> con los estilos que documenta, cualquier desarrollador con acceso a la hoja de estilo tendrá acceso a su documentación. Es posible que también desee alojar la biblioteca de patrones en algún lugar en línea, donde su equipo de desarrollo pueda acceder a ella.
+        </p>
+        <h3 id="sub3">10.1.3. Documentar variantes de módulos</h3>
+        <p>
+          Documentemos otro módulo <b>(listado 10.5)</b>. Llevará el módulo de botones del último capítulo. Este módulo ofrecía varias variantes: dos colores alternativos y dos tamaños alternativos. KSS proporciona una forma de indicar múltiples variantes, representando cada una en la biblioteca de patrones. Esto se verá como la <b>figura 10.3</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap10/03.jpg" alt="ibid">
+          <figcaption>Figura 10.3. Boton <span translate="no">module</span> con variantes</figcaption>
+        </figure>
+        <p>
+          El comentario de documentación de este módulo será similar al anterior, pero agregará una nueva sección después del marcado para indicar cada uno de los modificadores <b>(listado 10.5)</b>. Esta será una lista de las clases de modificadores, cada una seguida de un guión y su descripción. También agregará la anotación <code>{{modifier_class}}</code> al ejemplo de marcado, indicando a dónde pertenecen las clases modificadoras.
+        </p>
+        <pre>
+          <code class="container__base-code">
+/*
+Buttons
+
+Buttons are available in a number of sizes and
+colors. You may mix and match any size with any
+color.
+
+Markup:
+<button class="button {{modifier_class}}">         1
+  click here
+</button>
+
+.button--success  - A green success button         2
+.button--danger   - A red danger button            2
+.button--small    - A small button                 2
+.button--large    - A large button                 2
+
+Styleguide Buttons
+*/
+.button {
+  padding: 1em 1.25em;
+  border: 1px solid #265559;
+  border-radius: 0.2em;
+  background-color: transparent;
+  font-size: 0.8rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.button--success {
+  border-color: #cfe8c9;
+  color: #fff;
+  background-color: #2f5926;
+}
+
+.button--danger {
+  border-color: #e8c9c9;
+  color: #fff;
+  background-color: #a92323;
+}
+
+.button--small {
+  font-size: 0.8rem;
+}
+
+.button--large {
+  font-size: 1.2rem;
+}
+          </code>
+          <small>Listado 10.5. Boton <span translate="no">module</span> y documentación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Indica dónde se utilizan las clases modificadoras</li>
+          <li>Enumera las clases de modificadores disponibles</li>
+        </ol>
+        <p>
+          KSS escanea la lista de clases de modificadores que ha definido, renderizando cada una en la biblioteca de patrones. El <code>{{modifier_class}}</code> le dice dónde colocar las clases. (Si está familiarizado con las plantillas de manillares, esta sintaxis probablemente le resulte familiar. Esto es lo que KSS usa detrás de escena para renderizar el módulo). Ejecute <code>npm run build</code> para reconstruir su biblioteca de patrones y ver la documentación en su navegador.
+        </p>
+        <p>
+          Volver a ejecutar KSS cada vez que realiza un cambio puede resultar tedioso. Si está utilizando un ejecutor de tareas como <em>Gulp</em> para sus proyectos, le sugiero que configure una tarea que observe los cambios y vuelva a ejecutar KSS automáticamente. La mayoría de los corredores de tareas tienen un complemento u otro mecanismo para hacer esto.
+        </p>
+        <p>
+          Ahora debería tener tres elementos en la tabla de contenido de su biblioteca de patrones (<em>docs/index.html</em>): <em translate="no">Overview</em>, <em translate="no">Buttons</em> y <em translate="no">Media</em>. Los dos últimos tienen vínculos a las partes de la documentación que ha escrito. El vínculo Descripción general está roto porque aún no ha creado una página de inicio. Esta es la causa de la advertencia <em>"Sin contenido en la página de inicio"</em>.
+        </p>
+        <h3 id="sub4">10.1.4. Crear una página de descripción general</h3>
+        <p>
+          Agreguemos una página de inicio a la biblioteca de patrones. Dentro del directorio css, cree un nuevo archivo en <em>css/homepage.md</em>. Este será un archivo en <em translate="no">markdown</em> que servirá como una introducción a la biblioteca de patrones. Copie esta lista en el archivo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+# Pattern library                                1
+
+This is a collection of all the modules in our
+stylesheet. You may use any of these modules when
+constructing a page.
+          </code>
+          <small>Listado 10.6. Markdown de la página de inicio</small>
+        </pre>
+        <ol class="index-code">
+          <li>Encabezado de página</li>
+        </ol>
+        <p>
+          Ahora ejecute <code>npm run build</code> y la advertencia sobre el contenido de la página de inicio debería desaparecer. Si abre <em>docs/index.html</em> en su navegador, verá este contenido renderizado.
+        </p>
+        <p>
+          En sus proyectos, use esta página como una introducción a su biblioteca de patrones. Puede proporcionar instrucciones sobre cómo incluir la hoja de estilo o las hojas de estilo en la página, cómo incluir las fuentes web correctas (consulte el <b>capítulo 13</b>) o cualquier otra cosa para ayudar a los desarrolladores a familiarizarse con el uso de sus hojas de estilo.
+        </p>
+        <p>
+          Debido a que está abriendo los archivos de la biblioteca de patrones directamente desde el disco, es posible que observe que el vínculo Descripción general en la tabla de contenido aún no funciona. Esto se debe a que KSS lo vincula a la URL ./ en lugar de a <em>index.html</em>. Para que esto funcione, deberá entregar la biblioteca de patrones a través de un servidor HTTP para que ./ url se resuelva en index.html en el navegador. Dejaré esto para que lo haga usted, según el conjunto de herramientas con el que esté más familiarizado. Si no está seguro de por dónde empezar, pruebe el paquete npm http-server (https://www.npmjs.com/package/http-server).
+        </p>
+        <h3 id="sub5">10.1.5. Documentar módulos que requieren JavaScript</h3>
+        <p>
+          Algunos módulos están diseñados para funcionar con la ayuda de JavaScript. En estos casos, a menudo es útil agregar un poco de JavaScript básico a la página para demostrar el comportamiento del módulo. No es necesario que agregue una biblioteca de JavaScript completamente funcional a la biblioteca de patrones para hacer esto. La mayoría de las veces, solo necesitará lo suficiente para alternar entre las distintas clases estatales. Ya agregó la configuración a su archivo <em>kss-config.json</em> que agrega un archivo JavaScript a la página:
+        </p>
+        <pre>
+          <code class="container__base-code">
+"js": [
+  "../js/docs.js"
+]
+          </code>
+        </pre>
+        <p>
+          KSS agregará los scripts enumerados en esta matriz <code>js</code> a la página por usted. Puede agregar código a estos scripts que proporcione una funcionalidad mínima a los módulos. Para demostrar esto, agregará el módulo desplegable <b>(capítulo 9)</b> a su hoja de estilo, junto con cierta documentación <b>(listado 10.7)</b>. También agregará algo de JavaScript para que al hacer clic en el botón Alternar se abra y se cierre el menú desplegable. Luego, el módulo funcionará dentro de la biblioteca de patrones para demostrar la funcionalidad prevista del módulo <b>(figura 10.4)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap10/04.jpg" alt="ibid">
+          <figcaption>Figura 10.4. Menú desplegable de trabajo dentro de la biblioteca de patrones. (Tenga en cuenta que el contenido del cajón no tiene estilo porque esperamos un módulo separado para darle estilo al menú).</figcaption>
+        </figure>
+        <p>
+          Comience agregando los estilos y la documentación del <b>listado 10.7</b> a su hoja de estilo. También es importante dar algunas indicaciones sobre cómo debe funcionar JavaScript. Los desarrolladores utilizarán esto para crear el sitio web o la aplicación web. Necesitarán suficiente información para poder hacerlo correctamente. Agrega este código a tu CSS.
+        </p>
+        <pre>
+          <code class="container__base-code">
+/*
+Dropdown
+
+A dropdown menu. Clicking the toggle button opens
+and closes the drawer.
+
+Use JavaScript to toggle the `is-open` class in            1
+order to open and close the dropdown.
+
+Markup:
+&lt;div class="dropdown">                                     2
+  &lt;button class="dropdown__toggle">Open menu&lt;/button>
+  &lt;div class="dropdown__drawer">
+    Drawer contents
+  &lt;/div>
+&lt;/div>
+
+Styleguide Dropdown
+*/
+.dropdown {                                                3
+  display: inline-block;
+  position: relative;
+}
+
+.dropdown__toggle {
+  padding: 0.5em 2em 0.5em 1.5em;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #eee;
+}
+
+.dropdown__toggle::after {
+  content: "";
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  border: 0.3em solid;
+  border-color: black transparent transparent;
+}
+
+.dropdown__drawer {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 2.1em;
+  min-width: 100%;
+  background-color: #eee;
+}
+
+.dropdown.is-open .dropdown__toggle::after {
+  top: 0.7em;
+  border-color: transparent transparent black;
+}
+.dropdown.is-open .dropdown__drawer {
+  display: block;
+}
+          </code>
+          <small>Listado 10.7. Módulo desplegable y documentación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Proporciona instrucciones que indican cómo el desarrollador necesitará usar JavaScript para este módulo.</li>
+          <li>Ejemplo de marcado</li>
+          <li>Reglas del módulo desplegable (copiadas del capítulo 9)</li>
+        </ol>
+        <p>
+          Ejecutar <code>npm run build</code> compila esta documentación, pero en este punto, es estática. Agreguemos JavaScript a <em>js/docs.js</em> para darle vida. Agregue este listado a ese archivo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+(function () {
+  var dropdowns = document.querySelectorAll('.dropdown__toggle');     1
+  Array.prototype.forEach.call(dropdowns, function(dropdown) {
+    dropdown.addEventListener('click', function 6#40;event) {             2
+      event.target.parentNode.classList.toggle('is-open');            3
+    });
+  });
+}());
+          </code>
+          <small>Listado 10.8. JavaScript mínimo para demostrar el módulo</small>
+        </pre>
+        <ol class="index-code">
+          <li>Obtiene todas las instancias del botón desplegable__toggle</li>
+          <li>Agrega un detector de eventos de clic a cada instancia</li>
+          <li>Alterna la clase está abierta en el elemento desplegable</li>
+        </ol>
+        <p>
+          Esta secuencia de comandos alterna la clase está abierta en el menú desplegable cada vez que se hace clic en el botón Alternar. Una implementación completa en su sitio web necesitará más código para lidiar con los retrasos en el tiempo o para cerrar el menú si se hace clic en otra parte de la página. Nuevamente, en la biblioteca de patrones, el código puede ser mínimo; pero tendrá que diseñar correctamente los estados abierto y cerrado. Una vez hecho esto, usted (u otro desarrollador) puede concentrarse en el problema de obtener los puntos más finos de JavaScript exactamente correctamente, fuera de la biblioteca de patrones.
+        </p>
+        <h3 id="sub6">10.1.6. Organizar la biblioteca de patrones en secciones</h3>
+        <p>
+          Puede continuar agregando los módulos del <b>capítulo 9</b> a su hoja de estilo, ingresando la documentación según sea necesario. No lo guiaré a través de todos y cada uno de ellos, ya que ahora tiene una comprensión básica del proceso.
+        </p>
+        <p>
+          Lo último que deberá poder hacer es organizar su biblioteca de patrones. El menú de la <b>figura 10.4</b> está bien por ahora, con solo unos pocos elementos. Pero a medida que sus proyectos comiencen a crecer en tamaño, tendrá sentido categorizar sus módulos para que sean más fáciles de navegar.
+        </p>
+        <p>
+          Agreguemos documentación para las clases de servicios públicos. Cada uno deberá explicarse y demostrarse individualmente, por lo que tiene sentido agruparlos. En el <b>listado 10.9</b>, creará una nueva sección llamada <em>Utilities</em>, agregando las clases de utilidad cada una en una subsección dentro de eso para representar las secciones que se muestran en la <b>figura 10.5</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap10/05.jpg" alt="ibid">
+          <figcaption>Figura 10.5. Tres subsecciones dentro de la sección de Utilidades</figcaption>
+        </figure>
+        <p>
+          Para crear <em>subsecciones</em>, use un punto en la anotación de la guía de estilo. Utilizará anotaciones como esta: <code>Styleguide Utilities.clearfix</code>. Esto coloca el bloque de documentación en una subsección de corrección clara dentro de una sección de Utilidades.
+        </p>
+        <p>
+          KSS admite secciones de hasta tres niveles de profundidad (por ejemplo, <code>Utilities.alignment.text-center</code>).
+        </p>
+        <p>
+          Agregue la siguiente lista a su hoja de estilo. Esto incluye tres clases de utilidad (<code>text -center</code>, <code>float-left</code> y <code>clearfix</code>) y sus comentarios de documentación. También incluí una anotación <code>Weight</code>, que controla el orden de las secciones.
+        </p>
+        <pre>
+          <code class="container__base-code">
+/*
+Text center
+
+Center text within a block by applying `text-center`
+
+Markup:
+&lt;p class="text-center">Centered text&lt;/p>
+
+Weight: 1                                                    1
+
+Styleguide Utilities.text-center                             2
+*/
+.text-center {
+  text-align: center !important;
+}
+
+/*
+Float left
+
+Float an element to the left with `float-left`
+
+Weight: 3                                                    1
+
+Styleguide Utilities.float-left                              2
+*/
+.float-left {
+  float: left;
+}
+
+/*
+Clearfix
+
+Add the class `clearfix` to an element to force it to
+contain its floated contents
+
+Markup:
+&lt;div class="clearfix">
+  &lt;span class="float-left">floated&lt;/span>
+&lt;/div>
+
+Weight: 2                                                     1
+
+Styleguide Utilities.clearfix                                 2
+*/
+.clearfix::before,
+.clearfix::after {
+    content: " ";
+    display: table;
+}
+
+.clearfix::after {
+    clear: both;
+}
+          </code>
+          <small>Listado 10.9. Agrupación de documentación en la misma categoría</small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza la anotación <span translate="no">Weight</span> para controlar el orden de las secciones</li>
+          <li>Utiliza una notación de puntos para colocar cada bloque de documentación en el mismo grupo</li>
+        </ol>
+        <p>
+          Al clasificar cada una de estas clases de servicios públicos en la misma categoría principal, todas se agruparán. Ahora, cuando reconstruya la biblioteca de patrones, habrá un elemento en la tabla de contenido llamado Utilidades. Haga clic en él para ver una página con todas las subsecciones enumeradas.
+        </p>
+        <p>
+          La anotación de la <code>Styleguide</code> distingue entre mayúsculas y minúsculas. Cuando coloque varios elementos dentro de la misma sección, asegúrese de ponerlos en mayúscula de manera consistente o KSS creará secciones separadas (por ejemplo, una llamada <em>"Utilidades"</em> y otra "utilidades").
+        </p>
+        <p>
+          De forma predeterminada, las secciones de una biblioteca de patrones de KSS se ordenan alfabéticamente, al igual que las subsecciones dentro de una sección. Puede cambiar esto usando la anotación <code>Weight</code>. KSS ordena las secciones de acuerdo con su peso, con pesos más altos cerca de la parte inferior. Puede indicar pesos en una sección de nivel superior para controlar su posición entre otras secciones de nivel superior, o (como en el ejemplo) para controlar el orden de las subsecciones dentro de su sección.
+        </p>
+        <p>
+          Ahora está familiarizado con todas las funciones esenciales de KSS. Si desea profundizar más por su cuenta, puede aprender a tener un poco más de control sobre la apariencia de la biblioteca de patrones en sí. Puede personalizar su hoja de estilo interna o la plantilla que utiliza para crear las páginas de la biblioteca de patrones. Para obtener más información, consulte la documentación en https://github.com/kss-node/kss-node.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>10.2. CAMBIANDO LA FORMA DE CONSTRUIR CSS</h2>
+        <p>
+          Las bibliotecas de patrones no son necesarias para proyectos pequeños, pero con proyectos grandes, serán invaluables. Si desarrolla para un sitio web con cientos o miles de páginas, no podrá diseñarlas todas una a la vez. Pero al crear <em>módulos reutilizables</em> y documentarlos en un solo lugar, puede proporcionar un conjunto de herramientas con el que se pueden construir miles de páginas.
+        </p>
+        <p>
+          Si trabaja en una aplicación web grande con una docena de otros desarrolladores, posiblemente no podrá diseñar sus propios componentes sin encontrarse con conflictos de nombres de clases y muchas implementaciones duplicadas de las mismas IU. Pero con una biblioteca de patrones, los desarrolladores pueden encontrar los estilos de los demás, reutilizarlos y nombrar sistemáticamente los módulos para que los nombres de las clases no entren en conflicto.
+        </p>
+        <p>
+          Los editores y desarrolladores de contenido que usan su biblioteca de patrones ni siquiera necesitan saber CSS, solo necesitan tener conocimientos básicos de HTML. Pueden copiar los patrones que documente y colocarlos en su página donde quieran. <em>CSS modular</em> es la clave para escalar su CSS, y una biblioteca de patrones es un medio para mantener esos módulos organizados.
+        </p>
+        <h3 id="sub7">10.2.1. Usar un flujo de trabajo de <span translate="no">CSS First</span></h3>
+        <p>
+          El uso de una biblioteca de patrones es un cambio de paradigma del enfoque típico de CSS. En lugar de tomar una página HTML y luego darle estilo, construye estilos modulares y luego ensambla una página web usando esos módulos. Este es un enfoque que llamo desarrollo <em translate="no">CSS First</em>. En lugar de escribir su HTML primero, <em>comience con el CSS</em>. Puede, y debe, desarrollar su CSS dentro de los límites de la biblioteca de patrones antes de utilizar esos estilos en su proyecto, por lo que su proceso de desarrollo se verá así:
+        </p>
+        <ol>
+          <li>Al crear una página, tenga un boceto o maqueta o una idea general de cómo debería verse esa página.</li>
+          <li>Vaya a la biblioteca de patrones. Busque módulos existentes que proporcionen lo que necesita para su página y utilícelos. Empiece desde el exterior (diseño de la página principal y contenedores) y avance hacia adentro. Si puede construir su página completa usando módulos existentes, hágalo. No es necesario que escriba ningún CSS nuevo.</li>
+          <li>De vez en cuando, encontrará que necesita algo que la biblioteca de patrones no proporciona. Esto sucederá mucho al principio de la vida del proyecto, pero mucho menos más adelante. Deberá crear un módulo o módulos nuevos, o una nueva variante para un módulo existente. Deje a un lado la página en la que está trabajando y constrúyala dentro de la biblioteca de patrones. Documente y asegúrese de que se vea y se comporte como espera.</li>
+          <li>Regrese a su página y, usando la nueva hoja de estilo, agregue los nuevos módulos a su página.</li>
+        </ol>
+        <p>
+          Este enfoque tiene varios beneficios. Primero, ayuda a proporcionar una interfaz más consistente para su sitio. Le anima a reutilizar los estilos existentes en lugar de desplegar otros nuevos. Por ejemplo, en lugar de diez páginas diferentes en su sitio con diez estilos de lista diferentes, tenderá a reutilizar los mismos tipos de listas. Te obliga a detenerte y pensar cada vez si necesitas un nuevo estilo o si uno que ya tienes es suficiente.
+        </p>
+        <p>
+          En segundo lugar, cuando desarrolle un módulo dentro de los límites de la biblioteca de patrones, podrá concentrarse en ese problema de forma aislada. Puede retirarse del panorama general de la página web en particular y concentrarse en la tarea singular de diseñar un módulo. En lugar de resolver un solo problema en una sola página, será más fácil pensar en dónde más podría usarse el nuevo módulo. Creará una solución más general y reutilizable.
+        </p>
+        <p>
+          En tercer lugar, este enfoque también permitirá que algunos miembros de su equipo se especialicen en CSS. Un desarrollador que sea menos experto en ello puede entregar un trabajo a uno que tenga más experiencia. Una vez que el desarrollador con mentalidad CSS termina el módulo, puede enviar un enlace al otro desarrollador, apuntando al módulo en la biblioteca de patrones.
+        </p>
+        <p>
+          Finalmente, este enfoque asegurará que su documentación esté actualizada. Las páginas de su biblioteca de patrones son donde prueba los cambios en el CSS, lo que significa que siempre demuestran el comportamiento actual y correcto. Cuando edita el CSS, la documentación está ahí en un bloque de comentarios. Esto hace que sea trivial mantener actualizada la documentación a medida que realiza cambios. (Hablaré más sobre la edición de módulos existentes en un momento).
+        </p>
+        <p>
+          Los desarrolladores a menudo preguntan cómo pueden escribir HTML que sea fácil de diseñar. Creo que esta es la pregunta equivocada. En cambio, deberíamos preguntarnos cómo podemos escribir estilos que se puedan reutilizar en cualquier número de páginas. Deberíamos escribir CSS primero; Seguirá HTML bien estructurado.
+        </p>
+        <h3 id="sub8">10.2.2. Usar una biblioteca de patrones como API</h3>
+        <p>
+          Cuando usa una biblioteca de patrones, está documentando una API para interactuar con su CSS. Cada módulo viene con algunos nombres de clase y un poco de estructura DOM. Siempre que la parte relevante de HTML siga esta estructura, la hoja de estilo le aplicará el estilo correcto <b>(figura 10.6)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap10/06.jpg" alt="ibid">
+          <figcaption>Figura 10.6. Los nombres de las clases y la estructura HTML son una API</figcaption>
+        </figure>
+        <p>
+          <em>API:</em> interfaz de programación de aplicaciones. Un conjunto de definiciones de subrutinas que describen cómo utilizar o interactuar con un sistema. Tradicionalmente, esto incluye nombres de métodos y parámetros (en el caso de un lenguaje de programación) o URL y parámetros de consulta 6#40;en el caso de una <em>API HTTP</em>). Utilizo la frase con respecto al <em>CSS modular</em> para ilustrar que los nombres de las clases y los elementos HTML son la forma en que HTML interactúa con los estilos.
+        </p>
+        <p>
+          El ejemplo de marcado en cada módulo ilustra una especie de contrato que su CSS hace con el HTML. Muestra cómo el HTML debe interactuar con el CSS.
+        </p>
+        <p>
+          Cuando crea sus módulos, esta API es la parte más importante porque es lo más difícil de cambiar más adelante. El HTML es libre de cambiar: puede cambiar el contenido de cada elemento. En algunos casos, puede agregar, eliminar o incluso reorganizar el orden de los elementos DOM dentro del módulo (asegúrese de indicar claramente en su documentación si los elementos son opcionales o si las cosas se pueden reorganizar). Y, el HTML puede dejar de usar un módulo por completo, cambiando en su lugar a un módulo diferente.
+        </p>
+        <p>
+          Del mismo modo, el CSS puede cambiar siempre que siga respetando esta <em>API</em>. Puede realizar pequeñas ediciones, como aumentar el relleno o ajustar un color o corregir cualquier error que surja. O bien, puede realizar ediciones grandes, como reelaborar un objeto multimedia para usar <em>flexbox</em> en lugar de flotantes, o rediseñar un módulo para que se apile verticalmente en lugar de horizontalmente. Siempre que las piezas clave de la API (nombres de clases y estructura DOM) permanezcan inalteradas, puede editar el CSS como desee.
+        </p>
+        <p>
+          Tenga en cuenta que realizar estas modificaciones puede afectar a muchas partes de su sitio web. Pero siempre que el HTML siga las instrucciones de la API, estos cambios se realizarán de acuerdo con el plan. Si desea cambiar el aspecto de todos los menús desplegables de su sitio, puede hacerlo. Debido a que todos los menús desplegables de su sitio utilizan el mismo módulo (y la misma API), los cambios serán consistentes.
+        </p>
+        <p>
+          Para ilustrar, supongamos un escenario hipotético en el que desea realizar un cambio en la forma en que funciona el módulo de medios. En lugar de una imagen, la necesita para admitir dos imágenes, una a cada lado del contenido, como en la <b>figura 10.7</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap10/07.jpg" alt="ibid">
+          <figcaption>Figura 10.7. Un objeto multimedia hipotético con dos imágenes.</figcaption>
+        </figure>
+        <p>
+          Esto requiere algunos cambios en el CSS. Siempre que se asegure de que sus cambios sigan respetando la API (es decir, los objetos multimedia existentes en su sitio continúen funcionando como se esperaba con una sola imagen), puede cambiar los estilos. Hará esto modificando el módulo para usar <em>flexbox</em>. Realicemos estos cambios.
+        </p>
+        <p>
+          Primero, deberá agregar al marcado de ejemplo en el bloque de comentarios. Mantenga el ejemplo anterior allí, para que pueda probar que permanece sin cambios después de realizar sus ediciones. Pero también agregará un segundo ejemplo al marcado para probar el nuevo comportamiento. Actualice el comentario de la documentación para que coincida con la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+/*
+Media
+
+Displays images and/or body content beside one      1
+another.
+
+Markup:
+&lt;div class="media">                                 2
+  &lt;img class="media__image"
+    src="https://placehold.it/150x150" />
+  &lt;div class="media__body">
+    &lt;h4>Strength&lt;/h4>
+    &lt;p>
+      Strength training is an important part of
+      injury prevention. Focus on your core—
+      especially your abs and glues.
+    &lt;/p>
+  &lt;/div>
+&lt;/div>
+&lt;div class="media">                                 3
+  &lt;img class="media__image"
+    src="https://placehold.it/150x150" />
+  &lt;div class="media__body">
+    &lt;h4>Strength&lt;/h4>
+    &lt;p>
+      Strength training is an important part of
+      injury prevention. Focus on your core—
+      especially your abs and glues.
+    &lt;/p>
+  &lt;/div>
+  &lt;img class="media__image"
+    src="https://placehold.it/150x150" />
+&lt;/div>
+
+Styleguide Media
+*/
+          </code>
+          <small>Listado 10.10. Agregar un nuevo ejemplo de medios a la documentación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Actualiza la descripción para permitir múltiples imágenes</li>
+          <li>Mantiene el ejemplo de marcado original en su lugar</li>
+          <li>Agrega un nuevo ejemplo con dos imágenes.</li>
+        </ol>
+        <p>
+          Esta lista le brinda dos instancias del módulo en su biblioteca de patrones. Reconstruya la biblioteca de patrones para verla renderizar. Antes de realizar cambios en el CSS, puede ver que uno funciona y el otro no. Luego puede realizar cambios <b>(listado 10.11)</b> hasta que ambos funcionen. Luego, tendrá el resultado que se muestra en la <b>figura 10.8</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap10/08.jpg" alt="ibid">
+          <figcaption>Figura 10.8. Ambos tipos de objetos multimedia ilustrados en la biblioteca de patrones.</figcaption>
+        </figure>
+        <p>
+          La biblioteca de patrones ahora sirve como respaldo. Le indica si sus cambios romperían los objetos multimedia existentes en su sitio y actúa como una prueba de la validez del código.
+        </p>
+        <p>
+          Ahora puede refactorizar el CSS para tener en cuenta el nuevo escenario. Realice estos cambios en su hoja de estilo para que el segundo ejemplo funcione, y asegúrese de que el primer ejemplo no se interrumpa en el proceso.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.media {
+  display: flex;                     1
+  align-items: flex-start;           2
+  padding: 1.5em;
+  background-color: #eee;
+  border-radius: 0.5em;
+}
+
+.media > * + * {
+  margin-left: 1.5em;                3
+}
+
+.media__body {
+  margin-top: 0;
+}
+
+.media__body > h4 {
+  margin-top: 0;
+}
+          </code>
+          <small>Listado 10.11. Módulo <span translate="no">media</span> rediseñado para usar flexbox</small>
+        </pre>
+        <ol class="index-code">
+          <li>Cambia el contenedor a contenedor flexible; media__image y media__body se convertirán en elementos flexibles</li>
+          <li>Alinea los elementos en la parte superior en lugar de estirarlos para llenarlos y evita la distorsión de la imagen.</li>
+          <li>Elimina el margen derecho de la imagen y lo reemplaza con un margen general entre todos los elementos flexibles</li>
+        </ol>
+        <p>
+          Ejecute <code>npm run build</code> y abra la página en la biblioteca de patrones. Verá que sus cambios se realizaron correctamente. El objeto <code>media</code> es ahora un poco más versátil. Y, como aún respeta la API original del módulo, puede estar seguro de que sus cambios no afectaron el sitio web.
+        </p>
+        <p>
+          Sin estilos modulares y una biblioteca de patrones, la edición de CSS puede causar estragos en un sitio web; no tiene idea exacta de cómo se podría estructurar el HTML en todas partes y si los selectores seguirán apuntando a los elementos correctos. Pero con una API documentada y estable, las ediciones pueden ser sencillas e incluso satisfactorias.
+        </p>
+        <p>
+          A veces, no podrá realizar los cambios que desea sin modificar la API. Esto está bien. Significará un poco más de trabajo, pero es factible. Puede realizar los cambios que desee, luego recorrer todo su sitio o aplicación y actualizar cada instancia del HTML para que coincida con la nueva API. Pero a menudo encuentro que el mejor curso de acción es desaprobar el módulo (indicándolo en la documentación) y crear un módulo completamente nuevo para la nueva funcionalidad que necesito. De esta manera, el módulo anterior continúa funcionando donde se usa, pero puedo comenzar a migrar al módulo nuevo mientras ambos sean compatibles.
+        </p>
+        <p>
+          Para ayudar a facilitar esto, encuentro que es muy beneficioso versionar mi CSS usando un <em>semver</em> de tres números. Cuando cambia el número de versión, comunica a los desarrolladores la naturaleza de esos cambios.
+        </p>
+        <p>
+          <em>semver:</em> abreviatura de Semantic Versioning, un sistema para versionar paquetes de software utilizando tres números, cada uno separado por un punto (por ejemplo, 1.4.2). Los tres números representan las versiones mayor, menor y parche, respectivamente. Consulte https://semver.org/ para obtener más información.
+        </p>
+        <p>
+          Cuando hago pequeños ajustes, como correcciones de errores, incremento el número de versión del parche (de 1.4.2 a 1.4.3, por ejemplo). Cuando agrego un nuevo módulo o una nueva funcionalidad que no interrumpe la API, o cuando marco un módulo como obsoleto, incremento el número de versión menor, restableciendo la versión del parche a 0 (por ejemplo, 1.4.2 a 1.5.0) . Luego, en raras ocasiones, reviso la hoja de estilo y elimino los módulos obsoletos, pasando a la siguiente versión principal (por ejemplo, 1.4.2 a 2.0.0). También creo una versión principal cuando realizo cambios sustanciales en el diseño (como un rediseño del sitio), incluso si la API permanece intacta.
+        </p>
+        <p>
+          Hablando en términos prácticos, hay varias formas de realizar este control de versiones. Esto depende de la naturaleza del proyecto en el que utilice los estilos. Si empaqueta el CSS en un módulo <em>NodeJS</em> o <em>Ruby Gem</em>, por ejemplo, use el control de versiones integrado en estos sistemas. O, si está alojando su CSS de forma estática en un servidor, incluya el número de versión en la URL (https://example.com/css/1.4.2/styles.css) y aloje varias versiones simultáneamente.
+        </p>
+        <p>
+          De esta forma, el proyecto se puede configurar para usar cualquier versión de CSS que necesite. Puede lanzar una versión 3.0.0 con cambios importantes, pero la aplicación web puede continuar usando la versión anterior hasta que los desarrolladores puedan revisar y actualizar el HTML siempre que use módulos obsoletos. Los cambios que realice en su CSS no interrumpirán la aplicación hasta que la aplicación se actualice deliberadamente a una nueva versión de la hoja de estilo.
+        </p>
+        <p>
+          Su biblioteca de patrones documenta el uso de la hoja de estilo, pero los autores del HTML tienen el control de si usan los estilos y qué versión usan. El HTML y CSS están desacoplados. El CSS debe desarrollarse primero antes de que el HTML pueda usarlo, pero el HTML tiene el control cuando se trata de actualizar a una nueva hoja de estilo. Este es el beneficio del desarrollo de CSS First.
+        </p>
+        <p>
+          Estas decisiones no pueden suceder en el vacío. Deberá comunicarse con otros desarrolladores de su equipo cuando desee desaprobar o eliminar módulos. Necesitará su opinión sobre qué módulos siguen siendo valiosos y cuáles ya no son necesarios.
+        </p>
+        <p>
+          Es posible que esté familiarizado con uno o más marcos CSS que proporcionan un conjunto de estilos preempaquetados. Estos suelen incluir estilos para botones, formularios, menús y algún tipo de sistema de cuadrícula. Los marcos populares incluyen Bootstrap (https://getbootstrap.com/), Foundation (https://foundation.zurb.com/) y Pure (https://purecss.io/). También hay muchos otros. Algunas de estas son bibliotecas robustas con docenas de módulos; otros son mínimos y proporcionan solo lo esencial.
+        </p>
+        <p>
+          A medida que avanza en la construcción de su biblioteca de patrones, puede comenzar a sentir que está construyendo su propio marco en la misma línea. ¡Eso es exactamente lo que estás haciendo! Ésta es la razón por la que estos marcos tienen éxito: cada uno es una biblioteca de patrones. Consisten en CSS construido prestando atención a hacer que los estilos sean reutilizables en muchos contextos. Algunos siguen los principios del CSS modular mejor que otros, pero todos los siguen hasta cierto punto. Y siempre están versionados.
+        </p>
+        <p>
+          La diferencia entre estos marcos y su propia biblioteca de patrones es que los marcos son de uso general. En su biblioteca de patrones, puede crear módulos adaptados específicamente a su proyecto y puede combinar con precisión un aspecto y una sensación específicos de la marca. Puede crear dos tipos diferentes de módulo <em>Tile</em> si lo necesita, y puede adaptarse más rápidamente cuando lo necesite.
+        </p>
+        <p>
+          Los desarrolladores a menudo me preguntan si creo que deberían usar un <em translate="no">framework</em> como <em>Bootstrap</em>. Mi respuesta es sí y no.
+        </p>
+        <p>
+          Los <em translate="no">frameworks</em> son útiles para que un proyecto despegue rápidamente. Casi sin trabajo, puede tener botones, mosaicos y menús desplegables con estilo. Pero, en mi experiencia, nunca proporcionan todos los módulos que necesitará. A excepción de los proyectos pequeños, siempre tendrá que agregar más módulos propios. También proporcionan muchos módulos que probablemente no necesitará.
+        </p>
+        <p>
+          Si desea utilizar un <em translate="no">framework</em> con el que está familiarizado, mi sugerencia es que tome solo las partes que necesite y deje el resto. No se limite a pegar un archivo bootstrap.css en su página. En su lugar, copie solo los módulos que desee en su propia hoja de estilo (suponiendo que la licencia del <em translate="no">framework</em> lo permita). Toma esas piezas de CSS y hazlas tuyas.
+        </p>
+        <p>
+          Cuando agrega un <em translate="no">framework</em> a la página antes de su propia hoja de estilo, se encontrará escribiendo un montón de estilos para anular y aumentar el <em translate="no">framework</em>. Si, en cambio, trae los estilos del <em translate="no">framework</em> a su hoja de estilo, podrá modificarlos directamente. Esto hará que el CSS de la página sea más ágil y más fácil de seguir.
+        </p>
+        <p>
+          En lugar de utilizar ciegamente un <em translate="no">framework</em>, adopte la mentalidad de un <em translate="no">framework</em>. Imagine que su biblioteca de patrones es una biblioteca de uso general para uso de terceros desconocidos. Esto le ayudará a mantener sus estilos reutilizables y le proporcionará un medio para realizar cambios en el futuro con menos roturas en la página.
+        </p>
+        <p>
+          A menudo, CSS es un lenguaje <em>"solo aditivo"</em>. Los desarrolladores tienen miedo de editar o eliminar cualquier estilo existente porque no tienen forma de conocer todas las ramificaciones de esos cambios. Solo modifican CSS, agregan más al final de la hoja de estilo, anulan las reglas anteriores y aumentan la especificidad del selector hasta que la hoja de estilo es una maraña de código que no se puede mantener.
+        </p>
+        <p>
+          Al tener cuidado de organizar su CSS de una manera modular y mantener una biblioteca de patrones para ello, no tiene que caer en esta trampa. Siempre sabe dónde residen los estilos de un módulo. Cada módulo es responsable de una cosa. Y la biblioteca de patrones ayuda a los desarrolladores a controlar todo lo que sucede dentro de la hoja de estilo.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Utilice una herramienta como KSS para documentar e inventariar sus módulos.</li>
+          <li>Utilice una biblioteca de patrones para documentar ejemplos de marcado, variantes de módulo y JavaScript para sus módulos.</li>
+          <li>Desarrolle sus módulos <em translate="no">"CSS first"</em>.</li>
+          <li>Considere la API que define su CSS, teniendo cuidado de nunca romperla de manera impredecible.</li>
+          <li>Versión de su CSS usando <em>semver</em>.</li>
+          <li>No agregue ciegamente un <em translate="no">framework</em> CSS a su página; tome selectivamente solo las piezas que necesite.</li>
+        </ul>
+      </section>
+    </main>
+    
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Introducción a KSS</a></li>
+        <li><a href="#sub1">- Configuración de KSS</a></li>
+        <li><a href="#sub2">- Redacción de documentación de KSS</a></li>
+        <li><a href="#sub3">- Documentar variantes de módulos</a></li>
+        <li><a href="#sub4">- Crear una página de descripción general</a></li>
+        <li><a href="#sub5">- Documentar módulos que requieren JavaScript</a></li>
+        <li><a href="#sub6">- Organizar la biblioteca de patrones en secciones</a></li>
+        <li><a href="#tema2">Cambiando la forma de Construir CSS</a></li>
+        <li><a href="#sub7">- Usar un flujo de trabajo de <span translate="no">CSS FIRST</span></a></li>
+        <li><a href="#sub8">- Usar una biblioteca de patrones como API</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 14</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 14. Transiciones</h1>
+      <div>
+        <a href="ch_13.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_15.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capítulo habla sobre:</em></h4>
+      <ul>
+        <li>Llevando movimiento a la página con transiciones</li>
+        <li>Comprender las funciones de sincronización y elegir la correcta</li>
+        <li>Coordinando con JavaScript</li>
+      </ul>
+      <p>
+        En los medios impresos tradicionales, las cosas son estáticas. El texto no puede moverse sobre el papel; los colores no pueden cambiar. Pero la web es un medio vivo, donde podemos hacer mucho más. Los elementos pueden desvanecerse. Los menús pueden deslizarse hacia adentro. Los colores pueden cambiar de un valor a otro, y la forma más fácil de hacer cualquiera de estos es con <em>transiciones</em>.
+      </p>
+      <p>
+        Con una transición de CSS, puede decirle al navegador que <em>"relaje"</em> un valor en otro cuando el valor cambia. Por ejemplo, si tiene vínculos azules con un estado de desplazamiento rojo, una transición hará que el vínculo se mezcle de azul a púrpura y a rojo cuando el usuario pasa el mouse, y viceversa cuando el usuario aleja el mouse. Si se usan correctamente, las transiciones pueden mejorar la sensación interactiva de la página y, debido a que nuestros ojos se sienten atraídos por el movimiento, pueden llamar la atención del usuario sobre un cambio a medida que se produce.
+      </p>
+      <p>
+        A menudo, las <em>transiciones</em> se pueden agregar a la página con poco esfuerzo. En este capítulo, veremos cómo se hace eso, junto con algunas de las decisiones que tendrá que tomar en el proceso. Debido a que hay algunos casos de uso en los que las cosas pueden complicarse un poco, también veremos cómo abordar esos problemas.
+      </p>
+      <section id="tema1">
+        <h2>14.1. DE AQUÍ PARA ALLÁ</h2>
+        <p>
+          Las <em>transiciones</em> se realizan con la familia de propiedades <code>transición-*</code>. Si se aplican a un elemento mientras cambia uno de sus valores de propiedad, esa propiedad pasará en lugar de cambiar inmediatamente al nuevo valor.
+        </p>
+        <p>
+          Construyamos un ejemplo básico usando un botón, luego examinemos cómo funciona. Será un botón verde azulado con esquinas cuadradas que, cuando se coloca sobre él, se convierte en un botón rojo con <em>esquinas redondeadas</em>. Estos dos estados se muestran en la <b>figura 14.1</b>, junto con el estado intermedio en <em>transición</em>.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/01.jpg" alt="ibid">
+          <figcaption>Figura 14.1. El elemento antes, durante y después de la transición</figcaption>
+        </figure>
+        <p>
+          Agregue un botón a una nueva página y vincúlelo a una hoja de estilo. Aquí se muestra el marcado del botón.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;button>Hover over me&lt;/button>
+          </code>
+          <small>Listado 14.1. Agregar un botón simple a la página</small>
+        </pre>
+        <p>
+          A continuación, agregue los estilos a la hoja de estilo. Estos estilos definen tanto el estado normal como el de desplazamiento. Las dos propiedades de transición indican al navegador que realice una transición fluida entre las dos.
+        </p>
+        <pre>
+          <code class="container__base-code">
+button {
+  background-color: hsl(180, 50%, 50%);       1
+  border: 0;
+  color: white;
+  font-size: 1rem;
+  padding: .3em 1em;
+  transition-property: all;                   2
+  transition-duration: 0.5s;                  3
+}
+button:hover {
+  background-color: hsl(0, 50%, 50%);         4
+  border-radius: 1em;                         4
+}
+          </code>
+          <small>Listado 14.2. Estilos de botones con transición</small>
+        </pre>
+        <ol class="index-code">
+          <li>Botón verde azulado</li>
+          <li>Transición de todos los cambios de propiedad</li>
+          <li>Transiciones durante 0,5 segundos</li>
+          <li>Botón rojo de estado de desplazamiento con radio de borde</li>
+        </ol>
+        <p>
+          La propiedad <code>transition-property</code> especifica qué propiedades se realizarán la transición. En este caso, la palabra clave <code>all</code> significa hacer la transición de cualquier propiedad que cambie. La propiedad <code>transition-duration</code> indica cuánto tiempo llevará la transición antes de alcanzar el valor final. En este caso, se dan <code>0.5s</code>, es decir, 0,5 segundos.
+        </p>
+        <p>
+          Cargue la página y observe cómo se lleva a cabo la transición mientras pasa el mouse sobre el botón. Observe que la propiedad <code>border-radius</code> cambia de forma fluida de <code>0</code> a <code>1em</code>, aunque no estableció explícitamente un radio de borde de cero en el estado sin desplazamiento. El botón tiene un valor inicial de cero automáticamente y la transición funciona a partir de ahí. Intente cambiar otras propiedades dentro del estado de desplazamiento, como <code>font-size</code> o <code>border</code>.
+        </p>
+        <p>
+          Se produce una transición cada vez que se cambia una propiedad de este elemento. Esto puede ocurrir en un cambio de estado como <code>:hover</code> o si JavaScript cambia algo, como agregar o eliminar una clase que afecta los estilos del elemento.
+        </p>
+        <p>
+          Tenga en cuenta que no aplicó las propiedades de transición en el conjunto de reglas <code>:hover</code>; los aplicó con un selector que apunta al elemento en todo momento, aunque lo hace con la regla de desplazamiento en mente. Desea realizar la transición tanto mientras está en el estado de desplazamiento (transición de entrada) como después del estado de desplazamiento (transición de salida). Mientras que otros valores están cambiando, normalmente no desea que cambien las propiedades de transición.
+        </p>
+        <p>
+          También puede utilizar la propiedad de taquigrafía, <code>transition</code>. La sintaxis para esto se muestra en la <b>figura 14.2</b>. La abreviatura acepta hasta cuatro valores para las cuatro propiedades de transición: <code>transition-property</code>, <code>transition-duration</code>, <code>transition-timing-function</code> y <code>transition-delay</code>.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/02.jpg" alt="ibid">
+          <figcaption>Figura 14.2. La sintaxis de la propiedad transitionshorthand</figcaption>
+        </figure>
+        <p>
+          El primer valor especifica qué propiedades realizar la transición. El valor inicial es la palabra clave <code>all</code>, que afecta a todas las propiedades, pero si necesita que la transición solo se aplique a una propiedad, especifique esa propiedad aquí. Por ejemplo, <code>transition-property: color</code> se aplicaría solo al color del elemento, dejando que otras propiedades cambien instantáneamente. O puede aplicar varios valores: <code>transition-property: color</code>, <code>font-size</code>, por ejemplo.
+        </p>
+        <p>
+          El segundo valor es la duración. Este es un valor de tiempo expresado en segundos (0.3s, por ejemplo) o milisegundos (300ms).
+        </p>
+        <p>
+          A diferencia de los valores de longitud, 0 no es un tiempo válido. Debe incluir una unidad para los valores de tiempo (0 o 0ms) o la declaración no será válida y el navegador la ignorará.
+        </p>
+        <p>
+          El tercer valor es la función de sincronización. Esto controla cómo se calculan los valores intermedios de la propiedad, controlando efectivamente cómo la tasa de cambio se acelera o desacelera a lo largo del efecto de transición. Este es un valor de palabra clave, como <code>linear</code> o <code>ease-in</code>, o una función personalizada. Esta es una parte importante de la transición que veremos en breve.
+        </p>
+        <p>
+          El valor final, la demora, le permite especificar un período de espera antes de que la transición comience a tener efecto después de que cambie el valor de la propiedad. Si pasa el cursor sobre un botón con un retraso de transición de <code>0.5s</code>, no verá que el cambio comience hasta medio segundo después de que el cursor del mouse ingrese al elemento.
+        </p>
+        <p>
+          Si necesita aplicar dos transiciones diferentes a dos propiedades diferentes, puede hacerlo agregando varias reglas de transición, cada una separada por una coma:
+        </p>
+        <pre>
+          <code class="container__base-code">
+transition: border-radius 0.3s linear, background-color 0.6s ease;
+          </code>
+        </pre>
+        <p>
+          Alternativamente, use las propiedades de mano larga. Lo siguiente es equivalente:
+        </p>
+        <pre>
+          <code class="container__base-code">
+transition-property: border-radius, background-color;
+transition-duration: 0.3s, 0.6s;
+transition-timing-function: linear, ease;
+          </code>
+        </pre>
+        <p>
+          Verá un ejemplo con múltiples transiciones más adelante en este capítulo.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>14.2. FUNCIONES DE TIEMPO</h2>
+        <p>
+          La función de sincronización es una parte importante de la transición. La transición hace que el valor de una propiedad <em>"se mueva"</em> de un valor a otro; la función de cronometraje dice cómo se mueve. ¿Se mueve a una velocidad constante? ¿Arranca lentamente y acelera?
+        </p>
+        <p>
+          Puede utilizar varios valores de palabras clave, como <code>linear</code>, <code>ease-in</code> y <code>ease-out</code>, para definir este movimiento. Con una transición <code>linear</code>, el valor cambia a una tasa constante. Con <code>ease-in</code>, la tasa de cambio comienza lenta, pero se acelera hasta el final de la transición. <code>Ease-out</code> desacelera, comenzando con un cambio rápido y terminando lentamente. La <b>figura 14.3</b> ilustra cómo se movería una caja de izquierda a derecha con las diversas funciones de temporización.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/03.jpg" alt="ibid">
+          <figcaption>Figura 14.3. Una transición lineal se mueve a un ritmo constante, mientras que la entrada se acelera y la salida se desacelera.</figcaption>
+        </figure>
+        <p>
+          Esto puede ser un poco difícil de visualizar a partir de una imagen estática, así que creemos un ejemplo para verlo en vivo en el navegador. Cree una nueva página HTML y agregue este código.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="container">
+  &lt;div class="box">&lt;/div>             1
+&lt;/div>
+          </code>
+          <small>Listado 14.3. Una demostración de función de temporización simple</small>
+        </pre>
+        <ol class="index-code">
+          <li>Realizará la transición de este cuadro a lo largo de la pantalla de izquierda a derecha.</li>
+        </ol>
+        <p>
+          A continuación, diseñarás la caja con un poco de color y un poco de tamaño. Luego, lo posicionará absolutamente y usará una transición para mover su posición al pasar el mouse. Agregue una nueva hoja de estilo a la página y copie esta lista en ella.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.container {
+  position: relative;
+  height: 30px;
+}
+.box {
+  position: absolute;
+  left: 0;                                1
+  height: 30px;
+  width: 30px;
+  background-color: hsl(130, 50%, 50%);
+  transition: all 1s linear;              2
+}
+.container:hover .box {
+  left: 400px;                            3
+}
+          </code>
+          <small>Listado 14.4. Transición de la caja de izquierda a derecha</small>
+        </pre>
+        <ol class="index-code">
+          <li>Empieza posicionado a la izquierda</li>
+          <li>Aplica una transición</li>
+          <li>Se mueve 400 px hacia la derecha al pasar el mouse</li>
+        </ol>
+        <p>
+          Esta demostración debería representar un pequeño cuadro verde en la esquina superior izquierda de la página. Cuando se desplaza sobre el contenedor, el cuadro se desplaza hacia la derecha. Observe que se mueve a una velocidad constante y constante.
+        </p>
+        <p>
+          Esta demostración ilustra un elemento que se mueve a través de la pantalla colocándolo absolutamente y haciendo la transición de la propiedad <code>left</code>. Sin embargo, existen razones de rendimiento para evitar la transición de ciertas propiedades, incluida <code>left</code>. Cubriré estos problemas en el siguiente capítulo, junto con una mejor alternativa usando transformaciones.
+        </p>
+        <p>
+          Ahora edite la propiedad de transición para ver cómo se comportan las diferentes funciones de temporización. Pruebe la entrada fácil <code>(transition: all 1s ease-in)</code> y la salida fácil <code> (transition: all 1s ease-out)</code>. Estas palabras clave hacen el trabajo, pero a veces querrá tener más control. Puede hacer esto definiendo sus propias funciones de temporización. Veamos cómo hacer esto.
+        </p>
+        <h3 id="sub1">14.2.1. Entendiendo las curvas de Bézier</h3>
+        <p>
+          Las funciones de temporización se basan en curvas de <em>Bézier</em> definidas matemáticamente. El navegador utiliza estas curvas para calcular el valor de una propiedad en función del cambio a lo largo del tiempo. Las curvas de <em>Bézier</em> para varias funciones de temporización se muestran en la <b>figura 14.4</b>, así como todos los valores de palabras clave que se pueden utilizar como función de temporización.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/04.jpg" alt="ibid">
+          <figcaption>Figura 14.4. Las curvas de Bézier de las funciones de tiempo ilustran cómo cambia el valor con el tiempo.</figcaption>
+        </figure>
+        <p>
+          Estas curvas comienzan en la parte inferior izquierda y continúan hacia la parte superior derecha. El tiempo avanzará hacia la derecha y la curva representa cómo cambia el valor durante esa progresión antes de llegar al valor final. La función de sincronización lineal es una progresión constante a lo largo de la duración de la transición: una línea recta. La otra curva de valores, que representa aceleración y desaceleración.
+        </p>
+        <p>
+          Sin embargo, no está limitado a estos cinco valores de palabras clave. Puede definir su propia curva de Bézier cúbica para transiciones más suaves o más drásticas. Incluso puede agregar un pequeño efecto de <em>"rebote"</em>. Exploremos esto.
+        </p>
+        <p>
+          En la página que acaba de crear, abra sus DevTools e inspeccione el elemento del cuadro verde. Debería ver un pequeño símbolo al lado de la función de sincronización en el panel Estilos (Chrome) o el panel Reglas (Firefox). Haga clic en ese símbolo y se abrirá una pequeña ventana emergente que le permitirá modificar la curva de la función de temporización <b>(figura 14.5)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/05.jpg" alt="ibid">
+          <figcaption>Figura 14.5. Editar una curva de Bézier en Chrome DevTools</figcaption>
+        </figure>
+        <p>
+          A la izquierda de la ventana emergente, esta interfaz proporciona una serie de curvas prefabricadas para elegir. (Firefox ofrece mucho más que Chrome). Puede hacer clic en una curva para seleccionarla. A la derecha, se muestra la curva de <em>Bézier</em> seleccionada.
+        </p>
+        <p>
+          En cada extremo de la curva hay una línea recta corta con círculos en el extremo <em>(manijas)</em>. Estos son los <em>puntos de control</em>. Haga clic y arrastre uno de estos círculos para manipular la forma de la curva. Observe cómo la longitud y la dirección del mango <em>"tiran"</em> de la curva.
+        </p>
+        <p>
+          Haga clic fuera de esta ventana emergente para cerrarla y verá que la función de sincronización se ha actualizado. En lugar de una palabra clave como <code>ease-out</code>, ahora será algo así como <code>cubic-bezier(0.45, 0.05, 0.55, 0.95)</code>. Esta función <code>cubic-bezier()</code> y los cuatro valores dentro definen la función de temporización personalizada.
+        </p>
+        <p>
+          Ya sea que use funciones de sincronización de palabras clave o curvas de Bézier personalizadas, es útil saber cuándo usar cuál. Cada sitio o aplicación debe tener una curva de desaceleración <em translate="no">(salida fácil)</em>, una curva de aceleración <em translate="no">(entrada fácil)</em>, así como la palabra clave <code>linear</code>. Es mejor reutilizar las mismas pocas curvas para brindar una experiencia de usuario más consistente.
+        </p>
+        <p>
+          Puede utilizar cada una de las tres funciones en los siguientes escenarios:
+        </p>
+        <ul>
+          <li><em translate="no">Linear:</em> cambios de color y efectos de aparición / desaparición gradual.</li>
+          <li><em>Decelerating:</em> cambios iniciados por el usuario. Cuando el usuario hace clic en un botón o se desplaza sobre un elemento, use la función <code>ease-out</code> o algo similar. De esta manera, el usuario verá una respuesta rápida e instantánea a su entrada, disminuyendo a medida que el elemento se detiene.</li>
+          <li><em>Acelerating:</em> cambios iniciados por el sistema. Cuando el contenido termine de cargarse o se active un evento de tiempo de espera, use la función <code>ease-in</code> o similar. De esta manera, el elemento entrará fácilmente al principio para llamar la atención del usuario antes de que el elemento se acelere y complete su movimiento.</li>
+        </ul>
+        <p>
+          Estas son reglas blandas. Proporcionan un buen punto de partida, pero no tenga miedo de romperlos si algo no <em>"se siente"</em> bien. Ocasionalmente, también querrá una cuarta <em>curva</em> para movimientos más grandes o más divertidos: use un efecto de entrada y salida (acelerar y luego desacelerar) o un efecto de rebote (consulte el <b>capítulo 15</b> para ver un ejemplo de rebote).
+        </p>
+        <p>
+          Echemos un vistazo más de cerca a cómo funciona <code>cubic-bezier()</code>. Otro ejemplo de curva se muestra en la <b>figura 14.6</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/06.jpg" alt="ibid">
+          <figcaption>Figura 14.6. Una curva de Bézier que representa una función de tiempo</figcaption>
+        </figure>
+        <p>
+          Esta figura muestra una curva de Bézier personalizada. Esta curva acelera al principio, avanza más rápido en el medio (la parte más empinada de la curva) y luego desacelera al final. La curva existe en una cuadrícula cartesiana. Comienza en el punto (0, 0) y termina en el punto (1, 1).
+        </p>
+        <p>
+          Con los puntos finales establecidos, la posición de los dos controladores es todo lo que necesita para definir la curva. En CSS, esta curva se puede definir como <code>cubic-bezier(0.45, 0.05, 0.55, 0.95)</code>. Los cuatro valores representan las coordenadas xey de los puntos de control de los dos controles. Las curvas son difíciles de visualizar solo a partir de estos números. Editarlos a través de una GUI es mucho más intuitivo, por lo que me gusta editar y probar una transición en el navegador antes de copiar el Bézier cúbico resultante en mi hoja de estilo. Prefiero DevTools para esto, pero también puede usar un recurso en línea como https://cubic-bezier.com/.
+        </p>
+        <h3 id="sub2">14.2.2. Pasos</h3>
+        <p>
+          Un último tipo de función de temporización utiliza la función <code>steps()</code>. En lugar de proporcionar una transición fluida basada en <em>Bézier</em> de un valor al siguiente, esto lo mueve en una serie de <em>"pasos"</em> discretos e instantáneos.
+        </p>
+        <p>
+          La función toma dos parámetros: el número de pasos y una palabra clave (ya sea de <code>start</code> o <code>end</code>), que indica si cada cambio debe tener lugar al principio o al final de cada paso. Algunas funciones escalonadas se ilustran en la <b>figura 14.7</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/07.jpg" alt="ibid">
+          <figcaption>Figura 14.7. La función step() cambia el valor de forma incremental.</figcaption>
+        </figure>
+        <p>
+          Tenga en cuenta que <code>end</code> es el valor predeterminado para el segundo parámetro, por lo que los <code>steps(3)</code> se pueden utilizar en lugar de los <code>steps(3, end)</code>. Para ver los pasos en acción, edite su hoja de estilo para que coincida con esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.box {
+  position: absolute;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  background-color: hsl(130, 50%, 50%);
+  transition: all 1s steps(3);             1
+}
+          </code>
+          <small>Listado 14.5. Usando steps() para incrementar el valor</small>
+        </pre>
+        <ol class="index-code">
+          <li>Transiciones en tres pasos discretos</li>
+        </ol>
+        <p>
+          Ahora, en lugar de moverse con fluidez de izquierda a derecha durante un segundo (la duración de la transición), el tiempo se divide en tercios o tres pasos. Para cada paso, el cuadro aparece en la posición inicial, la posición de un tercio, luego la posición de dos tercios, antes de moverse a la posición final en la marca de 1 segundo.
+        </p>
+        <p>
+          De forma predeterminada, el valor de la propiedad cambia al final de cada paso, por lo que la transición no comienza de inmediato. Puede cambiar este comportamiento para que los cambios tengan lugar al principio de cada paso en lugar de al final agregando la palabra clave de <code>start</code>: <code>steps(3, start)</code>.
+        </p>
+        <p>
+          Los usos prácticos de <code>step()</code> son poco comunes, pero hay una lista inteligente de ideas en https://css-tricks.com/clever-uses-step-easing/.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>14.3 PROPIEDADES <span translate="no">NON-ANIMATABLE</span></h2>
+        <p>
+          Muchas transiciones son sencillas. Por ejemplo, puede aplicar <code>transition: color 200ms linear</code> a los enlaces para que se desvanezcan de un color a otro cuando se pasa el cursor sobre ellos o se hace clic en ellos. O puede cambiar el color de fondo de un mosaico en el que se puede hacer clic o el relleno de un botón.
+        </p>
+        <p>
+          Si JavaScript cambia algo en la página, es posible que desee considerar si agregar una transición es apropiado. En algunos casos, esto es tan simple como agregar una propiedad de transición a ese elemento. En otros casos, puede requerir un poco más de orquestación. Durante el resto de este capítulo, creará un menú desplegable y aplicará transiciones para que se abra sin problemas en lugar de aparecer a la vista.
+        </p>
+        <p>
+          Primero, hará que se desvanezca, cambiando su valor de <code>opacity</code>. Después de eso, cambiará el menú desplegable para usar un efecto diferente, cambiando <code>height</code>. Ambos efectos introducen problemas particulares que requieren un poco más de reflexión.
+        </p>
+        <p>
+          El menú se verá como la <b>figura 14.8</b>. Comenzará por abrir y cerrar el menú. Después de eso, agregará los efectos de transición. Incluí un vínculo debajo del menú. Observe cómo aparece el cajón del menú frente a este enlace cuando está abierto; esto será importante.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/08.jpg" alt="ibid">
+          <figcaption>Figura 14.8. El menú desplegable en sus estados cerrado (izquierda) y abierto (derecha)</figcaption>
+        </figure>
+        <p>
+          Cree una nueva página para el menú desplegable, agregando el marcado que se muestra a continuación. Esto es similar a los menús desplegables que ha creado en capítulos anteriores e incluye algo de JavaScript para alternar los estados abierto y cerrado del menú.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="dropdown" aria-haspopup="true">
+  &lt;button class="dropdown__toggle">Menu&lt;/button>
+  &lt;div class="dropdown__drawer">                           1
+    &lt;ul class="menu" role="menu">
+      &lt;li role="menuitem">
+        &lt;a href="/features">Features&lt;/a>
+      &lt;/li>
+      &lt;li role="menuitem">
+        &lt;a href="/pricing">Pricing&lt;/a>
+      &lt;/li>
+      &lt;li role="menuitem">
+        &lt;a href="/support">Support&lt;/a>
+      &lt;/li>
+      &lt;li role="menuitem">
+        &lt;a href="/about">About&lt;/a>
+      &lt;/li>
+    &lt;/ul>
+  &lt;/div>
+&lt;/div>
+&lt;p>&lt;a href="/read-more">Read more&lt;/a>&lt;/p>                  2
+
+&lt;script type="text/javascript">
+  (function () {
+    var toggle = document.getElementsByClassName('dropdown__toggle')[0];
+    var dropdown = toggle.parentElement;
+    toggle.addEventListener('click', function (e) {        3
+      e.preventDefault();                                  3
+      dropdown.classList.toggle('is-open');                3
+    });
+  }());
+&lt;/script>
+          </code>
+          <small>Listado 14.6. Menú desplegable de transición</small>
+        </pre>
+        <ol class="index-code">
+          <li>El cajón que aparecerá y desaparecerá para revelar el menú</li>
+          <li>Un enlace que aparecerá debajo del menú desplegable.</li>
+          <li>Alterna la clase está abierta en el contenedor cuando se hace clic en el botón</li>
+        </ol>
+        <p>
+          Los estilos antes de agregar el efecto de aparición gradual se muestran en la siguiente lista. Agréguelos a una hoja de estilo y vincúlelos a la página. Agregué algunos efectos de transición para que los colores cambien sin problemas al pasar el mouse. Aparte de eso, todavía no hay muchas novedades aquí, pero esto hace que la página se configure para que pueda concentrarse en crear el efecto de aparición gradual.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.dropdown__toggle {
+  display: block;
+  padding: 0.5em 1em;
+  border: 1px solid hsl(280, 10%, 80%);
+  color: hsl(280, 30%, 60%);
+  background-color: white;
+  font: inherit;
+  text-decoration: none;
+  transition: background-color 0.2s linear;                    1
+}
+.dropdown__toggle:hover {
+  background-color: background-color: hsl(280, 15%, 95%);      2
+}
+.dropdown__drawer {
+  position: absolute;
+  display: none;
+  background-color: white;
+  width: 10em;
+}
+.dropdown.is-open .dropdown__drawer {
+  display: block;
+}
+
+.menu {
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+}
+.menu > li + li > a {
+  border-top: 0;
+}
+.menu > li > a {
+  display: block;
+  padding: 0.5em 1em;
+  color: hsl(280, 40%, 60%);
+  background-color: white;
+  text-decoration: none;
+  transition: all .2s linear;                                  3
+  border: 1px solid hsl(280, 10%, 80%);
+}
+.menu > li > a:hover {
+  background-color: hsl(280, 15%, 95%);                        4
+  color: hsl(280, 25%, 10%);                                   4
+}
+          </code>
+          <small>Listado 14.7. Estilos de menú desplegable de transición</small>
+        </pre>
+        <ol class="index-code">
+          <li>Cambia el color de fondo cuando cambia</li>
+          <li>Cambia el color de fondo al pasar el mouse</li>
+          <li>Transiciones de colores de fondo y texto</li>
+          <li>Cambia los colores al pasar el mouse</li>
+        </ol>
+        <p>
+          Abra esta página en su navegador y pruébelo. Debería poder abrir y cerrar el menú haciendo clic en el botón de alternancia. Observe cómo tanto el botón como los enlaces del menú cambian sus colores suavemente cuando pasa el mouse sobre ellos y nuevamente cuando lo aleja.
+        </p>
+        <p>
+          Usé una duración de transición de 0.2 segundos para estos efectos de desplazamiento. Como regla general, la mayoría de las transiciones deben estar entre 200 y 500 ms. Un poco más, y los usuarios percibirán su página como lenta y sentirán que están esperando innecesariamente que la página responda. Esto es doblemente cierto para los efectos que el usuario verá a menudo y repetidamente.
+        </p>
+        <p>
+          Utilice velocidades de transición rápidas para efectos de desplazamiento, fundidos y pequeños efectos de escala. Manténgalos por debajo de 300 ms; es posible que incluso desee bajar hasta 100 ms en algunos casos. Para las transiciones que implican grandes movimientos o funciones de temporización complejas, como los rebotes (consulte el capítulo 15), utilice transiciones un poco más largas entre 300 y 500 ms.
+        </p>
+        <p>
+          Cuando estoy trabajando en una transición, a veces la ralentizo a dos o tres segundos completos. De esta forma puedo observar con atención lo que está haciendo y asegurarme de que se comporta como quiero. Si hace esto, asegúrese de volver a configurarlo a una velocidad corta agradable después de que haya terminado.
+        </p>
+        <h3 id="sub3">14.3.1. Propiedades que no se pueden animar</h3>
+        <p>
+          No todas las propiedades se pueden animar. La propiedad <code>display</code> es una de ellas. Solo puede alternar entre <code>display: none</code> y <code>display: block</code>; no puede realizar una transición entre valores, por lo que se ignoran las propiedades de transición aplicadas a la <code>display</code>.
+        </p>
+        <p>
+          Si busca una propiedad en una guía de referencia como MDN (https://developer.mozilla.org/en-US/), normalmente le dirá si puede animar una propiedad y qué tipo de valor (por ejemplo , longitud, color, porcentaje) se pueden interpolar. Los detalles de la propiedad <code>background-color</code> de https://developer.mozilla.org/en-US/docs/Web/CSS/background-color se muestran en la <b>figura 14.9</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/09.jpg" alt="ibid">
+          <figcaption>Figura 14.9. La documentación de MDN proporciona un cuadro de resumen técnico para cada propiedad.</figcaption>
+        </figure>
+        <p>
+          La propiedad <code>background-color</code>, como se muestra en la figura, se puede animar solo como un valor de color, es decir, de un color a otro (lo cual tiene sentido, ya que esta propiedad debe establecerse como un color). El tipo de animación de una propiedad se aplica tanto a las transiciones como a las animaciones, que utilizará en el <b>capítulo 16</b>. La documentación también enumera otra información útil sobre la propiedad, como su valor inicial, a qué tipo de elementos se puede aplicar y si es heredado. Si necesita un buen resumen técnico de cómo se puede utilizar una propiedad, busque la propiedad en la documentación de MDN y mire su cuadro de propiedades.
+        </p>
+        <p>
+          La mayoría de las propiedades que aceptan una longitud, un número, un color o la función <code>calc()</code> se pueden animar. La mayoría de las propiedades que toman una palabra clave u otros valores discretos, como <code>yrl()</code>, no pueden.
+        </p>
+        <p>
+          Si buscara la propiedad <code>display</code>, vería que su tipo de animación es <code>discrete</code>, lo que significa que solo se puede cambiar entre valores discretos y no se puede interpolar en una animación o transición. Si desea que un elemento aparezca o desaparezca, no puede realizar la transición de la propiedad de <code>display</code>; pero puedes usar la propiedad <code>opacity</code>.
+        </p>
+        <h3 id="sub4">14.3.2. Desvaneciéndose dentro y fuera</h3>
+        <p>
+          A continuación, usemos una transición de opacidad para darle a nuestro menú un efecto de aparición y desaparición gradual a medida que se abre y se cierra. El resultado será similar al que se muestra en la <b>figura 14.10</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/10.jpg" alt="ibid">
+          <figcaption>Figura 14.10. Menú que se desvanece</figcaption>
+        </figure>
+        <p>
+          La propiedad de <code>opacity</code> puede ser cualquier valor entre 0 (completamente invisible) y 1 (completamente opaco). La siguiente lista muestra la idea básica. Sin embargo, esto solo no funcionará por razones que pronto verá. Continúe y edite su hoja de estilo para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.dropdown__drawer {
+  position: absolute;
+  background-color: white;
+  width: 10em;
+  opacity: 0;                            1
+  transition: opacity 0.2s linear;       2
+}
+.dropdown.is-open .dropdown__drawer {
+  opacity: 1;                            3
+}
+          </code>
+          <small>Listado 14.8. Agregar reglas de opacidad y transición</small>
+        </pre>
+        <ol class="index-code">
+          <li>Reemplaza la pantalla: ninguna con opacidad: 0</li>
+          <li>Transiciones de opacidad</li>
+          <li>Reemplaza la pantalla: bloque con opacidad 1</li>
+        </ol>
+        <p>
+          Ahora el menú aparece y desaparece a medida que lo abre y lo cierra. Desafortunadamente, el menú no desaparece cuando está cerrado; es completamente transparente, pero todavía está presente en la página. Y, si intenta hacer clic en el vínculo Leer más, no funcionará. En su lugar, hará clic en el elemento de menú transparente que se encuentra frente a él y lo llevará a la página Funciones.
+        </p>
+        <p>
+          Debe cambiar la opacidad, pero también quitar completamente el cajón del menú cuando no está visible. Puede hacer esto con la ayuda de otra propiedad, <code>visibility</code>.
+        </p>
+        <p>
+          La propiedad <code>visibility</code> le permite eliminar un elemento de la página, similar a la propiedad <code>display</code>. Puedes darle los valores <code>visible</code> o <code>hidden</code>. A diferencia de <code>display</code>, <code>visibility</code> es animable. La transición no hace que se desvanezca, pero obedecerá a <code>transition-delay</code>, donde la propiedad <code>display</code> no lo hará.
+        </p>
+        <p>
+          Aprovecharás la capacidad de <code>visibility</code> para animar con un pequeño truco. Cambie su CSS para que coincida con el código de esta lista, luego le explicaré cómo funciona.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.dropdown__drawer {
+  position: absolute;
+  background-color: white;
+  width: 10em;
+  opacity: 0;                               1
+  visibility: hidden;                       1
+  transition: opacity 0.2s linear,
+              visibility 0s linear 0.2s;    2
+}
+.dropdown.is-open .dropdown__drawer {
+  opacity: 1;                               3
+  visibility: visible;                      3
+  transition-delay: 0s;                     4
+}
+          </code>
+          <small>Listado 14.9. Usar un retraso de transición para manipular cuando cambia la visibilidad</small>
+        </pre>
+        <ol class="index-code"> 
+          <li>Oculto y transparente cuando está cerrado</li>
+          <li>Retrasa la transición de visibilidad 0,2s</li>
+          <li>Visible y completamente opaco cuando se abre</li>
+          <li>Elimina el retardo de transición mientras se aplica la clase abierta</li>
+        </ol>
+        <p>
+          Aquí, ha dividido la transición en dos conjuntos de valores. Esto define el comportamiento de desvanecimiento. El primer conjunto de valores cambia la opacidad durante 0,2 segundos. El segundo conjunto cambia la visibilidad durante 0 segundos (un instante) después de 0,2 segundos de retraso. Esto significa que la opacidad cambia primero y cuando termina, la visibilidad cambia. Esto permite que el menú se desvanezca lentamente y luego, cuando esté completamente transparente, la visibilidad cambie a <code>hidden</code>. A continuación, el usuario puede hacer clic en el enlace Leer más sin que el menú interfiera.
+        </p>
+        <p>
+          Cuando el menú se desvanece, necesitará que el orden sea diferente: la visibilidad debe activarse inmediatamente, seguida de una transición de opacidad. Por eso, en el segundo conjunto de reglas, cambió el retardo de transición a 0. De esta manera, la visibilidad está oculta mientras el menú está cerrado, pero visible durante las transiciones de aparición y desaparición gradual.
+        </p>
+        <p>
+          Puede utilizar el evento de final de transición de JavaScript para realizar una acción después de que se complete una transición.
+        </p>
+        <p>
+          Este efecto de desvanecimiento también se puede lograr con algo de JavaScript en lugar del retraso de transición, pero encuentro que esto requiere más código y puede ser propenso a errores. A veces, sin embargo, JavaScript será necesario para lograr el efecto deseado (que verá en un momento), pero si una transición o animación se puede lograr solo a través de CSS, eso es casi siempre preferible.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>14.4. TRANSICIÓN A ALTURA AUTOMÁTICA</h2>
+        <p>
+          Reutilicemos el menú desplegable para usar un efecto diferente que también es común: deslizarse para abrirse y cerrarse con una altura de transición. Este efecto se ilustra en la <b>figura 14.11</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap14/11.jpg" alt="ibid">
+          <figcaption>Figura 14.11. Deslice para abrir el elemento cambiando su altura.</figcaption>
+        </figure>
+        <p>
+          Cuando se abre el menú, pasa de una altura de cero a su altura natural <code>(auto)</code>. Cuando se cierra, vuelve a cero. La idea general se muestra en el siguiente listado. Desafortunadamente, no funciona. Cambie esta parte de su CSS para que coincida con estas reglas, luego veremos cuál es el problema y cómo puede solucionarlo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.dropdown__drawer {
+  position: absolute;
+  background-color: white;
+  width: 10em;
+  height: 0;                               1
+  overflow: hidden;                        1
+  transition: height 0.3s ease-out;        2
+}
+.dropdown.is-open .dropdown__drawer {
+  height: auto;                            3
+}
+          </code>
+          <small>Listado 14.10. Transición del valor de altura</small>
+        </pre>
+        <ol class="index-code">
+          <li>El cajón cerrado no tiene altura y el rebosadero está oculto.</li>
+          <li>Transiciones de altura</li>
+          <li>La altura del cajón abierto está determinada por su contenido.</li>
+        </ol>
+        <p>
+          El desbordamiento está oculto para cortar el contenido del cajón cuando está cerrado o en transición. Pero esto no funciona porque un valor no puede pasar de una longitud (0) a <code>auto</code>.
+        </p>
+        <p>
+          En su lugar, puede establecer una altura explícitamente en algo así como <code>120px</code>, pero el problema es que no sabe exactamente cuál debería ser la altura. Eso solo se sabe una vez que los contenidos se configuran y procesan en el navegador, por lo que tendrá que usar JavaScript para determinar la altura.
+        </p>
+        <p>
+          Una vez que se cargue la página, accederá a la propiedad <code>scrollHeight</code> del elemento DOM. Esto le dará el valor apropiado para su altura. Luego, cambiará ligeramente el código para establecer la altura del elemento en este valor. Edite la secuencia de comandos en su página para que coincida con la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+(function () {
+  var toggle = document.getElementsByClassName('dropdown__toggle')[0];
+  var dropdown = toggle.parentElement;
+  var drawer = document.getElementsByClassName('dropdown__drawer')[0];
+  var height = drawer.scrollHeight;                                       1
+
+  toggle.addEventListener('click', function (e) {
+    e.preventDefault();
+    dropdown.classList.toggle('is-open');
+    if (dropdown.classList.contains('is-open')) {
+      drawer.style.setProperty('height', height + 'px');                  2
+    } else {
+      drawer.style.setProperty('height', '0');                            3
+    }
+  });
+}());
+          </code>
+          <small>Listado 14.11. Establecer la altura explícitamente para que la transición funcione</small>
+        </pre>
+        <ol class="index-code">
+          <li>Obtiene la altura automática calculada del cajón</li>
+          <li>Establece la altura explícitamente para abrir</li>
+          <li>Restaura la altura a cero para cerrar</li>
+        </ol>
+        <p>
+          Ahora, además de alternar la clase <code>is-open</code>, también especificó explícitamente una altura en píxeles para que el elemento cambie a la altura correcta. Luego, vuelve a establecer la altura en cero al cerrar para que el menú pueda volver a cambiar.
+        </p>
+        <p>
+          La propiedad <code>scrollHeight</code> de un elemento es igual a 0 si el elemento está oculto usando <code>display: none</code>. Si este es tu caso, puedes configurar la pantalla para <code>block(el.style.display = 'block')</code>, acceder a <code>scrollHeight</code> y luego restaurar el valor de visualización <code>(el.style.display = 'none')</code>.
+        </p>
+        <p>
+          Las transiciones a veces requieren la coordinación entre CSS y JavaScript. En algunos casos, puede resultar tentador mover la lógica por completo a JavaScript. Por ejemplo, puede reproducir la transición de altura estableciendo repetidamente una nueva altura solo en JavaScript. Pero, en general, debería dejar que CSS haga todo el trabajo pesado posible. Está mejor optimizado en el navegador (y, por lo tanto, tiene más rendimiento) y proporciona algunas funciones, como la aceleración, que pueden requerir una gran cantidad de código para imitar a mano.
+        </p>
+        <p>
+          Aún no ha terminado con las transiciones. Serán útiles junto con las transformaciones en el próximo capítulo.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Puede utilizar las transiciones para suavizar los cambios repentinos en la página.</li>
+          <li>Para captar la atención del usuario, utilice un movimiento de aceleración.</li>
+          <li>Para mostrarle al usuario que su acción ha surtido efecto, utilice un movimiento de desaceleración.</li>
+          <li>Puede usar JavaScript para coordinar las transiciones con cambios de nombre de clase cuando CSS por sí solo no puede hacer lo que necesita.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">De aquí para allá</a></li>
+        <li><a href="#tema2">Funciones de Tiempo</a></li>
+        <li><a href="#sub1">- Entendiendo las curvas de Bézier</a></li>
+        <li><a href="#sub2">- Pasos</a></li>
+        <li><a href="#tema3">Propiedades <span translate="no">NON-ANIMATABLE</span></a></li>
+        <li><a href="#sub3">- Propiedades que no se pueden Animar</a></li>
+        <li><a href="#sub4">- Desvaneciéndose dentro y fuera</a></li>
+        <li><a href="#tema4">Transición a altura Automática</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

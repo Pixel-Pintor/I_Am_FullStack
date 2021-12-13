@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 13</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 13. Tipografía</h1>
+      <div>
+        <a href="ch_12.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_14.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capítulo habla sobre:</em></h4>
+      <ul>
+        <li>Cómo las fuentes web pueden darle a su página una sensación única</li>
+        <li>Usando la API de Google Fonts</li>
+        <li>Ajustar el espaciado de fuentes (seguimiento e interlineado)</li>
+        <li>Preocupaciones y optimizaciones sobre el rendimiento de las fuentes web</li>
+        <li>Tratar con GOUT y FOOT</li>
+      </ul>
+      <p>
+        Puede hacer o deshacer un diseño de página con sus fuentes. Durante años, los desarrolladores web tuvieron que elegir entre un conjunto limitado de tipos de letra, denominados fuentes seguras para la web. Se trata de familias de fuentes como Arial, Helvetica y Georgia que suelen instalarse en la mayoría de los sistemas de los usuarios. Los navegadores podían representar la página utilizando solo estas fuentes del sistema, por lo que teníamos que trabajar con eso. Podríamos especificar una fuente más exótica, como Helvetia Neue, pero solo aparecería para aquellos usuarios que la tuvieran instalada; otros usuarios verían una alternativa más genérica.
+      </p>
+      <p>
+        Todo esto cambió con el auge de las fuentes web. Las fuentes web utilizan la regla <code>@font-face</code> para indicarle al navegador dónde puede encontrar y descargar fuentes personalizadas para usar en una página; la aplicación de un tipo de letra personalizado puede transformar una página que de otro modo sería aburrida. Esto abre un nuevo mundo de posibilidades. También implica muchas más decisiones de las que solíamos tomar.
+      </p>
+      <p>
+        Puede utilizar fuentes que hagan que una página se sienta divertida o seria, digna de confianza o informal. Mire los ejemplos de fuentes en la <b>figura 13.1</b>. El mismo texto se establece con tres pares de fuentes diferentes. El ejemplo de la parte superior izquierda usa News Cycle para el encabezado y EB Garamond para el cuerpo. Parece bastante formal, como podría aparecer en el sitio web de un periódico. La parte superior derecha usa Forum y Open Sans y parece más informal. Estas pueden ser fuentes que usaría en un blog personal o para una pequeña empresa de tecnología. La columna inferior izquierda usa Anton y Pangolin. Su apariencia es lúdica, o incluso caricaturesca, lo que encajaría en un sitio para niños. Al no hacer nada más que cambiar el <em>tipo de letra</em>, puede cambiar completamente el tono de la página.
+      </p>
+      <figure>
+        <img src="../img_css/cap13/01.jpg" alt="ibid">
+        <figcaption>Figura 13.1. Las fuentes que utiliza pueden tener un impacto marcado en la sensación de su sitio.</figcaption>
+      </figure>
+      <p>
+        En este capítulo, veremos las fuentes web. Le mostraré cómo funcionan y le presentaré algunos servicios en línea que brindan una gran selección de fuentes para elegir. También veremos las <em>propiedades de CSS</em> que controlan el diseño, el espaciado y el tamaño de las fuentes. Comprender estas propiedades le permitirá mejorar la legibilidad de su sitio o hacer coincidir más los diseños proporcionados por un diseñador.
+      </p>
+      <p>
+        La tipografía es una forma de arte tan antigua como la imprenta. Esto lo convierte en el único tema de este libro con cientos de años de historia detrás. Como tal, no pretendo agotar el tema aquí, pero le mostraré algunos de los conceptos básicos y cómo aplicarlos en la Web moderna.
+      </p>
+      <section id="tema1">
+        <h2>13.1. FUENTES WEB</h2>
+        <p>
+          La forma más fácil y común de utilizar fuentes web es a través de un servicio en línea. Los más comunes son:
+        </p>
+        <ul>
+          <li>Typekit (www.typekit.com/)</li>
+          <li>Webtype (www.webtype.com)</li>
+          <li>Google Fonts (https://fonts.google.com/)</li>
+        </ul>
+        <p>
+          Ya sea de pago o gratis, estos servicios se encargan de muchas inquietudes, incluidas las cuestiones técnicas (alojamiento) y legales (licencias). Cada uno ofrece una gran biblioteca de tipos de letra para elegir. Aunque a veces, si necesita un tipo de letra en particular, es posible que solo esté disponible con un servicio en particular.
+        </p>
+        <p>
+          Debido a que <em>Google Fonts</em> tiene muchas fuentes de código abierto de alta calidad, y es gratis, lo guiaré a través del uso de este servicio para agregar fuentes web a una página. Google hace gran parte del trabajo por usted, por lo que en su mayor parte es un proceso sencillo. Después de eso, miraremos debajo del capó para ver más de cerca cómo funciona todo.
+        </p>
+        <p>
+          Tomarás la página que creaste en el capítulo anterior y agregarás fuentes web para mejorar el diseño. Posteriormente, la página se mostrará como se muestra en la <b>figura 13.2</b>. La fuente <em>Roboto</em> es la fuente principal del cuerpo utilizada en la mayor parte de la página, y <em>Sansita</em> es la fuente utilizada en los encabezados.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/02.jpg" alt="ibid">
+          <figcaption>Figura 13.2. Una parte de la página con las fuentes web Sansita y Roboto aplicadas</figcaption>
+        </figure>
+        <p>
+          Es común utilizar dos fuentes diferentes como esta: una para los títulos y otra para el cuerpo del texto. A menudo, una fuente será una fuente <em>serif</em> y la otra será <em>sans-serif</em>, aunque, en este caso, ambas son <em>sans-serif</em>. También puede ver diseños que utilizan diferentes pesos del mismo tipo de letra para los títulos y el cuerpo del texto.
+        </p>
+        <p>
+          <em>serif:</em> una línea pequeña o "pie" al final de un trazo en una letra. Un tipo de letra con serifas se conoce como tipo de letra <em>serif</em> (<em>Times New Roman</em>, por ejemplo). Uno sin serifas se conoce como tipo de letra <em>sans-serif</em> (Helvetica, por ejemplo).
+        </p>
+        <p>
+          Si ha seguido el último capítulo, ya debería tener esta página construida, menos las fuentes web. (El HTML de esta página se muestra en el <b>listado 12.1</b>, y el CSS se creó en listados a lo largo del resto del <b>capítulo 12</b>, por lo que su página ya debería coincidir con estos listados del capítulo anterior). A continuación, agreguemos fuentes web.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>13.2. FUENTES DE GOOGLE</h2>
+        <p>
+          Para ver el directorio de fuentes disponibles en Google Fonts, vaya a https://fonts.google.com/. La página muestra los tipos de letra en una cuadrícula de mosaicos <b>(figura 13.3)</b>. Puede seleccionar fuentes de esta pantalla o puede buscar una fuente en particular haciendo clic en la lupa en la esquina superior derecha.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/03.jpg" alt="ibid">
+          <figcaption>Figura 13.3. Interfaz de selección de fuentes para Google Fonts</figcaption>
+        </figure>
+        <p>
+          Para cualquier fuente que desee utilizar, haga clic en el icono rojo + y Google lo agregará a las fuentes seleccionadas, que se muestran en un cajón cerca de la parte inferior derecha <b>(figura 13.4)</b>. Haga clic en el icono rojo menos (-) para eliminar una fuente.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/04.jpg" alt="ibid">
+          <figcaption>Figura 13.4. Las fuentes seleccionadas actualmente aparecen en un cajón, junto con fragmentos de código de muestra.</figcaption>
+        </figure>
+        <p>
+          Como conoce las fuentes que desea, puede buscarlas por nombre. En el menú de búsqueda, escriba <code>Sansita</code>. Todos los demás mosaicos de fuentes se filtran fuera de la vista principal. Haga clic en el icono + para agregarlo a las fuentes seleccionadas. Luego elimine Sansita del cuadro de búsqueda y escriba <code>Roboto</code>. Google mostrará varios tipos de letra relacionados, incluidos <code>Roboto</code>, <code>Roboto Condensed</code> y <code>Roboto Slab</code>. Agregue Roboto a sus fuentes seleccionadas.
+        </p>
+        <p>
+          Si abre el cajón de familias de fuentes seleccionadas, le muestra <code>Sansita</code> y <code>Roboto</code> junto con fragmentos de código en HTML (para incrustar las fuentes en su página) y CSS (para usar las fuentes en sus estilos). Sin embargo, antes de usar estos fragmentos, deberá realizar un cambio en las fuentes para seleccionar los pesos de fuente necesarios para la página. Haga clic en la pestaña Personalizar para ver las opciones <b>(figura 13.5)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/05.jpg" alt="ibid">
+          <figcaption>Figura 13.5. Seleccione qué pesos y estilos de fuente incluir en su página  </figcaption>
+        </figure>
+        <p>
+          Probablemente esté familiarizado con el trabajo con pesos de fuente regulares y en negrita, pero algunos tipos de letra están diseñados para varios pesos diferentes. Por ejemplo, <code>Roboto</code> viene en seis pesos diferentes, que van del fino al negro, así como una variante en cursiva de cada uno. Marque las casillas junto a las fuentes que desea descargar a su página.
+        </p>
+        <p>
+          Los términos <em>tipo de letra</em> y <em>fuente</em> a menudo se combinan. Tradicionalmente, la <em>tipografía</em> se refiere a toda una familia de fuentes <code>(Roboto)</code>, generalmente creada por el mismo diseñador. Dentro de un tipo de letra puede haber múltiples variantes o pesos (claro, negrita, cursiva, condensada, etc.). Cada una de estas variantes es una <em>fuente</em>.
+        </p>
+        <p>
+          En un mundo ideal, podría seleccionar todas las variantes de fuente, lo que le brinda muchas opciones para elegir para el diseño de su página. Sin embargo, si comienza a marcar casillas, notará que el indicador de tiempo de carga (arriba a la derecha) cambia de Rápido a Moderado a Lento. Cuantas más fuentes seleccione, más tendrá que descargar el navegador. Y las fuentes web, después de las imágenes, son uno de los mayores infractores a la hora de ralentizar el tiempo de carga. Deberá ser prudente y seleccionar solo las fuentes que necesita.
+        </p>
+        <p>
+          En <code>Roboto</code>, seleccione <code>Light 300</code> y en <code>Sansita</code>, seleccione <code>Extra-bold 800</code>. Estos son los pesos que utilizará para este ejemplo. (A menudo también necesitará la versión en cursiva de la fuente principal del cuerpo, pero no es una mala idea esperar hasta que esté seguro de que la necesita en su sitio). Haga clic en la pestaña Insertar para volver a los fragmentos de código y verá que se han actualizado para especificar los pesos de fuente que seleccionó.
+        </p>
+        <p>
+          Copie la etiqueta <code>&lt;link&gt;</code> y agréguela al <code>&lt;head&gt;</code> de su página como se muestra en la siguiente lista. Esto agrega la hoja de estilo que contiene las definiciones de fuente a su página. Su página ahora tendrá dos hojas de estilo: la suya y la hoja de estilo de fuente.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;link href="https://fonts.googleapis.com/css?family=Roboto:300|Sansita:800"
+    rel="stylesheet">
+          </code>
+          <small>Listado 13.1. Etiqueta &lt;link> de hoja de estilo para fuentes de Google</small>
+        </pre>
+        <p>
+          Con esta hoja de estilo, Google se ha encargado de todo lo necesario para configurar las fuentes web de su página. Con esto en su lugar, ahora puede usar las fuentes en todos sus estilos. Los agregará a la página, lo que dará como resultado la página que se muestra en la <b>figura 13.6</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/06.jpg" alt="ibid">
+          <figcaption>Figura 13.6. La página con las fuentes Roboto y Sansita aplicadas</figcaption>
+        </figure>
+        <p>
+          Para usar las fuentes, deberá especificar <code>Roboto</code> y <code>Sansita</code> usando la propiedad <code>font-family</code>. Actualicemos el CSS para hacer esto. Establecerás <code>Roboto</code> como la fuente principal en el elemento <code>&lt;body&gt;</code>, donde la hereda toda la página. Luego, configurará <code>Sansita</code> para los títulos y el enlace de la página de inicio de <em>Ink</em> en la esquina superior izquierda. Cambie las partes correspondientes del código para que coincidan con la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;             1
+  line-height: 1.4;
+  background-color: var(--extra-light-gray);
+}
+
+h1, h2, h3, h4 {
+  font-family: Sansita, serif;                 2
+}
+
+/* ... */
+
+.home-link {
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-family: Sansita, serif;                 3
+  font-weight: bold;
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 13.2. Usando las fuentes web</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aplica Roboto globalmente a la página</li>
+          <li>Establece encabezados en la fuente Sansita</li>
+          <li>Establece el enlace de la página de inicio a Sansita</li>
+        </ol>
+        <p>
+          Con la hoja de estilo de Google Fonts en la página, el navegador ahora comprende que estas familias de fuentes se refieren a las fuentes web descargadas y las aplicará a la página. Si utiliza otro servicio de fuentes web, como <em>Typekit</em>, el proceso será similar. El servicio proporcionará la URL del CSS que necesita o un fragmento de JavaScript que lo agregará a la página por usted.
+        </p>
+        <p>
+          Le mostraré cómo modificar el espaciado de las fuentes y compartiré algunas consideraciones para el rendimiento de carga. Pero primero, veamos qué está haciendo <em>Google Fonts</em> por nosotros.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>13.3. CÓMO FUNCIONA @FONT-FACE</h2>
+        <p>
+          Los proveedores de fuentes hacen que el proceso de agregar fuentes a su página sea agradable y fácil, pero vale la pena saber cómo funcionan. Veamos el archivo CSS que proporcionó Google. Abra la URL https://fonts.googleapis.com/css?family=Roboto:300|Sansita:800 en su navegador para ver el CSS de Google. He copiado una parte en la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+/* latin */
+@font-face {                                                              1
+  font-family: 'Roboto';                                                  2
+  font-style: normal;                                                     3
+  font-weight: 300;                                                       3
+  src: local('Roboto Light'), local('Roboto-Light'),
+    url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-
+    tfSpn0qi1SFdUfZBw1xU1rKptJj_0jans920.woff2) format('woff2');         4
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2212, U+2215;                         5
+}
+
+/* latin */
+@font-face {
+  font-family: 'Sansita';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Sansita ExtraBold'), local('Sansita-ExtraBold'),
+    url(https://fonts.gstatic.com/s/sansita/v1/M0VOVsEPZWhxh-
+    yeRPQtpQzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+          </code>
+          <small>Listado 13.3. Hoja de estilo de definición de fuente de Google</small>
+        </pre>
+        <ol class="index-code">
+          <li>El conjunto de reglas @font-face, que define una fuente única para usar en cualquier otro lugar del CSS de su página.</li>
+          <li>Declara el nombre de esta fuente</li>
+          <li>Define a qué estilo de fuente y peso de fuente se aplica esta @font-face</li>
+          <li>Ubicación (es) donde se puede encontrar el archivo de fuente</li>
+          <li>Los rangos de caracteres Unicode a los que se aplica este @font-face</li>
+        </ol>
+        <p>
+          El conjunto de reglas <code>@font-face</code> define las fuentes que debe utilizar el navegador en el CSS de su página. El primer conjunto de reglas aquí dice efectivamente: "Si la página necesita representar caracteres latinos con una <code>font-family</code> Roboto usando un estilo de fuente normal (no cursiva) y un peso de 300, use este archivo de fuente". El segundo es similar, definiendo una versión en negrita (peso 800) de la fuente Sansita.
+        </p>
+        <p>
+          La <code>font-family</code> define el nombre que usará para hacer referencia a esta fuente en otra parte de su hoja de estilo. El <code>src:</code> proporciona una lista separada por comas de ubicaciones donde buscará el navegador, comenzando con <code>local(Roboto Light)</code> y <code>local(Roboto-Light)</code>: si el sistema operativo del usuario tiene una fuente instalada llamada Roboto Light o Roboto- Light, entonces se usará esa fuente. De lo contrario, el archivo de fuente <em>woff2</em> se descargará de la URL dada <code>url()</code> y se utilizará.
+        </p>
+        <p>
+          El archivo, alojado por Google, incluye partes similares de código repetidas para otros conjuntos de caracteres, como cirílico, griego y vietnamita. Estos caracteres se guardan en archivos de fuentes separados, por lo que su navegador no tiene que descargarlos a menos que sea necesario. Los principios son los mismos, así que los he dejado fuera por simplicidad.
+        </p>
+        <h3 id="sub1">13.3.1. Formatos de fuente y alternativas</h3>
+        <p>
+          La hoja de estilo de Google asume que mi navegador admite archivos de fuentes <em>WOFF2</em>. Puede hacer esto porque Google verificó la cadena de agente de usuario de mi navegador y determinó que mi navegador (Chrome) admite estos archivos de fuentes. Sin embargo, si cargara esta misma URL en IE10, mostraría una hoja de estilo ligeramente diferente que hace referencia a una fuente <em>WOFF</em>.
+        </p>
+        <p>
+          <em>WOFF</em> son las siglas de Web Open Font Format. Es un formato comprimido diseñado específicamente para su uso en una red. Todos los navegadores modernos son compatibles con WOFF, pero algunos todavía no son compatibles con <em>WOFF2</em> (que tiene una mejor compresión y, por lo tanto, archivos más pequeños). Probablemente no desee tener que olfatear cadenas de agentes de usuario como lo hace Google. En cambio, una solución sólida debería proporcionar URL para los archivos de fuentes <em>WOFF</em> y <em>WOFF2</em> como se muestra en la siguiente lista. (Estoy usando URL más cortas que las de Google para que sea más legible).
+        </p>
+        <pre>
+          <code class="container__base-code">
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Roboto Light"), local("Roboto-Light"),
+      url(https://example.com/roboto.woff2) format('woff2'),      1
+      url(https://example.com/roboto.woff) format('woff');        2
+}
+          </code>
+          <small>Listado 13.4. Una declaración de fuente web WOFF2 con respaldo a WOFF</small>
+        </pre>
+        <ol class="index-code">
+          <li>Se utilizará el primer formato admitido de la lista.</li>
+          <li>Alternativa a WOFF para navegadores que no son compatibles con WOFF2.</li>
+        </ol>
+        <p>
+          Cuando las fuentes web apenas estaban comenzando, los desarrolladores tenían que incluir hasta cuatro o cinco formatos de fuente diferentes porque los navegadores admitían diferentes formatos. WOFF ahora es casi totalmente compatible, aunque <em>WOFF2</em> se carga más rápido, así que proporcione ambas URL, si es posible.
+        </p>
+        <h3 id="sub2">13.3.2. Varias variantes del mismo tipo de letra</h3>
+        <p>
+          Si necesita varias fuentes del mismo tipo de letra, cada una necesita su propia regla <code>@font-face</code>. Si, en la interfaz de Google Fonts, seleccionó versiones claras y en negrita de Roboto, Google le dará una URL de hoja de estilo que se parece a esto: https://fonts.googleapis.com/css?family=Roboto:300,700. Abra esta URL en su navegador para ver el código. He copiado una parte en la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+/* latin */
+@font-face {
+  font-family: 'Roboto';                                   1
+  font-style: normal;                                      1
+  font-weight: 300;                                        1
+  src: local('Roboto Light'), local('Roboto-Light'),
+      url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-
+    tfSpn0qi1SFdUfZBw1xU1rKptJj_0jans920.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+...
+/* latin */
+@font-face {
+  font-family: 'Roboto';                                   2
+  font-style: normal;                                      2
+  font-weight: 700;                                        2
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+      url(https://fonts.gstatic.com/s/roboto/v15/d-
+    6IYplOFocCacKzxwXSOJBw1xU1rKptJj_0jans920.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+          </code>
+          <small>Listado 13.5. Definición de dos pesos diferentes para el mismo tipo de letra</small>
+        </pre>
+        <ol class="index-code">
+          <li>Roboto light</li>
+          <li>Roboto bold</li>
+        </ol>
+        <p>
+          Este listado muestra dos definiciones diferentes para una fuente <code>Roboto</code>. Si la página necesita renderizar Roboto con un peso de 300, usará la primera definición. Si necesita renderizar Roboto con un peso de 700, usará el segundo.
+        </p>
+        <p>
+          Si los estilos de la página requieren alguna otra versión (por ejemplo, <code>font-weight: 500</code> o <code>font-style: italic</code>), el navegador se aproxima lo mejor que puede de los dos pesos proporcionados. Por lo general, esto significa que el navegador elegirá cualquiera de las dos que se acerque más a la fuente necesaria. Pero, dependiendo del navegador, ocasionalmente puede poner en cursiva o poner en negrita artificialmente una de las fuentes proporcionadas para aproximar el efecto deseado. Lo hace transformando geométricamente las formas de las letras. Esto nunca se ve tan bien como usar una fuente diseñada correctamente, por lo que no recomiendo confiar en ella.
+        </p>
+        <p>
+          Cuando usas Google Fonts u otro proveedor de fuentes, puedes usar su interfaz y te darán todo el código que necesitas. A veces, es posible que desee utilizar una fuente que no esté disponible en un proveedor. En este caso, deberá alojar su propia fuente, utilizando las reglas <code>@font-face</code> para definirlas según sea necesario para el navegador.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>13.4. AJUSTE DEL ESPACIO PARA LA LECTURA</h2>
+        <p>
+          Regresemos a nuestra página. Ahora que sus fuentes web están cargadas, ajustémoslas a su diseño. Esto implica dos propiedades: <code>line-height</code> y <code>letter-spacing</code>. Estas propiedades controlan el espacio entre líneas de texto (verticalmente) y la distancia entre caracteres individuales (horizontalmente).
+        </p>
+        <p>
+          Estas son dos propiedades que muchos desarrolladores tienden a pasar por alto. Si se toma el tiempo para ajustarlos en sus diseños, se logra una mejora significativa en el aspecto de su sitio. Además, puede hacer que la lectura sea más cómoda para su usuario, aumentando la participación en la página.
+        </p>
+        <p>
+          Si el espaciado del texto es demasiado compacto, puede requerir más esfuerzo leer algo más que unas pocas oraciones o incluso palabras. Lo mismo ocurre si el espaciado es demasiado grande. Consulte la <b>figura 13.7</b> para ver ejemplos de texto con varios espacios.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/07.jpg" alt="ibid">
+          <figcaption>Figura 13.7. El espaciado del texto puede tener un impacto marcado en la legibilidad.</figcaption>
+        </figure>
+        <p>
+          Si intenta leer el texto comprimido en la parte superior izquierda, encontrará que requiere mayor concentración. Puede encontrar que su ojo se salta una línea o lee la misma línea dos veces. Querrás dejar de leer antes. También hace que la página se sienta abarrotada y ocupada. El texto de la parte inferior izquierda está demasiado extendido. Llama demasiado la atención a todas y cada una de las letras, lo que requiere un poco más de esfuerzo para formar las palabras en tu mente. Mientras tanto, el texto en la parte superior derecha es cómodo. Parece <em>"correcto"</em> y es el más fácil de leer de los tres.
+        </p>
+        <h3 id="sub3">13.4.1. Espaciado del cuerpo de la copia</h3>
+        <p>
+          Encontrar valores tanto para la <code>line-height</code> como para el <code>letter-spacing</code> es subjetivo. El mejor enfoque es generalmente probar varios valores; busque uno que sea demasiado ajustado y otro demasiado flojo, luego establezca un valor intermedio. Afortunadamente, existen algunas reglas generales que lo guiarán.
+        </p>
+        <p>
+          El valor inicial de la propiedad line-height es la palabra clave normal, que es igual a aproximadamente 1.2 (el valor exacto está codificado en el archivo de fuente, al igual que el valor <code>em</code> de la fuente). En muchos casos, sin embargo, esto es demasiado pequeño. Para el texto del cuerpo, un valor entre 1.4 y 1.6 suele estar más cerca del ideal.
+        </p>
+        <p>
+          En su página, ya tiene una altura de línea de 1.4 aplicada al <code>&lt;body&gt;</code>, que agregó en el capítulo anterior. Este valor se hereda al resto de la página. Pero considere si eso faltaba. La <b>figura 13.8</b> muestra uno de los mosaicos. El de la izquierda tiene los valores iniciales tanto para la <code>line-height</code> como para el <code>letter-spacing</code>; el de la derecha ha sido ajustado. (Hará que su página coincida con el espaciado del mosaico de la derecha).
+        </p>
+        <figure>
+          <img src="../img_css/cap13/08.jpg" alt="ibid">
+          <figcaption>Figura 13.8. Un mosaico de la página de Ink con valores de espaciado iniciales (izquierda) y valores elegidos a propósito (derecha)</figcaption>
+        </figure>
+        <p>
+          Cambie el valor de la altura de la línea a 1,3 o 1,5 para ver cómo se ven. Vea si le gustan más o menos que el valor de 1,4 que le he proporcionado.
+        </p>
+        <p>
+          Las líneas de texto más largas deben tener una altura de línea mayor. Esto facilita que el ojo del lector escanee hasta la siguiente línea sin perder su lugar. Idealmente, debe apuntar a longitudes de línea que contengan entre 45 y 75 caracteres por línea, ya que generalmente se considera la más fácil de leer.
+        </p>
+        <p>
+          A continuación, podemos ver el <code>letter-spacing</code>. Esta propiedad toma una longitud y mide la cantidad de espacio que se debe agregar entre cada carácter. Incluso un espaciado de <code>1px</code> puede ser drástico, por lo que normalmente debería ser un valor pequeño. Cuando busco un valor, generalmente lo cambio en incrementos de <code>1/100</code> de un <code>em</code> (por ejemplo, <code>letter-spacing: 0.01em</code>). Agregue espacio entre letras a su CSS como se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+  line-height: 1.4;                               1
+  letter-spacing: 0.01em;                         2
+  background-color: var(--extra-light-gray);
+}
+          </code>
+          <small>Listado 13.6. Establecer el espaciado de letras en el elemento del cuerpo</small>
+        </pre>
+        <ol class="index-code">
+          <li>Todos los elementos de la página heredarán la altura de línea y el espaciado de letras.</li>
+          <li>Agrega 0.01 em de espacio extra entre caracteres</li>
+        </ol>
+        <p>
+          Incremente el espacio entre letras a <code>0.02em</code> o <code>0.03em</code> para ver cómo se ve. Puede que no tengas el ojo de un diseñador para saber cuál es mejor, pero está bien. Ve con tu instinto. En caso de duda, no se exceda. El punto no es llamar la atención sobre el espaciado; de hecho, es todo lo contrario. En la página de <em>Ink</em>, encuentro que tanto <code>0.01em</code> como <code>0.02em</code> son razonables, así que mantengamos el <code>0.01em</code> más conservador.
+        </p>
+        <p>
+          En el mundo del diseño, el espacio entre líneas de texto se llama <em>interlineado</em> (rima con ropa de cama). Esto se origina a partir de tiras de plomo que se agregaron entre filas en una tipografía. El espaciado entre caracteres se denomina seguimiento. Si trabaja con un diseñador, es posible que especifique el liderazgo y el seguimiento del diseño, pero estos valores pueden no parecerse en nada a las propiedades CSS de <code>line-height</code> y <code>letter-spacing</code>.
+        </p>
+        <p>
+          El interlineado a menudo se expresa en puntos, como 18 puntos, midiendo una línea de texto más el espacio entre ella y la siguiente línea de texto. De hecho, es lo mismo que la <code>line-height</code> de CSS, pero no se expresa como un número sin unidades. Primero debe convertirlo a píxeles para que sea el mismo que su fuente, luego a un número sin unidades.
+        </p>
+        <p>
+          Para convertir de pt a px, multiplique el valor en puntos por 1.333 (eso es 96 px por pulgada y 72 pt por pulgada, entonces 96/72 = 1.333): 18 pt * 1.333 = 24 px. Luego divida esto por el tamaño de la fuente para encontrar la altura de la línea sin unidades: 24 px / 16 px = 1.5.
+        </p>
+        <p>
+          El seguimiento se suele dar como un número, como 100. Este número representa milésimas de em, por lo que para convertirlo a ems, divida por 1000: 100/1000 = 0.1em.
+        </p>
+        <h3 id="sub4">13.4.2. Encabezados, elementos pequeños y espaciado</h3>
+        <p>
+          El espaciado de los títulos no siempre será el mismo que el del cuerpo del texto. Una vez que haya configurado el espacio para el texto del cuerpo, verifique los títulos y vea si necesitan algún ajuste.
+        </p>
+        <p>
+          Los títulos suelen ser cortos, a menudo solo unas pocas palabras. Pero, de vez en cuando, aparecerá uno largo. Un error común durante el diseño es probar solo títulos cortos. Ahora que la altura de la línea está configurada en la página, agregue temporalmente texto adicional a varios encabezados para forzarlos a ajustar la línea <b>(figura 13.9)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/09.jpg" alt="ibid">
+          <figcaption>Figura 13.9. Obligue a los títulos a ajustar la línea para asegurarse de que la altura de la línea sea la adecuada.</figcaption>
+        </figure>
+        <p>
+          En este caso, creo que el espaciado vertical se ve bien, así que no lo cambiaré. Pero siempre vale la pena comprobarlo. Dependiendo del tipo de letra, una altura de línea de 1,4 puede parecer demasiado separada, especialmente en tamaños de letra grandes. Tuve que reducir la altura de la línea en los encabezados hasta 1.0 en algunos sitios.
+        </p>
+        <p>
+          El espaciado de letras, por otro lado, podría estar un poco más separado. Agregue la declaración que se muestra en la siguiente lista a su hoja de estilo. Este es un cambio sutil en el espaciado de letras.
+        </p>
+        <pre>
+          <code class="container__base-code">
+h1, h2, h3, h4 {
+  font-family: Sansita, serif;
+  letter-spacing: 0.03em;          1
+}
+
+/* ... */
+
+.home-link {
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-family: Sansita, serif;
+  font-weight: bold;
+  letter-spacing: 0.03em;          1
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 13.7. Aumentar el espaciado de letras para los títulos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aumenta el espacio entre letras de los títulos.</li>
+        </ol>
+        <p>
+          Para el texto del cuerpo, el espaciado se centró en maximizar la legibilidad. Pero esto importa menos para los títulos y otros elementos con poco contenido, como los botones. En estos casos, puede ser más creativo. Puede salirse con la suya con un espaciado más amplio. También puede utilizar un espacio entre letras negativo para comprimir los caracteres. La <b>figura 13.10</b> muestra el lema con un <code>letter-spacing: -0.02em</code> aplicado.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/10.jpg" alt="ibid">
+          <figcaption>Figura 13.10. El espaciado reducido entre letras es una opción para las partes cortas y estilísticas de la página.</figcaption>
+        </figure>
+        <p>
+          Este espaciamiento es dramático. Varios párrafos de texto como este serían difíciles de leer, pero puede funcionar para fragmentos de texto cortos (solo unas pocas palabras). Apliquemos esto al texto del eslogan. Agregue la siguiente lista a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.hero h2 {
+  font-size: 1.95rem;
+  letter-spacing: -0.02em;        1
+  margin-top: 0;
+  margin-bottom: 0.625rem;
+}
+          </code>
+          <small>Listado 13.8. Reforzar el espaciado del eslogan</small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza un espaciado de letras negativo para comprimir el texto</li>
+        </ol>
+        <p>
+          También puede evaluar el espaciado y el texto de elementos pequeños en la página, como los botones. Creo que se ven un poco grandes en este momento, especialmente los botones de navegación en la barra de encabezado. Ajustemos esos. La <b>figura 13.11</b> muestra cómo se ven ahora (arriba) y cómo se verán después de hacer los cambios (abajo).
+        </p>
+        <figure>
+          <img src="../img_css/cap13/11.jpg" alt="ibid">
+          <figcaption>Figura 13.11. Cambiar las propiedades del texto puede mejorar el aspecto de los botones de navegación (parte inferior).</figcaption>
+        </figure>
+        <p>
+          Hice algunos cambios aquí: reduje el tamaño de fuente, escribí en mayúsculas el texto usando <code>text-transform</code> y aumenté el espacio entre letras.
+        </p>
+        <p>
+          El texto escrito en mayúsculas generalmente se ve mejor con un espacio entre letras más grande.
+        </p>
+        <p>
+          Agregue las declaraciones que se muestran al lado de su hoja de estilo. Esto también incluye un tamaño de fuente reducido para otros botones de la página, haciéndolos un poco más pequeños. Pero, en esta lista, solo cambiará las mayúsculas y el espaciado entre letras para los enlaces de navegación.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav-container__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;                1
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0.625em 0;
+}
+
+/* ... */
+
+.top-nav a {
+  display: block;
+  font-size: 0.8rem;                    2
+  padding: 0.3rem 1.25rem;              3
+  color: var(--white);
+  background: var(--brand-green);
+  text-decoration: none;
+  border-radius: 3px;
+  text-transform: uppercase;            4
+  letter-spacing: 0.03em;               4
+}
+...
+.button {
+  display: inline-block;
+  padding: 0.4em 1em;
+  color: hsl(162, 87%, 21%);
+  border: 2px solid hsl(162, 87%, 21%);
+  border-radius: 0.2em;
+  text-decoration: none;
+  font-size: 0.8rem;                    5
+}
+          </code>
+          <small>Listado 13.9. Ajustar el tamaño y el espaciado de los elementos del menú de navegación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Alinea los elementos del contenedor de navegación hacia la parte inferior</li>
+          <li>Disminuye el tamaño de fuente de los enlaces y botones de navegación</li>
+          <li>Cambia los valores de relleno de em a rem</li>
+          <li>Capitaliza los enlaces de navegación y aumenta el espacio entre letras</li>
+          <li>Disminuye el tamaño de fuente de los enlaces y botones de navegación</li>
+        </ol>
+        <p>
+          Debido a que ha reducido el tamaño de los enlaces de navegación, ya no llenarán la altura del cuadro de contenido del <code>nav-container</code>. De forma predeterminada, se alinearán con la parte superior, dejando más espacio debajo de ellos. La alineación de los elementos flexibles del <code>nav-container</code> con la parte inferior <code>(<code>flex-end</code>)</code> soluciona este problema.
+        </p>
+        <p>
+          Debido a que el tamaño de fuente de los elementos de navegación ha cambiado, su relleno (previamente especificado en <code>ems</code>) también cambiaría. Para evitar esto, cambié las unidades a <code>rems</code>. Podríamos hacer los cálculos para encontrar los valores correspondientes con el nuevo tamaño em, pero no hay ninguna razón de peso para hacerlo.
+        </p>
+        <p>
+          La propiedad <code>text-transform</code> puede ser nueva para ti. Esto cambia todo el texto a mayúsculas, independientemente de cómo esté escrito en HTML. Le recomiendo encarecidamente que utilice esto en lugar de poner el texto en mayúsculas en el HTML. De esa manera, si el diseño cambia en el futuro, puede cambiar una línea de CSS sin tener que editar varios lugares en todas sus páginas HTML. Pero, si algo debe escribirse en mayúscula de acuerdo con las reglas gramaticales (como un acrónimo), escríbalo en mayúscula en HTML. Si es puramente una decisión de diseño, hágalo en el CSS.
+        </p>
+        <p>
+          Otro valor para la <code>text-transform</code> es <code>lowercase</code>, lo que hace que todos los caracteres sean minúsculas. También puede configurarlo en <code>capitalize</code>, lo que pone en mayúscula la primera letra de cada palabra, pero deja todos los demás caracteres como se escribieron en el HTML.
+        </p>
+        <p>
+          En el <b>capítulo 12</b>, hablé de la importancia de establecer patrones consistentes en un diseño, incluido el espaciado uniforme de los elementos en la pantalla. El <em>ritmo vertical</em> es la práctica de aplicar este principio a líneas de texto a lo largo de la página. Esto se hace definiendo una <em>cuadrícula de línea de base</em>, una medida que se repite entre líneas de texto. La mayor parte o todo el texto de la página debe alinearse con esta cuadrícula de referencia.
+        </p>
+        <p>
+          En esta figura se ilustra una cuadrícula de línea de base con líneas horizontales igualmente espaciadas. Observe cómo el encabezado, el texto principal y el texto del botón se alinean con esta cuadrícula:
+        </p>
+        <figure>
+          <img src="../img_css/cap13/12.jpg" alt="ibid">
+        </figure>
+        <p>
+          Los elementos con varios tamaños de texto y márgenes se ajustan a un ritmo vertical repetitivo: la cuadrícula de línea de base.
+        </p>
+        <p>
+          Aplicar este principio a su sitio puede requerir algo de trabajo, pero también puede resultar rentable por la sutil consistencia que produce. Si tiene buen ojo para los detalles y quiere probar esto usted mismo, le recomiendo el artículo en https://zellwk.com/blog/why-vertical-rhythms/.
+        </p>
+        <p>
+          Una advertencia: la construcción de un ritmo vertical generalmente requiere el uso de unidades en las declaraciones de altura de línea. Debido a que esto cambia la forma en que se heredan los valores (consulte el <b>capítulo 2</b>), deberá asegurarse de definir explícitamente una altura de línea adecuada en cualquier lugar de la página donde cambie el tamaño de fuente.
+        </p>
+      </section>
+      <section id="sub5">
+        <h2>13.5 EL TEMIDO <span translate="no">FOUT</span> y <span translate="no">FOIT</span></h2>
+        <p>
+          Antes de que terminemos con las fuentes, debemos considerar el rendimiento. Los archivos de fuentes son grandes. Ya mencioné que debes minimizar la cantidad de archivos de fuentes que usas en la página, pero aun así, puede haber problemas. En el navegador, suele haber un momento en el que el contenido y el diseño de la página están listos para renderizarse, pero las fuentes aún se están descargando. Es importante considerar lo que sucederá durante ese breve momento.
+        </p>
+        <p>
+          Originalmente, la mayoría de los proveedores de navegadores decidieron renderizar la página lo antes posible, utilizando las fuentes del sistema disponibles. Luego, un momento después, la fuente web terminaría de cargarse y la página volvería a renderizarse con las fuentes web. Esto se ilustra en la <b>figura 13.12</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/13.jpg" alt="ibid">
+          <figcaption>Figura 13.12. FOUT: Destello de texto sin estilo</figcaption>
+        </figure>
+        <p>
+          Es probable que las fuentes web ocupen una cantidad de espacio en la pantalla diferente a la de las fuentes del sistema. Cuando se produce el segundo renderizado, el diseño de la página cambia y el texto salta repentinamente en la página. Si ocurre lo suficientemente rápido después del primer renderizado, es posible que el usuario no se dé cuenta. Pero si hay una demora en la carga de la fuente (o las fuentes son demasiado grandes), la página puede demorar hasta unos segundos. Cuando esto sucede, puede resultar molesto para algunos usuarios. Es posible que el usuario ya haya comenzado a leer el contenido de la página, solo para verlo cambiar repentinamente, haciéndolo perder su lugar. Esto se conoció como <em translate="no">FOUT</em>, o <em translate="no">Flash of Unstyled Text</em>.
+        </p>
+        <p>
+          A los desarrolladores no les gustó esto, por lo que la mayoría de los proveedores de navegadores cambiaron el comportamiento de sus navegadores. En lugar de renderizar la fuente alternativa, renderizaron todo en la página excepto el texto. Más precisamente, hicieron que el texto fuera invisible, por lo que aún ocupa espacio en la página. De esta manera, los contenedores de la página se colocan en su lugar para que el usuario pueda ver que la página se está cargando. Esto resultó en un nuevo acrónimo: <em>FOIT</em>, para <em>Flash of Invisible Text</em> <b>(figura 13.13)</b>. Se muestran los colores de fondo y los bordes, pero el texto solo aparece durante el segundo render, cuando las fuentes web están listas.
+        </p>
+        <figure>
+          <img src="../img_css/cap13/14.jpg" alt="ibid">
+          <figcaption>Figura 13.13. FOIT: destello de texto invisible</figcaption>
+        </figure>
+        <p>
+          Este enfoque resuelve un problema, pero crea otro: ¿Qué sucede si las fuentes web tardan mucho en cargarse? ¿O no se carga por completo? En este caso, la página permanece en blanco, un caparazón de cuadros de colores que son completamente inútiles para el usuario. Cuando esto sucede, te deja con ganas de la fuente del sistema que ves durante <em>FOUT</em>.
+        </p>
+        <p>
+          Los desarrolladores han ideado varios enfoques para abordar estos problemas. Parece que cada año, más o menos, surge un método <em>"mejor"</em>. Pero el simple hecho del asunto es este: tanto <em>FOUT</em> como <em>FOIT</em> son indeseables. Y, en el mundo de las fuentes web, nunca se pueden evitar por completo. Todo lo que podemos esperar hacer es mitigar el problema lo mejor que podamos.
+        </p>
+        <p>
+          Afortunadamente, el polvo está comenzando a asentarse sobre este tema, por lo que no necesitaré guiarte a través de media docena de técnicas diferentes. Les mostraré lo que considero el enfoque más razonable. Utiliza un poco de JavaScript para proporcionar cierto control sobre la carga de fuentes. También le mostraré una próxima propiedad de CSS que eventualmente proporcionará este control sin la necesidad de JavaScript. Puede usar uno o ambos juntos.
+        </p>
+        <h3 id="sub6">13.5.1. Uso de <span translate="no">Font Face Observer</span></h3>
+        <p>
+          Con JavaScript, puede supervisar los eventos de carga de fuentes. Esto le permite tener un mejor control sobre la experiencia <em>FOUT</em> versus <em>FOIT</em>. Puede usar una biblioteca para encargarse de mucho de esto por usted. Uno que me gusta se llama Font Face Observer (https://fontfaceobserver.com/). Esta biblioteca le permite esperar a que se carguen las fuentes web y luego responde en consecuencia. Lo que me gusta hacer es agregar una clase cargada con fuentes al elemento <code>&lt;html&gt;</code> usando JavaScript tan pronto como las fuentes estén listas. Luego puede usar esta clase para diseñar la página de manera diferente, con y sin fuentes web.
+        </p>
+        <p>
+          Descargue una copia de <em>fontfaceobserver.js</em> y guárdela en el mismo directorio que su página. Luego agregue lo siguiente al final de su página, antes de la etiqueta de cierre <code>&lt;/body&gt;</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;script type="text/javascript">
+  var html = document.documentElement;
+  var script = document.createElement("script");     1
+  script.src = "fontfaceobserver.js";                1
+  script.async = true;
+
+  script.onload = function () {
+    var roboto = new FontFaceObserver("Roboto");     2
+    var sansita = new FontFaceObserver("Sansita");   2
+    var timeout = 2000;
+
+    Promise.all([
+      roboto.load(null, timeout),
+      sansita.load(null, timeout)
+    ]).then(function () {
+      html.classList.add("fonts-loaded");            3
+    }).catch(function (e) {
+      html.classList.add("fonts-failed");            4
+    });
+  };
+  document.head.appendChild(script);
+%lt;/script>
+          </code>
+          <small>Listado 13.10. Uso de Font Face Observer para detectar la carga de fuentes</small>
+        </pre>
+        <ol class="index-code">
+          <li>Crea dinámicamente una etiqueta &lt;script&gt; para agregar Font Face Observer a la página</li>
+          <li>Crea observadores para fuentes Roboto y Sansita</li>
+          <li>Cuando se cargan ambas fuentes, agrega la clase cargada de fuentes al elemento &lt;html&gt;</li>
+          <li>4 Cuando la carga de fuentes falla, agrega la clase de fuentes fallidas al elemento &lt;html&gt;</li>
+        </ol>
+        <p>
+          Este script crea dos observadores, uno para cada una de las fuentes <code>Roboto</code> y <code>Sansita</code>. El método <code>Promise.al&lt;&gt;</code> espera a que ambas fuentes se completen la carga, luego el <code>script</code> agrega la clase <code>fonts-loaded</code> a la página. Si la carga falla, o si se agota el tiempo de carga (después de dos segundos), se llama a la devolución de llamada <code>catch</code>, que en su lugar agrega la clase <code>fonts-failed</code>. Ahora, cuando se cargue la página, este <code>script</code> agregará la clase <code>fonts-loades</code> o <code>fonts-failed</code> a la página.
+        </p>
+        <p>
+          Tanto este código como <em translate="no">Font Face Observer</em> utilizan una función de JavaScript llamada promesas, que no es compatible con IE. Afortunadamente, <em translate="no">Font Face Observer</em> incluye un <em>polyfill</em> para agregar soporte. Si ya usa un <em>polyfill</em> propio, use la versión independiente de Font Face Observer disponible en su sitio.
+        </p>
+        <p>
+          A continuación, le mostraré cómo usar las clases <code>fonts-loaded</code> y <code>fonts-failed</code> para controlar cómo se comportan las fuentes durante la carga.
+        </p>
+        <p>
+          Si está desarrollando a través de una conexión de red rápida, puede ser difícil probar el comportamiento de carga de fuentes de su sitio. Una solución es ralentizar artificialmente la velocidad de descarga en Chrome o Firefox DevTools.
+        </p>
+        <p>
+          En la pestaña Red de Chrome, hay un menú desplegable en la barra superior que proporciona varias velocidades de red predeterminadas. Puede usar esto para ralentizar artificialmente su conexión a velocidades más lentas seleccionando la opción Regular 3G en el cuadro de selección como se muestra aquí:
+        </p>
+        <figure>
+          <img src="../img_css/cap13/15.jpg" alt="ibid">
+        </figure>
+        <p>
+          Le sugiero que también marque la casilla junto a Desactivar caché. De esta forma, cada vez que cargue la página, todos los recursos se descargarán de nuevo. Esto imita más de cerca la carga de página inicial de su sitio como lo vería un usuario con una conexión más lenta.
+        </p>
+        <p>
+          Esta configuración solo se aplica mientras deja DevTools abierto. Asegúrese de restaurar esta configuración a la normalidad cuando haya terminado, para que no lo pille por sorpresa la próxima vez que abra DevTools.
+        </p>
+        <h3 id="sub7">13.5.2. Recurriendo a las fuentes del sistema</h3>
+        <p>
+          Puede adoptar dos enfoques básicos para la carga de fuentes. Primero, puede aplicar las fuentes alternativas en su CSS, luego, usando <code>.fonts-loaded</code> en un selector, cámbielas a las fuentes web que desee. Esto cambiará el <em>FOIT</em> (texto invisible) de su navegador en un <em>FOUT</em> (texto sin estilo).
+        </p>
+        <p>
+          En segundo lugar, puede aplicar las fuentes web en su CSS, luego, usando <code>.fonts-failed</code> en un selector, cambie las fuentes a las fuentes alternativas. Esto seguirá produciendo un <em>FOIT</em>, pero se agotará el tiempo de espera y volverá a las fuentes del sistema, por lo que la página no se atasca con texto invisible cuando falla la carga.
+        </p>
+        <p>
+          Entre las dos opciones, generalmente prefiero la segunda. Pero esta es puramente mi opinión, y la respuesta <em>"correcta"</em> puede ser diferente según sus preferencias o incluso los detalles del proyecto en el que está trabajando. Incluso la duración exacta del tiempo de espera que elija es una cuestión de gustos.
+        </p>
+        <p>
+          Implementemos el segundo enfoque. El siguiente código agrega los estilos de respaldo usando la clase <code>.fonts-failed</code>. Agrega estos estilos a tu CSS.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  background-color: var(--extra-light-gray);
+}
+.fonts-failed body {
+  font-family: Helvetica, Arial, sans-serif;   1
+}
+
+h1, h2, h3, h4 {
+  font-family: Sansita, serif;
+  letter-spacing: 0.03em;
+}
+.fonts-failed h1,
+.fonts-failed h2,
+.fonts-failed h3,
+.fonts-failed h4 {
+  font-family: Georgia, serif;                 1
+}
+...
+.home-link {
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-family: Sansita, serif;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+}
+.fonts-failed .home-link {
+  font-family: Georgia, serif;                 1
+}
+          </code>
+          <small>Listado 13.11. Definición de estilos alternativos para que vuelva a aparecer el texto atascado en FOIT</small>
+        </pre>
+        <ol class="index-code">
+          <li>Si las fuentes web no se cargan, recurre a las fuentes del sistema</li>
+        </ol>
+        <p>
+          Cuando las fuentes no se cargan (o se agota el tiempo de carga), la clase <code>fonts-failed</code> se agrega a la página y estos estilos alternativos se aplicarán a la página. En una conexión rápida, habrá un breve <em>FOIT</em> antes de que aparezcan las fuentes web. En una conexión lenta, habrá un <em>FOIT</em> por hasta dos segundos, luego aparecerán las fuentes de respaldo.
+        </p>
+        <p>
+          Dedicamos tiempo a ajustar el espacio entre letras para nuestras fuentes web. Es posible que desee volver a realizar el mismo proceso con las fuentes del sistema de reserva, ya que es probable que su espaciado sea diferente. Agregue estos ajustes de espaciado dentro de los conjuntos de reglas <code>.fonts-failed</code> para que solo se apliquen si las fuentes web no se cargan. Si desea hacer un esfuerzo adicional, ajuste la fuente alternativa para que su espaciado sea casi idéntico al de la fuente web, de modo que <em>FOUT</em> sea menos perceptible. La herramienta en https://meowni.ca/font-style-matcher/ puede ayudar con esto.
+        </p>
+        <p>
+          No hay una respuesta correcta para manejar la carga de fuentes. Si tiene análisis de los tiempos de carga de su sitio, utilícelos para ayudarlo a decidir un enfoque. Un <em>FOIT</em> generalmente se ve mejor en una conexión rápida, pero un <em>FOUT</em> es preferible en una conexión lenta. Utilice su mejor criterio para decidir entre los dos.
+        </p>
+        <h3 id="sub8">13.5.3. Preparándose para la visualización de fuentes</h3>
+        <p>
+          Se está trabajando en una nueva propiedad CSS, <code>font-display</code>, para proporcionar un mejor control sobre la carga de fuentes sin la ayuda de JavaScript. En el momento de redactar este artículo, solo está disponible en Chrome y Opera y pronto aparecerá en Firefox. Le mostraré brevemente cómo funciona esto para que pueda estar atento a él en el futuro.
+        </p>
+        <p>
+          Esta propiedad va dentro de una regla <code>@font-face</code>. Especifica cómo el navegador debe tratar la carga de fuentes web. En la siguiente lista se muestra un ejemplo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Roboto Light"), local("Roboto-Light"),
+      url(https://example.com/roboto.woff2) format('woff2'),
+      url(https://example.com/roboto.woff) format('woff');
+  font-display: swap;                                           1
+}
+          </code>
+          <small>Listado 13.12. Un ejemplo de la propiedad font-display</small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza el comportamiento de intercambio al cargar fuentes: un FOUT</li>
+        </ol>
+        <p>
+          Esto le dice al navegador que muestre la fuente alternativa inmediatamente y luego cambie la fuente web cuando esté disponible. En resumen, un <em translate="no">FOUT</em>.
+        </p>
+        <p>
+          Esta propiedad también admite algunos otros valores:
+        </p>
+        <ul>
+          <li><em>auto:</em> el comportamiento predeterminado (un <em translate="no">FOIT</em> en la mayoría de los navegadores).</li>
+          <li><em>swap:</em> muestra la fuente alternativa y luego cambia la fuente web cuando está lista (un <em translate="no">FOUT</em>).</li>
+          <li><em>fallback:</em> un compromiso entre <em translate="no">auto</em> y <em translate="no">swap</em>. Durante un breve período de tiempo (100 ms), el texto será invisible. Si la fuente web no está disponible en este momento, se muestra la fuente alternativa. Luego, una vez que se cargue la fuente web, se mostrará.</li>
+          <li><em>opcional:</em> similar al <code>fallback</code>, pero permite que el navegador decida si muestra la fuente web en función de la velocidad de conexión. Por lo general, esto significa que es posible que la fuente web no aparezca en absoluto en conexiones más lentas.</li>
+        </ul>
+        <p>
+          Estas opciones proporcionan más control del que pueden ofrecer unas pocas líneas de JavaScript. Para conexiones rápidas, el respaldo funciona mejor, proporcionando un <em>FOIT</em> breve, pero producirá un <em>FOUT</em> si la fuente web tarda más de <code>100ms</code> en cargarse. Para conexiones lentas, el intercambio es un poco mejor, renderizando la fuente alternativa inmediatamente. Use opcional en los casos en que la fuente web sea una parte menos importante de su diseño.
+        </p>
+        <p>
+          Controlar el rendimiento de las fuentes web puede resultar complicado. Para profundizar en el tema, consulte Rendimiento web en acción de Jeremy L. Wagner (Manning, 2016). Cuenta con un capítulo completo centrado en el rendimiento de las fuentes web, así como capítulos sobre otras cuestiones relevantes para CSS.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Utilice un proveedor de fuentes como Google Fonts para una fácil integración de fuentes web.</li>
+          <li>Limite estrictamente la cantidad de fuentes web que agrega a la página para mantener el tamaño de la página bajo control.</li>
+          <li>Utilice las reglas <code>@font-face</code> cuando aloje sus propias fuentes.</li>
+          <li>Tómate el tiempo para ajustar <code>line-height</code> y <code>letter-spacing</code> para diferenciar tu página.</li>
+          <li>Utilice <em translate="no">Font Face Observer</em> u otro JavaScript para ayudar a controlar el comportamiento de carga y evitar problemas de texto invisible.</li>
+          <li>Esté atento a la compatibilidad con <code>font-display</code> en el futuro.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Fuentes WEB</a></li>
+        <li><a href="#tema2">Fuentes de Google</a></li>
+        <li><a href="#tema3">Cómo funciona @FONT-FACE</a></li>
+        <li><a href="#sub1">- Formatos de fuente y alternativas</a></li>
+        <li><a href="#sub2">- Varias variantes del mismo tipo de letra</a></li>
+        <li><a href="#tema4">Ajuste del espacio para la lectura</a></li>
+        <li><a href="#sub3">- Espaciado del cuerpo de la copia</a></li>
+        <li><a href="#sub4">- Encabezados, elementos pequeños y espaciado</a></li>
+        <li><a href="#sub5">El temido <span translate="no">FOUT</span> y <span translate="no">FOIT</span></a></li>
+        <li><a href="#sub6">- Uso de <span translate="no">FONT FACE OBSERVER</span></a></li>
+        <li><a href="#sub7">- Recurriendo a las fuentes del sistema</a></li>
+        <li><a href="#sub8">- Preparándose para la visualización de fuentes</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

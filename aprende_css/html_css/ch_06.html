@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capitulo 6</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 6. <span translate="no">Grid Layout</span></h1>
+      <div>
+        <a href="ch_05.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_07.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capitulo habla sobre:</em></h4>
+      <ul>
+        <li>Usando el primer sistema de diseño verdadero de <span translate="no">CSS: grid</span></li>
+        <li>Comprender las opciones de diseño de <span translate="no">grid</span></li>
+        <li>Disposición de elementos en <span translate="no">grid</span></li>
+        <li>Uso de <span translate="no">flexbox</span> y <span translate="no">grid</span> juntos para crear un diseño de página web coherente</li>
+      </ul>
+      <p>
+        <em translate="no">Flexbox</em> ha revolucionado la forma en que hacemos el diseño en la web, pero es solo el comienzo. Tiene un hermano mayor: otra nueva especificación llamada <em translate="no">Grid Layout Module</em>. Juntas, estas dos especificaciones proporcionan un motor de diseño con todas las funciones para la Web como nunca antes lo había visto.
+      </p>
+      <p>
+        En este capítulo, le mostraré cómo puede comenzar a aprender el diseño <em translate="no">grid</em> hoy mismo. Le daré una descripción general de cómo funciona, luego lo llevaré a través de varios ejemplos para ilustrar las diferentes cosas que puede hacer el diseño de cuadrícula. Construir una cuadrícula básica es simple. También es lo suficientemente potente como para habilitar diseños complejos, pero hacerlo requiere aprender nuevas propiedades y palabras clave. Este capítulo lo guiará a través de ellos.
+      </p>
+      <p>
+        <em translate="no">CSS: grid</em> le permite definir un diseño bidimensional de columnas y filas y luego colocar elementos dentro de la cuadrícula. Es posible que algunos elementos solo llenen una celda de la cuadrícula; otros pueden abarcar varias columnas o filas. El tamaño de la cuadrícula se puede definir con precisión, o puede permitir que se ajuste automáticamente a sí mismo según sea necesario para ajustar el contenido. Puede colocar elementos con precisión dentro de la cuadrícula o permitir que fluyan de forma natural para llenar los huecos. Una cuadrícula le permite crear diseños complejos como el que se muestra en la <b>figura 6.1</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap6/01.jpg" alt="ibid">
+        <figcaption>Figura 6.1. Cajas en un diseño de cuadrícula de muestra</figcaption>
+      </figure>
+      <section id="tema1">
+        <h3>6.1. EL DISEÑO WEB ESTÁ AQUÍ</h3>
+        <p>
+          La aparición del diseño de cuadrícula no fue como la de otras características de CSS, como <em translate="no">flexbox</em>. A medida que los navegadores implementaron las primeras versiones de <em translate="no">flexbox</em>, lo hicieron disponible mediante el uso de prefijos de proveedores. La intención original de los prefijos de proveedores era permitir a los desarrolladores experimentar con la tecnología antes de usarla en producción. Sin embargo, no es así como se desarrollaron las cosas.
+        </p>
+        <p>
+          Se necesitaron varios años para desarrollar la especificación de <em translate="no">flexbox</em> hasta un punto estable. Mientras tanto, los desarrolladores se entusiasmaron con la nueva función y comenzaron a usarla, con prefijos y todo. Luego, a medida que evolucionó la especificación, los navegadores actualizaron sus implementaciones. Los desarrolladores tuvieron que actualizar su código para que coincida, pero también tuvieron que dejar el código anterior en su lugar para admitir también los navegadores más antiguos. Fue una introducción aproximada de <em translate="no">flexbox</em> al mundo.
+        </p>
+        <p>
+          Para evitar que esto vuelva a suceder, los proveedores de navegadores abordaron el diseño de <em translate="no">grid</em> de manera diferente. En lugar de implementarlo con prefijos de proveedor, lo implementaron como una característica que el usuario debe optar explícitamente. Los desarrolladores podían experimentar con él para aprender cómo funcionaba y para informar errores, pero en lo que respecta al usuario medio, la compatibilidad con el navegador era prácticamente nula. Al mismo tiempo, los navegadores habían implementado casi por completo el diseño de cuadrícula.
+        </p>
+        <p>
+          En lugar de una implementación larga y prolongada de desarrollo y depuración, todos los navegadores principales pudieron activar una implementación de <em translate="no">grid</em> con todas las funciones, en su mayoría depurada, prácticamente de la noche a la mañana. En marzo de 2017, comenzaron a accionar el interruptor. En el lapso de tres semanas, Firefox, Chrome, Opera y Safari lanzaron actualizaciones para sus navegadores, habilitando el diseño de cuadrícula. Microsoft Edge hizo lo mismo en junio de 2017. En el lapso de tres meses, el soporte del navegador creció del 0% a casi el 70% de los usuarios. Esto no tiene precedentes en el mundo de CSS.
+        </p>
+        <p>
+          El <b>nivel 1</b> de la especificación de cuadrícula es estable y todos los navegadores modernos ahora se ajustan a él. Esto significa que el diseño de la cuadrícula está listo para su uso en producción ahora, siempre que haga un poco de trabajo para garantizar un diseño alternativo razonable. Cubriré esto cerca del final del capítulo.
+        </p>
+        <p>
+          Microsoft implementó una versión anterior del <em>diseño de cuadrícula</em> utilizando prefijos de proveedores. Esto significa que IE10 e IE11 tienen soporte parcial para el diseño de cuadrícula usando un prefijo <code>-ms-</code>. Para admitir estos navegadores, utilice <em translate="no">Autoprefixer</em> como se explica en el <b>capítulo 5</b> (consulte la barra lateral <em>"Prefijos de proveedores"</em>).
+        </p>
+        <p>
+          Antes de que los navegadores admitieran el <em>diseño de cuadrícula</em> de forma predeterminada, permitían a los desarrolladores habilitarlo. Aunque la cuadrícula ahora está habilitada, es importante saber cómo acceder a otras funciones experimentales si desea aprenderlas en el futuro.
+        </p>
+        <h3 id="sub1">6.1.1. Construyendo una cuadrícula básica</h3>
+        <p>
+          Ahora, creemos un <em>diseño de cuadrícula</em> simple para asegurarnos de que funcione en su navegador. Colocará seis cajas en tres columnas como se muestra en la <b>figura 6.2</b>. El marcado para esta cuadrícula se muestra en el <b>listado 6.1</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/02.jpg" alt="ibid">
+          <figcaption>Figura 6.2. Una cuadrícula simple con tres columnas y dos filas.</figcaption>
+        </figure>
+        <p>
+          Cree una nueva página y vincúlela a una nueva hoja de estilo. Agregue el código en la siguiente lista a su página. En el código, agregué las letras de la <em>a</em> a la <em>f</em> para que sea evidente dónde termina cada elemento en la <em>cuadrícula</em>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  &lt;div class="grid"&gt;             1
+    &lt;div class="a"&gt;a&lt;/div&gt; 2
+    &lt;div class="b"&gt;b&lt;/div&gt; 2
+    &lt;div class="c"&gt;c&lt;/div&gt; 2
+    &lt;div class="d"&gt;d&lt;/div&gt; 2
+    &lt;div class="e"&gt;e&lt;/div&gt; 2
+    &lt;div class="f"&gt;f&lt;/div&gt; 2
+  &lt;/div&gt;
+          </code>
+          <small>Listado 6.1. Una cuadrícula con seis elementos.</small>
+        </pre>
+        <ol class="index-code">
+          <li>El contenedor de cuadricula</li>
+          <li>Los hijos del contenedor se convierten en elementos de la cuadrícula.</li>
+        </ol>
+        <p>
+          Al igual que con <em translate="no">flexbox</em>, el <em>diseño de la cuadrícula</em> se aplica a dos niveles de la jerarquía DOM. Un elemento con <code>display: grid</code> se convierte en un <em translate="no">grid container</em>. A continuación, sus elementos secundarios se convierten en <em translate="no">grid items</em>.
+        </p>
+        <p>
+          A continuación, aplicará algunas propiedades nuevas para definir los detalles de la cuadrícula. Agregue los estilos de este listado a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.grid {
+  display: grid;                           1
+  grid-template-columns: 1fr 1fr 1fr;      2
+  grid-template-rows: 1fr 1fr;             3
+  grid-gap: 0.5em;                         4
+}
+  
+.grid &gt; * {
+  background-color: darkgray;
+  color: white;
+  padding: 2em;
+  border-radius: 0.5em;
+}
+          </code>
+          <small>Listado 6.2. Trazar una cuadrícula básica</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que el elemento sea un contenedor de cuadrícula</li>
+          <li>Define tres columnas de igual ancho</li>
+          <li>Define dos filas de igual altura</li>
+          <li>Aplica un medianil entre cada celda de la cuadrícula</li>
+        </ol>
+        <p>
+          Si su navegador admite el <em>diseño de cuadrícula</em>, este código representará seis cuadros del mismo tamaño en tres columnas <b>(figura 6.2)</b>. Aquí están sucediendo varias cosas nuevas. Echemos un vistazo más de cerca.
+        </p>
+        <p>
+          Primero, ha aplicado <code>display: grid</code> para definir un <em>grid-container</em>. El contenedor se comporta como un elemento de visualización en <code>block</code>, llenando el 100% del ancho disponible. Aunque no se muestra en esta lista, también puede usar el valor <code>inline-grid</code>; en cuyo caso, el elemento fluirá en línea y solo será tan ancho como sea necesario para contener a sus hijos. Lo más probable es que no utilice <em>inline-grid</em> con tanta frecuencia.
+        </p>
+        <p>
+          Luego vienen las nuevas propiedades: <code>grid-template-column</code> y <code>grid-template-rows</code>. Estos definen el tamaño de cada una de las columnas y filas de la cuadrícula. Este ejemplo usa una nueva unidad, <code>fr</code>, que representa la unidad de fracción de cada columna (o fila). Esta unidad se comporta esencialmente igual que el factor de <code>flex-grow</code> en <em translate="no">flexbox</em>. La declaración <code>grid-template-column: 1fr 1fr 1fr</code> declara tres columnas con el mismo tamaño.
+        </p>
+        <p>
+          No es necesario que utilice unidades de fracción para cada columna o fila. También puede utilizar otras medidas como px, em o porcentaje. O puedes mezclar y combinar. Por ejemplo, <code>grid-template-column: 300px 1fr</code> definiría una columna de tamaño fijo de <code>300px</code> seguida de una segunda columna que crecerá para llenar el resto del espacio disponible. Una columna de <code>2fr</code> tendría el doble de ancho que una columna de <code>1fr</code>.
+        </p>
+        <p>
+          Finalmente, la propiedad <code>grid-gap</code> define la cantidad de espacio que se agregará al canal entre cada celda de la cuadrícula. Opcionalmente, puede proporcionar dos valores para especificar el espaciado vertical y horizontal individualmente (por ejemplo, <code>grid-gap: 0.5em 1em</code>).
+        </p>
+        <p>
+          Te animo a experimentar con estos valores para ver cómo afectan el diseño final. Agregue nuevas columnas o cambie sus anchos. Agregue o elimine elementos de la cuadrícula. Continúe experimentando con los otros diseños a lo largo de este capítulo. Esta será la mejor manera de dominar las cosas.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>6.2. ANATOMÍA DE UN <span translate="no">GRID</span></h2>
+        <p>
+          Es importante comprender las distintas partes de una <em>cuadrícula</em>. Ya mencioné <em translate="no">grid containers</em> y <em translate="no">grid items</em>, que son los elementos que componen la cuadrícula. En la <b>figura 6.3</b> se ilustran otros cuatro términos importantes que debe conocer.
+        </p>
+        <ul>
+          <li><em translate="no">Grid line:</em> Estos forman la estructura de la cuadrícula. Una línea de cuadrícula puede ser vertical u horizontal y estar a ambos lados de una fila o columna. El <code>grid-gap</code>, si se define, se encuentra sobre las líneas de la cuadrícula.</li>
+          <li><em translate="no">Grid track:</em> Un <em translate="no">grid track</em> es el espacio entre dos líneas de cuadrícula adyacentes. Una cuadrícula tiene pistas horizontales (filas) y pistas verticales (columnas).</li>
+          <li><em translate="no">Grid cell: </em>Un solo espacio en la cuadrícula, donde se superponen un <em translate="no">grid track</em> de cuadrícula horizontal y un <em translate="no">grid track</em> de cuadrícula vertical.</li>
+          <li><em translate="no">Grid area: </em>Un área rectangular en la cuadrícula formada por una o más <em translate="no">grid cells</em>. El área está entre dos líneas de cuadrícula verticales y dos líneas de cuadrícula horizontales.</li>
+        </ul>
+        <figure>
+          <img src="../img_css/cap6/03.jpg" alt="ibid">
+          <figcaption>Figura 6.3. Las partes de una cuadrícula</figcaption>
+        </figure>
+        <p>
+          Hará referencia a estas partes de la cuadrícula cuando cree diseños de cuadrícula. Por ejemplo, al declarar <code>grid-template-columns: 1fr 1fr 1fr</code> define tres <em translate="no">grid tracks</em> verticales de igual ancho. También define cuatro <em translate="no">grid lines</em> verticales: una en el borde izquierdo de la cuadrícula, dos más entre cada <em translate="no">grid track</em> y una más a lo largo del borde derecho.
+        </p>
+        <p>
+          En el capítulo anterior, creaste una página usando <em translate="no">flexbox</em>. Echemos otro vistazo a ese diseño y consideremos cómo podría implementarlo utilizando la cuadrícula. El diseño se muestra en la <b>figura 6.4</b>. Agregué líneas discontinuas para indicar la ubicación de cada celda de la cuadrícula. Observe que algunas de las secciones abarcan varias celdas, llenando un <em translate="no">grid area</em> más grande.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/04.jpg" alt="ibid">
+          <figcaption>Figura 6.4. Diseño de página creado con cuadrícula. Las líneas discontinuas se agregan para indicar la ubicación de cada celda de la cuadrícula.</figcaption>
+        </figure>
+        <p>
+          Esta cuadrícula tiene dos columnas y cuatro filas. Las dos pistas superiores de la cuadrícula horizontal están dedicadas al título de la página <em>(Ink)</em> y al menú de navegación principal. El área principal llena las dos celdas restantes en la primera pista vertical, y los dos mosaicos de la barra lateral se colocan en una de las celdas restantes en la segunda pista vertical.
+        </p>
+        <p>
+          Su diseño no necesita llenar todas las celdas de la cuadrícula. Deje una celda vacía donde desee agregar espacios en blanco.
+        </p>
+        <p>
+          Es importante tener en cuenta que el uso de la cuadrícula aquí no hace que <em translate="no">flexbox</em> sea inútil. A medida que avanzamos en la página, verá que <em translate="no">flexbox</em> sigue siendo una parte importante del diseño. Señalaré lugares en la página donde tiene sentido usar <em translate="no">flexbox</em>.
+        </p>
+        <p>
+          Cuando construyó esta página usando <em translate="no">flexbox</em>, tuvo que anidar los elementos de cierta manera. Usó un <em translate="no">flexbox</em> para definir columnas y anidó otra <em translate="no">flexbox</em> dentro de ella para definir filas <b>(listado 5.1)</b>. Para crear este diseño con cuadrícula se requiere una estructura HTML diferente: deberá acoplar el HTML. Cada elemento que coloque en la cuadrícula debe ser un elemento secundario del contenedor de la cuadrícula principal. El nuevo marcado se muestra a continuación. Cree una nueva página (o modifique su página del <b>capítulo 5</b>) para que coincida con esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;body&gt;
+  &lt;div class="container"&gt;                     1
+    &lt;header&gt;                                  2
+      &lt;h1 class="page-heading"&gt;Ink&lt;/h1&gt;
+    &lt;/header&gt;
+  
+    &lt;nav&gt;                      2
+      &lt;ul class="site-nav"&gt;
+        &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/features"&gt;Features&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/pricing"&gt;Pricing&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/support"&gt;Support&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="nav-right"&gt;
+          &lt;a href="/about"&gt;About&lt;/a&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/nav&gt;
+  
+    &lt;main class="main tile"&gt;                 3
+      &lt;h1&gt;Team collaboration done right&lt;/h1&gt;
+      &lt;p&gt;Thousands of teams from all over the
+        world turn to &lt;b&gt;Ink&lt;/b&gt; to communicate
+        and get things done.&lt;/p&gt;
+    &lt;/main&gt;
+  
+    &lt;div class="sidebar-top tile"&gt;       3
+      &lt;form class="login-form"&gt;
+        &lt;h3&gt;Login&lt;/h3&gt;
+        &lt;p&gt;
+          lt;label for="username"&gt;Username&lt;/label&gt;
+          &lt;input id="username" type="text"
+            name="username"/&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;label for="password"&gt;Password&lt;/label&gt;
+          &lt;input id="password" type="password"
+            name="password"/&gt;
+        &lt;/p&gt;
+        &lt;button type="submit"&gt;Login&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  
+    &lt;div class="sidebar-bottom tile centered"&gt;    3
+      &lt;small&gt;Starting at&lt;/small&gt;
+      &lt;div class="cost"&gt;
+        &lt;span class="cost-currency"&gt;$&lt;/span&gt;
+        &lt;span class="cost-dollars"&gt;20&lt;/span&gt;
+        &lt;span class="cost-cents"&gt;.00&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;a class="cta-button" href="/pricing"&gt;
+        Sign up
+      &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+          </code>
+          <small>Listado 6.3. Estructura HTML para un diseño de cuadrícula</small>
+        </pre>
+        <ol class="index-code">
+          <li>El "contenedor" se convierte en su contenedor de rejilla.</li>
+          <li>Cada elemento de la cuadrícula debe ser un elemento secundario del contenedor de la cuadrícula.</li>
+          <li>Cada elemento de la cuadrícula debe ser un elemento secundario del contenedor de la cuadrícula.</li>
+        </ol>
+        <p>
+          Esta versión de la página ha colocado cada sección de la página como un elemento de cuadrícula: el encabezado, el menú (<code>nav</code>), la principal y las dos barras laterales. También agregué la clase de <code>tile</code> a la barra principal y a las dos barras laterales, ya que esta clase proporciona el color de fondo blanco y el relleno que estos elementos tienen en común.
+        </p>
+        <p>
+          Apliquemos un diseño de cuadrícula a la página y coloquemos cada sección en su lugar. Por un momento, introduciremos muchos estilos de la versión del <b>capítulo 5</b>, pero primero veamos una forma general de la página. (Encuentro que generalmente es más fácil construir una página desde afuera hacia adentro). Después de construir la cuadrícula básica, la página aparecerá como en la <b>figura 6.5</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/05.jpg" alt="ibid">
+          <figcaption>Figura 6.5. Página con estructura de cuadrícula básica en su lugar</figcaption>
+        </figure>
+        <p>
+          Cree una hoja de estilo vacía y vincúlela desde la página. Agregue este listado a la nueva hoja de estilo. Este código presenta algunos conceptos nuevos, que le explicaré en un momento.
+        </p>
+        <pre>
+          <code class="container__base-code">
+:root {
+  box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #709b90;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;               1
+  grid-template-rows: repeat(4, auto);          2
+  grid-gap: 1.5em;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+header,
+nav {
+  grid-column: 1 / 3;                           3
+  grid-row: span 1;                             4
+}
+
+.main {
+  grid-column: 1 / 2;                           5
+  grid-row: 3 / 5;                              5
+}
+
+.sidebar-top {
+  grid-column: 2 / 3;                           5
+  grid-row: 3 / 4;                              5
+}
+
+.sidebar-bottom {
+  grid-column: 2 / 3;                           5
+  grid-row: 4 / 5;                              5
+}
+
+.tile {
+  padding: 1.5em;
+  background-color: #fff;
+}
+
+.tile &gt; :first-child {
+  margin-top: 0;
+}
+.tile * + * {
+  margin-top: 1.5em;
+}
+          </code>
+          <small>Listado 6.4. Aplicar un diseño de página de nivel superior usando cuadrícula</small>
+        </pre>
+        <ol class="index-code">
+          <li>Define dos pistas de cuadrícula verticales</li>
+          <li>Define cuatro pistas de cuadrícula horizontales de tamaño automático</li>
+          <li>Se extiende desde la línea de cuadrícula vertical 1 hasta la línea de cuadrícula 3</li>
+          <li>Abarca exactamente una pista de cuadrícula horizontal</li>
+          <li>Coloca otros elementos de la cuadrícula entre varias líneas de cuadrícula</li>
+        </ol>
+        <p>
+          Esta lista proporciona una serie de conceptos nuevos. Vamos a tomarlos uno a la vez.
+        </p>
+        <p>
+          Establece el contenedor de la cuadrícula y define sus pistas de cuadrícula utilizando <code>grid-template-columns</code> y <code>grid-template-rows</code>. Las columnas se definen utilizando las unidades de fracción <code>2fr</code> y <code>1fr</code>, por lo que la primera columna crecerá el doble que la segunda. Las filas usan algo nuevo, la función <code>repeat()</code>. Esta función proporciona una forma abreviada de declarar varias pistas de cuadrícula.
+        </p>
+        <p>
+          La declaración, <code>grid-template-rows: repeat (4, auto)</code>; define cuatro <em translate="no">tracks</em> de cuadrícula horizontales de altura automática. Es equivalente a <code>grid-template-rows: auto auto auto auto</code>. El tamaño de la pista de auto aumentará según sea necesario para el tamaño de su contenido.
+        </p>
+        <p>
+          También puede definir un patrón repetido con la notación <code>repeat()</code>. Por ejemplo, <code>repeat (3, 2fr 1fr)</code> define seis pistas de cuadrícula repitiendo el patrón tres veces, lo que da como resultado <code>2fr 1fr 2fr 1fr 2fr 1fr</code>. La <b>figura 6.6</b> ilustra las columnas resultantes.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/06.jpg" alt="ibid">
+          <figcaption>Figura 6.6. Usar la función <code>repeat()</code> para definir un patrón repetido en una definición de plantilla</figcaption>
+        </figure>
+        <p>
+          O puede usar <code>repeat()</code> como parte de un patrón más largo. <code>grid-template-column: 1fr repeat (3, 3fr) 1fr</code>, por ejemplo, define una columna <code>1fr</code> seguida de tres columnas <code>3fr</code> y luego otra columna <code>1fr</code> (o <code>1fr 3fr 3fr 3fr 1fr</code>). Como puede ver, la taquigrafía es un poco complicada de analizar visualmente, por lo que la taquigrafía <code>repeat()</code> es útil.
+        </p>
+        <h3 id="sub2">6.2.1. Numeración de líneas de cuadrícula</h3>
+        <p>
+          Con las <em>pistas de la cuadrícula</em> definidas, la siguiente parte del código coloca cada elemento de la cuadrícula en una ubicación específica en la cuadrícula. El navegador asigna números a cada línea de la cuadrícula en una cuadrícula, como se muestra en la <b>figura 6.7</b>. El CSS usa estos números para indicar dónde debe colocarse cada elemento.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/07.jpg" alt="ibid">
+          <figcaption>Figura 6.7. Las líneas de la cuadrícula están numeradas comenzando con 1 en la parte superior izquierda. Los números negativos se refieren a la posición de la parte inferior derecha.</figcaption>
+        </figure>
+        <p>
+          Puede utilizar los números de la cuadrícula para indicar dónde colocar cada elemento de la cuadrícula utilizando las propiedades de <code>grid-column</code> y <code>grid-row</code>. Si desea que un elemento de la cuadrícula se extienda desde la línea 1 de la cuadrícula hasta la línea 3 de la cuadrícula, aplicará <code>grid-column: 1 / 3</code> al elemento. O bien, puede aplicar <code>grid-row: 3 / 5</code> a un elemento de cuadrícula para que se extienda desde la línea de cuadrícula horizontal 3 hasta la línea de cuadrícula 5. Estas dos propiedades juntas especifican el área de cuadrícula que desea para un elemento.
+        </p>
+        <p>
+          En su página, varios elementos de la cuadrícula se colocan de esta manera:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.main {
+  grid-column: 1 / 2;
+  grid-row: 3 / 5;
+}
+  
+.sidebar-top {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+}
+  
+.sidebar-bottom {
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+}
+          </code>
+        </pre>
+        <p>
+          Este código coloca el principal en la primera columna (entre las líneas de cuadrícula 1 y 2), abarcando la tercera y cuarta filas (entre las líneas de cuadrícula 3 y 5). Coloca cada mosaico de la barra lateral en la columna derecha (entre las líneas de cuadrícula 2 y 3), apilados uno encima del otro en la tercera y cuarta filas.
+        </p>
+        <p>
+          Estas propiedades son de hecho propiedades abreviadas: <code>grid-column</code> es la abreviatura de <code>grid-column-start</code> y <code>grid-column-end</code>; <code>grid-row</code> es la abreviatura de <code>grid-row-start</code> y <code>grid-row-end</code>. La barra diagonal solo es necesaria en la versión abreviada para separar los dos valores. El espacio antes y después de la barra es opcional.
+        </p>
+        <p>
+          El conjunto de reglas que coloca el <code>header</code> y el <code>nav</code> en la parte superior de la página es un poco diferente. Aquí utilicé el mismo conjunto de reglas para orientar los anuncios a ambos:
+        </p>
+        <pre>
+          <code class="container__base-code">
+header,
+nav {
+  grid-column: 1 / 3;
+  grid-row: span 1;
+}
+          </code>
+        </pre>
+        <p>
+          Este ejemplo usa <code>grid-column</code> como viste anteriormente, haciendo que el elemento de cuadrícula abarque todo el ancho de la cuadrícula. También puede especificar <code>grid-row</code> y <code>grid-column</code> usando una palabra clave especial, <code>span</code> (usada en este ejemplo para <code>grid-row</code>). Esto le dice al navegador que el elemento abarcará una pista de cuadrícula. No especifiqué una fila explícita con la que comenzar o terminar, por lo que el elemento de la cuadrícula se colocará automáticamente utilizando <em>el algoritmo de ubicación</em> de elementos de la cuadrícula. El algoritmo de ubicación colocará los elementos para llenar el primer espacio disponible en la cuadrícula donde encajen; en este caso, la primera y segunda filas. Veremos más de cerca la colocación automática más adelante en este capítulo.
+        </p>
+        <h3 id="sub3">6.2.2. Trabajando junto con <span translate="no">flexbox</span></h3>
+        <p>
+          Después de aprender sobre <em translate="no">grid</em>, los desarrolladores a menudo preguntan sobre <em translate="no">flexbox</em>. Específicamente, ¿compiten estos dos métodos de diseño? La respuesta es no; son complementarios. Fueron desarrollados en gran parte en conjunto. Aunque existe cierta superposición en lo que cada uno puede lograr, cada uno brilla en diferentes escenarios. La elección entre <em translate="no">flexbox</em> y <em translate="no">grid</em> para una pieza de un diseño dependerá de sus necesidades particulares. Los dos métodos de diseño tienen dos distinciones importantes:
+        </p>
+        <ul>
+          <li><em translate="no">Flexbox</em> es básicamente unidimensional, mientras que <em translate="no">grid</em> es bidimensional.</li>
+          <li><em translate="no">Flexbox</em> funciona desde el contenido hacia afuera, mientras que <em translate="no">grid</em> funciona desde el diseño hacia adentro.</li>
+        </ul>
+        <p>
+          Debido a que <em translate="no">flexbox</em> es unidimensional, es ideal para filas (o columnas) de elementos similares. Es compatible con el ajuste de líneas mediante <code>flex-wrap</code>, pero no hay forma de alinear los elementos de una fila con los de la siguiente. La cuadrícula, por el contrario, es bidimensional. Está diseñado para usarse en situaciones en las que desee alinear elementos de una pista con los de otra. Esta distinción se ilustra en la <b>figura 6.8</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/08.jpg" alt="ibid">
+          <figcaption>Figura 6.8. Flexbox alinea los elementos en una dirección, mientras que la cuadrícula alinea los elementos en dos direcciones.</figcaption>
+        </figure>
+        <p>
+          La segunda gran distinción, según lo expresado por Rachel Andrew, miembro del <em>CSS WG</em>, es que <em translate="no">flexbox</em> funciona desde el contenido hacia afuera, mientras que una cuadrícula funciona desde el diseño hacia adentro. <em translate="no">Flexbox</em> le permite organizar una serie de elementos en una fila o columna, pero sus tamaños no No es necesario establecerlo explícitamente. En cambio, el contenido determina cuánto espacio necesita cada elemento.
+        </p>
+        <p>
+          Sin embargo, con la cuadrícula, primero y más importante está describiendo un diseño y luego colocando elementos en esa estructura. Si bien el contenido de cada elemento de la cuadrícula tiene la capacidad de influir en el tamaño de su <em translate="no">track</em> de cuadrícula, esto afectará el tamaño de toda el <em translate="no">track</em> y, por lo tanto, el tamaño de otros elementos de la cuadrícula en el <em translate="no">track</em>.
+        </p>
+        <p>
+          Hemos posicionado las regiones principales de la página utilizando una cuadrícula porque queremos que el contenido se adhiera a la cuadrícula tal como está definida. Pero para algunos otros elementos de la página, como el menú de navegación, podemos permitir que el contenido tenga una mayor influencia en el resultado; es decir, los elementos con más texto pueden ser más anchos y los elementos con menos texto pueden ser más estrechos. También es un diseño horizontal (unidimensional). Por estas razones, <em translate="no">flexbox</em> es una solución más apropiada para estos artículos. Diseñemos estos elementos usando <em translate="no">flexbox</em> para terminar la página.
+        </p>
+        <p>
+          La <b>figura 6.9</b> muestra la página con un menú de navegación superior que consta de una lista de enlaces alineados horizontalmente. También usaremos <em translate="no">flexbox</em> para el número de precio estilizado en la parte inferior derecha. Después de agregar estos y algunos otros estilos, llegaremos al aspecto final de la página.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/09.jpg" alt="ibid">
+          <figcaption>Figura 6.9. Página con estilo completo</figcaption>
+        </figure>
+        <p>
+          Los estilos para hacer esto son idénticos a los de los estilos en el <b>capítulo 5</b>, menos el diseño de alto nivel que ha aplicado usando la cuadrícula <b>(lista 6.4)</b>. Los he repetido en la siguiente lista. Agregue esto a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.page-heading {
+  margin: 0;
+}
+
+.site-nav {
+  display: flex;                           1
+  margin: 0;
+  padding: .5em;
+  background-color: #5f4b44;
+  list-style-type: none;
+  border-radius: .2em;
+}
+
+.site-nav &gt; li {
+  margin-top: 0;
+}
+
+.site-nav &gt; li &gt; a {
+  display: block;
+  padding: .5em 1em;
+  background-color: #cc6b5a;
+  color: white;
+  text-decoration: none;
+}
+
+.site-nav &gt; li + li {
+  margin-left: 1.5em;
+}
+
+.site-nav &gt; .nav-right {
+  margin-left: auto;
+}
+
+.login-form h3 {
+  margin: 0;
+  font-size: .9em;
+  font-weight: bold;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.login-form input:not([type=checkbox]):not([type=radio]) {
+  display: block;
+  margin-top: 0;
+  width: 100%;
+}
+
+.login-form button {
+  margin-top: 1em;
+  border: 1px solid #cc6b5a;
+  background-color: white;
+  padding: .5em 1em;
+  cursor: pointer;
+}
+
+.centered {
+  text-align: center;
+}
+
+.cost {
+  display: flex;                         2
+  justify-content: center;
+  align-items: center;
+  line-height: .7;
+}
+
+.cost &gt; span {
+  margin-top: 0;
+}
+
+.cost-currency {
+  font-size: 2rem;
+}
+.cost-dollars {
+  font-size: 4rem;
+}
+.cost-cents {
+  font-size: 1.5rem;
+  align-self: flex-start;
+}
+
+.cta-button {
+  display: block;
+  background-color: #cc6b5a;
+  color: white;
+  padding: .5em 1em;
+  text-decoration: none;
+}
+          </code>
+          <small>Listado 6.5. Estilo restante para la página</small>
+        </pre>
+        <ol class="index-code">
+          <li>El menú de flexbox</li>
+          <li>"Cost" estilizado con flexbox</li>
+        </ol>
+        <p>
+          Cuando su diseño requiera una alineación de elementos en dos dimensiones, use la cuadrícula. Cuando solo le preocupe un flujo unidireccional, use <em translate="no">flexbox</em>. En la práctica, esto a menudo (pero no siempre) significará que la cuadrícula tiene más sentido para un diseño de alto nivel de la página, y <code>flexbox</code> tiene más sentido para ciertos elementos dentro de cada área de la cuadrícula. A medida que continúe trabajando con ambos, comenzará a tener una idea de cuál es apropiado en varios casos.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>6.3. SINTAXIS ALTERNATIVAS</h2>
+        <p>
+          Hay otras dos <em>sintaxis alternativas</em> para diseñar elementos de cuadrícula: líneas de cuadrícula con nombre y áreas de cuadrícula con nombre. Elegir entre ellos es una cuestión de preferencia. En algunos diseños, una sintaxis puede ser más fácil de leer y comprender que las demás. Veamos ambos.
+        </p>
+        <h3 id="sub4">6.3.1. Nombrar líneas de cuadrícula</h3>
+        <p>
+          A veces puede ser un poco complicado realizar un seguimiento de todas las líneas de cuadrícula numeradas, especialmente cuando se trabaja con muchas pistas de cuadrícula. Para hacerlo más fácil, puede nombrar las líneas de la cuadrícula y usar los nombres en lugar de números. Al declarar pistas de cuadrícula, coloque un nombre entre corchetes para nombrar una línea de cuadrícula entre dos pistas:
+        </p>
+        <pre>
+          <code class="container__base-code">
+grid-template-columns: [start] 2fr [center] 1fr [end];
+          </code>
+        </pre>
+        <p>
+          Esta declaración define una cuadrícula de dos columnas con tres líneas de cuadrícula verticales denominadas inicio, centro y final. Luego, puede hacer referencia a estos nombres en lugar de a los números cuando coloque elementos de cuadrícula en su cuadrícula. Por ejemplo:
+        </p>
+        <pre>
+          <code class="container__base-code">
+grid-column: start / center;
+          </code>
+        </pre>
+        <p>
+          Esta declaración coloca un elemento de cuadrícula de modo que se extienda desde la línea de cuadrícula 1 (inicio) hasta la línea de cuadrícula 2 (centro). También puede proporcionar varios nombres para la misma línea de cuadrícula como se muestra en este ejemplo (agregué saltos de línea para facilitar la legibilidad):
+        </p>
+        <pre>
+          <code class="container__base-code">
+grid-template-columns:  [left-start] 2fr
+                        [left-end right-start] 1fr
+                        [right-end];
+          </code>
+        </pre>
+        <p>
+          En esta declaración, la línea 2 de la cuadrícula se denomina tanto a la izquierda como a la derecha. A continuación, puede utilizar cualquiera de estos nombres al colocar un elemento. Esta declaración también permite otro truco aquí: al nombrar las líneas de la cuadrícula <em>left-start</em> y <em>left-end</em>, ha definido un área llamada izquierda que se extiende entre ellas. Los sufijos <code>-start</code> y <code>-end</code> actúan como una especie de palabra clave que define un área intermedia. Si aplica <code>grid-column: left</code> a un elemento, se extenderá desde <code>left-start</code> hasta <code>left-end</code>.
+        </p>
+        <p>
+          El CSS de la siguiente lista utiliza líneas de cuadrícula con nombre para diseñar la página. Esto produce el mismo resultado que el enfoque del <b>listado 6.4</b>. Actualice esta parte de su hoja de estilo para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.container {
+  display: grid;
+  grid-template-columns:[left-start] 2fr               1
+                        [left-end right-start] 1fr     1
+                        [right-end];                   1
+  grid-template-rows: repeat(4, [row] auto);            2
+  grid-gap: 1.5em;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+header,
+nav {
+  grid-column: left-start / right-end;
+  grid-row: span 1;
+}
+
+.main {
+  grid-column: left;                                    3
+  grid-row: row 3 / span 2;                             4
+}
+
+.sidebar-top {
+  grid-column: right;                                   5
+  grid-row: 3 / 4;
+}
+
+.sidebar-bottom {
+  grid-column: right;                                   5
+  grid-row: 4 / 5;
+}
+          </code>
+          <small>Listado 6.6. Diseño de cuadrícula usando líneas de cuadrícula con nombre</small>
+        </pre>
+        <ol class="index-code">
+          <li>Nombra cada línea de cuadrícula vertical</li>
+          <li>Nombra las líneas horizontales de la cuadrícula "fila"</li>
+          <li>Tramos desde el principio de la izquierda hasta el final de la izquierda</li>
+          <li>Coloca el elemento comenzando en la línea de cuadrícula de la tercera fila y abarcando dos pistas de cuadrícula</li>
+          <li>Tramos desde el principio derecho al final derecho</li>
+        </ol>
+        <p>
+          Este ejemplo coloca cada elemento en las columnas de la cuadrícula apropiadas usando las líneas de cuadrícula nombradas. También declara una línea de cuadrícula horizontal con nombre dentro de la función <code>repeat()</code>. Hacer esto nombra cada fila de línea de cuadrícula horizontal (excepto la última). Esto puede parecer peculiar, pero es perfectamente válido usar el mismo nombre repetidamente. Luego coloque el elemento principal de modo que comience en la fila 3 (la tercera línea de la cuadrícula llamada fila) y se extienda por dos pistas de la cuadrícula desde allí.
+        </p>
+        <p>
+          Puede utilizar líneas de cuadrícula con nombre de innumerables formas. La forma en que los usa puede variar de una cuadrícula a la siguiente, dependiendo de la estructura particular de cada cuadrícula. Un posible ejemplo se muestra en la <b>figura 6.10</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/10.jpg" alt="ibid">
+          <figcaption>Figura 6.10. Colocar un elemento de cuadrícula en la segunda línea de cuadrícula "col", que abarca dos pistas <code>(col 2 / span 2)</code></figcaption>
+        </figure>
+        <p>
+          Este escenario presenta un patrón repetido de dos columnas de la cuadrícula, nombrando la línea de la cuadrícula antes de cada par de pistas de la cuadrícula <code>(grid-template-column: repeat (3, [col] 1fr 1fr))</code>. Luego, puede usar líneas de cuadrícula con nombre para colocar un elemento en el segundo conjunto de columnas <code>(grid-column: col 2 / span 2)</code>.
+        </p>
+        <h3 id="sub5">6.3.2. Nombrar áreas de la cuadrícula</h3>
+        <p>
+          Otro enfoque que puede tomar es nombrar las <em>áreas de la cuadrícula</em>. En lugar de contar o nombrar las líneas de la cuadrícula, puede usar estas áreas con nombre para colocar elementos en la cuadrícula. Esto se hace con la propiedad <code>grid-template</code> en el contenedor de cuadrícula y una propiedad <code>grid-area</code> en los elementos de cuadrícula.
+        </p>
+        <p>
+          El código del <b>listado 6.7</b> muestra un ejemplo de esto. Nuevamente, este código produce exactamente el mismo resultado que el diseño anterior <b>(listados 6.4 y 6.6)</b>. Es una sintaxis alternativa que se puede utilizar en su lugar. Actualice su hoja de estilo para que coincida con estos estilos.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.container {
+  display: grid;
+  grid-template-areas:"title title"          1
+                      "nav   nav"            1
+                      "main  aside1"         1
+                      "main  aside2";        1
+  grid-template-columns: 2fr 1fr;             2
+  grid-template-rows: repeat(4, auto);        2
+  grid-gap: 1.5em;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+header {
+  grid-area: title;                           3
+}
+
+nav {
+  grid-area: nav;                             3
+}
+
+.main {
+  grid-area: main;                            3
+}
+
+.sidebar-top {
+  grid-area: aside1;                          3
+}
+
+.sidebar-bottom {
+  grid-area: aside2;                          3
+}
+          </code>
+          <small>Listado 6.7. Usar áreas de cuadrícula con nombre</small>
+        </pre>
+        <ol class="index-code">
+          <li>Asigna cada celda de la cuadrícula a un área de cuadrícula con nombre</li>
+          <li>Define los tamaños de las pistas de la cuadrícula como antes</li>
+          <li>Coloca cada elemento de la cuadrícula en un área de cuadrícula con nombre</li>
+        </ol>
+        <p>
+          La propiedad <code>grid-template-areas</code> le permite dibujar una representación visual de la cuadrícula directamente en su CSS, usando una especie de sintaxis de <em>“arte ASCII”</em>. Esta declaración proporciona una serie de cadenas entre comillas, cada una de las cuales representa una fila de la cuadrícula, con espacios en blanco entre cada columna.
+        </p>
+        <p>
+          En este ejemplo, la primera fila se asigna por completo al <code>title</code> del área de la cuadrícula. La segunda fila está asignada a <code>nav</code>. La columna izquierda de las dos filas siguientes se asigna a <code>main</code>, y cada mosaico de la barra lateral se asigna a <code>aside1</code> y <code>aside2</code>. Luego, cada elemento de la cuadrícula se coloca en estas áreas nombradas utilizando la propiedad de <code>grid-area</code>.
+        </p>
+        <p>
+          Cada área de la cuadrícula nombrada debe formar un rectángulo. No puede crear formas más complejas como una <em>L</em> o una <em>U</em>.
+        </p>
+        <p>
+          También puede dejar una celda vacía usando un punto como nombre. Por ejemplo, este código define cuatro áreas de cuadrícula que rodean una celda de cuadrícula vacía en el medio:
+        </p>
+        <pre>
+          <code class="container__base-code">
+grid-template-areas:  "top  top    right"
+                      "left .      right"
+                      "left bottom bottom";
+          </code>
+        </pre>
+        <p>
+          Cuando cree una cuadrícula, use la sintaxis que le resulte más cómoda, dado el diseño: líneas de cuadrícula numeradas, líneas de cuadrícula con nombre o áreas de cuadrícula con nombre. Es probable que este último sea el favorito de muchos desarrolladores, y brilla cuando sabes exactamente dónde quieres colocar cada elemento de la cuadrícula.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>6.4. REJILLA EXPLÍCITA E IMPLÍCITA</h2>
+        <p>
+          En algunos casos, es posible que no sepa exactamente dónde desea colocar cada elemento en la cuadrícula. Quizás esté trabajando con una gran cantidad de elementos de la cuadrícula y colocar cada uno de forma explícita es difícil de manejar. Incluso puede tener una cantidad desconocida de elementos poblados por una base de datos. En estos casos, probablemente tenga más sentido definir libremente una cuadrícula y luego permitir que el algoritmo de ubicación de elementos de la cuadrícula la llene por usted.
+        </p>
+        <p>
+          Esto requerirá que confíe en una <em>cuadrícula implícita</em>. Cuando usa las propiedades <code>grid-template- *</code> para definir pistas de cuadrícula, está creando una <em>cuadrícula explícita</em>. Pero los elementos de la cuadrícula aún se pueden colocar fuera de estas pistas explícitas; en cuyo caso, las pistas implícitas se generarán automáticamente, expandiendo la cuadrícula para que contenga estos elementos.
+        </p>
+        <p>
+          La <b>figura 6.11</b> ilustra una cuadrícula con solo una pista de cuadrícula explícita en cada dirección. Cuando se coloca un elemento de cuadrícula en la segunda pista (entre las líneas de cuadrícula dos y tres), se agregan pistas adicionales para incluirlo.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/11.jpg" alt="ibid">
+          <figcaption>Figura 6.11. Si un elemento de la cuadrícula se coloca fuera de las pistas de la cuadrícula declaradas, las pistas implícitas se agregarán a la cuadrícula hasta que pueda contener el elemento.</figcaption>
+        </figure>
+        <p>
+          De forma predeterminada, las pistas de cuadrícula implícitas tendrán un tamaño de <code>auto</code>, lo que significa que crecerán hasta el tamaño necesario para contener el contenido del elemento de la cuadrícula. Las propiedades <code>grid-auto-columns</code> y <code>grid-auto-rows</code> se pueden aplicar al contenedor de la cuadrícula para especificar un tamaño diferente para todas las pistas de cuadrícula implícitas (por ejemplo, <code>grid-auto-columnas: 1fr</code>).
+        </p>
+        <p>
+          Las pistas de cuadrícula implícitas no cambian el significado de los números negativos cuando se hace referencia a líneas de cuadrícula. La numeración de líneas de cuadrícula negativa todavía comienza en la parte inferior derecha de la <em>cuadrícula explícita</em>.
+        </p>
+        <p>
+          Diseñemos otra página usando una cuadrícula implícita. Este será un portafolio de fotografías, como se muestra en la figura 6.12. Para este diseño, establecerá pistas de cuadrícula para las columnas, pero las filas de la cuadrícula estarán implícitas. De esta forma, la página no está estructurada para un número específico de imágenes; será adaptable a cualquier número de elementos de la cuadrícula. Cada vez que las imágenes necesiten ajustarse a una nueva fila, se agregará otra fila implícitamente.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/12.jpg" alt="ibid">
+          <figcaption>Figura 6.12. Una serie de fotografías dispuestas en una cuadrícula utilizando filas de cuadrícula implícitas</figcaption>
+        </figure>
+        <p>
+          Este es un diseño divertido porque sería difícil de lograr con <em translate="no">flexbox</em> o <em translate="no">floats</em>. Muestra el poder único de las redes.
+        </p>
+        <p>
+          Para crear esto, necesitará una página nueva. Cree una página en blanco y una nueva hoja de estilo y vincúlelas. El marcado para esto se muestra aquí. Agréguelo a la página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="portfolio"&gt;
+  &lt;figure class="featured"&gt;                             1 
+    &lt;img src="images/monkey.jpg" alt="monkey" /&gt;
+    &lt;figcaption&gt;Monkey&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;figure&gt;
+    &lt;img src="images/eagle.jpg" alt="eagle" /&gt;          2 
+    &lt;figcaption&gt;Eagle&lt;/figcaption&gt;                2       
+  &lt;/figure&gt;
+  &lt;figure class="featured"&gt;                             3 
+    &lt;img src="images/bird.jpg" alt="bird" /&gt;
+    &lt;figcaption&gt;Bird&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;figure&gt;
+    &lt;img src="images/bear.jpg" alt="bear" /&gt;
+    &lt;figcaption&gt;Bear&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;figure class="featured"&gt;                             3
+    &lt;img src="images/swan.jpg" alt="swan" /&gt;
+    &lt;figcaption&gt;Swan&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;figure&gt;
+    &lt;img src="images/elephants.jpg" alt="elephants" /&gt;
+    &lt;figcaption&gt;Elephants&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;figure&gt;
+    &lt;img src="images/owl.jpg" alt="owl" /&gt;
+    &lt;figcaption&gt;Owl&lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;/div&gt;
+          </code>
+          <small>Listado 6.8. Marcado para una cartera</small>
+        </pre>
+        <ol class="index-code">
+          <li>Cada &lt;figure&gt; será un elemento de cuadrícula.</li>
+          <li>Encierra la imagen y su título dentro del elemento &lt;figure&gt;</li>
+          <li>La clase destacada ampliará ciertas imágenes.</li>
+        </ol>
+        <p>
+          Este marcado es un portafolio (que será el contenedor de la cuadrícula) y una serie de figuras (que serán los elementos de la cuadrícula). Cada figura contiene una imagen y una leyenda. Agregué la clase <code>featured</code> a algunos elementos, que usará para hacerlos más grandes que las otras imágenes.
+        </p>
+        <p>
+          Lo guiaré a través de esto en algunas fases. Primero, dará forma a las pistas de la cuadrícula y verá las imágenes en una formación de cuadrícula básica <b>(figura 6.13)</b>. Después de eso, ampliará las imágenes <em>"destacadas"</em> y aplicará algunos otros toques finales.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/13.jpg" alt="ibid">
+          <figcaption>Figura 6.13. Imágenes dispuestas en una cuadrícula básica</figcaption>
+        </figure>
+        <p>
+          Los estilos para esto se muestran en el <b>listado 6.9</b>. Utiliza <code>grid-auto-rows</code> para especificar un tamaño de <code>1fr</code> para todas las filas de la cuadrícula implícitas, por lo que cada fila tendrá la misma altura. También presenta dos conceptos nuevos: <code>auto-fill</code> y la función <code>minmax()</code>, que explicaré en un momento. Agregue estos estilos a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  background-color: #709b90;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.portfolio {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));     1
+  grid-auto-rows: 1fr;                                              2
+  grid-gap: 1em;
+}
+
+.portfolio > figure {
+  margin: 0;                                                        3
+}
+
+.portfolio img {
+  max-width: 100%;
+}
+
+.portfolio figcaption {
+  padding: 0.3em 0.8em;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: right;
+}
+          </code>
+          <small>Listado 6.9. Una cuadrícula con filas de cuadrícula implícitas</small>
+        </pre>
+        <ol class="index-code">
+          <li>Establece un ancho de columna mínimo de 200 px y llena automáticamente la cuadrícula</li>
+          <li>Establece un tamaño de pista de cuadrícula horizontal implícita de 1 fr</li>
+          <li>Anula los márgenes del agente de usuario</li>
+        </ol>
+        <p>
+          A veces, no querrá establecer un tamaño fijo en una pista de cuadrícula, pero querrá restringirlo dentro de ciertos valores mínimos y máximos. Aquí es donde entra en juego la función <code>minmax()</code>. Especifica dos valores: un tamaño mínimo y un tamaño máximo. El navegador se asegurará de que la pista de la cuadrícula se encuentre entre estos valores. (Si el tamaño máximo es menor que el tamaño mínimo, el máximo se ignora). Al especificar <code>minmax(200px, 1fr)</code>, el navegador asegura que todas las pistas tengan al menos <code>200px</code> de ancho.
+        </p>
+        <p>
+          La palabra clave <code>auto-fill</code> es un valor especial que puede proporcionar para la función <code>repeat()</code>. Con este conjunto, el navegador colocará tantas pistas en la cuadrícula como pueda caber, sin violar las restricciones establecidas por el tamaño especificado (el valor <code>minmax()</code>).
+        </p>
+        <p>
+          Juntos, <code>auto-fill</code> y <code>minmax(200px, 1fr)</code> significan que su cuadrícula colocará tantas columnas de cuadrícula como pueda contener el espacio disponible, sin permitir que ninguna de ellas sea menor a <code>200px</code>. Y debido a que ninguna pista puede ser mayor que <code>1fr</code> (nuestro valor máximo), todas las pistas de la cuadrícula tendrán el mismo tamaño.
+        </p>
+        <p>
+          En la <b>figura 6.13</b>, la ventana gráfica tiene espacio para cuatro columnas de <code>200 px</code>, así que esa es la cantidad de pistas que se agregaron. Si la pantalla es más ancha, es posible que quepan más. Si es más estrecho, se crearán menos.
+        </p>
+        <p>
+          Tenga en cuenta que el <code>auto-fill</code> también puede resultar en algunas pistas de cuadrícula vacías, si no hay suficientes elementos de cuadrícula para llenarlas todas. Si no desea pistas de cuadrícula vacías, puede utilizar la palabra clave <code>auto-fit</code> en lugar de autocompletar. Esto hace que las pistas no vacías se estiren para llenar el espacio disponible. Consulte https://gridbyexample.com/examples/example37/ para ver un ejemplo de la diferencia.
+        </p>
+        <p>
+          El uso de <code>auto-fill</code> o <code>auto-fit</code> depende de si desea asegurarse de obtener el tamaño de pista de cuadrícula esperado o si desea asegurarse de que se llene la longitud de todo el <em>contenedor de cuadrícula</em>. Normalmente encuentro que prefiero el <code>auto-fit</code>.
+        </p>
+        <h3 id="sub6">6.4.1. Añadiendo variedad</h3>
+        <p>
+          A continuación, agreguemos interés visual a su cuadrícula aumentando el tamaño de las imágenes destacadas (el pájaro y el cisne en este ejemplo). Cada elemento de la cuadrícula ocupa actualmente un área de <code>1 x 1</code> en la cuadrícula. Aumentará el tamaño de las imágenes destacadas para llenar un área de cuadrícula de <code>2 x 2</code>. Puede orientar estos elementos con la clase <code>featured</code> y hacer que abarquen dos pistas de cuadrícula en cada dirección.
+        </p>
+        <p>
+          Sin embargo, esto presenta un problema. Dependiendo del orden de los elementos, el aumento del tamaño de algunos elementos de la cuadrícula podría generar espacios en la cuadrícula. La <b>figura 6.14</b> ilustra estas brechas. El pájaro de esta figura es el tercer elemento de la cuadrícula. Pero debido a que es un elemento más grande, no cabe en el espacio a la derecha de la segunda imagen, el águila. En cambio, se ha reducido a la siguiente pista de la cuadrícula.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/14.jpg" alt="ibid">
+          <figcaption>Figura 6.14. El aumento del tamaño de algunos elementos de la cuadrícula introdujo espacios en el diseño donde los elementos grandes no encajan.</figcaption>
+        </figure>
+        <p>
+          Cuando no coloca elementos específicamente en una cuadrícula, el algoritmo de ubicación de elementos de la cuadrícula los coloca automáticamente. De forma predeterminada, este algoritmo coloca los elementos de la cuadrícula columna por columna, fila por fila, de acuerdo con el orden de los elementos en el marcado. Cuando un elemento no cabe en una fila (es decir, ocupa demasiadas pistas de cuadrícula), el algoritmo pasa a la siguiente fila, buscando un espacio lo suficientemente grande para acomodar el elemento. En este caso, el pájaro se mueve hacia la segunda fila, debajo del águila.
+        </p>
+        <p>
+          El módulo de diseño de cuadrícula proporciona otra propiedad, <code>grid-auto-flow</code>, que se puede utilizar para manipular el comportamiento del algoritmo de ubicación. Su valor inicial, <code>row</code>, se comporta como he descrito. Con el valor <code>column</code>, en cambio, coloca los elementos en las columnas primero, moviéndose a la siguiente fila solo después de que una columna está llena.
+        </p>
+        <p>
+          También puede agregar la palabra clave <code>dense</code> (por ejemplo, <code>grid-auto-flow: column dense</code>). Esto hace que el algoritmo intente llenar los espacios en la cuadrícula, incluso si eso significa cambiar el orden de visualización de algunos elementos de la cuadrícula. Si aplica esto a su página, los elementos de cuadrícula más pequeños <em>"rellenarán"</em> los espacios creados por los elementos de cuadrícula más grandes. El resultado se muestra en la <b>figura 6.15</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/15.jpg" alt="ibid">
+          <figcaption>Figura 6.15. El uso de flujo automático de cuadrícula <code>dense</code> permite que los elementos de la cuadrícula pequeños rellenen los huecos en la cuadrícula.</figcaption>
+        </figure>
+        <p>
+          Con la opción de <code>dense auto-flow</code>, los elementos de cuadrícula más pequeños llenan los espacios que dejan los elementos más grandes. El orden de origen aquí sigue siendo el mono, el águila, el pájaro y luego el oso, pero el oso se coloca en posición antes que el pájaro, llenando así el espacio.
+        </p>
+        <p>
+          Agregue la siguiente lista a su hoja de estilo. Esto amplía las imágenes destacadas para llenar dos pistas de cuadrícula en cada dirección y aplica un flujo automático denso.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.portfolio {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: 1fr;
+  grid-gap: 1em;
+  grid-auto-flow: dense;               1
+}
+
+.portfolio .featured {
+  grid-row: span 2;                    2
+  grid-column: span 2;                 2
+}
+          </code>
+          <small>Listado 6.10. Ampliación de imágenes destacadas</small>
+        </pre>
+        <ol class="index-code">
+          <li>Habilita el algoritmo de ubicación de cuadrícula densa</li>
+          <li>Amplía las imágenes destacadas para abarcar dos pistas de cuadrícula en cada dirección</li>
+        </ol>
+        <p>
+          Este listado utiliza la declaración <code>grid-auto-flow: dense</code>, que es equivalente a <code>grid-auto-flow: row dense</code>. (En la primera parte del valor, la fila está implícita porque es el valor inicial). Luego, apunta a los elementos destacados y los configura para que abarquen dos pistas de cuadrícula en cada dirección. Tenga en cuenta que este ejemplo utiliza solo la palabra clave <code>span</code> y no coloca expresamente ningún elemento de cuadrícula en una pista de cuadrícula específica. Esto permite que el <em>algoritmo de ubicación</em> de elementos de la cuadrícula coloque los elementos de la cuadrícula donde lo crea conveniente.
+        </p>
+        <p>
+          Dependiendo del tamaño de su ventana gráfica, es posible que su pantalla no coincida exactamente con la <b>figura 6.12</b>. Eso se debe a que utilizó el <code>auto-fill</code> para determinar el número de pistas de cuadrícula vertical. Una pantalla más grande tendrá espacio para más pistas; una pantalla más pequeña tendrá menos. Tomé esta captura de pantalla con una ventana gráfica de aproximadamente <code>1,000px</code> de ancho, produciendo cuatro pistas de cuadrícula. Cambie el tamaño del ancho de su navegador a varios tamaños para ver cómo la cuadrícula responde automáticamente, llenando el espacio disponible.
+        </p>
+        <p>
+          Tenga cuidado con un <code>dense auto-flow</code> porque es posible que los elementos no se muestren en el mismo orden en que aparecen en el HTML. Esto puede causar cierta confusión a los usuarios que navegan a través del teclado (tecla Tab) o un lector de pantalla, ya que esos métodos navegan según el orden de origen, no el orden de visualización.
+        </p>
+        <p>
+          Una limitación de la cuadrícula es la estructura DOM específica requerida, es decir, todos los elementos de la cuadrícula deben ser hijos directos del contenedor de la cuadrícula. Por lo tanto, no es posible alinear elementos profundamente anidados en la cuadrícula.
+        </p>
+        <p>
+          Puede mostrar el elemento de la cuadrícula <code>display: grid</code> para crear una cuadrícula interna dentro de la externa. Pero los elementos de la cuadrícula de la cuadrícula interior no se alinearán necesariamente con las pistas de la cuadrícula de la cuadrícula exterior. El tamaño de los elementos de una cuadrícula tampoco afectará al tamaño de las pistas de la cuadrícula en la otra cuadrícula.
+        </p>
+        <p>
+          En el futuro, la solución a esto serán las <em>subcuadrículas</em>. Al aplicar <code>display: subgrid</code> a un elemento de cuadrícula, se convierte en su propio contenedor de cuadrícula interior, con pistas de cuadrícula que se alinean con las pistas de cuadrícula de la cuadrícula exterior. Desafortunadamente, esta función aún no está implementada en ningún navegador y se ha retrocedido a la versión de Nivel 2 de la especificación.
+        </p>
+        <p>
+          Esta característica es muy esperada. Esté atento a ello.
+        </p>
+        <h3 id="sub7">6.4.2. Ajustar <span translate="no">grid items</span> para llenar el <span translate="no">grid track</span></h3>
+        <p>
+          Ahora tiene un diseño bastante complejo. No tuvo que hacer mucho trabajo para colocar cada elemento en una ubicación precisa, sino que permitió que el navegador lo averiguara por usted.
+        </p>
+        <p>
+          Queda un último problema: las imágenes más grandes no llenan completamente las celdas de la cuadrícula, lo que deja un pequeño espacio debajo de ellas. Idealmente, los bordes superior e inferior de cada elemento de la cuadrícula deben alinearse con otros en la misma pista de la cuadrícula. Nuestros bordes superiores se alinean, pero los bordes inferiores no como se muestra en la <b>figura 6.16</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/16.jpg" alt="ibid">
+          <figcaption>Figura 6.16. Las imágenes no llenan por completo las celdas de la cuadrícula, lo que deja un espacio no deseado.</figcaption>
+        </figure>
+        <p>
+          Arreglemos esa brecha. Si recuerda, cada elemento de la cuadrícula es una <code>&lt;figure&gt;</code> que contiene dos elementos secundarios: una imagen y un título:
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;figure class="featured"&gt;
+  &lt;img src="images/monkey.jpg" alt="monkey" /&gt;
+  &lt;figcaption&gt;Monkey&lt;/figcaption&gt;
+&lt;/figure&gt;
+          </code>
+        </pre>
+        <p>
+          De forma predeterminada, cada elemento de la cuadrícula se estira para llenar toda el área de la cuadrícula, pero sus elementos secundarios no se extienden para llenarla, por lo que el área de la cuadrícula tiene una altura no utilizada. Una forma fácil de solucionar este problema es con <em translate="no">flexbox</em>. En la <b>lista 6.11</b>, hará que cada <code>&lt;figure&gt;</code> sea un contenedor flexible con una dirección de columna para que los elementos se apilen verticalmente, uno encima del otro. Luego puede aplicar un <code>flex-grow</code> a la imagen, obligándola a estirarse para llenar el espacio.
+        </p>
+        <p>
+          Sin embargo, estirar una imagen es problemático. Esto cambiará su relación de altura a ancho, distorsionando la imagen. Afortunadamente, CSS proporciona una propiedad especial para controlar este comportamiento, <code>object-fit</code>. De forma predeterminada, un <code>&lt;img&gt;</code> tiene un valor de <code>object-fill</code> de <code>fill</code>, lo que significa que se cambiará el tamaño de toda la imagen para llenar el elemento <code>&lt;img&gt;</code>. También puede establecer otros valores para cambiar esto.
+        </p>
+        <p>
+          Por ejemplo, la propiedad de <code>object-fit</code> acepta los valores <code>cover</code> y <code>contain</code> (ilustrado en la <b>figura 6.17</b>). Estos valores le dicen al navegador que cambie el tamaño de la imagen dentro del cuadro renderizado, sin distorsionar su relación de aspecto.
+        </p>
+        <ul>
+          <li>Para expandir la imagen para llenar el cuadro (lo que resulta en que parte de la imagen se corte), use <code>cover</code>.</li>
+          <li>Para cambiar el tamaño de la imagen para que quepa completamente en el cuadro (lo que da como resultado un espacio vacío dentro del cuadro), use <code>contain</code>.</li>
+        </ul>
+        <figure>
+          <img src="../img_css/cap6/17.jpg" alt="ibid">
+          <figcaption>Figura 6.17. Usar <code>object-fit</code> para controlar cómo se representa una imagen en su cuadro</figcaption>
+        </figure>
+        <p>
+          Hay una distinción importante que hacer aquí: está el cuadro (determinado por la altura y el ancho del elemento <code>&lt;img&gt;</code>) y está la imagen renderizada. Por defecto, son del mismo tamaño. La propiedad <code>object-fit</code> le permite manipular el tamaño de la imagen renderizada dentro de ese cuadro, pero el tamaño del cuadro en sí permanece sin cambios.
+        </p>
+        <p>
+          Debido a que usará la propiedad <code>flex-grow</code> para estirar las imágenes, también debe aplicar <code>object-fit: cover</code> para evitar que las imágenes se distorsionen. Esto recortará una pequeña parte del borde de las imágenes, lo cual es un compromiso que tendrá que hacer. El resultado final se muestra en la <b>figura 6.18</b>. Para obtener una visión más detallada de esta propiedad, consulte https://css-tricks.com/on-object-fit-and-object-position/.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/18.jpg" alt="ibid">
+          <figcaption>Figura 6.18. Todas las imágenes ahora llenan sus áreas de cuadrícula y se alinean limpiamente.</figcaption>
+        </figure>
+        <p>
+          Ahora, los bordes superior e inferior de todas las imágenes y sus leyendas se alinean en cada pista de la cuadrícula. El código para esto se muestra aquí. Agréguelo a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.portfolio &gt; figure {
+  display: flex;                         1
+  flex-direction: column;                1
+  margin: 0;
+}
+
+.portfolio img {
+  flex: 1;                               2
+  object-fit: cover;                     3
+  max-width: 100%;
+}
+          </code>
+          <small>Listado 6.11. Usando un flexbox de columna para estirar imágenes para llenar el área de la cuadrícula</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que cada elemento de la cuadrícula sea una caja flexible vertical</li>
+          <li>Utiliza <span translate="no">flex grow</span> para hacer que la imagen llene el espacio disponible en el contenedor flexible</li>
+          <li>3 Permite que la imagen llene el cuadro sin estirarse (recortando los bordes)</li>
+        </ol>
+        <p>
+          Esto completa el diseño de su portafolio fotográfico. Todo se alinea en una cuadrícula ordenada, y el navegador toma decisiones por usted con respecto al número y tamaño de cada pista de cuadrícula vertical. El uso de un flujo automático denso permite que el navegador llene los huecos de forma ordenada.
+        </p>
+      </section>
+      <section id="tema5">
+        <h2>6.5 <span translate="no">FEATURE QUERIES</span></h2>
+        <p>
+          Ahora que tiene una comprensión general del diseño de la cuadrícula, es posible que se pregunte: ¿Tiene que esperar hasta que todos los navegadores admitan la cuadrícula antes de poder comenzar a usarla? La respuesta es no. Puede comenzar a usarlo hoy si lo desea. Deberá considerar lo que desea que haga el navegador para su diseño si no es compatible con la cuadrícula y proporcionar esos estilos como respaldo.
+        </p>
+        <p>
+          CSS ha agregado recientemente algo llamado <em>consulta de características</em> que puede ayudar con esto. Se parece a esto:
+        </p>
+        <pre>
+          <code class="container__base-code">
+@supports (display: grid) {
+  ...
+}
+          </code>
+        </pre>
+        <p>
+          La regla <code>@supports</code> va seguida de una declaración entre paréntesis. Si el navegador comprende la declaración (en este caso, es compatible con la cuadrícula), aplica los conjuntos de reglas que aparecen entre llaves. Si no entiende esto, no los aplicará.
+        </p>
+        <p>
+          Esto significa que puede proporcionar un conjunto de estilos utilizando tecnologías de diseño más antiguas, como <code>floats</code>. Estos no serán necesariamente estilos ideales (tendrás que hacer algunos compromisos), pero harán el trabajo. Luego, usando una <em>consulta de características</em>, aplique el diseño con todas las funciones usando la cuadrícula.
+        </p>
+        <p>
+          Usemos esto en el portafolio. Puede proporcionar un diseño más básico para navegadores más antiguos utilizando elementos <code>block-inline</code>, luego poner todo el código relacionado con el diseño de la cuadrícula dentro de una <em>consulta de características</em>. Los navegadores que no admiten la cuadrícula mostrarán la página como se muestra en la <b>figura 6.19</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/19.jpg" alt="ibid">
+          <figcaption>Figura 6.19. Diseño alternativo para navegadores que no son compatibles con la cuadrícula</figcaption>
+        </figure>
+        <p>
+          Este diseño tiene un par de compromisos: las imágenes destacadas no se mostrarán en un tamaño mayor y las columnas serán de <code>300px</code> fijos en lugar de estirarse para llenar el ancho de pantalla disponible. Debido a que las figuras se muestran en <code>inline-block</code>, se ajustarán normalmente. Esto permite más imágenes por fila cuando hay suficiente espacio en la pantalla para ellas.
+        </p>
+        <p>
+          El código para esto (incluida una <em>consulta de características</em>) se muestra en el <b>listado 6.12</b>. Actualice su hoja de estilo para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.portfolio &gt; figure {
+  display: inline-block;                                       1
+  max-width: 300px;                                            1
+  margin: 0;
+}
+
+.portfolio img {
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.portfolio figcaption {
+  padding: 0.3em 0.8em;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: right;
+}
+
+@supports (display: grid) {                                    2
+  .portfolio {
+    display: grid;                                             3
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 1em;
+    grid-auto-flow: dense;
+  }
+
+  .portfolio &gt; figure {
+    display: flex;
+    flex-direction: column;
+    max-width: initial;                                        4
+  }
+
+  .portfolio img {
+    flex: 1;
+  }
+
+  .portfolio .featured {
+    grid-row: span 2;
+    grid-column: span 2;
+  }
+}
+          </code>
+          <small>Listado 6.12. Usar una consulta de características para una mejora progresiva</small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza bloque en línea para el diseño de reserva</li>
+          <li>Consulta de funciones para soporte de cuadrícula</li>
+          <li>Coloca todos los estilos de diseño de cuadrícula dentro del bloque de consulta de características</li>
+          <li>Anula los estilos alternativos</li>
+        </ol>
+        <p>
+          El respaldo y otros estilos básicos, como los colores, están fuera del bloque de consulta de funciones, por lo que siempre se aplicarán. Si abre la página en un navegador que no es compatible con la cuadrícula, verá el diseño alternativo <b>(figura 6.19)</b>. Todos los estilos relacionados con el diseño basado en cuadrículas se encuentran dentro del <em translate="no">query block</em> de características, por lo que solo se aplicarán si el navegador es compatible con la cuadrícula.
+        </p>
+        <p>
+          La regla <code>@supports</code> se puede utilizar para consultar todo tipo de funciones CSS. Utilice <code>@supports (display: flex)</code> para consultar la compatibilidad con <em translate="no">flexbox</em>, o <code>@supports (mix-blend-mode: overlay)</code> para consultar la compatibilidad con el modo de fusión (consulte el <b>capítulo 11</b> para obtener más información sobre los modos de fusión).
+        </p>
+        <p>
+          IE no es compatible con la regla <code>@supports</code>. Ese navegador ignora las reglas dentro del <em translate="no">query block</em> de funciones, independientemente de la compatibilidad real de las funciones. Por lo general, esto está bien, ya que querrá que el navegador anterior represente el diseño de respaldo.
+        </p>
+        <p>
+          Las consultas de características también se pueden construir de otras formas:
+        </p>
+        <ul>
+          <li><code>@supports not (&lt;declaration&gt;)</code>: solo se aplican reglas en el <span><em>query block</em></span> de funciones si la declaración consultada no es compatible</li>
+          <li><code>@supports (&lt;declaration&gt;) o (&lt;declaration&gt;)</code>: aplique las reglas si se admite alguna de las declaraciones consultadas</li>
+          <li><code>@supports (&lt;declaration&gt;) y (&lt;declaration&gt;)</code>: aplique las reglas solo si se admiten ambas declaraciones consultadas</li>
+        </ul>
+        <p>
+          Estos también se pueden combinar para consultar situaciones más complejas. La palabra clave <code>or</code> puede ser útil para realizar consultas de soporte utilizando propiedades con prefijo:
+        </p>
+        <pre>
+          <code class="container__base-code">
+@supports (display: grid) or (display: -ms-grid)
+          </code>
+        </pre>
+        <p>
+          Esta declaración se dirigirá a los navegadores que admitan la versión sin prefijo de la propiedad, así como a versiones anteriores de <em translate="no">MS Edge</em>, que requieren el prefijo <code>-ms-</code>. Advierto que el soporte de cuadrícula parcial en versiones anteriores de Edge no es tan robusto como los navegadores modernos. Lo más probable es que sea más problemático de lo que vale la pena intentar hacer que la consulta con el prefijo <code>@supports</code> funcione, y será mejor que la omita. Esto dejará que las versiones anteriores de Edge representen su diseño alternativo.
+        </p>
+      </section>
+      <section id="tema6">
+        <h2>6.6. ALINEACIÓN</h2>
+        <p>
+          El módulo de cuadrícula hace uso de varias de las mismas propiedades de alineación que usa <em translate="no">flexbox</em>, así como un par de nuevas. He cubierto la mayoría de estos en el capítulo anterior, pero veamos cómo se aplican a una cuadrícula. Si necesita más control sobre varios aspectos de un <em>diseño de cuadrícula</em>, estas propiedades pueden resultar útiles.
+        </p>
+        <p>
+          CSS proporciona tres propiedades de justificación: <code>justify-content, justify-items, justify -self</code>. Estas propiedades controlan la ubicación horizontal. Recuerdo esto al pensar en justificar el texto en un procesador de textos, que distribuye el texto horizontalmente.
+        </p>
+        <p>
+          Y hay tres propiedades de alineación: <code>align-content, align-items, align -self</code>. Estos controlan la ubicación vertical. Recuerdo esto al pensar en la propiedad de <code>vertical-align</code> de los diseños de tabla. Cada una de estas propiedades se ilustra en la <b>figura 6.20</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap6/20.jpg" alt="ibid">
+          <figcaption>Figura 6.20. Propiedades de alineación para una cuadrícula</figcaption>
+        </figure>
+        <p>
+          Puede utilizar <code>justify-content</code> y <code>align-content</code> para colocar las pistas de la cuadrícula horizontal y verticalmente dentro del contenedor de la cuadrícula. Esto se vuelve necesario si el tamaño total de la cuadrícula no llena el tamaño del contenedor. Considere este código:
+        </p>
+        <pre>
+          <code class="container__base-code">
+.grid {
+  display: grid;
+  height: 1200px;
+  grid-template-rows: repeat(4, 200px);
+}
+          </code>
+        </pre>
+        <p>
+          Establece explícitamente la altura de un contenedor de cuadrícula en <code>1,200px</code>, pero solo define <code>800px</code> de pistas de cuadrícula horizontales. La propiedad <code>align-content</code> especifica cómo distribuir los <code>400px</code> restantes de espacio. Los valores admitidos son los siguientes:
+        </p>
+        <ul>
+          <li><code>start</code>: coloca las pistas de la cuadrícula en la parte superior izquierda del contenedor de la cuadrícula  (use <code>flex-start</code> en un <em translate="no">flexbox</em>)</li>
+          <li><code>end</code>: coloca las pistas de la cuadrícula en la parte inferior derecha del contenedor de la cuadrícula (use <code>flex-end</code> en un <em translate="no">flexbox</em>)</li>
+          <li><code>center</code>: coloca las pistas de la cuadrícula en el medio del contenedor de la cuadrícula</li>
+          <li><code>stretch</code>: cambia el tamaño de las pistas para llenar el tamaño del contenedor de la cuadrícula</li>
+          <li><code>space-between</code>: distribuye uniformemente el espacio restante entre cada pista de la cuadrícula (anulando efectivamente cualquier espacio de la cuadrícula)</li>
+          <li><code>space-around</code>: distribuye el espacio entre cada pista de la cuadrícula, con un espacio de la mitad del tamaño en cada extremo</li>
+          <li><code>space-evenly</code>: distribuye el espacio entre cada pista de la cuadrícula, con la misma cantidad de espacio en cada extremo (no es compatible con <em translate="no">flexbox</em>)</li>
+        </ul>
+        <p>
+          Para obtener ejemplos detallados de todas estas propiedades de justificación y alineación, visite https://gridby-example.com/. Este es un excelente recurso. Es una gran colección de ejemplos de cuadrículas reunidos por Rachel Andrew, desarrolladora y miembro del W3C.
+        </p>
+        <p>
+          Debido a que hay mucho en el diseño de la cuadrícula, lo he guiado a través de los conceptos esenciales que necesitará saber. Te animo a experimentar más con las cuadrículas. Hay muchas más formas de mezclarlas y combinarlas de las que podría cubrir en un capítulo, así que desafíate a ti mismo para probar cosas nuevas. Cuando encuentre un diseño de página interesante en la web, vea si puede replicarlo usando cuadrículas.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Grid es excelente para un diseño de alto nivel de la página web (pero no se limita a eso).</li>
+          <li>Puede usar <em translate="no">grid</em> junto con <code>flexbox</code> para un sistema de diseño completo.</li>
+          <li>Debe usar cualquier sintaxis (líneas de cuadrícula numeradas, líneas de cuadrícula con nombre o áreas de cuadrícula con nombre) que sea más intuitiva para usted y de acuerdo a la situación dada.</li>
+          <li>Puede utilizar <em>auto-fill</em> / <em>auto-fit</em> y la <em translate="no">implicit grid</em> para diseños con un número grande o desconocido de elementos de cuadrícula.</li>
+          <li>Puede utilizar <em translate="no"><em>feature queries</em></em> para una mejora progresiva.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">El Diseño Web está aquí</a></li>
+        <li><a href="#sub1">- Construyendo una cuadrícula básica</a></li>
+        <li><a href="#tema2">Anatomía de un <span translate="no">GRID</span></a></li>
+        <li><a href="#sub2">- Numeración de líneas de cuadrícula</a></li>
+        <li><a href="#sub3">- Trabajando junto con <span translate="no">FLEXBOX</span></a></li>
+        <li><a href="#tema3">Sintaxis Alternativas</a></li>
+        <li><a href="#sub4">- Nombrar líneas de cuadrícula</a></li>
+        <li><a href="#sub5">- Nombrar áreas de la cuadrícula</a></li>
+        <li><a href="#tema4">Rejilla explícita e Implícita</a></li>
+        <li><a href="#sub6">- Añadiendo variedad</a></li>
+        <li><a href="#sub7">- Ajustar <span translate="no">GRID ITEMS</span> para llenar el <span translate="no">GRID TRACK</span></a></li>
+        <li><a href="#tema5"><span translate="no">FEATURE QUERIES</span></a></li>
+        <li><a href="#tema6">Alineación</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 11</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 11. Fondos, Sombras y Modos de Fusión</h1>
+      <div>
+        <a href="ch_10.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_12.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este Capítulo habla sobre:</em></h4>
+      <ul>
+        <li>Degradados lineales y radiales</li>
+        <li>Sombras de caja y sombras de texto</li>
+        <li>Tamaño y posicionamiento de imágenes de fondo</li>
+        <li>Usar modos de fusión para combinar fondos y contenido</li>
+      </ul>
+      <p>
+        Hemos cubierto mucho terreno en este punto. Ha profundizado su comprensión del funcionamiento fundamental de CSS. Ha aprendido varios aspectos del diseño. Y se ha tomado el tiempo para asegurarse de que su código esté organizado y se pueda mantener. Hemos cubierto los aspectos básicos necesarios para crear un sitio desde cero. Puede tomar este conocimiento, aplicarlo a sus proyectos y estar en bastante buena forma. Pero no te detengas ahí.
+      </p>
+      <p>
+        La diferencia entre un sitio que se ve bien y uno que se ve genial es la atención al detalle. Después de diseñar y diseñar un componente de su página, entrénese para reducir la velocidad y mirarlo con ojo crítico. ¿Se ve mejor si aumenta o disminuye los <code>paddings</code>? Ajuste un poco los colores: ¿se ven mejor un poco más oscuros o un poco más claros, o un poco menos vívidos? Si está trabajando a partir de una maqueta detallada del diseñador, ¿su implementación coincide con todo lo más fielmente posible? Su diseñador dedicó mucho tiempo a esos detalles. Asegúrese de hacer justicia al diseño.
+      </p>
+      <p>
+        Estos detalles son donde entra en juego la parte artística de CSS. Si eres como muchos desarrolladores, es posible que no te consideres un diseñador o un artista. Pero si está trabajando con CSS, deberá desempeñar el papel de uno de vez en cuando. Estas preocupaciones serán el enfoque principal en la <em>parte 4</em> de este libro.
+      </p>
+      <p>
+        Estos capítulos finales tratan sobre los detalles: cosas que puede hacer para agregar algo especial a la página. Te enseñaré algunos consejos de diseño, pero no te preocupes; no será todo arte subjetivo. Me centraré en reglas concretas. Te mostraré cómo utilizar el color, el espacio, la tipografía y la animación. Si se ha preguntado cómo hacer que su página parezca no solo funcional sino también visualmente atractiva, estos capítulos le brindarán las herramientas para hacerlo.
+      </p>
+      <p>
+        En este capítulo, le mostraré técnicas para agregar interés visual a la página. Considere el botón que se muestra en la figura 11.1, por ejemplo. Utiliza dos efectos que le dan la ilusión de profundidad: un degradado de fondo y una sombra paralela. El color de fondo cambia de un azul medio en la parte superior (color n. ° 57b) a uno más oscuro en la parte inferior (n. ° 148). Es posible que ni siquiera lo note conscientemente, pero esto, en combinación con la sombra a lo largo de los bordes inferior y derecho, agrega una ilusión de profundidad al botón.
+      </p>
+      <figure>
+        <img src="../img_css/cap11/01.jpg" alt="ibid">
+        <figcaption>Figura 11.1. Un botón con un fondo degradado y un efecto de sombra.</figcaption>
+      </figure>
+      <p>
+        Este capítulo cubre cómo funcionan los <em>degradados</em> y las <em>sombras paralelas</em> y analiza algunos usos prácticos para ellos. Luego, veremos un efecto divertido llamado <em>modos de fusión</em> que puede usar para combinar varias imágenes de fondo o colores de varias maneras.
+      </p>
+      <p>
+        A menudo, no necesitará agregar todas estas cosas a su página al mismo tiempo, por lo que en lugar de crear una página grande, crearemos varios ejemplos más pequeños. Esto le dará una serie de herramientas entre las que puede elegir en sus diversos proyectos.
+      </p>
+      <section id="tema1">
+        <h2>11.1. GRADIENTES</h2>
+        <p>
+          A medida que lo ha estado siguiendo, hemos utilizado fondos de colores sólidos y algunas imágenes de fondo en capítulos anteriores. Pero hay mucho más por explorar cuando se trata de la propiedad de fondo; de hecho, es una abreviatura de ocho propiedades:
+        </p>
+        <ul>
+          <li><code>background-image</code>: especifica una imagen de un archivo o un degradado de color generado.</li>
+          <li><code>background-position</code>: establece la posición inicial de la imagen de fondo.</li>
+          <li><code>background-size</code>: especifica el tamaño de la imagen de fondo dentro del elemento.</li>
+          <li><code>background-repeat</code>: determina si colocar la imagen en mosaico si es necesario para llenar todo el elemento.</li>
+          <li><code>background-origin</code>: determina si la posición del fondo es relativa al <code>border-box</code>, <code>padding-box</code> (valor inicial) o <code>content-box</code> del elemento.</li>
+          <li><code>background-clip</code>: especifica si el fondo debe llenar el <code>border-box</code> (valor inicial), el <code>padding-box</code> o el <code>content-box</code> del elemento.</li>
+          <li><code>background-attachment</code>: especifica si la imagen de fondo se desplazará hacia arriba y hacia abajo junto con el elemento (el valor inicial), o si la imagen se fijará en su lugar en la ventana gráfica. Tenga en cuenta que el uso del valor <code>fixed</code> puede tener implicaciones negativas en el rendimiento de la página.</li>
+          <li><code>background-color</code>: especifica un color de fondo sólido. Esto se renderizará detrás de cualquier imagen de fondo.</li>
+        </ul>
+        <p>
+          Exploraremos muchas de estas propiedades a lo largo del capítulo. Por ahora, tenga en cuenta que el uso de la propiedad abreviada (<code>background</code>) establecerá los valores que especifique y, al mismo tiempo, restablecerá todos los demás a su valor inicial. Por esta razón, tiendo a preferir el uso de propiedades individuales cuando estoy haciendo algo que requiera más de algunas de ellas.
+        </p>
+        <p>
+          La propiedad de <code>background-image</code> es particularmente interesante. Has visto que esto acepta una ruta a la URL de una imagen (<code>background-image: url (coffee-beans.jpg)</code> en el capítulo 8), pero también puede aceptar una <em>función de degradado</em>. Por ejemplo, puede definir un degradado que se mezcle de blanco a azul, como en la figura 11.2.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/02.jpg" alt="ibid">
+          <figcaption>Figura 11.2. Un degradado lineal de blanco a azul</figcaption>
+        </figure>
+        <p>
+          Los degradados son un efecto útil. Examinemos cómo funcionan antes de llegar a algunos ejemplos prácticos. Para probar degradados, cree una nueva página y hoja de estilo. Agregue el CSS que se muestra en la siguiente lista, que usa la función <code>linear-gradient()</code> para definir el degradado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.fade {
+  height: 200px;
+  width: 400px;
+  background-image: linear-gradient(to right, white, blue);        1
+}
+          </code>
+          <small>Listado 11.1. Un gradiente lineal básico</small>
+        </pre>
+        <ol class="index-code">
+          <li>Se desvanece a la derecha de blanco a azul</li>
+        </ol>
+        <p>
+          El degradado es una imagen de fondo, que por sí sola no afectará el tamaño del elemento. Para los propósitos de este ejemplo, he establecido una altura y un ancho explícitos en el elemento. El elemento está vacío, por lo que deberá forzarlo a que tenga cierta altura para poder ver el degradado.
+        </p>
+        <p>
+          La función <code>linear-gradient</code> tiene tres parámetros que definen su comportamiento: ángulo, color inicial y color final. El ángulo aquí es hacia la derecha (<code>to right</code>), lo que significa que el degradado comienza en el borde izquierdo del elemento (donde es blanco) y se fusiona uniformemente con el borde derecho (donde es azul). También puede utilizar otras sintaxis de color, como hexadecimal (<code># 0000ff&</code>), <code>RGB(rgb (0, 0, 255))</code> o la palabra clave <code>transparent</code>. Agregue el elemento de este listado para ver el degradado en la página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="fade"&gt;&lt;/div&gt;
+          </code>
+          <small>Listado 11.2. Elemento con un degradado de fondo</small>
+        </pre>
+        <p>
+          Puede especificar el ángulo del degradado de varias formas. En este ejemplo, solía usar <code>to right</code>, pero también puede usar <code>to top</code> o <code>to bottom</code>. Incluso puede especificar una esquina como en la parte <code>to bottom right</code>; en cuyo caso, el degradado comenzará en la esquina superior izquierda del elemento y se fusionará con la esquina inferior derecha.
+        </p>
+        <p>
+          Para un control más preciso del ángulo, puede utilizar unidades más específicas, como grados. El valor <code>0deg</code> apunta hacia arriba (equivalente a <code>to top</code>); los valores más altos se mueven en el sentido de las agujas del reloj alrededor del círculo, por lo que <code>90deg</code> apuntan a la derecha, <code>180deg</code> apuntan hacia abajo, <code>360deg</code> apuntan hacia arriba nuevamente. Por tanto, esto es equivalente al ejemplo anterior.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.fade {
+  height: 200px;
+  width: 400px;
+  background-image: linear-gradient(90deg, white, blue);            1
+}
+          </code>
+          <small>Listado 11.3. Gradiente usando unidades de grado (<span translate="no">deg</span>)</small>
+        </pre>
+        <ol class="index-code">
+          <li>Valor de 90 grados es equivalente al valor de la derecha</li>
+        </ol>
+        <p>
+          Los grados son la unidad más común, pero hay algunas otras que puede usar para indicar el ángulo:
+        </p>
+        <ul>
+          <li><code>rad</code>: indica radianes. Un círculo completo es 2π, o aproximadamente 6.2832 radianes.</li>
+          <li><code>turn</code>: indica el número de giros completos alrededor del círculo. Un giro equivale a 360 grados (<code>360deg</code>). Utilice valores decimales para representar menos de una vuelta completa: <code>0.25turn</code>, por ejemplo, es igual a 90 grados.</li>
+          <li><code>grad</code>: indica gradianes. Un círculo completo son 400 gradianes (<code>400grad</code>) y <code>100grad</code> equivalen a 90 grados.</li>
+        </ul>
+        <p>
+          Continúe y experimente con varios valores en el gradiente para ver cómo lo afectan.
+        </p>
+        <h3 id="sub1">11.1.1. Usar múltiples <span translate="no">color stops</span></h3>
+        <p>
+          La mayoría de las veces, sus degradados tendrán dos colores, pasando de un color a otro. Sin embargo, puede definir un degradado con varios colores, cada uno de los cuales se denomina <em translate="no">color stop</em>. La figura 11.3 muestra un degradado con tres <em translate="no">color stops</em> (rojo, blanco y luego azul).
+        </p>
+        <figure>
+          <img src="../img_css/cap11/03.jpg" alt="ibid">
+          <figcaption>Figura 11.3. Degradado con tres <span translate="no">color stops</span> (rojo a blanco a azul)</figcaption>
+        </figure>
+        <p>
+          Puede insertar más paradas de color agregando más colores a la función <code>linear-gradient()</code>. Para ver este degradado en su página, actualice su hoja de estilo para que coincida con la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.fade {
+  height: 200px;
+  width: 400px;
+  background-image: linear-gradient(90deg, red, white, blue);          1
+}
+          </code>
+          <small>Listado 11.4. Degradado lineal con múltiples <span>color stops</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Especifica múltiples <span translate="no">color stops</span></li>
+        </ol>
+        <p>
+          Un degradado puede aceptar cualquier número de <em translate="no">color stops</em>, cada una separada por una coma. Los distribuirá automáticamente de manera uniforme. En este ejemplo, el degradado se desvanece de rojo en el borde izquierdo <code>(0%)</code> a blanco en el centro <code>(50%)</code> a azul en el borde derecho <code>(100%)</code>. También puede establecer explícitamente la posición de estas paradas de color en la función de degradado. El gradiente en el listado 11.4 es equivalente a este:
+        </p>
+        <pre>
+          <code class="container__base-code">
+linear-gradient(90deg, red 0%, white 50%, blue 100%)
+          </code>
+        </pre>
+        <p>
+          Como puede imaginar en este ejemplo, puede ajustar la posición de las paradas de color como desee; no es necesario que estén espaciados uniformemente. Tampoco es necesario medirlos en porcentajes. Los píxeles, ems y otras unidades de longitud son perfectamente válidos.
+        </p>
+        <p>
+          Si coloca dos paradas de color en la misma posición, el color del degradado cambiará instantáneamente de uno a otro, en lugar de una transición suave. La figura 11.4 muestra un degradado que comienza en rojo, cambia inmediatamente a blanco y luego cambia inmediatamente a azul. Esto crea la apariencia de rayas.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/04.jpg" alt="ibid">
+          <figcaption>Figura 11.4. Degradado utilizado para crear rayas colocando dos <span translate="no">color stops</span> en los mismos puntos</figcaption>
+        </figure>
+        <p>
+          El código del degradado se muestra aquí. Observe que este degradado tiene cuatro <em translate="no">color stops</em>, dos de las cuales son blancas.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.fade {
+  height: 200px;
+  width: 400px;
+  background-image: linear-gradient(90deg,
+    red 40%, white 40%,                           1
+    white 60%, blue 60%);                         1
+}
+          </code>
+          <small>Listado 11.5. Colocar dos <span translate="no">color stops</span> en los mismos puntos para crear rayas.</small>
+        </pre>
+        <ol class="index-code">
+          <li>El color se detiene en los mismos puntos</li>
+        </ol>
+        <p>
+          La primera <em translate="no">color stop</em> es rojo al 40%, por lo que el degradado es rojo sólido desde el borde izquierdo hasta el 40%. La siguiente <em translate="no">color stop</em> es el blanco, también al 40%, por lo que el degradado hace un cambio brusco a blanco. A esto le sigue otra de color blanco al 60%, por lo que el degradado es blanco puro del 40% al 60%. Luego, la final, también al 60%, es azul. Esto hace un cambio brusco a azul, luego permanece azul hasta el borde derecho.
+        </p>
+        <p>
+          Aunque el ejemplo anterior es un poco artificial, la técnica se puede utilizar para obtener algunos efectos interesantes. En particular, se puede utilizar con una función de gradiente ligeramente diferente, <code>repeating-linear-gradient()</code>. Esto funciona como la función <code>linear-gradient</code>, excepto que el patrón se repite. Esto se puede utilizar para producir rayas similares a un palo de barbero, que se ve bien en las barras de progreso (figura 11.56).
+        </p>
+        <figure>
+          <img src="../img_css/cap11/05.jpg" alt="ibid">
+          <figcaption>Figura 11.5. Un degradado lineal repetido para una barra rayada</figcaption>
+        </figure>
+        <p>
+          Con gradientes repetidos, es mejor usar una longitud específica en lugar de un porcentaje, porque los valores especificados determinan el tamaño del patrón a repetir. El código de la barra rayada se muestra a continuación. Actualice su hoja de estilo para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.fade {
+  height: 1em;
+  width: 400px;
+  background-image: repeating-linear-gradient(-45deg,      1
+    #57b, #57b 10px, #148 10px, #148 20px);                1
+  border-radius: 0.3em;
+}
+          </code>
+          <small>Listado 11.6. Crear una barra con rayas diagonales</small>
+        </pre>
+        <ol class="index-code">
+          <li>Rayas alternando entre azul claro y oscuro</li>
+        </ol>
+        <p>
+          En lugar de codificar todo un degradado desde cero, a veces me resulta más fácil comenzar con un ejemplo funcional y modificarlo para satisfacer mis necesidades. Puede encontrar más ejemplos en https://css-tricks.com/stripes-css/.
+        </p>
+        <h3 id="sub2">11.1.2. Usar degradados radiales</h3>
+        <p>
+          Otro tipo de degradado es un degradado radial. En lugar de comenzar en un extremo del elemento y continuar hacia el otro extremo en una dirección lineal, los gradientes radiales comienzan en un solo punto y avanzan hacia afuera en todas las direcciones. En la figura 11.6 se muestra un ejemplo básico.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/06.jpg" alt="ibid">
+          <figcaption>Figura 11.6. Un degradado radial de blanco a azul.</figcaption>
+        </figure>
+        <p>
+          Edite su hoja de estilo para que coincida con el código de degradado radial en este listado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.fade {
+  height: 200px;
+  width: 400px;
+  background-image: radial-gradient(white, blue);            1
+}
+          </code>
+          <small>Listado 11.7. Un degradado radial básico</small>
+        </pre>
+        <ol class="index-code">
+          <li>1 Fusiona desde un centro blanco a bordes azules</li>
+        </ol>
+        <p>
+          De forma predeterminada, el degradado se centra en el elemento y realiza una transición uniforme a sus esquinas. Tiene forma elíptica, que coincide con las proporciones del elemento (es decir, más ancha para elementos anchos, más alta para elementos altos).
+        </p>
+        <p>
+          Los degradados radiales admiten paradas de color, al igual que los degradados lineales. Puede proporcionar varias paradas o definir explícitamente su posición dentro del gradiente utilizando porcentajes o unidades de longitud. También puede hacer que el degradado radial sea un círculo en lugar de una elipse, o puede especificar dónde debe centrarse el degradado. Una función <code>repeating-radial-gradient()</code> repite el patrón en anillos concéntricos.
+        </p>
+        <p>
+          La mayoría de estas funciones se explican mejor con un ejemplo, por lo que he incluido varias con el código correspondiente en la figura 11.7. Te animo a que pruebes estos en tu página o que experimentes creando la tuya propia.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/07.jpg" alt="ibid">
+          <figcaption>Figura 11.7. Ejemplos de gradientes radiales</figcaption>
+        </figure>
+        <p>
+          En el mundo real, rara vez necesito hacer algo complejo con un degradado radial, ya que la forma más básica tiende a satisfacer mis necesidades. Si desea profundizar en cómo funciona esto, visite la documentación de MDN en https://developer.mozilla.org/en-US/docs/Web/CSS/radial-gradient.
+        </p>
+        <p>
+          La mayoría de los ejemplos hasta ahora utilizan colores marcadamente contrastantes. He hecho esto para enfatizar el efecto de los degradados para que su comportamiento sea claro. Pero en proyectos reales, generalmente será mejor usar colores con mucho menos contraste.
+        </p>
+        <p>
+          En lugar de desvanecerse de blanco a negro, pasa de blanco a gris claro. O se desvanecen entre dos tonos de azul similares. Esto será mucho menos molesto para el usuario. En algunos casos, es posible que ni siquiera noten el degradado, pero aun así aplicará una profundidad sutil a la página. Les mostraré un ejemplo del mundo real de esto en un momento, pero primero, veamos las sombras.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>11.2 SOMBRAS</h2>
+        <p>
+          Otro efecto que puede agregar una profundidad percibida a la página es una sombra. Dos propiedades que crean sombras son <code>box-shadow</code>, que crea una sombra de la forma del cuadro de un elemento, y <code>text-shadow</code>, que crea una sombra del texto renderizado. Hemos utilizado <code>box-shadow</code> una o dos veces en capítulos anteriores, pero echemos un vistazo más de cerca a cómo funciona.
+        </p>
+        <p>
+          La declaración <code>box-shadow: 1em 1em black</code> produce una sombra como la que se muestra en la figura 11.8. Los valores de <code>1em</code> son las compensaciones: cuánto se desplazará la sombra desde la posición del elemento (horizontal, luego vertical). Si tienen un valor de 0, la sombra estará directamente detrás del elemento. El valor negro especifica el color de la sombra.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/08.jpg" alt="ibid">
+          <figcaption>Figura 11.8. Una caja de sombra simple</figcaption>
+        </figure>
+        <p>
+          La sombra tiene por defecto el tamaño y las dimensiones exactas del elemento. También tiene esquinas redondeadas, que coinciden con cualquier radio de borde que haya aplicado el elemento. Los valores: desplazamiento horizontal (x), desplazamiento vertical (y6#41; y color siempre deben especificarse para la sombra. Opcionalmente se pueden agregar otros dos valores: un radio de desenfoque y un radio de dispersión. La sintaxis completa se muestra en la figura 11.9.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/09.jpg" alt="ibid">
+          <figcaption>Figura 11.9. Sintaxis de la sombra de caja</figcaption>
+        </figure>
+        <p>
+          El radio de desenfoque controla cuánto se desenfocarán los bordes de la sombra. Esto le dará un borde más suave y ligeramente transparente. El radio de extensión controla el tamaño de la sombra. Un radio de propagación positivo hace que la sombra sea más grande en todas las direcciones; un valor negativo hace que la sombra sea más pequeña.
+        </p>
+        <h3 id="sub3">11.2.1. Definición de profundidad con degradados y sombras</h3>
+        <p>
+          Usemos degradados y sombras para construir un botón como se muestra en la figura 11.10. Un degradado de arriba a abajo le da una apariencia curvada en 3-D. La sombra realza este efecto. En este ejemplo, también utilizará la pseudoclase <code>:active</code> para crear un tipo alternativo de sombreado cuando se presiona el botón.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/10.jpg" alt="ibid">
+          <figcaption>Figura 11.10. Un botón con degradado y sombra. El estilo activo (en el que se hace clic) se muestra a la derecha.</figcaption>
+        </figure>
+        <p>
+          El gradiente aquí es sutil. Es posible que no lo note de inmediato, pero le da al botón una apariencia ligeramente redondeada. La sombra tiene algo de desenfoque, lo que la hace parecer más natural. Cuando se hace clic en el botón, la sombra se elimina y, en su lugar, aparece una sombra insertada dentro de los bordes del botón. Esto le da la ilusión de estar deprimido, como si el usuario lo presionara físicamente en la página. Al soltar el botón del mouse, el botón vuelve a su estado original. Esto se hace usando el estado <code>:active</code> del botón.
+        </p>
+        <p>
+          Inicie una nueva página y una nueva hoja de estilo para este botón. Agregue el marcado del botón.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;button class="button"&gt;Sign up now&lt;/button&gt;
+          </code>
+          <small>Listado 11.8. Marcado de botón</small>
+        </pre>
+        <p>
+          A continuación, agregue los estilos de la siguiente lista. Estos anulan los estilos del agente de usuario para el tamaño de fuente y el borde, así como también aplican un tamaño básico y un fondo degradado con una sombra de cuadro.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.button {
+  padding: 1em;
+  border: 0;
+  font-size: 0.8rem;
+  color: white;
+  border-radius: 0.5em;
+  background-image: linear-gradient(to bottom, #57b, #148);       1
+  box-shadow: 0.1em 0.1em 0.5em #124;                             2
+}
+
+.button:active {
+  box-shadow: inset 0 0 0.5em #124,                               3
+              inset 0 0.5em 1em rgba(0,0,0,0.4);                  3
+}
+          </code>
+          <small>Listado 11.9. Estilos de botones con degradado y sombra</small>
+        </pre>
+        <ol class="index-code">
+          <li>Gradiente de azul claro a azul medio</li>
+          <li>Sombra azul oscuro con un desenfoque de 0,5 em</li>
+          <li>Dos sombras de recuadro insertadas</li>
+        </ol>
+        <p>
+          La <code>background-image</code> es un degradado entre dos colores similares de azul. La sombra del cuadro no se desplaza mucho, solo <code>0,1em</code> hacia la derecha y hacia abajo, con un desenfoque moderado de <code>0,5em</code>. Cuanto mayor es el desplazamiento de una sombra, más "levanta" la imagen de la página, haciendo que la imagen parezca más profunda. En el estado activo, la sombra del cuadro cambia.
+        </p>
+        <p>
+          He hecho dos cosas nuevas aquí. En lugar de una sombra de cuadro normal, agregué la palabra clave <code>inset</code>. Esto hace que la sombra aparezca dentro del borde del elemento, en lugar de afuera. También agregué más de una definición de sombra, separándolas con una coma. De esta forma se pueden agregar varias sombras.
+        </p>
+        <p>
+          La primera sombra insertada (<code>inset 0 0 0.5em # 124</code>) tiene compensaciones de cero y un ligero desenfoque. Esto agrega un anillo de sombra dentro de los bordes del elemento. El segundo (<code>recuadro 0 0.5em 1em rgba (0,0,0,0,4)</code>) tiene un poco de desplazamiento vertical, lo que hace que la sombra sea más frecuente en la parte superior del botón. La definición de color RGBA define un negro semitransparente. Te animo a que experimentes con estos valores para ver cómo afectan el renderizado final.
+        </p>
+        <p>
+          En Chrome, notará un brillo azul claro alrededor del botón cuando haga clic en él. Este es un esquema aplicado por el agente de usuario en el estado <code>:focus</code>. Puede eliminar esto con <code>.button:focus {outline: none; }</code>. Sugiero que cada vez que lo elimine, lo reemplace con otra cosa, de modo que el estado de enfoque aún sea visible para un usuario que navega a través de un teclado.
+        </p>
+        <p>
+          Este tipo de diseño se utilizó ampliamente durante varios años: elementos en pantalla hechos para parecerse a sus contrapartes del mundo real (un enfoque conocido como <em>esqueuomorfismo</em>). En el mundo real, los objetos no tienen colores perfectamente planos. Incluso en superficies lisas, la luz se refleja en el objeto de varias formas, produciendo luces y sombras.
+        </p>
+        <p>
+          Al darle a un botón una apariencia redondeada y una sombra de caja, se parece más a un objeto físico. Otros elementos <em>esqueomórficos</em> incluyen bordes cosidos e imágenes con textura similar al cuero. Entre 2010 y 2013, este tipo de diseño dio paso a una nueva tendencia llamada <em>diseño plano</em>.
+        </p>
+        <h3 id="sub4">11.2.2. Creando elementos con un diseño plano</h3>
+        <p>
+          Donde el diseño <em>esqueomórfico</em> busca emular el mundo físico, el diseño plano abraza la naturaleza digital del mundo moderno. Destaca colores vivos, uniformes y una apariencia más simple. Esto significa menos degradados, sombras y esquinas redondeadas. Irónicamente, esta tendencia surgió solo después de que estos efectos tan esperados llegaron a CSS. (Antes, las sombras y los degradados debían crearse mediante imágenes).
+        </p>
+        <p>
+          Sin embargo, el diseño plano no significa necesariamente que no se utilice ninguno de estos efectos. En cambio, se utilizan sutilmente. En lugar de un degradado de azul claro a azul medio, por ejemplo, puede haber un degradado de un azul a otro, que es casi indistinguible. O quizás un elemento tiene solo una sombra tenue. Puede que no tenga ambos al mismo tiempo.
+        </p>
+        <p>
+          Convirtamos nuestro botón en uno con un diseño plano. Este nuevo botón se muestra en la <b>figura 11.11</b>. No parece algo del mundo físico, aunque tiene una ligera sombra debajo.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/11.jpg" alt="ibid">
+          <figcaption>Figura 11.11. Botón con apariencia plana</figcaption>
+        </figure>
+        <p>
+          Los estilos para esto se muestran a continuación, junto con los estados activos y de desplazamiento. Cambie su CSS para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.button {
+  padding: 1em;
+  border: 0;
+  color: white;
+  background-color: #57b;                           1
+  font-size: 1rem;
+  padding: 0.8em;
+  box-shadow: 0 0.2em 0.2em rgba(0, 0, 0, 0.15);    2
+}
+.button:hover {
+  background-color: #456ab6;                        3
+}
+.button:active {
+  background-color: #148;                           3
+}
+          </code>
+          <small>Listado 11.10. Un botón plano con estado activo y flotante</small>
+        </pre>
+        <ol class="index-code">
+          <li>Color de fondo sólido (sin degradado)</li>
+          <li>Sombra muy sutil</li>
+          <li>Estados activos y de desplazamiento ligeramente más oscuros</li>
+        </ol>
+        <p>
+          La sombra del cuadro aquí tiene algunos cambios. Solo tiene un desplazamiento vertical, por lo que la sombra es recta hacia abajo en lugar de un ángulo de aspecto más natural. También usé un color RGBA con valores de cero en rojo, verde y azul (produciendo negro) y un valor alfa de 0.15 (casi completamente transparente). Los estados estacionario y activo también son planos en apariencia. Estos estados cambian el color de fondo a tonos de azul ligeramente más oscuros. También aumenté el tamaño de la fuente, que es otra tendencia que surgió junto con el diseño plano.
+        </p>
+        <h3 id="sub5">11.2.3. Creando botones con un aspecto más moderno</h3>
+        <p>
+          El diseño plano sigue siendo popular, pero está evolucionando. Un enfoque común es volver al medio entre el diseño plano y el <em>esqueuomorfismo</em>. Rehagamos nuestro botón una última vez para que coincida con la <b>figura 11.12</b>. Este diseño utilizará elementos de ambos estilos de diseño.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/12.jpg" alt="ibid">
+          <figcaption>Figura 11.12. Un tipo diferente de botón plano (el estado activo se muestra a la derecha)</figcaption>
+        </figure>
+        <p>
+          Este sigue siendo un diseño mínimo, pero tiene un borde grueso en la parte inferior, lo que le da una apariencia muy parecida a la parte frontal de un objeto en forma de cubo 3-D. De hecho, esta línea oscura no es un <code>border</code> en absoluto, sino más bien un <code>border-shadow</code> sin desenfoque, lo que permite que los bordes curvos reflejen el radio del borde.
+        </p>
+        <p>
+          En el estado activo, el botón se desplaza hacia abajo unos pocos píxeles. Esto produce la ilusión de que se mueve hacia la página cuando se presiona. Actualice su hoja de estilo para que coincida con los estilos de esta versión.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.button {
+  padding: 0.8em;
+  border: 0;
+  font-size: 1rem;
+  color: white;
+  border-radius: 0.5em;                 1
+  background-color: #57b;
+  box-shadow: 0 0.4em #148;             2
+  text-shadow: 1px 1px #148;            3
+}
+.button:active {
+  background-color: #456ab5;
+  transform: translateY(0.1em);         4
+  box-shadow: 0 0.3em #148;             5
+}
+          </code>
+          <small>Listado 11.11. Estilos de botones modernos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Vuelve a agregar las esquinas redondeadas</li>
+          <li>Pone una sombra sólida debajo del botón (sin desenfoque)</li>
+          <li>Agrega una sombra de texto sutil</li>
+          <li>Mueve el botón hacia abajo cuando se hace clic</li>
+          <li>Reduce el tamaño de la sombra para compensar la transformación.</li>
+        </ol>
+        <p>
+          Este botón usa <code>box-shadow</code> de una manera diferente. En lugar de agregar un desenfoque y replicar una sombra, he mantenido los bordes de la sombra nítidos. Esto produce un efecto similar a un borde inferior grueso. Sin embargo, es un poco diferente de un borde porque tiene esquinas curvas que coinciden con el radio del borde del elemento.
+        </p>
+        <p>
+          También agregué una sombra de texto. Esto se comporta como una sombra de cuadro, excepto que proyecta una sombra del texto renderizado en lugar del cuadro del elemento. Su sintaxis es casi idéntica: desplazamiento x, desplazamiento y, radio de desenfoque (opcional) y un color. Pero no es compatible con la palabra clave <code>inset</code> ni con un valor de radio de distribución. Aquí he proyectado una sombra azul oscuro del texto, compensada por solo <code>1px</code> en cada dirección.
+        </p>
+        <p>
+          En el estado activo, he hecho algo nuevo que es nuevo. Usé la propiedad <code>transform</code> con una función <code>translateY()</code>. Esto desplaza el elemento hacia abajo <code>0.1em</code> en la pantalla. (Desvelaré esto un poco más cuando analicemos en profundidad las transformaciones en el <b>capítulo 15</b>). Luego reduje el desplazamiento vertical de la sombra del cuadro en la misma cantidad (0,3em en lugar de 0,4em). Cuando presiona el botón, el botón se mueve, pero la sombra del cuadro no. Haga clic en el botón para ver este efecto.
+        </p>
+        <p>
+          Los degradados y las sombras se pueden utilizar de muchas formas. A medida que pase el tiempo, surgirán nuevas tendencias de diseño. Más adelante, cuando vea un nuevo diseño en un sitio web, tómese unos minutos para inspeccionarlo en su navegador y aprender cómo se implementa. Y no tenga miedo de experimentar.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>11.3. MODOS DE MEZCLA</h2>
+        <p>
+          La mayoría de las veces, un elemento tendrá solo una imagen de fondo, ya sea una imagen real o un degradado. Pero hay casos en los que es posible que desee dos o más fondos. CSS permite esto.
+        </p>
+        <p>
+          La propiedad <code>background-image</code> acepta cualquier número de valores, cada uno separado por una coma:
+        </p>
+        <pre>
+          <code class="container__base-code">
+background-image: url(bear.jpg), linear-gradient(to bottom, #57b, #148);
+          </code>
+        </pre>
+        <p>
+          Cuando aplica varias imágenes de fondo, las que se enumeran primero se renderizan frente a las que se enumeran a continuación. En este ejemplo, <em>bear.jpg</em> cubrirá el degradado lineal. El gradiente no será visible. Pero si ha agregado dos imágenes, es probable que desee que se muestre la segunda imagen. Puede hacer esto usando un <em>modo de mezcla</em>.
+        </p>
+        <p>
+          Si está familiarizado con el software de edición de fotografías, es posible que haya visto <em>modos de fusión</em>. Controlan la forma en que las imágenes apiladas se combinan. Tienen nombres enigmáticos como pantalla, quemado de color y luz dura. Como ejemplo, la <b>figura 11.13</b> muestra dos fondos combinados con el modo de mezcla múltiple. Ambos fondos usan la misma imagen, colocada de manera diferente.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/13.jpg" alt="ibid">
+          <figcaption>Figura 11.13. Dos fondos combinados con el modo de mezcla múltiple</figcaption>
+        </figure>
+        <p>
+          Esto produce un efecto interesante, donde ambas copias de la imagen siguen siendo claramente visibles, incluso si se superponen. Sin embargo, no se desvanece ni se desvanece el color como lo hace la transparencia simple.
+        </p>
+        <p>
+          Si una imagen de fondo tiene algo de transparencia, otros fondos detrás de ella se mostrarán a través de las áreas transparentes, incluso sin el uso de <em>modos de fusión</em>. Puede lograr esto con un <em>png</em> o <em>gif</em> transparente, o con un degradado que use la palabra clave <code>transparent</code> como uno de sus colores.
+        </p>
+        <p>
+          Creemos un elemento con dos fondos y combinémoslos para que coincidan con la <b>figura 11.3</b>. En una nueva página, agregue el elemento que se muestra a continuación. Volverá a utilizar este marcado para los siguientes ejemplos.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="blend">&lt;/div>
+          </code>
+          <small>Listado 11.12. Un div para mezclar fondos</small>
+        </pre>
+        <p>
+          Utilizará un elemento vacío por ahora para ilustrar el efecto. A continuación, agregue el código de la siguiente lista a una hoja de estilo y vincúlelo a la página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.blend {
+    min-height: 400px;
+    background-image: url(images/bear.jpg), url(images/bear.jpg);     1
+    background-size: cover;                                           2
+    background-repeat: no-repeat;                                     2
+    background-position: -30vw, 30vw;                                 3
+    background-blend-mode: multiply;                                  4
+}
+          </code>
+          <small>Listado 11.13. Mezcla de dos imágenes de fondo</small>
+        </pre>
+        <ol class="index-code">
+          <li>Una coma separa dos imágenes de fondo.</li>
+          <li>Especifica un valor para aplicar a ambas imágenes de fondo</li>
+          <li>Aplica diferentes posiciones de fondo a cada imagen</li>
+          <li>Aplica el modo de fusión</li>
+        </ol>
+        <p>
+          La mayoría de estas propiedades de fondo pueden aceptar varios valores, separados por una coma. <code>background-position</code> tiene dos de esos valores. El primero se aplicará a la primera imagen, el segundo a la segunda imagen. Las propiedades <code>background-size</code> y <code>background-repeat</code> también aceptan varios valores, pero al especificar solo uno, ese valor se aplica a ambas imágenes de fondo. La propiedad <code>min-height</code> se incluye para garantizar que el elemento no colapse a una altura de cero (porque está vacío).
+        </p>
+        <p>
+          La propiedad <code>background-size</code> acepta dos valores de palabras clave especiales, <code>cover</code> y <code>contain</code>. El uso de <code>cover</code> cambia el tamaño de la imagen de fondo para que ocupe todo el elemento; esto puede provocar que los bordes de la imagen se recorten. El uso de <code>contain</code> asegura que toda la imagen sea visible, aunque esto puede resultar en que parte del elemento no esté cubierto por el fondo (un efecto de "formato de pantalla ancha"). Esta propiedad también acepta valores de longitud para establecer explícitamente la altura y el ancho del elemento.
+        </p>
+        <p>
+          Intente cambiar el <em>modo de fusión</em> a otros valores como <code>color-burn</code> o <code>difference</code> para ver los tipos de efecto que pueden tener. Puede ser divertido jugar con esto, pero es posible que se pregunte cuáles son las aplicaciones prácticas. A continuación, presentamos algunos usos:
+        </p>
+        <ul>
+          <li>Tiñe una imagen con un solo color o degradado</li>
+          <li>Aplicar textura a una imagen, como un carrete de película rayado o granulado.</li>
+          <li>Aclare, oscurezca o reduzca el contraste de una imagen para que el texto que tiene delante sea más legible</li>
+          <li>Superponga un banner de texto mientras permite que la imagen se muestre</li>
+        </ul>
+        <p>
+          Veamos algunos ejemplos de estos. Luego, le daré un breve desglose de todos los modos de fusión disponibles.
+        </p>
+        <h3 id="sub6">11.3.1. Teñir una imagen</h3>
+        <p>
+          Puede utilizar un modo de fusión para tomar una imagen a todo color y teñirla con un solo tono. Para ilustrar, tomará la imagen del oso y la coloreará de azul, como en la <b>figura 11.14</b>. (Tenga en cuenta que si está leyendo esto en la edición impresa, la figura no está impresa en color. Consulte el libro electrónico o siga el ejemplo en su navegador para ver el efecto completo).
+        </p>
+        <figure>
+          <img src="../img_css/cap11/14.jpg" alt="ibid">
+          <figcaption>Figura 11.14. Imagen coloreada con un tono azul uniforme</figcaption>
+        </figure>
+        <p>
+          Un <code>background-blend-mode</code> fusiona no solo varias imágenes de fondo, sino también el <code>background-color</code>. Estas capas apiladas luego se combinan mediante el modo de fusión, por lo que puede establecer un color de fondo con el tono deseado y mezclarlo con la imagen. Para hacer esto, actualice su CSS para que coincida con este listado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.blend {
+    min-height: 400px;
+    background-image: url("images/bear.jpg");
+    background-color: #148;                     1
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: luminosity;          2
+}
+          </code>
+          <small>Listado 11.14. Combinar una imagen de fondo con el tono del color de fondo</small>
+        </pre>
+        <ol class="index-code">
+          <li>Color de fondo azul</li>
+          <li>Utiliza el modo de mezcla de luminosidad</li>
+        </ol>
+        <p>
+          El modo de fusión de luminosidad toma la luminosidad de la capa frontal (la imagen del oso) y la combina con el tono y la saturación de la capa posterior (el color de fondo azul). En otras palabras, el resultado combinado tiene todo el color del color de fondo, pero el brillo y el contraste de la imagen.
+        </p>
+        <p>
+          Es importante saber que este modo de fusión (y varios otros) se comportan de manera diferente, según la imagen que esté frente a la otra. En estos casos, el color de fondo es la capa más alejada con las imágenes apiladas delante.
+        </p>
+        <p>
+          Si, por ejemplo, colocara una capa azul delante de la imagen del oso en lugar de detrás (usando un degradado en lugar de un color de fondo), el resultado sería diferente. En ese caso, el modo de combinación de colores sería necesario para lograr el mismo resultado: el modo de combinación de colores es efectivamente un inverso de la luminosidad, tomando el tono y la saturación de la capa frontal, mientras que la luminosidad se toma de la parte posterior.
+        </p>
+        <h3 id="sub7">11.3.2. Comprender los tipos de modo de fusión</h3>
+        <p>
+          CSS admite 15 modos de mezcla. Cada uno usa una fórmula matemática diferente para controlar cómo se mezclan las imágenes. Para cada píxel, el color de una capa se combina con el color correspondiente en la otra, lo que da como resultado un nuevo color de píxel para la imagen compuesta.
+        </p>
+        <p>
+          Los modos de mezcla se muestran en la <b>tabla 11.1</b>. Cada uno de ellos se divide en uno de los cinco tipos: oscurecimiento, aclarado, contraste, composición o comparación. Algunos son más útiles en la práctica que otros. Elegir el correcto a menudo implica un poco de prueba y error.
+        </p>
+        <p>
+          En el momento de redactar este artículo, la mayoría de los modos de combinación son compatibles con la mayoría de los principales navegadores, con la excepción de IE y Edge. Los modos de mezcla compuestos tampoco son compatibles con Safari. Utilice consultas de funciones y proporcione comportamientos alternativos cuando sea necesario (consulte el capítulo 6, sección 6.5). Consulte https://caniuse.com/#feat=css-backgroundblendmode para obtener detalles de soporte actualizados.
+        </p>
+        <h3 id="sub8">11.3.3. Agregar textura a una imagen</h3>
+        <p>
+          Otra aplicación de los modos de fusión es agregar textura a una imagen. Es posible que tenga una imagen clara y moderna, pero a veces desea que se vea de manera diferente por razones de estilo. Puede usar una imagen en escala de grises para agregar artificialmente granulado de película o alguna otra textura a la imagen.
+        </p>
+        <p>
+          Considere la imagen que se muestra en la <b>figura 11.15</b>. Esta es la misma imagen de oso de antes, pero se ha combinado con una imagen texturizada para darle la apariencia de un lienzo tosco. Este tipo de efecto se puede lograr con uno de los modos de mezcla de contraste: <code>overlay</code>, <code>hard-light</code> o <code>soft-light</code>. En este caso, no quería alterar el tono de la imagen, así que utilicé una imagen en escala de grises para proporcionar la textura. De esta manera, el color del original aún se ve.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/15.jpg" alt="ibid">
+          <figcaption>Figura 11.15. Imagen con textura mezclada</figcaption>
+        </figure>
+        <p>
+          El código para esta superposición texturizada se muestra en la siguiente lista. La imagen de textura se coloca en mosaico para un patrón repetitivo y se coloca en capas sobre la parte superior de la imagen del oso. Cambie su hoja de estilo para que coincida con este listado para ver este efecto en su navegador.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.blend {
+  min-height: 400px;
+  background-image: url("images/scratches.png"), url("images/bear.jpg");   1
+  background-size: 200px, cover;                                           2
+  background-repeat: repeat, no-repeat;                                    2
+  background-position: center center;
+  background-blend-mode: soft-light;                                       3
+}
+          </code>
+          <small>Listado 11.15. Usar luz dura para agregar textura a la imagen</small>
+        </pre>
+        <ol class="index-code">
+          <li>Coloca la textura en capas frente a la imagen principal</li>
+          <li>Coloca la imagen de textura en mosaico cada 200 px</li>
+          <li>Mezclas con luz suave</li>
+        </ol>
+        <p>
+          El tamaño de fondo de la imagen de textura <b>(figura 11.16)</b> se establece en <code>200px</code>, con la repetición de fondo habilitada. Esto mosaico la imagen repetidamente para llenar todo el elemento. Mientras tanto, la segunda imagen tiene un tamaño de fondo de portada y la repetición está desactivada, por lo que no está en mosaico.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/16.jpg" alt="ibid">
+          <figcaption>Figura 11.16. Imagen de textura de lienzo en escala de grises</figcaption>
+        </figure>
+        <p>
+          Descubrí que <code>soft-light</code> tiende a funcionar mejor con imágenes de textura más oscura, mientras que <code>hard-light</code> y la <code>overlay</code> son más adecuadas para imágenes de textura más clara. (Esta tendencia se invierte cuando la textura está detrás de la imagen principal). Sin embargo, los resultados pueden variar según la necesidad de su diseño y la oscuridad de la imagen base.
+        </p>
+        <h3 id="sub9">11.3.4. Usar modos de mezcla</h3>
+        <p>
+          Aunque la propiedad <code>background-blend-mode</code> le permite combinar varias imágenes, está limitada a los colores de fondo o las imágenes de un elemento. Otra propiedad, <code>mix-blend-mode</code>, le permite combinar múltiples elementos. Esto le permite hacer más que combinar imágenes: el texto y los bordes de un elemento se pueden combinar con la imagen de fondo de su contenedor. Al usar un modo de combinación de mezcla, puede mostrar un encabezado frente a una imagen y aún permitir que se muestre parte de la imagen, como en la <b>figura 11.17</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap11/17.jpg" alt="ibid">
+          <figcaption>Figura 11.17. Un encabezado mezclado con la imagen detrás de él.</figcaption>
+        </figure>
+        <p>
+          Esto produce un efecto interesante donde el texto parece transparente, como si estuviera recortado del banner rojo. Esto funciona porque utilicé el modo de fusión de <code>hard-light</code> y un color de texto gris medio. Los modos de mezcla de contraste tienen más efecto con colores muy claros o muy oscuros, pero un gris medio <code>(#808080)</code> permite que la capa de fondo se muestre sin cambios.
+        </p>
+        <p>
+          Para ver esto en su navegador, primero deberá agregar el encabezado al marcado como un elemento secundario del contenedor. Actualice su HTML para que coincida con esto.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="blend">
+  &lt;h1>Ursa Major&lt;/h1>
+&lt;/div>
+          </code>
+          <small>Listado 11.16. Agregar un encabezado dentro del contenedor</small>
+        </pre>
+        <p>
+          Diseñará este <code>&lt;h1&gt;</code> en un banner rojo con un color de fondo sólido, bordes gruesos de color gris claro en la parte superior e inferior y texto gris. Luego, aplicará un modo de mezcla de mezcla. Esto tratará todo el elemento como una capa, mezclado con la imagen de fondo del contenedor que está detrás de él. Cambie su hoja de estilo para que coincida con este código.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.blend {
+  background-image: url("images/bear.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 5em 0 10em;
+}
+
+.blend > h1 {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 6rem;
+  text-align: center;
+  mix-blend-mode: hard-light;            1
+  background-color: #c33;                2
+  color: #808080;                        2
+  border: 0.1em solid #ccc;
+  border-width: 0.1em 0;
+}
+          </code>
+          <small>Listado 11.17. Uso del modo de mezcla de mezcla para combinar varios elementos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza el modo de mezcla <span translate="no">hard-light</span></li>
+          <li>Establece el texto y el color de fondo del elemento de primer plano</li>
+        </ol>
+        <p>
+          El texto del título no tiene un alto contraste aquí, por lo que deberá tener cuidado. Lo hice grande y audaz para ayudar con la legibilidad. También funcionará mejor con una imagen de fondo de bajo contraste. En este ejemplo, coloqué el título sobre la parte más oscura de la imagen, que tiene un contraste más bajo.
+        </p>
+        <p>
+          Los modos de fusión pueden ser muy divertidos en un diseño. Úselos junto con degradados y sombras para agregar mucho interés visual a la página. Pero sea prudente: estos efectos suelen ser mejores cuando se utilizan con moderación.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Use degradados y sombras para agregar la apariencia de profundidad a la página.</li>
+          <li>Incluso los diseños planos básicos pueden beneficiarse de algunas sombras o degradados sutiles.</li>
+          <li>Utilice degradados con paradas de color explícitas para agregar rayas a un elemento.</li>
+          <li>Un degradado de fondo sutil en lugar de un color plano proporciona un poco más de complejidad al diseño.</li>
+          <li>Utilice modos de fusión para colorear o texturizar una imagen.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Gradientes</a></li>
+        <li><a href="#sub1">- Usar múltiples <span translate="no">COLOR STOPS</span></a></li>
+        <li><a href="#sub2">- Usar degradados radiales</a></li>
+        <li><a href="#tema2">Sombras</a></li>
+        <li><a href="#sub3">- Definición de profundidad con Degradados y Sombras</a></li>
+        <li><a href="#sub4">- Creando elementos con un Diseño plano</a></li>
+        <li><a href="#sub5">- Creando botones con un aspecto más Moderno</a></li>
+        <li><a href="#tema3">Modos de Mezcla</a></li>
+        <li><a href="#sub6">- Teñir una imagen</a></li>
+        <li><a href="#sub7">- Comprender los tipos de modo de fusión</a></li>
+        <li><a href="#sub8">- Agregar textura a una imagen</a></li>
+        <li><a href="#sub9">- Usar modos de mezcla</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

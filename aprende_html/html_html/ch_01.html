@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../html_css/general_style.css">
+  <title>Capítulo 1</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 1. Desarrollo Web</h1>
+      <div>
+        <a href=""><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href=""><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <section>
+        <h2 id="tema1">1.1 Sitios Web</h2>
+        <p>
+          Los sitios web son archivos que los usuarios descargan con sus navegadores desde
+          ordenadores remotos. Cuando un usuario decide acceder a un sitio web, le comunica al
+          navegador la dirección del sitio y el programa descarga los archivos, procesa su contenido y lo
+          muestra en pantalla.
+        </p>
+        <p>
+          Debido a que los sitios webs son de acceso público e Internet es una red global, estos
+          archivos deben estar siempre disponibles. Por este motivo, los sitios web no se almacenan en
+          ordenadores personales, sino en ordenadores especializados diseñados para despachar estos
+          archivos a los usuarios que los solicitan. El ordenador que almacena los archivos y datos de un
+          sitio web se llama servidor y el ordenador que accede a esta información se llama cliente, tal
+          como lo ilustra la Figura 1-1.
+        </p>
+        <figure>
+          <img src="../img_html/01.png" alt="ibid">
+          <figcaption>Figura 1-1: Clientes y servidores</figcaption>
+        </figure>
+        <p>
+          Los servidores son muy similares a los ordenadores personales, con la diferencia de que
+          están continuamente conectados a la red y ejecutando programas que les permiten responder
+          a las solicitudes de los usuarios, sin importar cuándo se reciben o de donde proceden. Los
+          programas más populares para servidores son Apache, para sistemas Linux, e IIS (Internet
+          Information Server), creado por Microsoft para sistemas Windows. Entre otras funciones,
+          estos programas son responsables de establecer la conexión entre el cliente y el servidor,
+          controlar el acceso de los usuarios, administrar los archivos, y despachar los documentos y
+          recursos requeridos por los clientes.
+        </p>
+        <h3 id="sb1">Archivos</h3>
+        <p>
+          Los sitios web están compuestos de múltiples documentos que el navegador descarga cuando
+          el usuario los solicita. Los documentos que conforman un sitio web se llaman páginas y el
+          proceso de abrir nuevas páginas navegar (el usuario navega a través de las páginas del sitio).
+          Para desarrollar un sitio web, tenemos que crear un archivo por cada página que queremos
+          incluir. Junto con estos archivos, también debemos incluir los archivos con las imágenes y
+          cualquier otro recurso que queremos mostrar dentro de estas páginas (las imágenes y otros2 | P á g i n a Desarrollo web
+          medios gráficos se almacenan en archivos aparte). En la Figura 1-2 se representa cómo se
+          muestran los directorios y archivos de un sitio web una vez que se suben al servidor.
+        </p>
+        <figure>
+          <img src="../img_html/02.png" alt="ibid">
+          <figcaption>Figura 1-2: Archivos de un sitio web</figcaption>
+        </figure>
+        <p>
+          En el ejemplo de la Figura 1-2 se incluyen dos directorios llamados imagenes y recursos, y
+          tres archivos llamados contacto.html, index.html y news.html. Los directorios se crearon para
+          almacenar las imágenes que queremos mostrar dentro de las páginas web y otros recursos,
+          como los archivos que contienen los códigos en CSS y JavaScript. Por otro lado, los archivos de
+          este ejemplo representan las tres páginas web que queremos incluir en este sitio. El archivo
+          index.html contiene el código y la información correspondiente a la página principal (la página
+          que el usuario ve cuando entra a nuestro sitio web por primera vez), el archivo contacto.html
+          contiene el código necesario para presentar un formulario que el usuario puede rellenar para
+          enviarnos un mensaje y el archivo noticias.html contiene el código necesario para mostrar las
+          noticias que queremos compartir con nuestros usuarios. Cuando un usuario accede a nuestro
+          sitio web por primera vez, el navegador descarga el archivo index.html y muestra su contenido
+          en la ventana. Si el usuario realiza una acción para ver las noticias ofrecidas por nuestro sitio
+          web, el navegador descarga el archivo noticias.html desde el servidor y reemplaza el
+          contenido del archivo index.html por el contenido de este nuevo archivo. Cada vez que el
+          usuario quiere acceder a una nueva página web, el navegador tiene que descargar el
+          correspondiente archivo desde el servidor, procesarlo y mostrar su contenido en la pantalla.
+        </p>
+        <p>
+          Los archivos de un sitio web son iguales que los archivos que podemos encontrar en un
+          ordenador personal. Todos tiene un nombre seleccionado por el desarrollador y una extensión
+          que refleja el lenguaje usado para programar su contenido (en nuestro ejemplo, los archivos
+          tienen la extensión .html porque fueron programados en HTML). Aunque podemos asignar
+          cualquier nombre que queramos a estos archivos, el archivo que genera la página inicial
+          presenta algunos requisitos. Algunos servidores como Apache designan archivos por defecto
+          en caso de que el usuario no especifique ninguno. El nombre utilizado con más frecuencia es
+          index. Si un usuario accede al servidor sin especificar el nombre del archivo que intenta abrir,
+          el servidor busca un archivo con el nombre index y lo envía de vuelta al cliente. Por esta razón,
+          el archivo index es el punto de entrada de nuestro sitio web y siempre debemos incluirlo.
+        </p>
+        <div class="container-div">
+          <b>IMPORTANTE:</b> los servidores son flexibles en cuanto a los nombres que
+          podemos asignar a nuestros archivos, pero existen algunas reglas que
+          debería seguir para asegurarse de que sus archivos son accesibles. Evite usar
+          espacios. Si necesita separar palabras use el guion bajo en su lugar (_).
+          Además, debe considerar que algunos caracteres realizan funciones
+          específicas en la Web, por lo que es mejor evitar caracteres especiales como
+          ?, %, #, /, y usar solo letras minúsculas sin acentos y números.
+        </div>
+        <h3 id="sb2">Dominios y URL</h3>
+        <p>
+          Los servidores se identifican con un valor llamado IP (Internet Protocol). Esta IP es única para
+          cada ordenador y, por lo tanto, trabaja como una dirección que permite ubicar a un ordenador
+          dentro de una red. Cuando el navegador tiene que acceder a un servidor para descargar el
+          documento solicitado por el usuario, primero busca el servidor a través de esta dirección IP y
+          luego le pide que le envíe el documento.
+        </p>
+        <p>
+          Las direcciones IP están compuestas por números enteros entre 0 y 255 separados por un
+          punto, o números y letras separadas por dos puntos, dependiendo de la versión (IPv4 o IPv6).
+          Por ejemplo, la dirección 216.58.198.100 corresponde al servidor donde se encuentra alojado
+          el sitio web de Google. Si escribimos esta dirección IP en la barra de navegación de nuestro
+          navegador, la página inicial de Google se descarga y muestra en pantalla.
+        </p>
+        <p>
+          En teoría, podríamos acceder a cualquier servidor utilizando su dirección IP, pero estos
+          valores son crípticos y difíciles de recordar. Por esta razón, Internet utiliza un sistema que
+          identifica a cada servidor con un nombre específico. Estos nombres personalizados, llamados
+          dominios, son identificadores sencillos que cualquier persona puede recordar, como google o
+          yahoo, con una extensión que determina el propósito del sitio web al que hacen referencia,
+          como .com (comercial) o .org (organización). Cuando el usuario le pide al navegador que acceda
+          al sitio web con el dominio www.google.com, el navegador accede primero a un servidor
+          llamado DNS que contiene una lista de dominios con sus respectivas direcciones IP. Este servidor
+          encuentra la IP 216.58.198.100 asociada al dominio www.google.com, la devuelve al navegador,
+          y entonces el navegador accede al sitio web de Google por medio de esta IP. Debido a que las
+          direcciones IP de los sitios web siempre se encuentran asociadas a sus dominios, no necesitamos
+          recordar la dirección de un servidor para acceder a él, solo tenemos que recordar el domino y el
+          navegador se encarga de encontrar el servidor y descargar los archivos por nosotros.
+        </p>
+        <p>
+          Los sitios web están compuestos por múltiples archivos, por lo que debemos agregar el
+          nombre del archivo al dominio para indicar cuál queremos descargar. Esta construcción se
+          llama URL e incluye tres partes, tal como se describe en la Figura 1-3.
+        </p>
+        <figure>
+          <img src="../img_html/03.png" alt="ibid">
+          <figcaption>Figura 1-3: URL</figcaption>
+        </figure>
+        <p>
+          La primera parte de la URL es una cadena de caracteres que representa el protocolo de
+          comunicación que se utilizará para acceder al recurso (el protocolo creado para la Web se
+          llama HTTP), el siguiente componente es el dominio del sitio web y el último componente es el
+          nombre del recurso que queremos descargar (puede ser un archivo, como en nuestro ejemplo,
+          o una ruta a seguir que incluye el directorio donde el archivo se encuentra almacenado (por
+          ejemplo, https://www.ejemplo.com/imagenes/milogo.jpg). La URL en nuestro ejemplo le pide
+          al navegador que utilice el protocolo HTTP para acceder al archivo contacto.html, ubicado en
+          el servidor identificado con el dominio www.ejemplo.com.
+        </p>
+        <p>
+          Las URL se utilizan para ubicar cada uno de los documentos en el sitio web y son, por lo
+          tanto, necesarias para navegar por el sitio. Si el usuario no especifica ningún archivo, el
+          servidor devuelve el archivo por defecto, pero de ahí en adelante, cada vez que el usuario
+          realiza una acción para abrir una página diferente, el navegador debe incluir en la URL el
+          nombre del archivo que corresponde a la página solicitada.
+        </p>
+        <div class="container-div">
+          <b>IMPORTANTE:</b> una vez que ha conseguido el dominio para su sitio web,
+          puede crear subdominios. Los subdominios son enlaces directos a directorios
+          y nos permiten crear múltiples sitios web en una misma cuenta. Un
+          subdominio se crea con el nombre del directorio y el dominio conectados
+          por un punto. Por ejemplo, si su dominio es www.ejemplo.com y luego crea
+          un subdominio para un directorio llamado recursos, podrá acceder
+          directamente al directorio escribiendo en el navegador la URL
+          <em>https://recursos.ejemplo.com</em>.
+        </div>
+        <h3 id="sb3">Hipervínculos</h3>
+        <p>
+          En teoría, podemos acceder a todos los documentos de un sitio web escribiendo la URL en la
+          barra de navegación del navegador. Por ejemplo, si queremos acceder a la página inicial en
+          español del sitio web For Masterminds, podemos insertar la URL
+          <em>https://www.formasterminds.com/esindex.php</em>, o bien insertar la URL
+          <em>https://www.formasterminds.com/escontact.php</em> para abrir la página que nos permite enviar
+          un mensaje a su desarrollador. Aunque es posible acceder a todos los archivos del sitio web
+          usando este método, no es práctico. En primer lugar, los usuarios no conocen los nombres que
+          el desarrollador eligió para cada archivo y, por lo tanto, estarán limitados a aquellos nombres
+          que pueden adivinar o solo a la página principal que devuelve por defecto. En segundo lugar,
+          los sitios web pueden estar compuestos por docenas o incluso miles de páginas web (algunos sitios contienen millones) y la mayoría de los documentos serían imposibles de encontrar. La
+          solución se encontró con la definición de hipervínculos. Los hipervínculos, también llamados
+          enlaces, son referencias a documentos dentro de las páginas de un sitio web. Incorporando
+          estos enlaces, una página puede contener referencias a otras páginas. Si el usuario hace clic
+          con el ratón en un enlace, el navegador sigue esa referencia y el documento indicado por la
+          URL de la referencia se descarga y muestra en pantalla. Debido a estas conexiones entre
+          páginas, los usuarios pueden navegar en el sitio web y acceder a todos sus documentos
+          simplemente haciendo clic en sus enlaces.
+        </p>
+        <h3 id="sb4">URL absolutas y relativas</h3>
+        <h2 id="tema2">1.2 Lenguajes</h2>
+        <h3 id="sb5">HTML</h3>
+        <h3 id="sb6">CSS</h3>
+        <h3 id="sb7">JavaScript</h3>
+        <h3 id="sb8">Lenguajes de servidor</h3>
+        <h2 id="tema3">1.3 Herramientas</h2>
+        <h3 id="sb9">Editores</h3>
+        <h3 id="sb10">Registro de dominios</h3>
+        <h3 id="sb11">Alojamiento web</h3>
+        <h3 id="sb12">Programas FTP</h3>
+        <h3 id="sb13">MAMP</h3>
+      </section>
+    </main>
+    
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">1.1 Sitios Web</a></li>
+        <li><a href="#sb1">- Archivos</a></li>
+        <li><a href="#sb2">- Dominios y URL</a></li>
+        <li><a href="#sb3">- Hipervínculos</a></li>
+        <li><a href="#sb4">- URL absolutas y relativas</a></li>
+        <li><a href="#tema2">1.2 Lenguajes</a></li>
+        <li><a href="#sb4">- HTML</a></li>
+        <li><a href="#sb5">- CSS</a></li>
+        <li><a href="#sb6">- JavaScript</a></li>
+        <li><a href="#sb7">- Lenguajes de servidor</a></li>
+        <li><a href="#tema3">1.3 Herramientas</a></li>
+        <li><a href="#sb9">- Editores</a></li>
+        <li><a href="#sb10">- Registro de dominios</a></li>
+        <li><a href="#sb11">- Alojamiento web</a></li>
+        <li><a href="#sb12">- Programas FTP</a></li>
+        <li><a href="#sb13">- MAMP</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_html.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

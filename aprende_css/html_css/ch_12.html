@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 12</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 12. Contraste, color y espaciado</h1>
+      <div>
+        <a href="ch_11.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_13.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capítulo habla sobre:</em></h4>
+      <ul>
+        <li>Conversión de una maqueta de diseñador en HTML y CSS</li>
+        <li>Usar el contraste para llamar la atención sobre las partes correctas de una página</li>
+        <li>Seleccionar colores</li>
+        <li>Aprovechando el espacio en blanco</li>
+        <li>Trabajando con la altura de la línea</li>
+      </ul>
+      <p>
+        Una parte importante del desarrollo web implica tomar una <em>maqueta</em> de un diseñador y darle vida con CSS. Cuando haces esto, estás traduciendo de manera efectiva el arte en código. A veces esa traducción es sencilla. Otras veces, es posible que deba trabajar con el diseñador para hacer concesiones. Cuando el diseñador ha ajustado cada pieza de la <em>maqueta</em>, deberá considerar cómo organizar el CSS para una fácil <em>reutilización</em>. Su CSS será más de uso general que su <em>maqueta</em> de una sola página.
+      </p>
+      <p>
+        Una vez finalizado el trabajo de traducción, dependerá de usted, el <em>desarrollador</em>, continuar agregando elementos al sitio, basándose en la visión establecida por el diseñador. Es importante que al menos tenga una idea general de las preocupaciones del diseñador sobre aspectos como el espaciado, los colores y la tipografía. Deberá saber cómo asegurarse de que su implementación sea precisa. Si respeta los objetivos del diseñador, este proceso será menos frustrante.
+      </p>
+      <p>
+        También reconozco que no siempre trabajarás con un <em>diseñador</em>. Si está en una pequeña empresa o está trabajando en un proyecto personal, es posible que esté solo. En cuyo caso, es beneficioso tener un conocimiento básico de los principios de diseño para que pueda implementarlos usted mismo.
+      </p>
+      <p>
+        En este capítulo, consideraremos una <em>maqueta</em> de página como podría proporcionar un diseñador y la convertiremos en código. Me centraré principalmente en los aspectos del <em>espaciado</em> y el <em>color</em>. También destacaré algunas consideraciones que un diseñador puede haber hecho al respecto. Mi objetivo es que, al comprender estas preocupaciones, pueda aplicarlas hasta cierto punto mientras mantiene el diseño o incluso mientras trabaja en proyectos que no tienen diseñador. Para ello, creará la página que se muestra en la <b>figura 12.1</b>.
+      </p>
+      <figure>
+        <img src="../img_css/cap12/01.jpg" alt="ibid">
+        <figcaption>Figura 12.1. El diseño de página para el software de colaboración Ink</figcaption>
+      </figure>
+      <p>
+        Esta captura de pantalla muestra la página terminada. Si recibe un diseño de un diseñador, probablemente tendrá mucha más información junto con él. Lo verás en un momento, pero primero quiero señalar algunas cosas sobre el diseño.
+      </p>
+      <section id="tema1">
+        <h2>12.1. EL CONTRASTE ES EL REY</h2>
+        <p>
+          Cuando mire la captura de pantalla en la <b>figura 12.1</b>, observe dónde van sus ojos. Deben estar inspirados, principalmente, en el lema <em>“Colaboración en equipo bien hecha”</em> y en el botón Comenzar que se encuentra debajo. También verá una serie de otras cosas en la página: el nombre de la empresa en la parte superior izquierda, la navegación en la parte superior derecha, las tres columnas a continuación, pero el contenido en el medio de la imagen tiene la mayor atracción. La razón de esto es el <em>contraste</em>.
+        </p>
+        <p>
+          El <em>contraste</em> en el diseño es una forma de llamar la atención sobre algo haciéndolo destacar. Nuestros ojos y nuestra mente encuentran patrones de forma natural. Cuando algo rompe un patrón, nuestra atención se dirige directamente a él.
+        </p>
+        <p>
+          Para que el contraste funcione, la página debe establecer patrones; no puede tener una excepción a la regla a menos que primero tenga una regla. En la <b>figura 12.1</b>, el espacio entre los botones de navegación Leer más es consistente, al igual que el tamaño y el espacio de las tres columnas. Además, los tres botones Leer más son idénticos. También puede ver algunas salpicaduras de color diferentes en la página, pero todas son del mismo tono de verde, con una oscuridad variable. Esta es una de las razones por las que las <em>bibliotecas de patrones</em> y <em>CSS modulares</em> son tan importantes <b>(capítulos 9 y 10)</b>: en lugar de usar selectores anidados para crear un <em>“botón en un mosaico”</em>, cree un botón que se pueda usar en cualquier lugar.
+        </p>
+        <p>
+          Cuando promueve la reutilización de estilos, se asegura de que aparezcan patrones idénticos en su sitio. Una de las preocupaciones clave de un diseñador profesional es <em>establecer patrones</em> y luego romper esos patrones para resaltar las partes más importantes de la página.
+        </p>
+        <p>
+          Algunas formas clave en las que puede establecer el contraste es mediante el uso de color, espaciado o tamaño. Si varios elementos son claros, pero uno es oscuro, primero notará el elemento oscuro. Cuando un elemento está rodeado por una gran cantidad de espacio no utilizado (llamado <em>espacio en blanco</em>), ese elemento se destaca. Y, los elementos grandes se destacan entre una serie de pequeños. Para un contraste más fuerte, puede combinar uno o más de estos efectos, como lo hice con el eslogan correcto de colaboración del equipo en esta página: tiene un texto más grande, muchos espacios en blanco y un botón oscuro y llamativo.
+        </p>
+        <p>
+          Sin embargo, el <em>eslogan</em> no es el único contraste evidente en la página. Encontrará una jerarquía de importancia de la información, comunicada a través del contraste. Además del eslogan y el botón Comenzar, también hay un contraste evidente en el menú de navegación <b>(figura 12.2)</b> y dentro de cada una de las columnas de texto en la parte inferior de la página <b>(figura 12.3)</b>. Estos elementos no son tan fuertes como el lema, pero llaman la atención dentro de sus respectivas regiones. El pie de página, al ser el contenido menos importante de la página, es más pequeño y de menor contraste.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/02.jpg" alt="ibid">
+          <figcaption>Figura 12.2. El botón de inicio de sesión más claro llama más la atención que los tres botones verdes más oscuros</figcaption>
+        </figure>
+        <figure>
+          <img src="../img_css/cap12/03.jpg" alt="ibid">
+          <figcaption>Figura 12.3. El botón con texto en color y borde se destaca en medio de texto simple en blanco y negro.</figcaption>
+        </figure>
+        <p>
+          Cada página web debe tener un propósito. Puede ser para transmitir una historia, recopilar información o permitir que el usuario complete algún tipo de tarea. Además de un propósito principal, puede haber elementos de navegación, anuncios, párrafos de texto y un pie de página lleno de información de derechos de autor y enlaces a varias páginas. El trabajo del diseñador es hacer que lo más importante se destaque. Tu trabajo es no estropear eso.
+        </p>
+        <h3 id="sub1">12.1.1. Estableciendo patrones</h3>
+        <p>
+          Para establecer patrones, su diseñador puede ser meticuloso con las cosas que no le parecen importantes: espaciado preciso entre ciertos elementos, usar el mismo radio de borde o la misma sombra de cuadro en múltiples componentes diferentes, e incluso tener mucho cuidado con el espaciado entre letras y líneas de texto.
+        </p>
+        <p>
+          Un ejemplo de maqueta se muestra en la <b>figura 12.4</b>, destacando el espaciado preciso, en píxeles, de varios elementos. Puede resultar tedioso (y en ocasiones incluso difícil) mantener intacta esta precisión al convertir un diseño en código.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/04.jpg" alt="ibid">
+          <figcaption>Figura 12.4. Una maqueta del diseño de la página con medidas anotadas.</figcaption>
+        </figure>
+        <p>
+          Esta <em>maqueta</em> usa cuadros rosas para indicar qué espacios se están midiendo. Por ejemplo, <code>10px</code> entre botones en el menú de navegación; <code>40px</code> entre la parte inferior de la imagen principal y la parte superior de las tres columnas blancas; <code>30px</code> entre el encabezado de cada columna y el siguiente párrafo de texto; y así. Ciertas medidas en la página aparecerán comúnmente en toda la página, lo que ayudará a establecer un patrón visual. Por ejemplo, los espacios de <code>10px</code> y <code>25px</code> son comunes en esta página.
+        </p>
+        <p>
+          Echemos un vistazo más de cerca a dos aspectos de un diseño cohesivo: la elección del color y el control del espacio. (La tipografía también es una parte importante de esto, en la que nos centraremos en el próximo capítulo). Le mostraré cómo implementar con precisión el diseño que se muestra en la <b>figura 12.4</b>. También es importante darse cuenta de que un sitio web evoluciona con el tiempo. Implementar una <em>maqueta</em> es parte del trabajo, pero también deberá poder agregar nuevas funciones o contenido en el futuro, sin dejar de ser fiel a la visión del diseñador. Por esta razón, también veremos algunas consideraciones para este trabajo.
+        </p>
+        <h3 id="sub2">12.1.2. Implementando el diseño</h3>
+        <p>
+          Cree una nueva página y vincúlela a una nueva hoja de estilo. Luego, copie el marcado que se muestra en la siguiente lista. He dividido el diseño de la página en varios módulos, a los que aplicará estilo a lo largo del resto del capítulo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;head>
+  &lt;link rel="stylesheet" href="styles.css">
+&lt;/head>
+&lt;body>
+  &lt;nav class="nav-container">                   1
+    &lt;div class="nav-container__inner">
+      &lt;a class="home-link" href="/">Ink&lt;/a>
+      &lt;ul class="top-nav">
+        &lt;li>&lt;a href="/features">Features&lt;/a>&lt;/li>
+        &lt;li>&lt;a href="/pricing">Pricing&lt;/a>&lt;/li>
+        &lt;li>&lt;a href="/support">Support&lt;/a>&lt;/li>
+        &lt;li class="top-nav__featured">&lt;a href="/login">Login&lt;/a>&lt;/li>
+      &lt;/ul>
+    &lt;/div>
+  &lt;/nav>
+
+  &lt;div class="hero">                            2
+    &lt;div class="hero__inner">
+      &lt;h2>Team collaboration done right&lt;/h2>
+      &lt;a href="/sign-up" class="button button--cta">Get started&lt;/a>
+    &lt;/div>
+  &lt;/div>
+
+  &lt;div class="container">
+    &lt;div class="tile-row">                      3
+      &lt;div class="tile">
+        &lt;h4>Work together, even if you're apart&lt;/h4>
+        &lt;p>Organize your team conversations into threads. Collaborate
+    together on documents in real-time. Use face-to-face &lt;a
+    href="/features/video-calling">video calls&lt;/a> when typing just won't
+    do.&lt;/p>
+        &lt;a href="/collaboration" class="button">Read more&lt;/a>
+      &lt;/div>
+
+      &lt;div class="tile">
+        &lt;h4>Take it with you&lt;/h4>
+        &lt;p>Ink is available on a wide array of devices, so you can work from
+    anywhere:&lt;/p>
+        &lt;ul class="tag-list">
+          &lt;li>Web&lt;/li>
+          &lt;li>iOS&lt;/li>
+          &lt;li>Android&lt;/li>
+          &lt;li>Windows Phone&lt;/li>
+        &lt;/ul>
+        &lt;a href="/supported-devices" class="button">Read more&lt;/a>
+      &lt;/div>
+
+      &lt;div class="tile">
+        &lt;h4>Priced right&lt;/h4>
+        &lt;p>Whether you work on a team of three or a three hundred, you'll
+    find our tiered pricing reasonable at every level.&lt;/p>
+        &lt;a href="/pricing" class="button">Read more&lt;/a>
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
+
+  &lt;footer class="page-footer">
+    &lt;div class="page-footer__inner">
+      Copyright &copy; 2017 Ink, Inc.
+    &lt;/div>
+  &lt;/footer>
+&lt;/body>
+          </code>
+          <small>Listado 12.1. Marcado de página</small>
+        </pre>
+        <ol class="index-code">
+          <li>Contenedor de barra de navegación superior</li>
+          <li>Imagen principal grande</li>
+          <li>Fila de mosaicos de tres columnas</li>
+        </ol>
+        <p>
+          He usado la notación de <em>estilo BEM</em> para algunos de estos nombres de clase para dejar en claro qué elementos pertenecen a qué módulos: los subrayados dobles indican subelementos de un módulo, como <code>hero__inner</code>, y los guiones dobles indican variantes de un módulo, como <code>button--cta</code> <b>(capítulo 9)</b>. Trabajaremos nuestro camino a través de estos módulos. Nuestra primera parada es echar un vistazo más de cerca a los colores que utilizan.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>12.2. COLOR</h2>
+        <p>
+          Cuando un diseñador entrega un diseño, normalmente obtendrá un documento PDF grande con varias secciones. Una gran parte del PDF probablemente consistirá en maquetas de página completa similares a las que se muestran en la <b>figura 12.4</b>. Pero antes de eso, un diseñador establecerá algunos conceptos básicos. El PDF puede incluir una página o dos de ejemplos de <em>tipografía</em> para varios encabezados y cuerpo. El documento probablemente tendrá un desglose detallado de algunos elementos comunes de la interfaz de usuario, como enlaces y botones, incluidos sus diversos estados, como <code>hover</code> y <code>active</code>. E incluirá una paleta de colores para el sitio.
+        </p>
+        <p>
+          La paleta de colores normalmente se verá similar a la que se muestra en la <b>figura 12.5</b>. Muestra muestras de color para todos los colores utilizados en el sitio y los valores de color hexadecimales asociados. El diseñador a menudo le dará un nombre a cada color, que se utilizará en el resto de las especificaciones.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/05.jpg" alt="ibid">
+          <figcaption>Figura 12.5. La paleta de colores del sitio.</figcaption>
+        </figure>
+        <p>
+          Una paleta normalmente tendrá un color primario en el que se basa todo lo demás. A menudo se deriva del logotipo o la marca corporativa. En nuestra página, este es el color verde de la marca (arriba, a la izquierda en la figura). Otros colores en la paleta a menudo serán diferentes tonos del mismo tono o colores complementarios. La mayoría de las paletas también tienen un negro, un blanco (aunque puede que no sean puros #000000 o #ffffff) y un puñado de grises.
+        </p>
+        <p>
+          Debido a que estos colores aparecerán repetidamente en todo el CSS, puede ahorrar mucho tiempo asignándolos a variables. De lo contrario, estará escribiendo los valores hexadecimales innumerables veces y, casi con certeza, cometerá errores.
+        </p>
+        <p>
+          Juntemos algunos estilos básicos para la página. Esto incluye asignar cada uno de los colores de la paleta a una variable para que pueda reutilizarlos. La página que se muestra en la <b>figura 12.6</b> no parecerá mucho todavía, pero los colores comenzarán a parecerse más a la <em>maqueta</em>.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/06.jpg" alt="ibid">
+          <figcaption>Figura 12.6. Página con estilos base y algunos colores en su lugar</figcaption>
+        </figure>
+        <p>
+          Agregue estos estilos base a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+html {
+  --brand-green: #076448;                          1
+  --dark-green: #099268;                           1
+  --medium-green: #20c997;                         1
+  --text-color: #212529;                           1
+  --gray: #868e96;                                 1
+  --light-gray: #f1f3f5;                           1
+  --extra-light-gray: #f8f9fa;                     1
+  --white: #fff;                                   1
+
+  box-sizing: border-box;
+  color: var(--text-color);
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  background-color: var(--extra-light-gray);       2
+}
+
+h1, h2, h3, h4 {
+  font-family: Georgia, serif;                     3
+}
+
+a {
+  color: var(--medium-green);                      2
+}
+a:visited {
+  color: var(--brand-green);                       2
+}
+a:hover {
+  color: var(--brand-green);                       2
+}
+a:active {                                         4
+}
+          </code>
+          <small>Listado 12.2. Estilos base que incluyen variables de color</small>
+        </pre>
+        <ol class="index-code">
+          <li>Asigna cada color a una variable</li>
+          <li>Utiliza variables para asignar color donde sea necesario</li>
+          <li>Conjuntos de fuentes de título</li>
+          <li>Marcador de posición para enlaces activos. Necesitarás un color rojo para esto más adelante.</li>
+        </ol>
+        <p>
+          He utilizado propiedades personalizadas para estos colores (consulte el <b>capítulo 2</b>, <b>sección 2.6</b> si necesita un repaso). Mediante el uso de variables, puede ahorrarse algo de trabajo en el futuro si cambia alguno de estos valores. Una vez trabajé en un proyecto en el que el diseñador decidió hacer un ajuste en el color de la marca al final del proceso. Era trivial actualizar la variable en un solo lugar, pero habría significado actualizar cien o más puntos en el código sin ella.
+        </p>
+        <p>
+          He utilizado propiedades personalizadas de CSS en este ejemplo para simplificar; no necesitará herramientas especiales para seguirlo. En sus proyectos, si necesita admitir IE u otros navegadores más antiguos, debería favorecer el uso de variables de preprocesador en su lugar. Consulte el <b>apéndice B</b> para obtener una introducción a los preprocesadores.
+        </p>
+        <p>
+          También dejé aquí un marcador de posición para los enlaces activos. Volveremos y rellenaremos un color allí en breve. Antes de hacer eso, vamos a diseñar la página de forma aproximada. Obtendrá todas las secciones principales de la página en la posición correcta entre sí y luego aplicará algunos colores y configuraciones de fuente <b>(figura 12.7)</b>. No vamos a preocuparnos mucho por el espaciado todavía.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/07.jpg" alt="ibid">
+          <figcaption>Figura 12.7. Elementos de la página colocados de forma aproximada y los estilos iniciales aplicados.</figcaption>
+        </figure>
+        <p>
+          Comenzará en la parte superior y avanzará hacia abajo en tres pasos: el encabezado, la imagen principal y la sección principal con tres columnas. En su mayor parte, reutilizaré las técnicas tratadas en capítulos anteriores. Luego, regresaremos y analizaremos más de cerca el ajuste fino de la página.
+        </p>
+        <p>
+          Primero está el encabezado y la barra de navegación dentro. Esta sección consta de tres módulos: <code>nav-container</code>, <code>home-link</code> y <code>top-nav</code>, que se muestran en la siguiente lista. Agrégalos a tu hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav-container {
+  background-color: var(--medium-green);
+}
+.nav-container__inner {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1080px;                 1
+  margin: 0 auto;                    1
+}
+
+.home-link {
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-family: Georgia, serif;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.top-nav {
+  display: flex;                     2
+  list-style-type: none;
+}
+.top-nav a {
+  display: block;                    3
+  padding: 0.3em 1.25em;             3
+  color: var(--white);               3
+  background: var(--brand-green);    3
+  text-decoration: none;
+  border-radius: 3px;
+}
+.top-nav a:hover {
+  background-color: var(--dark-green);
+}
+.top-nav__featured > a {
+  color: var(--brand-green);
+  background-color: var(--white);
+}
+.top-nav__featured > a:hover {
+  color: var(--medium-green);
+  background-color: var(--white);
+}
+          </code>
+          <small>Listado 12.3. Estilos de encabezado</small>
+        </pre>
+        <ol class="index-code">
+          <li>Centra el contenido y restringe su ancho a 1.080 px</li>
+          <li>Utiliza flexbox para mostrar elementos de navegación en una fila</li>
+          <li>Agrega color y relleno a cada enlace de elemento de navegación</li>
+        </ol>
+        <p>
+          Todo el encabezado está envuelto en un <code>nav-container</code>. He utilizado el patrón de contenedor doble aquí para centrar el elemento interior (consulte el <b>capítulo 4</b> para una revisión de esta técnica). Esto permite que el color de fondo se difunda en los bordes de la página, mientras que el ancho del contenido principal está restringido. Este elemento es un contenedor flexbox con <code>justify-content: space-between</code> empujando su contenido a los dos bordes: <code>home-link</code> a la izquierda y <code>top-nav</code> a la derecha. El módulo <code>top-nav</code> es otro cuadro flexible, por lo que todos los enlaces aparecen en una fila y todos los colores se asignan mediante propiedades personalizadas.
+        </p>
+        <p>
+          A continuación, agreguemos estilos para el área de la imagen principal. Esto involucrará dos módulos más, uno para la imagen principal y otro para el botón. Agregue los estilos a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.hero {
+  background: url(collaboration.jpg) no-repeat;
+  background-size: cover;
+  margin-bottom: 2.5rem;
+}
+.hero__inner {
+  max-width: 1080px;                      1
+  margin: 0 auto;                         1
+  padding: 50px 0 200px;                  2
+  text-align: right;
+}
+.hero h2 {
+  font-size: 1.95rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.4em 1em;                     3
+  color: var(--brand-green);              3
+  border: 2px solid var(--brand-green);   3
+  border-radius: 0.2em;
+  text-decoration: none;
+  font-size: 1rem;
+}
+.button:hover {
+  background-color: var(--dark-green);
+  color: var(--white);
+}
+.button--cta {
+  padding: 0.6em 1em;                     4
+  background-color: var(--brand-green);   4
+  color: var(--white);                    4
+  border: none;
+}
+          </code>
+          <small>Listado 12.4. Estilos de botón e imagen principal</small>
+        </pre>
+        <ol class="index-code">
+          <li>Patrón de contenedor doble</li>
+          <li>Utiliza relleno para colocar aproximadamente el lema y el botón</li>
+          <li>Estilos de botones estándar</li>
+          <li>Variante de botón de CTA</li>
+        </ol>
+        <p>
+          El módulo <code>hero</code> usa el patrón de contenedor doble, muy parecido al encabezado. También tiene algo de <code>padding</code> agregado al elemento interior. Los valores de relleno son estimaciones aproximadas en este punto. Una vez que todo esté en el lugar correcto, retrocederé y señalaré las preocupaciones clave a medida que nos ajustamos con mayor precisión a la <em>maqueta</em> del diseñador.
+        </p>
+        <p>
+          También definí un módulo <code>button</code>. La apariencia predeterminada es un botón blanco con un borde verde y texto verde. Este es el estilo de los botones en la parte inferior de la sección principal de la página. Luego definí una variante de CTA para este botón, con un fondo verde sólido y texto blanco. (Como se explicó anteriormente, CTA, o <em translate="no">Call to Action</em>, es un término de marketing para el elemento clave con el que desea que interactúe el usuario; en este caso, el prominente botón Comenzar). Finalmente, agregaremos los estilos para el elemento principal. parte de la página con las tres columnas como se muestra en la <b>figura 12.8</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/08.jpg" alt="ibid">
+          <figcaption>Figura 12.8. Estilos aproximados para la parte principal de la página.</figcaption>
+        </figure>
+        <p>
+          La parte principal de la página consta de un contenedor para restringir el ancho, <code>tile-row</code> para dar forma a las tres columnas y <code>tile</code> para el cuadro blanco en cada columna. Agregue la siguiente lista a su hoja de estilo, que también agrega estilos para el pie de página. Ya ha agregado estilos para el botón, por lo que no necesita agregar nada para ellos.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.container {
+  margin: 0 auto;
+  max-width: 1080px;         1
+}
+
+.tile-row {
+  display: flex;
+}
+.tile-row > * {              2
+  flex: 1;                   2
+}                            2
+
+.tile {
+  background-color: var(--white);
+  border-radius: 0.3em;
+}
+
+.page-footer {
+  margin-top: 3em;
+  padding: 1em 0;
+  background-color: var(--light-gray);
+  color: var(--gray);
+}
+.page-footer__inner {
+  margin: 0 auto;
+  max-width: 1080px;         3
+  text-align: center;
+  font-size: 0.8rem;
+}
+          </code>
+          <small>Listado 12.5. Tres columnas y mosaicos</small>
+        </pre>
+        <ol class="index-code">
+          <li>El mismo ancho restringido de 1.080 px que con otras secciones de página</li>
+          <li>Hace que cada columna tenga el mismo ancho</li>
+          <li>El mismo ancho restringido de 1.080 px que con otras secciones de página</li>
+        </ol>
+        <p>
+          Nuevamente, esta lista usa el patrón de contenedor doble, restringiendo el ancho a <code>1.080px</code>. También establece un fondo blanco y un radio de borde para los mosaicos.
+        </p>
+        <p>
+          El pie de página es un ejemplo de contraste que se utiliza para eliminar el enfoque, en lugar de llamar la atención. Tiene una fuente más pequeña y texto gris sobre un fondo gris claro. Esta es la parte menos importante de la página, por lo que no es necesario que se destaque. En cambio, se integra e inconscientemente le dice al usuario: <em>"Esta sección de la página probablemente no sea lo que estás buscando"</em>.
+        </p>
+        <h3 id="sub3">12.2.1. Entender las notaciones de color</h3>
+        <p>
+          Los colores de nuestra paleta se especifican mediante notación hexadecimal. Esta es una notación concisa, y una que los desarrolladores web han estado usando desde los primeros días de la web. Pero no siempre es más fácil trabajar con él. CSS ahora también tiene soporte para otras notaciones, usando las funciones <code>rgb()</code> y <code>hsl()</code>.
+        </p>
+        <p>
+          La función <code>rgb()</code> es una forma de representar los valores rojo, verde y azul de un color utilizando notación decimal en lugar de hexadecimal. En lugar de 00 a través de FF, usa 0 a 255: <code>rgb(0, 0, 0)</code> es negro puro (igual a <code>#000</code>) y <code>rgb(136, 0, 0)</code> es rojo ladrillo (igual a <code>#800</code>).
+        </p>
+        <p>
+          Tanto los colores RGB como los hexadecimales son un poco crípticos. Es difícil ver un color como <code>#2097c9</code>, o su equivalente RGB, y saber cómo se representará en la página. Para dividir el valor del color, su valor de rojo (20) es bastante bajo, su valor de verde (97) está en el medio del camino y su valor de azul (c9) es más alto. Es predominantemente azul y verde, pero ¿qué tan oscuro o vívido es? La verdad es que los colores RGB no son intuitivos. Fueron diseñados para ser leídos por una computadora, no por una persona.
+        </p>
+        <p>
+          <em>HSL</em> es un tipo de notación destinada a ser más legible por humanos. Significa Tono, Saturación y Luminosidad (o Luminosidad). La sintaxis se parece a <code>hsl(198, 73%, 46%)</code>, que es equivalente al color hexadecimal <code>#2097c9</code>.
+        </p>
+        <p>
+          La función <code>hsl()</code> toma tres valores. El primer valor, que representa el tono, es un número entero entre 0 y 359. Esto indica los 360 grados alrededor del círculo de color, pasando uniformemente por rojo (0), amarillo (60), verde (120), cian (180), azul (240), magenta (300) y de nuevo al rojo. El segundo valor, que representa la saturación, es un porcentaje que define la intensidad del color: 100% hace que el color sea vivo y 0% significa que no hay color presente, lo que da como resultado un tono de gris. El tercer valor, que representa la claridad, es un porcentaje que define qué tan claro (u oscuro) es el color. Una luminosidad del 50% proporciona los colores más vivos; si se establece en un valor más alto, el color se vuelve más claro, y el 100% da como resultado un blanco puro; establecerlo más bajo hace que el color sea más oscuro, con 0% resultando en negro. Por ejemplo, el valor <code>hsl(198, 73%, 46%)</code> tiene un tono azul cian, una saturación razonablemente alta (73%) y una luminosidad cercana al 50%, por lo que producirá un azul intenso, un poco más oscuro que el cielo. azul.
+        </p>
+        <p>
+          La <b>tabla 12.1</b> muestra una comparación en paralelo de varios colores y sus diversas representaciones en colores hexadecimales, RGB, HSL y con nombre. (Hay alrededor de 150 colores con nombre que son valores CSS válidos).
+        </p>
+        <p>
+          La mejor manera de familiarizarse con HSL es jugar con él. Una vez más, le animo a que visite https://hslpicker.com/. Proporciona un selector de color interactivo con tres controles deslizantes para los tres valores, así como un cuarto para la transparencia. Observe cómo cada control deslizante afecta el color renderizado a medida que lo mueve.
+        </p>
+        <p>
+          Las notaciones RGB y HSL tienen cada una una notación correspondiente con un canal alfa añadido: <code>rgba()</code> y <code>hsla()</code>. Estos aceptan un cuarto valor, un número entre 0 y 1, que representa la transparencia. Además, algunos navegadores también están comenzando a admitir una notación hexadecimal de ocho caracteres donde los dos últimos caracteres especifican un canal alfa.
+        </p>
+        <p>
+          Convirtamos los colores hexadecimales a HSL. Muchos recursos en línea, como hslpicker.com, le darán un color en las tres notaciones. Pero el lugar más fácil para realizar la conversión es a menudo en sus DevTools de Chrome o Firefox, porque siempre las tiene a mano. Te mostraré cómo hacer esto en Chrome.
+        </p>
+        <p>
+          Con la página cargada, abra DevTools del navegador (Cmd + Opción + I en Mac; Ctrl + Shift + I en Windows). En el panel Elementos, haga clic en la etiqueta <code>&lt;html&gt;</code> para seleccionarla. Sus estilos asociados se muestran en el panel Estilos, incluidas sus propiedades personalizadas <b>(figura 12.9)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/09.jpg" alt="ibid">
+          <figcaption>Figura 12.9. Los colores aplicados se muestran en el panel Estilos de DevTools. Pulse Mayús y haga clic en el pequeño cuadrado junto a un color para alternar entre las notaciones de color hexadecimal, RGB y HSL.</figcaption>
+        </figure>
+        <p>
+          Al lado de cada color hay un pequeño cuadrado que muestra un ejemplo del color. Si presiona y mantiene presionada la tecla Mayús y luego hace clic con el mouse en este cuadrado, cambia el valor hexadecimal a un valor RGB. Hacer clic de nuevo cambia el RGB a un valor HSL. Al hacer clic por tercera vez se vuelve a la notación hexadecimal.
+        </p>
+        <p>
+          Este método para alternar entre notaciones de color también funciona en Firefox DevTools. Desafortunadamente, solo funciona para propiedades regulares y no para colores asignados a propiedades personalizadas como en nuestro ejemplo.
+        </p>
+        <p>
+          Si desea profundizar, al hacer clic en el cuadrado se abre un cuadro de diálogo selector a todo color <b>(figura 12.10)</b>. Esto le permite ajustar los colores, seleccionar de una paleta o alternar entre notaciones hexadecimales, RGB y HSL. También incluye un cuentagotas para extraer colores de la página. Firefox ofrece un selector de color similar, aunque no es tan completo.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/10.jpg" alt="ibid">
+          <figcaption>Figura 12.10. Utilice el cuadro de diálogo del selector de color para ajustar los colores.</figcaption>
+        </figure>
+        <p>
+          A menudo, todo lo que necesita es un color hexadecimal. Pero la conversión a HSL puede ayudar a ajustar los colores o encontrar nuevos colores para agregar a su sitio. Convirtamos nuestros colores a HSL y luego hagamos algunas observaciones sobre los colores del sitio.
+        </p>
+        <p>
+          Copie los valores HSL de sus DevTools en su hoja de estilo. Esta parte de su CSS debe coincidir con esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+html {
+  --brand-green: hsl(162, 87%, 21%);            1
+  --dark-green: hsl(162, 88%, 30%);             1
+  --medium-green: hsl(162, 73%, 46%);           1
+  --text-color: hsl(210, 11%, 15%);             2
+  --gray: hsl(210, 7%, 56%);                    2
+  --light-gray: hsl(210, 17%, 95%);             2
+  --extra-light-gray: hsl(210, 17%, 98%);       2
+  --white: hsl(0, 0%, 100%);
+
+  box-sizing: border-box;
+  color: var(--text-color);
+}
+          </code>
+          <small>Listado 12.6. Conversión de colores hexadecimales a HSL</small>
+        </pre>
+        <ol class="index-code">
+          <li>Los colores verdes tienen todos el mismo tono.</li>
+          <li>El texto y los colores grises no son grises puros.</li>
+        </ol>
+        <p>
+          Un par de cosas se hacen evidentes cuando los colores están en notación HSL. Primero, ahora puede ver que los tres colores verdes tienen exactamente el mismo tono. Es posible que no sepa de antemano que <code>162</code> es un verde azulado hasta que mire en el navegador, pero puede ver que hay una simetría entre los tres colores. Esto es imposible de distinguir de los valores <em>hexadecimales</em>, pero en HSL es obvio. Con este conocimiento, es fácil agregar otro color verde a la paleta. Si surge la necesidad de un tono más claro del mismo color, probaría algo como <code>hsl(162, 50%, 80%)</code>, luego ajustaría la saturación y la luminiscencia en las DevTools del navegador hasta que pareciera apropiado.
+        </p>
+        <p>
+          También puede observar que los colores grises no son un gris puro: tienen un poco de saturación, cada uno con el mismo tono. No es probable que pueda darse cuenta de esto al mirar los colores, pero es un pequeño detalle que puede ayudar a que la página se vea más rica. Los verdaderos grises incoloros casi nunca ocurren en el mundo real, y nuestros ojos esperan ver algún color, incluso si es sutil.
+        </p>
+        <p>
+          Un diseñador generalmente incluirá varios tonos de gris en la paleta. Sin embargo, según mi experiencia, siempre necesitarás otro gris. Ya sea que sea de un color aún más claro que el gris extra claro o algo entre gris y gris claro, eventualmente surgirá la necesidad. Esto hace que nombrar las variables sea problemático. Por esta razón, considere usar nombres con valores numéricos como <code>--gray-50</code> o <code>--gray-80</code>, donde el número corresponde aproximadamente a la luminiscencia. De esta manera, puede insertar otro valor entre dos existentes cuando sea necesario.
+        </p>
+        <p>
+          Una vez más, no es necesario convertir todos los colores a HSL en un proyecto del mundo real. Pero cuando surja la necesidad, hazlo. A menudo, esto facilita la eliminación del color.
+        </p>
+        <h3 id="sub4">12.2.2. Agregar nuevos colores a una paleta</h3>
+        <p>
+          De vez en cuando, encontrará que necesitará un color que su diseñador no planeó. Quizás necesite un mensaje de error rojo o un cuadro informativo azul. Los diseñadores experimentados suelen tener en cuenta casos comunes como este, pero es posible que aún se encuentre en una situación en la que necesite agregar a la paleta.
+        </p>
+        <p>
+          Nuestra hoja de estilo tiene un marcador de posición para un color de enlace activo. Tradicionalmente, los enlaces activos son de color rojo, que se encuentra en la hoja de estilo proporcionada por el agente de usuario. Pero es un rojo brillante y caricaturesco que parece fuera de lugar en esta página. Busquemos un color menos vivo que funcione con el verde.
+        </p>
+        <p>
+          La forma más sencilla de encontrar un color que funcione bien con otro es encontrar su complemento. Este es el color en el lado opuesto de la rueda de colores: el complemento de azul es amarillo; el complemento de verde es magenta (o morado); y el complemento de rojo es cian.
+        </p>
+        <p>
+          Con los valores de color HSL, encontrar el color complementario es fácil: sume o reste 180 al valor de tono. El verde de nuestra marca principal tiene un tono de 162. Al agregar 180 a esto, obtenemos un tono de 342, que es rojo con un toque de magenta. También puede restar 180 para encontrar su complemento, lo que da como resultado un tono de -18. Esto es equivalente al tono 342, por lo que <code>hsl(-18, 87%, 21%)</code> representará lo mismo que <code>hsl(342, 87%, 21%)</code>. Pero prefiero mantener mis valores entre 0 y 360 para que estén en un territorio más familiar.
+        </p>
+        <p>
+          Ahora que tenemos un tono, necesitamos saturación y ligereza. El color del enlace normal de la página es verde medio, <code>hsl(162, 73%, 46%)</code>, así que comencemos por ahí. Debido a que el verde es el color principal de nuestra marca, no queremos que los colores secundarios se roben demasiado el protagonismo, por lo que reduciremos un poco la saturación, digamos un 10%. Esto nos da un color de <code>hsl(342, 63%, 46%)</code>. La <b>figura 12.11</b> muestra un enlace activo con este color rojo.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/11.jpg" alt="ibid">
+          <figcaption>Figura 12.11. Un enlace activo rojo</figcaption>
+        </figure>
+        <p>
+          Agreguemos este color a la hoja de estilo. Edite su código para que coincida con este listado. Esto incluye asignar el color a una propiedad personalizada <code>--red</code>, y luego usarlo para enlaces activos.
+        </p>
+        <pre>
+          <code class="container__base-code">
+html {
+  --brand-green: hsl(162, 87%, 21%);
+  --dark-green: hsl(162, 88%, 30%);
+  --medium-green: hsl(162, 73%, 46%);
+  --text-color: hsl(210, 11%, 15%);
+  --gray: hsl(210, 7%, 56%);
+  --light-gray: hsl(210, 17%, 95%);
+  --extra-light-gray: hsl(210, 17%, 98%);
+  --white: hsl(0, 0%, 100%);
+  --red: hsl(342, 63%, 46%);         1
+
+  box-sizing: border-box;
+  color: var(--text-color);
+}
+...
+a:active {
+  color: var(--red);                 2
+}
+          </code>
+          <small>Listado 12.7. Añadiendo el color rojo a la paleta</small>
+        </pre>
+        <ol class="index-code">
+          <li>Asigna una variable roja</li>
+          <li>Usa la variable para enlaces activos</li>
+        </ol>
+        <p>
+          Con esto en su lugar, cargue la página y véala en acción. Desafortunadamente, esto es un poco complicado porque el estado activo de un enlace no se muestra de forma predeterminada. Puede activarlo haciendo clic y manteniendo presionado un enlace, pero volverá a verde tan pronto como lo suelte. Para facilitar esto, puede utilizar <em>DevTools</em> para forzar un estado activo.
+        </p>
+        <p>
+          Haga clic con el botón derecho en un enlace y elija Inspeccionar o Inspeccionar elemento en el menú contextual. Esto abre DevTools. En el panel Elementos, haga clic con el botón derecho en la etiqueta <code>&lt;a&gt;</code> y seleccione: activo (o activo en Firefox) en el menú contextual <b>(figura 12.12)</b>. Esto obligará al navegador a mostrar los estilos activos del elemento.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/12.jpg" alt="ibid">
+          <figcaption>Figura 12.12. DevTools le permite forzar un elemento a un estado activo, flotante, enfocado o visitado para que pueda obtener una vista previa de cómo aparecerán los estilos.</figcaption>
+        </figure>
+        <p>
+          Con el elemento forzado a un estado activo, puede ver cómo se ve el color rojo. Cuando sea necesario, puede editar estilos en vivo en <em>DevTools</em> y ver cómo afecta a este elemento activo.
+        </p>
+        <p>
+          Elegir colores que se vean bien nunca es una ciencia exacta, pero trabajar en HSL puede ayudar a que sea más fácil. Pruebe colores que sean complementarios a los colores que ya están en su página. Juega con la saturación y la luminiscencia en <em>DevTools</em> para encontrar algo que se vea bien.
+        </p>
+        <p>
+          Si desea profundizar en la selección de colores, busque en línea artículos sobre la teoría del color. Un gran artículo, creado por <em>Natalya Shelburne</em>, para comenzar está disponible en https://tallys.github.io/color-theory/.
+        </p>
+        <h3 id="sub5">12.2.3. Considerando el contraste de los colores de fuente</h3>
+        <p>
+          Probablemente haya notado que nuestro color de fuente es un gris oscuro y no un negro verdadero <code>(#000)</code>. En notación HSL, tiene un valor de luminiscencia del 15%, no del 0%. El uso de gris en lugar de negro verdadero es una práctica común. En una pantalla de computadora retroiluminada, el texto en negro verdadero sobre un fondo blanco puro <code>(#fff)</code> produce demasiado contraste. Esto puede producir fatiga ocular al leer, especialmente para bloques de texto más grandes. Lo mismo ocurre con el texto blanco sobre fondo negro. En estos casos, debe usar un gris oscuro en lugar de negro o un gris claro en lugar de blanco, o ambos. Para su vista, todavía aparece en blanco y negro, pero será más cómodo de leer.
+        </p>
+        <p>
+          Si bien no desea demasiado contraste para su texto, tampoco desea demasiado poco. El texto gris sobre un fondo gris claro puede resultar difícil de leer para los usuarios con problemas de visión. También puede ser difícil de leer en un teléfono inteligente a la luz del sol. Entonces, ¿cómo sabe cuándo tiene suficiente contraste?
+        </p>
+        <p>
+          Para ayudar a guiar esta decisión, las Pautas de accesibilidad al contenido web (WCAG) del W3C proporcionan una relación de contraste mínima recomendada (llamada nivel AA), así como una relación de contraste mejorada más estricta (llamada nivel AAA). Y debido a que el texto más grande es más fácil de leer, ambos niveles incluyen una relación de contraste menos estricta para texto grande. Las relaciones de contraste recomendadas se muestran en la <b>tabla 12.2</b>.
+        </p>
+        <p>
+          La WCAG define el texto grande como 18 pt <code>(24px)</code> o más grande para un grosor de fuente regular, o 14 pt <code>(18,667px)</code> para fuentes en negrita. En resumen, esto generalmente significa que las fuentes de su cuerpo deben cumplir o superar la recomendación de texto normal, y sus títulos deben cumplir o superar la recomendación de texto grande.
+        </p>
+        <p>
+          La WCAG proporciona una fórmula para calcular esta relación de contraste, pero nunca me preocupo por las matemáticas. Es mucho más fácil utilizar una herramienta. Hay varias herramientas disponibles en línea: busque el comprobador de contraste de color CSS.
+        </p>
+        <p>
+          Cada uno tiene sus propias fortalezas y debilidades. Uno de mis favoritos está disponible en https://leaverou.github.io/contrast-ratio. Este verificador admite cualquier formato de color CSS válido. Pegue su color de fondo y su color de texto, y le mostrará la relación de contraste calculada <code>(figura 12.13)</code>. Desplácese sobre este número para ver si pasa el nivel AA o AAA de WCAG, y para qué tamaños de fuente.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/13.jpg" alt="ibid">
+          <figcaption>Figura 12.13. Los colores de fondo y texto tienen una relación de contraste de 15,1: 1.</figcaption>
+        </figure>
+        <p>
+          Con muchos diseños, no es práctico que cada fragmento de texto cumpla con los niveles de contraste AAA. Las recomendaciones de <em>WCAG</em> reconocen esto. Es una buena idea que el texto principal del cuerpo alcance el <em>nivel AAA</em>, pero puede ser un poco más relajado y apuntar al <em>nivel AA</em> con etiquetas de colores u otro texto decorativo.
+        </p>
+        <p>
+          Además, tenga en cuenta que el análisis matemático no es la historia completa. Algunos tipos de letra son más fáciles de leer que otros. Esto es especialmente cierto si su diseño utiliza fuentes delgadas. La <b>figura 12.14</b> muestra dos copias del mismo párrafo. Aunque los colores son iguales en cada uno, el contraste percibido es diferente.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/14.jpg" alt="ibid">
+          <figcaption>Figura 12.14. Un tipo de letra delgado produce menos contraste visual, incluso con el mismo color.</figcaption>
+        </figure>
+        <p>
+          Los párrafos de la <b>figura 12.14</b> se establecen con el tipo de letra <em>Helvetica Neue</em>. El de la izquierda tiene un peso de fuente de 300 (a menudo llamado ligero o libro); el de la derecha tiene un grosor de fuente de 100 (fino). Una relación de contraste de <code>7:1</code> puede ser excelente con la fuente de la izquierda, pero la fuente de la derecha puede necesitar una que sea un poco más fuerte.
+        </p>
+        <p>
+          Solo algunas fuentes proporcionan pesos finos, pero cuando las use, asegúrese de tener un fuerte contraste de color para que sean legibles.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>12.3. ESPACIADO</h2>
+        <p>
+          Con los colores al cuadrado, podemos centrar nuestra atención en el espaciado preciso que el diseñador proporcionó en la maqueta. Esta puede ser una parte tediosa del proceso de desarrollo, y puede implicar un intercambio de opiniones con su diseñador al revisar su trabajo, señalando inconsistencias que deberá corregir.
+        </p>
+        <p>
+          Gran parte de este trabajo se reduce simplemente a establecer los márgenes correctos en los elementos. Hacer esto es generalmente el lugar más fácil para comenzar, aunque es posible que deba hacer algunos ajustes desde allí. Veamos dos cosas que deberá considerar: si trabajar o no con unidades relativas y cómo las alturas de las líneas pueden afectar su espacio vertical.
+        </p>
+        <h3 id="sub6">12.3.1. Usando ems vs. px</h3>
+        <p>
+          Una decisión importante que tendrá que tomar es si desea utilizar <em>ems</em> o <em>píxeles</em>. Los diseñadores suelen proporcionar medidas en píxeles, por lo que son las más fáciles de usar. Pero hay beneficios de convertir a una unidad relativa, ya sea <em>ems</em> o <em>rems</em>.
+        </p>
+        <p>
+          Considere las medidas especificadas alrededor del menú de navegación <b>(figura 12.15)</b>. El diseño requiere <code>10px</code> entre cada elemento, así como <code>10px</code> entre sus bordes inferiores y el borde inferior de la barra de navegación.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/15.jpg" alt="ibid">
+          <figcaption>Figura 12.15. La especificación exige 10 px alrededor y entre cada elemento de navegación.</figcaption>
+        </figure>
+        <p>
+          A lo largo del <b>capítulo 2</b>, analicé los beneficios de usar unidades relativas. En particular, le permiten definir un tamaño de fuente receptivo <code>(font-size: calc(0.5em + 1vw))</code>, luego permiten que su diseño se escale proporcionalmente con la fuente. En una pantalla más grande, el tamaño de la fuente será más grande, así como los márgenes basados en em y rem. Este beneficio también se aplica si el usuario personaliza el tamaño de fuente predeterminado de su navegador.
+        </p>
+        <p>
+          Sin embargo, esta técnica de utilizar tamaños de fuente adaptables es relativamente nueva, por lo que la mayoría de los diseñadores no están acostumbrados a trabajar con unidades relativas. Si desea utilizar esta técnica, probablemente debería discutirla con el diseñador. También tendrá que realizar las conversiones de unidades usted mismo.
+        </p>
+        <p>
+          Si decide usar <em>píxeles</em>, se facilita el trabajo a corto plazo, pero significa un diseño menos flexible en el futuro. Esto podría significar potencialmente más trabajo más adelante, pero es imposible saberlo con certeza. Si decide utilizar unidades relativas, tendrá un poco más de trabajo por adelantado, pero su diseño será más sólido.
+        </p>
+        <p>
+          Debido a que el uso de píxeles es la opción más sencilla (por ejemplo, establecer márgenes o rellenos de <code>10px</code> donde sea necesario), lo guiaré a través del proceso más complicado de crear el menú de navegación con ems.
+        </p>
+        <p>
+          En la especificación de diseño, las medidas de espaciado en la barra de navegación requieren <code>10px</code> alrededor de los elementos del menú <b>(figura 12.15)</b>. Debido a que el tamaño de fuente base es <code>16px</code>, puede hacer los cálculos, dividiendo la longitud deseada por el tamaño de fuente base: 10 dividido por 16 es 0.625, por lo que nuestras distancias aquí serán <code>0.625em</code>. Ahora está listo para agregar las declaraciones indicadas aquí a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav-container {
+  background-color: var(--medium-green);
+}
+.nav-container__inner {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0.625em 0;             1
+}
+
+/* ... */
+
+.top-nav {
+  display: flex;
+  list-style-type: none;
+  margin: 0;                      2
+}
+.top-nav > li + li {
+  margin-left: 0.625em;           3
+}
+          </code>
+          <small>Listado 12.8. Usar relleno y margen para establecer el espaciado de navegación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega relleno superior e inferior de 10 px a toda la barra de navegación</li>
+          <li>Elimina el margen de lista aplicado de la hoja de estilo del agente de usuario</li>
+          <li>Agrega un margen horizontal de 10 px entre cada elemento de navegación</li>
+        </ol>
+        <p>
+          Al trabajar con espacio, es importante considerar cuándo debe usar relleno y cuándo debe usar márgenes. En este caso, tiene sentido usar relleno para el espaciado vertical en el <code>nav-container__inner</code>, por lo que también se aplicará a todo el contenedor, rellenando el título de la página en el extremo izquierdo y la lista de navegación superior. Luego utilicé márgenes para el espacio horizontal entre los elementos de navegación porque quería que cada elemento tuviera el espacio entre ellos.
+        </p>
+        <p>
+          El espacio debajo de la imagen principal y entre cada una de las tres columnas también es sencillo <b>(figura 12.16)</b>. Debido a que ambos espacios deben aplicarse al exterior de los elementos con una imagen de fondo o un color de fondo, usará márgenes para establecer este espacio.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/16.jpg" alt="ibid">
+          <figcaption>Figura 12.16. Los márgenes de la página debajo de la imagen principal (40 px) y entre las columnas (25 px)</figcaption>
+        </figure>
+        <p>
+          Nuevamente, divida estos valores de píxeles por el tamaño de fuente base para convertir las longitudes a ems. Los <code>40px</code> debajo de la imagen principal equivalen a 2,5em(40/16 = 2,5; este margen ya está en su lugar) y los <code>25px</code> entre cada columna equivalen a 1,5625em(25/16). Agregue estos márgenes como se muestra en la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.hero {
+  background: url(collaboration.jpg) no-repeat;
+  background-size: cover;
+  margin-bottom: 2.5rem;             1
+}
+
+/* ... */
+
+.tile-row {
+  display: flex;
+}
+.tile-row > * {
+  flex: 1;
+}
+.tile-row > * + * {                  2
+  margin-left: 1.5625em;             2
+}                                    2
+          </code>
+          <small>Listado 12.9. Agregar márgenes debajo de la imagen principal y entre las columnas</small>
+        </pre>
+        <ol class="index-code">
+          <li>Garantiza un espacio de 40 px debajo de la imagen principal</li>
+          <li>Agrega 25 px entre cada columna</li>
+        </ol>
+        <p>
+          El espaciado entre contenedores como este (con imágenes de fondo o colores de fondo) es generalmente sencillo. Puede ser un poco más delicado cuando necesita ajustar el espacio entre líneas de texto, como párrafos o encabezados.
+        </p>
+        <h3 id="sub7">12.3.2. Factorizar la altura de la línea</h3>
+        <p>
+          Nuestra <em>maqueta</em> también define espacios alrededor del texto. La <b>figura 12.17</b> muestra las medidas especificadas para ello. (Puede ser difícil de ver aquí, pero este es un mosaico blanco sobre un fondo gris claro adicional. Las medidas de <code>25px</code> en la parte superior e izquierda son de los bordes de este mosaico blanco).
+        </p>
+        <figure>
+          <img src="../img_css/cap12/17.jpg" alt="ibid">
+          <figcaption>Figura 12.17. Espaciado deseado en el mosaico y alrededor del texto</figcaption>
+        </figure>
+        <p>
+          Aplicar el espacio de <code>25px</code> alrededor de los bordes del texto es una cuestión de agregar relleno a los mosaicos: <code>25/16 = 1.5625em</code>. Sin embargo, los <code>30px</code> entre el encabezado y el párrafo no son tan simples. Si tuviera que aplicar un margen de <code>30px</code> entre los dos elementos, el espacio entre las dos líneas de texto estaría más cerca de <code>36px</code>. Para entender por qué ocurre esto, veamos cómo se determina la altura del elemento.
+        </p>
+        <p>
+          En el modelo de cuadro, el cuadro de contenido del elemento está rodeado por un relleno, luego un borde y luego un margen. Pero con elementos como párrafos y encabezados, hay más en el cuadro de contenido que el texto impreso: la altura de la línea del elemento contribuye a la altura general, más allá de la parte superior e inferior de los caracteres. Esto se ilustra en la <b>figura 12.18</b>. El texto tiene <code>1em</code> de altura, pero la altura de la línea se extiende un poco más por encima y por debajo del borde del texto.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/18.jpg" alt="ibid">
+          <figcaption>Figura 12.18. La altura de la línea define la altura del cuadro de contenido.</figcaption>
+        </figure>
+        <p>
+          En su página, tiene una altura de línea de 1,4. Esto se aplica al elemento <code>&lt;body&gt;</code> y se hereda desde allí. Por lo tanto, un elemento con una línea de texto tiene un cuadro de contenido de <code>1.4em</code> de altura y el texto está centrado verticalmente dentro. Con un tamaño de fuente de <code>16px</code>, esto hace que la altura total del cuadro de contenido sea de 22,4 px. Los <code>6.4px</code> adicionales se dividen uniformemente por encima y por debajo del texto.
+        </p>
+        <p>
+          Entonces, si le da al título un margen inferior igual a <code>30px</code>, habrá visualmente <code>3.2px</code> adicionales entre el texto y la parte superior del margen. También habrá <code>3.2px</code> adicionales en el cuadro de contenido del párrafo de abajo. (El espaciado es el mismo porque tanto el encabezado como el párrafo tienen la misma altura de línea y tamaño de fuente). Esto produce un espacio percibido entre los dos de <code>36.4px</code>.
+        </p>
+        <p>
+          Los diseñadores están acostumbrados a trabajar con <em>interlineado</em>, que es una medida del espacio entre líneas de texto. En CSS, este espacio está controlado por la altura de la línea, que no es directamente análoga al interlineado. Veremos más de cerca el ajuste fino de este espacio en el próximo capítulo.
+        </p>
+        <p>
+          Por lo general, un diseñador no se preocupará por una discrepancia de uno o dos píxeles, pero seis píxeles y medio adicionales podrían molestarlos. Será aún más grande si tiene una línea de mayor altura o uno de los elementos tiene un tamaño de fuente mayor.
+        </p>
+        <p>
+          La forma de solucionar esta discrepancia es tener en cuenta el espacio extra y restarlo del margen. En lugar de un margen de <code>30px</code>, reste los 6 píxeles adicionales y apunte a <code>24px</code>. Dividir por 16, y esto nos da un valor em de 1.5. Agregue estos espacios de la siguiente lista a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+p {                                  1
+  margin-top: 1.5em;                 1
+  margin-bottom: 1.5em;              1
+}                                    1
+
+/* ... */
+
+.tile {
+  background-color: var(--white);
+  border-radius: 0.3em;
+  padding: 1.5625em;                 2
+}
+.tile > h4 {                         3
+  margin-bottom: 1.5em;              3
+}                                    3
+          </code>
+          <small>Listado 12.10. Establecer el espaciado de mosaico y párrafo</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega márgenes a los párrafos en sus estilos base</li>
+          <li>Agrega acolchado dentro de las baldosas</li>
+          <li>Agrega el margen debajo de los títulos de los mosaicos</li>
+        </ol>
+        <p>
+          Ha aplicado los márgenes de <code>1.5em</code> a los estilos base, por lo que todos los párrafos tendrán el mismo espaciado en toda la página. Repitió esta medida nuevamente debajo del título del mosaico <code>(.tile > h4)</code>, por lo que el espacio debajo del encabezado es siempre el mismo, incluso si no está seguido inmediatamente por un párrafo. Debido al colapso de los márgenes, los dos márgenes se superpondrán, produciendo el espacio de <code>30px</code> entre el encabezado y el párrafo.
+        </p>
+        <p>
+          Queda un último conjunto de medidas en la <em>maqueta</em>: el espacio en la imagen del héroe alrededor del eslogan. Esta parte de la <em>maqueta</em> se muestra en la <b>figura 12.19</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/19.jpg" alt="ibid">
+          <figcaption>Figura 12.19. El diseño requiere 95 px por encima del lema y 16 px por debajo (entre éste y el botón).</figcaption>
+        </figure>
+        <p>
+          La altura de la línea del lema también influirá en estos espacios porque tiene un tamaño de letra muy grande. El tamaño de fuente es <code>1.95rem</code>, que, multiplicado por el tamaño de fuente base de <code>16px</code>, produce una fuente de <code>31.2px</code>. Esto multiplicado por una altura de línea de 1,4 produce una altura de línea calculada de <code>43.68px</code>, o aproximadamente <code>6px</code> adicionales por encima y <code>6px</code> por debajo del texto.
+        </p>
+        <p>
+          Debido a que la altura de la línea aporta <code>6px</code> de espacio sobre el texto, solo necesitas agregar <code>89px</code> de espacio adicional para lograr los <code>95px</code> deseados. Del mismo modo, debajo del lema, solo necesita agregar <code>10px</code> adicionales para lograr el espacio de <code>16px</code> que se muestra en la maqueta. Esto es mucha aritmética y, a veces, el enfoque más fácil es sentarse con el diseñador y editar los valores en vivo en el navegador hasta que el diseñador lo apruebe.
+        </p>
+        <p>
+          Ahora que sabe que necesita agregar <code>89px</code> arriba y <code>10px</code> debajo del lema, puede convertir estos valores a unidades relativas y agregarlos a la hoja de estilo: 89/16 es igual a <code>5.5625em</code> y <code>10/16 = 0.625em</code>. Actualice la parte de la hoja de estilo que se muestra en la siguiente lista, agregando declaraciones anotadas para posicionar el eslogan.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.hero {
+  background: url(collaboration.jpg) no-repeat;
+  background-size: cover;
+  margin-bottom: 2.5rem;
+}
+.hero__inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 5.5625em 12.5em 12.5em 0;            1
+  text-align: right;
+}
+.hero h2 {
+  font-size: 1.95rem;
+  margin-top: 0;                                2
+  margin-bottom: 0.625rem;                      3
+}
+          </code>
+          <small>Listado 12.11. Colocación del lema y el botón dentro de la imagen principal</small>
+        </pre>
+        <ol class="index-code">
+          <li>Reemplaza la estimación aproximada con el espaciado recién calculado</li>
+          <li>Elimina el margen superior, ya que el relleno hero__inner proporciona todo el espacio necesario</li>
+          <li>Define el espacio entre el lema y el botón</li>
+        </ol>
+        <p>
+          El <code>padding</code> superior del <code>hero__inner</code> proporciona el espacio sobre el eslogan. Agregué relleno en los bordes derecho e inferior, aunque no se especificaron valores específicos en la maqueta. Luego establezco el margen superior del eslogan en cero, para que no agregue más espacio dentro del relleno del <code>hero__inner</code>. También utilicé rems en lugar de ems para el margen inferior del eslogan porque el eslogan no tiene el tamaño de fuente predeterminado de <code>16px</code>.
+        </p>
+        <h3 id="sub8">12.3.3. Espaciado de elementos en línea</h3>
+        <p>
+          Queda un último detalle para poner en práctica en el diseño de la página. La columna central tiene una lista de sistemas operativos donde la aplicación <em>Ink</em> está disponible para su uso <b>(figura 12.20)</b>. Dejé esto como una lista normal desordenada hasta ahora. Vamos a ponerlos en línea tal como aparecen en la <em>maqueta</em>.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/20.jpg" alt="ibid">
+          <figcaption>Figura 12.20. Los elementos de la lista deben diseñarse y hacerse en línea.</figcaption>
+        </figure>
+        <p>
+          Este tipo de minidiseño es común para cosas como enumerar etiquetas en publicaciones de blogs o categorías de productos. Lo he incluido aquí porque puede tener algunas peculiaridades con las que debería estar familiarizado.
+        </p>
+        <p>
+          Hay algunas opciones disponibles para este tipo de diseño. Dos que me vienen a la mente son flexbox o elementos en línea. Hemos analizado varios diseños de cajas flexibles a lo largo del libro, por lo que quiero echar un vistazo a las preocupaciones al usar elementos en línea.
+        </p>
+        <p>
+          Varios estilos aquí son sencillos. Cada elemento deberá <code>display: inline</code>, así como un poco de relleno, color de fondo y un radio de borde. Al principio, esto parecerá suficiente, pero surgirá un problema si la línea de contenido se ajusta. El resultado se muestra en la <b>figura 12.21</b>, que podría ocurrir en ciertos anchos de ventana gráfica o si el contenido cambia en el futuro.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/21.jpg" alt="ibid">
+          <figcaption>Figura 12.21. Los elementos de la lista se superponen cuando se ajustan a la línea.</figcaption>
+        </figure>
+        <p>
+          El fondo gris de los elementos de una fila se superpondrá con el de los elementos de otra fila. La razón de esto es la altura de la línea. Como vio anteriormente en el capítulo, la altura de la línea de texto está determinada por el tamaño de la fuente multiplicado por la altura de la línea. Si agrega relleno a un elemento en línea, el elemento en sí se hará más alto, pero no aumentará la altura de la línea de texto. Eso está determinado exclusivamente por la altura de la línea.
+        </p>
+        <p>
+          Para solucionar este problema, deberá aumentar la altura de la línea de cada artículo. Agregue el código que se muestra en la siguiente lista para diseñar estas etiquetas en su página. Continúe y edite la altura de la línea a diferentes valores para ver el efecto que tiene.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.tag-list {
+  list-style: none;                          1
+  padding-left: 0;                           1
+}
+.tag-list > li {
+  display: inline;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 0.2rem;
+  background-color: var(--light-gray);
+  line-height: 2.6;                          2
+}
+          </code>
+          <small>Listado 12.12. Aplicar estilo a las etiquetas</small>
+        </pre>
+        <ol class="index-code">
+          <li>Anula los estilos de lista de agentes de usuario</li>
+          <li>Establece una altura de línea grande para agregar espacio vertical cuando se ajusta la línea</li>
+        </ol>
+        <p>
+          Este comportamiento es exclusivo de los elementos en línea. Si un elemento es un elemento flexible (o bloque en línea), la línea crecerá si es necesario para acomodarlo. Pero también deberá agregar márgenes horizontales y verticales para mantener el espacio entre los elementos. Al utilizar elementos en línea, puede permitir que el espacio en blanco natural entre los elementos le proporcione el espacio.
+        </p>
+        <p>
+          Observe que el texto Windows Phone dentro del elemento en línea puede ajustar la línea. En un flexbox o bloque en línea, esto no está permitido, y todo el elemento se ajustará a la siguiente línea. Si esto es una preocupación de cualquier manera, elija el enfoque que brinde la solución que tenga más sentido en su contexto.
+        </p>
+        <p>
+          Esto completa el diseño de la página. Su página ahora debería coincidir con la <em>maqueta</em> completa como se muestra en la <b>figura 12.22</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap12/22.jpg" alt="ibid">
+          <figcaption>Figura 12.22. Diseño de página completo</figcaption>
+        </figure>
+        <p>
+          Pasamos mucho tiempo enfocándonos en detalles muy particulares. Muchos desarrolladores no prestan tanta atención a los detalles al implementar un diseño, pero para aquellos que lo hacen, vale la pena. Estos detalles marcan la diferencia entre un buen diseño y uno genial.
+        </p>
+        <p>
+          Mientras trabaja en CSS, le animo a que se tome el tiempo para ajustar el diseño. Incluso si no tiene un diseñador profesional detrás de su diseño, confíe en su ojo. Pruebe un poco más de espacio aquí o un poco menos allá y vea qué se siente bien. Tómese su tiempo para modificar los valores. No abuse del color, colóquelo selectivamente en los lugares en los que desea llamar la atención. Establezca patrones consistentes, luego rompa esos patrones para atraer la atención de los usuarios hacia las cosas más importantes de la página.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Utilice el contraste de forma selectiva para llamar la atención sobre partes importantes de la página.</li>
+          <li>Utilice el color HSL para que trabajar con colores sea más fácil y comprensible de un vistazo.</li>
+          <li>Confíe en su diseñador cuando se vuelva exigente con los detalles esenciales.</li>
+          <li>Tómese el tiempo para ajustar el espaciado.</li>
+          <li>Recuerde que la altura de la línea puede afectar su espacio vertical.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">El Contraste es el Rey</a></li>
+        <li><a href="#sub1">-Estableciendo patrones</a></li>
+        <li><a href="#sub2">- Implementando el diseño</a></li>
+        <li><a href="#tema2">Color</a></li>
+        <li><a href="#sub3">- Entender las notaciones de color</a></li>
+        <li><a href="#sub4">- Agregar nuevos colores a una paleta</a></li>
+        <li><a href="#sub5">- Considerando el contraste de los colores de fuente</a></li>
+        <li><a href="#tema3">Espaciado</a></li>
+        <li><a href="#sub6">- Usando ems vs. px</a></li>
+        <li><a href="#sub7">- Factorizar la altura de la línea</a></li>
+        <li><a href="#sub8">- Espaciado de elementos en línea</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

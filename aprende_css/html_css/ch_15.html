@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 15</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 15. Transformaciones</h1>
+      <div>
+        <a href="ch_14.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_16.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capítulo habla sobre:</em></h4>
+      <ul>
+        <li>Manipular elementos usando transformaciones para transiciones y animaciones de desempeño</li>
+        <li>Agregar un efecto de "rebote" a una transición</li>
+        <li>La canalización de procesamiento del navegador</li>
+        <li>Mirando las transformaciones 3D y la perspectiva</li>
+      </ul>
+      <p>
+        En este capítulo, exploraremos la propiedad de <code>transform</code>, que puede usar para cambiar o distorsionar la forma o posición de un elemento en la página. Esto puede implicar rotar, escalar o sesgar el elemento en dos o tres dimensiones. Las transformaciones se utilizan más comúnmente junto con transiciones o animaciones, por lo que he intercalado este capítulo entre esos dos temas. En estos dos últimos capítulos, creará una página que hace un uso intensivo de transiciones, transformaciones y animaciones.
+      </p>
+      <p>
+        Primero, lo guiaré a través de la aplicación de transformaciones a un elemento estático. Esto le dará una idea de cómo funcionan de forma aislada antes de agregarlos a algunas transiciones. Luego, creará un menú pequeño pero complejo con múltiples transformaciones y efectos de transición. Finalmente, veremos cómo trabajar en 3D y utilizar la perspectiva. Esto se trasladará al siguiente capítulo, donde usaremos transformaciones 3D junto con animación.
+      </p>
+      <section id="tema1">
+        <h2>15.1. ROTAR, TRADUCIR, ESCALAR Y BORRAR</h2>
+        <p>
+          Una regla de transformación básica se parece a esto:
+        </p>
+        <pre>
+          <code class="container__base-code">
+transform: rotate(90deg);
+          </code>
+        </pre>
+        <p>
+          Esta regla, cuando se aplica a un elemento, lo gira 90 grados a la derecha (en el sentido de las agujas del reloj). La función de transformación <code>rotate()</code> especifica cómo se transformará el elemento. Encontrará varias otras funciones de transformación, pero generalmente todas caen en una de cuatro categorías (ilustradas en la <b>figura 15.1</b>).
+        </p>
+        <ul>
+          <li><em translate="no">Rotate:</em> hace girar el elemento una cierta cantidad de grados alrededor de un eje.</li>
+          <li><em translate="no">Translate:</em> mueve el elemento hacia la izquierda, derecha, arriba o abajo (similar al posicionamiento relativo)</li>
+          <li><em>Scale:</em> reduce o expande el elemento.</li>
+          <li><em>Skew:</em> distorsiona la forma del elemento, deslizando su borde superior en una dirección y su borde inferior en la dirección opuesta.</li>
+        </ul>
+        <figure>
+          <img src="../img_css/cap15/01.jpg" alt="ibid">
+          <figcaption>Figura 15.1. Los cuatro tipos básicos de transformación (una línea discontinua representa las posiciones de los elementos iniciales)</figcaption>
+        </figure>
+        <p>
+          Cada transformación se aplica utilizando la función correspondiente como valor de la propiedad de <code>transform</code>. Creemos un ejemplo sencillo para probarlos en su navegador. Esta será una tarjeta con una imagen y texto <b>(figura 15.2)</b>, a la que puede aplicar transformaciones.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/02.jpg" alt="ibid">
+          <figcaption>Figura 15.2. Una tarjeta básica con una transformación de rotación aplicada</figcaption>
+        </figure>
+        <p>
+          Cree una nueva página y hoja de estilo y vincúlelas. Agregue el HTML que se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="card">
+  &lt;img src="images/chicken1.jpg" alt="a chicken"/>
+  &lt;h4>Mrs. Featherstone&lt;/h4>
+  &lt;p> She may be a bit frumpy, but Mrs Featherstone gets the job done. She
+    lays her largish cream-colored eggs on a daily basis. She is gregarious
+    to a fault.&lt;/p>
+  &lt;p>This Austra White is our most prolific producer.&lt;/p>
+&lt;/div>
+          </code>
+          <small>Listado 15.1. Creando una tarjeta simple</small>
+        </pre>
+        <p>
+          A continuación, en la hoja de estilo, agregue el CSS en la siguiente lista. Esto incluye algunos estilos base, colores y una tarjeta con una transformación de rotación aplicada.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  background-color: hsl(210, 80%, 20%);
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+img {
+  max-width: 100%;
+}
+
+.card {
+  padding: 0.5em;
+  margin: 0 auto;                 1
+  background-color: white;
+  max-width: 300px;
+  transform: rotate(15deg);       2
+}
+          </code>
+          <small>Listado 15.2. Diseñar una tarjeta y aplicar una transformación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Centra la tarjeta</li>
+          <li>Gira la tarjeta 15 grados a la derecha</li>
+        </ol>
+        <p>
+          Cargue esto en su navegador y verá la tarjeta rotada. Experimente un poco con esto para tener una idea de cómo se comporta la función <code>rotate()</code>. Utilice un ángulo negativo para rotar la tarjeta hacia la izquierda (por ejemplo, intente <code>rotate(-30ged)</code>).
+        </p>
+        <p>
+          A continuación, intente cambiar la transformación a algunas de las otras funciones. Utilice los siguientes valores y observe cómo se comportan cada uno:
+        </p>
+        <ul>
+          <li><code>skew(20deg)</code>: inclina la tarjeta 20 grados. Pruebe con un ángulo negativo para inclinarse en la otra dirección.</li>
+          <li><code>scale(0.5)</code>: reduce la tarjeta a la mitad de su tamaño inicial. La función <code>scale()</code> toma un número sin unidades. Los valores inferiores a 1 encogen el elemento; los valores superiores a 1 lo expanden.</li>
+          <li><code>translate(20px, 40px)</code>: desplaza el elemento 20 píxeles hacia la derecha y 40 píxeles hacia abajo. Nuevamente, puede usar valores negativos para transformar en la dirección opuesta.</li>
+        </ul>
+        <p>
+          Una cosa a tener en cuenta al usar transformaciones es que, si bien el elemento puede moverse a una nueva posición en la página, no cambia el flujo del documento. Puede trasladar un elemento a lo largo de la pantalla, pero su ubicación original permanece desocupada por otros elementos. Además, al rotar un elemento, una esquina del mismo puede salirse del borde de la pantalla. De manera similar, podría cubrir partes de otro elemento a su lado <b>(figura 15.3)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/03.jpg" alt="ibid">
+          <figcaption>Figura 15.3. La transformación de un elemento no hace que otros elementos se muevan, por lo que pueden superponerse.</figcaption>
+        </figure>
+        <p>
+          En algunos casos, me parece útil establecer un margen suficiente para uno o ambos elementos para evitar superposiciones no deseadas.
+        </p>
+        <p>
+          Las transformaciones no se pueden aplicar a elementos en línea como <code>&lt;span&gt;</code> o <code>&lt;a&gt;</code>. Para transformar un elemento de este tipo, debe cambiar la propiedad de visualización a algo que no sea <code>inline</code> (como <code>inline-block</code>) o cambiar el elemento a un elemento flexible o de cuadrícula (aplique <code>display: flex</code> o <code>display: grid</code> al elemento principal).
+        </p>
+        <h3 id="sub1">15.1.1. Cambiar el origen de la transformación</h3>
+        <p>
+          Se realiza una transformación alrededor de un <em>punto de origen</em>. Este punto sirve como eje de rotación o el punto donde comienza el escalado o el sesgo. Esto significa que el punto de origen del elemento permanece bloqueado en su lugar, mientras que el resto del elemento se transforma a su alrededor (aunque esto no se aplica a <code>translate()</code> ya que todo el elemento se mueve durante una traducción).
+        </p>
+        <p>
+          De forma predeterminada, el punto de origen es el centro del elemento, pero puede cambiarlo con la propiedad <code>transform-origin</code>. La <b>figura 15.4</b> muestra algunos elementos transformados alrededor de diferentes puntos de origen.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/04.jpg" alt="ibid">
+          <figcaption>Figura 15.4. Rotar, escalar y sesgar realizados con el origen de la transformación en varias esquinas del elemento.</figcaption>
+        </figure>
+        <p>
+          Para el elemento de la izquierda, la rotación gira alrededor del origen, que se establece usando <code>transform-origin: right bottom</code>. El elemento en el medio escala hacia el origen <code>(right top)</code>. Y el elemento de la derecha se sesga de tal manera que su origen <code>(left top)</code> permanece en su lugar mientras que el resto del elemento se estira.
+        </p>
+        <p>
+          El origen también se puede especificar en porcentajes, medidos desde la parte superior izquierda del elemento. Las siguientes dos declaraciones son equivalentes:
+        </p>
+        <pre>
+          <code class="container__base-code">
+transform-origin: right center;
+transform-origin: 100% 50%;
+          </code>
+        </pre>
+        <p>
+          También puede usar una longitud para especificar el origen en píxeles, ems u otra unidad. Aunque, en mi experiencia, las palabras clave <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> y <code>center</code> son todo lo que necesita en la mayoría de los casos.
+        </p>
+        <h3 id="sub2">15.1.2. Aplicar múltiples transformaciones</h3>
+        <p>
+          Puede especificar varios valores para la propiedad <code>transform</code>, cada uno separado por un espacio. Cada valor de transformación se aplica sucesivamente de derecha a izquierda. Si aplica <code>transform: rotate(15deg) translate(15px, 0)</code>, el elemento se traslada 15 px a la derecha y luego se gira 15 grados en el sentido de las agujas del reloj. Edite su hoja de estilo para trabajar un poco con esto.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.card {
+  padding: 0.5em;
+  margin: 0 auto;
+  background-color: white;
+  max-width: 300px;
+  transform: rotate(15deg) translate(20px, 0);          1
+}
+          </code>
+          <small>Listado 15.3. Aplicar múltiples transformaciones</small>
+        </pre>
+        <ol class="index-code">
+          <li>1 Traduce 20 px a la derecha, luego gira 15 grados en el sentido de las agujas del reloj</li>
+        </ol>
+        <p>
+          Probablemente sea más fácil ver este efecto si abre las <em>DevTools</em> de su navegador y manipula los valores en vivo para ver cómo afectan al elemento. Observe que cambiar los valores de <code>translate()</code> parece mover el elemento a lo largo de un eje diagonal, en lugar de las direcciones cardinales normales; esto se debe a que la rotación tiene lugar después de la traducción.
+        </p>
+        <p>
+          Puede ser un poco complicado trabajar con esto. En general, encuentro que es más fácil hacer las manipulaciones <code>translate()</code> en último lugar cronológicamente (primero en el orden de origen para la transformación), por lo que puedo trabajar con las coordenadas normales izquierda / derecha, arriba / abajo. Para ver esto, invierta el orden de <code>transform: translate(20px, 0) rotate(15 grados)</code>.
+        </p>
+      </section>
+      <section id="tema2"> 
+        <h2>15.2. TRANSFORMACIONES EN MOVIMIENTO</h2>
+        <p>
+          Las transformaciones por sí solas no son tan prácticas. Un cuadro con un <code>skew()</code> aplicado puede parecer interesante, pero no es exactamente fácil de leer. Pero cuando se usa junto con el movimiento, las transformaciones se vuelven mucho más útiles.
+        </p>
+        <p>
+          Creemos una página que utilice este concepto. En la <b>figura 15.5</b> se muestra una captura de pantalla de la página que creará. Agregará mucho movimiento a esta página.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/05.jpg" alt="ibid">
+          <figcaption>Figura 15.5. Los iconos del menú de la izquierda presentarán varias transformaciones y transiciones.</figcaption>
+        </figure>
+        <p>
+          En esta sección, creará el menú de navegación <code>(nav)</code> a la izquierda. Inicialmente, aparece como solo cuatro íconos apilados verticalmente, pero, al pasar el mouse, aparece el texto del menú. Este ejemplo incluirá varias transiciones y un par de transformaciones. Vamos a configurar la página, luego veremos más de cerca el menú de navegación. (En el siguiente capítulo, creará la sección de tarjetas principal en el centro y agregará más transformaciones y algo de animación).
+        </p>
+        <p>
+          Cree una nueva página y una nueva hoja de estilo llamada <em>style.css</em> y agregue el siguiente marcado. Este marcado incluye un enlace a dos fuentes web <em>(Alfa Slab One y Raleway)</em> de la API de Google Fonts. También tiene el marcado para el encabezado de la página y el menú de navegación.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;!doctype html>
+&lt;html lang="en">
+  &lt;head>
+    &lt;title>The Yolk Factory&lt;/title>
+    &lt;link
+    href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Raleway"
+    rel="stylesheet">                                                 1
+    &lt;link rel="stylesheet" href="style.css">
+  &lt;/head>
+
+  &lt;body>
+    &lt;header>
+      &lt;h1 class="page-header">The Yolk Factory&lt;/h1>
+    &lt;/header>
+    &lt;nav class="main-nav">
+      &lt;ul class="nav-links">
+        &lt;li>
+          &lt;a href="/">
+            &lt;img src="images/home.svg" class="nav-links__icon"/>      2
+            &lt;span class="nav-links__label">Home&lt;/span>                2
+          &lt;/a>
+        &lt;/li>
+        &lt;li>
+          &lt;a href="/events">
+            &lt;img src="images/calendar.svg" class="nav-links__icon"/>  2
+            &lt;span class="nav-links__label">Events&lt;/span>              2
+          &lt;/a>
+        &lt;/li>
+        &lt;li>
+          &lt;a href="/members">
+            &lt;img src="images/members.svg" class="nav-links__icon"/>   2
+            &lt;span class="nav-links__label">Members&lt;/span>             2
+          &lt;/a>
+        &lt;/li>
+        &lt;li>
+          &lt;a href="/about">
+            &lt;img src="images/star.svg" class="nav-links__icon"/>      2
+            &lt;span class="nav-links__label">About&lt;/span>               2
+          &lt;/a>
+        &lt;/li>
+      &lt;/ul>
+    &lt;/nav>
+  &lt;/body>
+&lt;/html>
+          </code>
+          <small>Listado 15.4. Marcado de página para transformaciones en movimiento</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega las fuentes Alfa Slab One y Raleway a la página</li>
+          <li>Los enlaces de navegación contienen cada uno una imagen y una etiqueta.</li>
+        </ol>
+        <p>
+          El elemento de navegación contiene la mayor parte de este marcado. Incluye una lista desordenada <code>(&lt;ul&gt;)</code> de enlaces. Cada enlace consta de una imagen de icono y una etiqueta de texto. Tenga en cuenta que las imágenes de los iconos aquí están en <em>formato SVG</em>. Esto se volverá importante más adelante. Agregará más contenido a la página cuando esté listo para darle estilo en el próximo capítulo.
+        </p>
+        <p>
+          <em>SVG:</em> abreviatura de <em>gráficos vectoriales escalables</em>. Este es un formato de imagen basado en XML que define una imagen usando vectores. Debido a que la imagen está definida matemáticamente, se puede escalar hacia arriba y hacia abajo a cualquier tamaño. <em>SVG</em> es ampliamente compatible con todos los navegadores.
+        </p>
+        <p>
+          A continuación, agregará algunos estilos básicos, incluido un degradado de fondo y un relleno alrededor del título principal. También aplicará las fuentes web a la página. Copie o agregue la siguiente lista en su hoja de estilo. Estos son solo los estilos base y el encabezado de la página; trabajará en diseñar el menú a continuación.
+        </p>
+        <pre>
+          <code class="container__base-code">
+html {
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: background-color: hsl(200, 80%, 30%);
+  background-image: radial-gradient(hsl(200, 80%, 30%),     1
+                      hsl(210, 80%, 20%&#41));                  1
+  color: white;
+  font-family: Raleway, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  margin: 0;
+  min-height: 100vh;                                        2
+}
+
+h1, h2, h3 {
+  font-family: Alfa Slab One, serif;
+  font-weight: 400;
+}
+
+main {
+  display: block;
+}
+
+img {
+  max-width: 100%;
+}
+
+.page-header {
+  margin: 0;
+  padding: 1rem;                                            3
+}
+@media (min-width: 30em) {                                  4
+  .page-header {                                            4
+    padding: 2rem 2rem 3rem;                                4
+  }                                                         4
+}
+          </code>
+          <small>Listado 15.5. Estilos base y encabezado</small>
+        </pre>
+        <ol class="index-code">
+          <li>Gradiente de fondo azul profundo</li>
+          <li>Asegura que el cuerpo llene la ventana gráfica para que el degradado llene la pantalla</li>
+          <li>Relleno más pequeño para el encabezado en las ventanas gráficas móviles</li>
+          <li>Acolchado más grande para el encabezado en pantallas más grandes</li>
+        </ol>
+        <p>
+          Este ejemplo utiliza varios conceptos de capítulos anteriores. He utilizado un degradado radial para el fondo del cuerpo. Esto agrega un poco de profundidad a la página. (El <code>background-color</code> proporciona un valor de respaldo para Opera Mini, que no admite degradados radiales). La fuente web Alfa Slab One se aplica a los títulos y Raleway al cuerpo del texto. También proporcioné estilos receptivos para el encabezado de la página mediante una consulta de medios, agregando un relleno más grande cuando el tamaño de la pantalla se lo puede permitir.
+        </p>
+        <p>
+          Tomaremos el menú en varias etapas. Primero, diseñemos el menú y luego proporcionemos un comportamiento receptivo. Hará esto con un primer enfoque móvil <b>(capítulo 8)</b>, así que comencemos con la pequeña ventana gráfica. El encabezado y el menú deben verse como en la <b>figura 15.6</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/06.jpg" alt="ibid">
+          <figcaption>Figura 15.6. Diseño móvil para el menú de navegación.</figcaption>
+        </figure>
+        <p>
+          Debido a que desea diseñar los enlaces de navegación horizontalmente para ventanas gráficas más pequeñas, tiene sentido un enfoque que utilice un flexbox. Puede espaciar uniformemente los elementos de navegación a lo ancho de la página aplicando <code>align-content: space-between</code> al contenedor flexible. A continuación, establecerá los colores de la fuente y alineará los iconos. Agregue la siguiente lista a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav-links {
+  display: flex;                    1
+  justify-content: space-between;   1
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  list-style: none;
+}
+.nav-links > li + li {
+  margin-left: 0.8em;
+}
+.nav-links > li > a {
+  display: block;
+  padding: 0.8em 0;
+  color: white;
+  font-size: 0.8rem;
+  text-decoration: none;            2
+  text-transform: uppercase;        2
+  letter-spacing: 0.06em;           2
+}
+.nav-links__icon {
+  height: 1.5em;
+  width: 1.5em;
+  vertical-align: -0.2em;           3
+}
+.nav-links > li > a:hover {
+  color: hsl(40, 100%, 70%);
+}
+          </code>
+          <small>Listado 15.6. Estilos móviles para los enlaces del menú de navegación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza una caja flexible para distribuir los elementos de navegación por la pantalla de forma horizontal</li>
+          <li>Estilos del texto del enlace</li>
+          <li>Mueve los iconos ligeramente hacia abajo para centrarlos con las etiquetas de texto</li>
+        </ol>
+        <p>
+          Mantendrá el menú como este en ventanas gráficas más pequeñas. Pero en pantallas más grandes, puede superponer más efectos. Para el diseño de escritorio, lo acoplará en el lado izquierdo de la pantalla usando una posición fija. Esto se verá como la <b>figura 15.7</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/07.jpg" alt="ibid">
+          <figcaption>Figura 15.7. El menú de navegación está acoplado en el lado izquierdo de la pantalla para ventanas de gran tamaño.</figcaption>
+        </figure>
+        <p>
+          Este menú está construido a partir de dos módulos: he nombrado el elemento externo <code>main-nav</code> y la estructura interna <code>nav-links</code>. El <code>main-nav</code> sirve como contenedor, que colocará a la izquierda. El <code>main-nav</code> también proporciona el fondo oscuro. Pongamos esto en su lugar.
+        </p>
+        <p>
+          Agregue la siguiente lista a su hoja de estilo; asegúrese de que la segunda <em translate="no">media query</em> y su contenido se coloquen después de los estilos de <code>main-nav</code> existentes para que puedan anular los estilos móviles cuando sea necesario.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 30em) {                      1
+  .main-nav {
+    position: fixed;
+    top: 8.25rem;
+    left: 0;
+    z-index: 10;                                2
+    background-color: transparent;              3
+    transition: background-color .5s linear;    4
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+  }
+
+  .main-nav:hover {
+    background-color: rgba(0, 0, 0, 0.6);       5
+  }
+}
+
+/* ... */
+
+@media (min-width: 30em) {                      6
+  .nav-links {
+    display: block;
+    padding: 1em;
+    margin-bottom: 0;
+  }
+  .nav-links > li + li {
+    margin-left: 0;
+  }
+  .nav-links__label {
+    margin-left: 1em;
+  }
+}
+          </code>
+          <small>Listado 15.7. Colocación del menú para ventanas gráficas grandes</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aplica estilos solo a pantallas medianas y grandes</li>
+          <li>Asegura que la navegación se muestre frente a otro contenido agregado a la página más tarde</li>
+          <li>Inicialmente deja transparente el color de fondo</li>
+          <li>Agrega un efecto de transición al fondo</li>
+          <li>Aplica un fondo oscuro semitransparente al pasar el mouse</li>
+          <li>6 Anula el <span translate="no">flexbox</span> de los estilos móviles para hacer que los enlaces se apilen verticalmente</li>
+        </ol>
+        <p>
+          La declaración <code>position: fixed</code> coloca el menú en su lugar y lo mantiene allí, incluso cuando la página se desplaza. La regla <code>display: block</code> anula la <code>display: flex</code> de los estilos móviles, lo que hace que los elementos del menú se apilen unos sobre otros.
+        </p>
+        <p>
+          Ahora comencemos a superponer algunos efectos de transición y transformación. Para eso, harás tres cosas:
+        </p>
+        <ol>
+          <li>Aumente el tamaño del icono mientras se desplaza un enlace.</li>
+          <li>Oculte las etiquetas de los enlaces, luego haga que todas aparezcan con una transición gradual cuando el usuario pase el mouse sobre el menú.</li>
+          <li>Utilice una traducción para agregar un efecto de "entrada rápida" a la etiqueta del enlace junto con la aparición gradual.</li>
+        </ol>
+        <p>
+          Analicemos estos en cada uno de ellos.
+        </p>
+        <h3 id="sub3">15.2.1. Ampliando el icono</h3>
+        <p>
+          Mire la estructura de los enlaces de navegación. Cada elemento de la lista contiene un enlace <code>(&lt;a&gt;)</code>, que a su vez contiene un icono y una etiqueta:
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;li>
+  &lt;a href="/">
+    &lt;img src="images/home.svg" class="nav-links__icon"/>
+    &lt;span class="nav-links__label">Home&lt;/span>
+  &lt;/a>
+&lt;/li>
+          </code>
+        </pre>
+        <p>
+          Los elementos de la lista, junto con el padre <code>&lt;ul&gt;</code>, es un módulo mucho más grande y más profundamente anidado de lo que prefiero hacer. Por lo general, buscaría una forma de dividirlo en módulos más pequeños, pero tendremos que mantenerlo todo junto para lograr algunos de estos efectos.
+        </p>
+        <p>
+          Primero, aumentemos la escala del ícono al pasar el mouse. Hará esto con una transformación de escala, luego le aplicará una transición para que el cambio ocurra sin problemas. En la <b>figura 15.8</b>, el elemento del menú Eventos se coloca sobre el mouse y su icono de calendario se amplía ligeramente.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/08.jpg" alt="ibid">
+          <figcaption>Figura 15.8. Tamaño de icono predeterminado (izquierda). Al pasar el cursor sobre un enlace, su icono aumenta de tamaño (derecha).</figcaption>
+        </figure>
+        <p>
+          La imagen de Eventos tiene una altura y un ancho establecidos, por lo que podría agrandarla aumentando estas propiedades. Pero, esto haría que otros elementos se movieran a medida que se recalculara el flujo del documento.
+        </p>
+        <p>
+          Al usar una transformación en su lugar, los elementos que la rodean no se ven afectados y la etiqueta Eventos no se desplaza hacia la derecha. Actualice su CSS para agregar este efecto cuando el elemento esté suspendido o enfocado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 30em) {
+
+  .nav-links {
+    display: block;
+    padding: 1em;
+    margin-bottom: 0;
+  }
+  .nav-links > li + li {
+    margin-left: 0;
+  }
+  .nav-links__label {
+    margin-left: 1em;
+  }
+
+  .nav-links__icon {
+    transition: transform 0.2s ease-out;     1
+  }
+
+  .nav-links a:hover > .nav-links__icon,
+  .nav-links a:focus > .nav-links__icon {
+    transform: scale(1.3);                   2
+  }
+}
+          </code>
+          <small>Listado 15.8. Ampliando el icono cuando su enlace está suspendido o enfocado</small>
+        </pre>
+        <ol class="index-code">
+          <li>Transiciones de la propiedad de transformación</li>
+          <li>Aumenta el tamaño del icono</li>
+        </ol>
+        <p>
+          Ahora, mientras desliza el mouse por los elementos del menú, verá que los íconos crecen un poco para ayudar a indicar sobre qué elemento está colocando el cursor. Elegí intencionalmente usar recursos de imagen SVG aquí, por lo que no hay pixelación u otras distorsiones extrañas cuando cambia el tamaño de la imagen. La transformación <code>scale()</code> es una forma perfecta de hacer esto.
+        </p>
+        <p>
+          Los iconos son una parte importante de algunos diseños. Las técnicas utilizadas para los íconos han evolucionado y, durante mucho tiempo, la mejor práctica fue poner todos sus íconos en un solo archivo de imagen, llamado <em translate="no">sprite sheet</em>. Luego, usando una imagen de fondo CSS y un tamaño y posicionamiento de fondo cuidadosos, muestre un ícono de la <em translate="no">sprite sheet</em> en un elemento.
+        </p>
+        <p>
+          Luego, las <em>fuentes de iconos</em> se hicieron populares. En lugar de incrustar sprites en una imagen, este enfoque implica incrustar cada icono como un personaje en un archivo de fuente personalizado. Al usar fuentes web, un solo carácter se representaría como un icono. Servicios como Font-Awesome (https://fontawesome.io/) proporcionan cientos de iconos de uso general para facilitar esta tarea.
+        </p>
+        <p>
+          Estas técnicas aún funcionan, pero te animo a que cambies a iconos SVG. SVG es mucho más versátil y más eficaz. Puede usar un SVG como fuente <code>&lt;img&gt;</code>, como lo hizo en este capítulo, pero SVG también ofrece otras opciones. Puede crear una hoja de sprites SVG, o como SVG es un formato de archivo basado en XML, puede insertarlo directamente en su HTML. Por ejemplo:
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;li>
+  &lt;a href="/">
+    &lt;svg class="nav-links__icon" width="20" height="20" viewBox="0 0 20
+      20">
+      &lt;path fill="#ffffff" d="M19.871 12.165l-8.829-9.758c-0.274-0.303-
+      0.644-0.47-1.042-0.47-0 0 0 0 0 0-0.397 0-0.767 0.167-1.042
+      0.47l-8.829 9.758c-0.185 0.205-0.169 0.521 0.035 0.706 0.096
+      0.087 0.216 0.129 0.335 0.129 0.136 0 0.272-0.055 0.371-
+      0.165l2.129-2.353v8.018c0 0.827 0.673 1.5 1.5 1.5h11c0.827 0 1.5-
+      0.673 1.5-1.5v-8.018l2.129 2.353c0.185 0.205 0.501 0.221 0.706
+      0.035s0.221-0.501 0.035-0.706zM12 19h-4v-4.5c0-0.276 0.224-0.5
+      0.5-0.5h3c0.276 0 0.5 0.224 0.5 0.5v4.5zM16 18.5c0 0.276-0.224
+      0.5-0.5 0.5h-2.5v-4.5c0-0.827-0.673-1.5-1.5-1.5h-3c-0.827 0-1.5
+      0.673-1.5 1.5v4.5h-2.5c-0.276 0-0.5-0.224-0.5-0.5v-9.123l5.7-
+      6.3c0.082-0.091 0.189-0.141 0.3-0.141s0.218 0.050 0.3 0.141l5.7
+      6.3v9.123z">&lt;/path>
+    &lt;/svg>
+    &lt;span class="nav-links__label">Home&lt;/span>
+  &lt;/a>
+&lt;/li>
+          </code>
+        </pre>
+        <p>
+          Esto le permite apuntar a partes del <em>SVG</em> directamente desde CSS si lo desea; puede cambiar dinámicamente los colores, o incluso el tamaño y la posición, de varias partes de un <em>SVG</em>, utilizando CSS normal. Sin embargo, los tamaños de archivo son más pequeños y las imágenes no se pixelan como GIF, PNG u otros formatos de imagen basados en ráster.
+        </p>
+        <p>
+          Si no está familiarizado con <em>SVG</em>, consulte https://css-tricks.com/using-svg/ para obtener una buena introducción a las diversas formas en que puede usar SVG en sus páginas web.
+        </p>
+        <p>
+          Ahora que los íconos se ven geniales, dirijamos nuestra atención a las etiquetas junto a ellos.
+        </p>
+        <h3 id="sub4">15.2.2. Creación de etiquetas de "volar en"</h3>
+        <p>
+          No es necesario que las etiquetas del menú estén visibles en todo momento. Puede ocultarlos de forma predeterminada, dejando los iconos en su lugar para indicar al usuario que el menú está allí. Luego, cuando el usuario mueve el mouse sobre el menú o las pestañas hasta un elemento del menú, puede desaparecer en las etiquetas. De esta manera, cuando el usuario pasa el mouse cerca de los íconos, aparece todo el menú, usando una serie de efectos a la vez: el fondo y las etiquetas se desvanecerán, con las etiquetas comenzando un poco a la izquierda de su posición final (figura 15.9).
+        </p>
+        <figure>
+          <img src="../img_css/cap15/09.jpg" alt="ibid">
+          <figcaption>Figura 15.9. Al pasar el mouse, el menú se desvanece, mientras que las etiquetas se desvanecen y se deslizan desde la izquierda.</figcaption>
+        </figure>
+        <p>
+          Este efecto requiere dos transiciones separadas en las etiquetas al mismo tiempo: una para la opacidad y otra para una transformación <code>translate()</code>. Actualice esta parte de su hoja de estilo, realizando los cambios indicados en la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+@media (min-width: 30em) {
+  .nav-links {
+    display: block;
+    padding: 1em;
+    margin-bottom: 0;
+  }
+  .nav-links > li + li {
+    margin-left: 0;
+  }
+
+  .nav-links__label {
+    display: inline-block;                                        1
+    margin-left: 1em;
+    padding-right: 1em;
+    opacity: 0;                                                   2
+    transform: translate(-1em);                                   3
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3),  4
+                opacity 0.4s linear;                              4
+  }
+  .nav-links:hover .nav-links__label,                             5
+  .nav-links a:focus > .nav-links__label {                        5
+    opacity: 1;                                                   5
+    transform: translate(0);                                      5
+  }
+
+  .nav-links__icon {
+    transition: transform 0.2s ease-out;
+  }
+  .nav-links a:hover > .nav-links__icon,
+  .nav-links a:focus > .nav-links__icon {
+    transform: scale(1.3);
+  }
+}
+          </code>
+          <small>Listado 15.9. Transición en las etiquetas de elementos de navegación</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que la etiqueta sea un bloque en línea para que se le puedan aplicar transformaciones</li>
+          <li>Oculta la etiqueta inicialmente</li>
+          <li>Desplaza la etiqueta 1 em hacia la izquierda</li>
+          <li>Agrega transiciones a los valores que cambiarán</li>
+          <li>Al pasar el mouse o enfocar, hace que la etiqueta sea visible y la vuelve a colocar en su posición correcta.</li>
+        </ol>
+        <p>
+          Este menú ocupa una pequeña parte del espacio de la pantalla, pero están sucediendo muchas cosas. Algunos de estos selectores son bastante largos y complicados.
+        </p>
+        <p>
+          Observe cómo la pseudoclase <code>:hover</code> que acaba de agregar está en el elemento <code>nav-links</code> de nivel superior, mientras que la pseudoclase <code>:focus</code> está en <code>&lt;a&gt;</code> dentro. (El enfoque generalmente solo se puede aplicar a ciertos elementos como enlaces y botones). De esta manera, todas las etiquetas aparecen tan pronto como se pasa el mouse sobre el menú. Además, una etiqueta individual también aparece si el usuario la enfoca usando la tecla Tab del teclado.
+        </p>
+        <p>
+          Cuando está oculta, la etiqueta se desplaza 1 em hacia la izquierda usando <code>translate()</code>. Luego, a medida que se desvanece, vuelve a su posición real. He omitido el segundo parámetro de la función <code>translate()</code> aquí y he especificado solo el <em>valor x</em>, que controla la traducción horizontal. Como no es necesario traducir el elemento hacia arriba y hacia abajo, está bien.
+        </p>
+        <p>
+          También vale la pena ver la función personalizada <code>cubic-bezier()</code>. Esto produce un efecto de rebote: la etiqueta se mueve más allá de la ubicación final antes de asentarse donde se detiene. Esta curva se ilustra en la <b>figura 15.10</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/10.jpg" alt="ibid">
+          <figcaption>Figura 15.10. Una curva de Bézier con un rebote al final</figcaption>
+        </figure>
+        <p>
+          Observe que la curva se extiende fuera de la parte superior del cuadro, lo que significa que el valor excede el valor al final de la transición. En la transición de una <code>translate(-1em)</code> a una <code>translate(0)</code>, la transformación de la etiqueta alcanzará momentáneamente un valor de aproximadamente 0.15 cm más allá de la posición final antes de retroceder. De manera similar, también puede crear un rebote al comienzo de la función de temporización moviendo la primera palanca de control debajo de la parte inferior de la caja. Sin embargo, no puede extenderse fuera de los bordes izquierdo y derecho, ya que esto produciría una curva de transición ilógica.
+        </p>
+        <p>
+          Cargue la página en su navegador y observe cómo se comporta esta transición. El rebote es sutil, por lo que es posible que deba reducir el tiempo de transición para verlo conscientemente, pero agrega un poco de peso e impulso a la etiqueta, lo que hace que el movimiento se sienta un poco más natural.
+        </p>
+        <h3 id="sub5">15.2.3. Escalonando las transiciones</h3>
+        <p>
+          El menú parece bastante bueno en este momento. Hagamos un último ajuste para que se sienta pulido. Utilizará la propiedad <code>transition-delay</code> para establecer un retraso ligeramente diferente para cada elemento del menú. Esto escalonará las animaciones para que vuelen en una "ola" rodante en lugar de todas a la vez (figura 15.11).
+        </p>
+        <figure>
+          <img src="../img_css/cap15/11.jpg" alt="ibid">
+          <figcaption>Figura 15.11. Los elementos del menú superior volarán justo antes que los inferiores.</figcaption>
+        </figure>
+        <p>
+          Para lograr esto, usará el selector de pseudo-clase: <code>nth-child()</code> para apuntar a cada elemento del menú según su posición en la lista, y luego aplicará un retardo de transición sucesivamente más largo a cada uno. Agregue el siguiente fragmento de código a su hoja de estilo después del resto de los estilos <code>nav-links</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.nav-links:hover .nav-links__label,
+.nav-links a:focus > .nav-links__label {
+  opacity: 1;
+  transform: translate(0);
+}
+.nav-links > li:nth-child(2) .nav-links__label {           1
+  transition-delay: 0.1s;                                  2
+}
+.nav-links > li:nth-child(3) .nav-links__label {           3
+  transition-delay: 0.2s;                                  4
+}
+.nav-links > li:nth-child(4) .nav-links__label {           5
+  transition-delay: 0.3s;
+}
+.nav-links > li:nth-child(5) .nav-links__label {           5
+  transition-delay: 0.4s;
+}
+          </code>
+          <small>Listado 15.10. Agregar un retraso de transición escalonado a los elementos del menú</small>
+        </pre>
+        <ol class="index-code">
+          <li>Apunta a la etiqueta del segundo elemento del menú</li>
+          <li>Retrasa su transición en una décima de segundo</li>
+          <li>Apunta a la etiqueta del tercer elemento del menú</li>
+          <li>Retrasa su transición en dos décimas de segundo</li>
+          <li>Repita tantas veces como sea necesario</li>
+        </ol>
+        <p>
+          El selector <code>:nth-child(2)</code> apunta al segundo elemento de la lista, al que aplicó un ligero retraso. El tercer elemento <code>(:nth-child(3))</code> tiene un retraso un poco más largo. El cuarto y el quinto, cada uno más largo aún. No es necesario que oriente el primer elemento porque desea que su transición comience de inmediato; no necesita retraso de transición.
+        </p>
+        <p>
+          Cargue esto en su navegador y coloque el cursor sobre el menú para ver el efecto. Se siente fluido y vivo. Apague el mouse para ver que los elementos se desvanecen con el mismo tiempo escalonado.
+        </p>
+        <p>
+          Encontrará una desventaja en este tipo de enfoque: el menú solo puede ser tan largo como el número de estos selectores que escriba. Agregué una regla para apuntar a un quinto elemento del menú, aunque nuestro menú actualmente solo tiene cuatro elementos. Esta es una medida de seguridad en caso de que se agregue otro elemento de menú en el futuro. Incluso podría agregar un sexto solo para estar seguro. Pero tenga en cuenta que, dado que existe la posibilidad de que el menú supere este recuento en algún momento, deberá agregar más reglas al CSS.
+        </p>
+        <p>
+          La repetición de un bloque de código como este se puede hacer más fácil con un preprocesador. Consulte el <b>apéndice B</b> para ver un ejemplo.
+        </p>
+        <p>
+          Ahora que el menú está creado, puede agregar más a esta página. Lo hará en el próximo capítulo, así que tenga esta página a mano para agregarla. Pero antes de eso, hay un par de cosas más que debes saber sobre las transformaciones.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>15.3. RENDIMIENTO DE ANIMACIÓN</h2>
+        <p>
+          La existencia de determinadas transformaciones puede parecer redundante. El resultado de una traducción a menudo se puede lograr usando posicionamiento relativo y, en el caso de imágenes o SVG, el resultado de una transformación de escala se puede lograr estableciendo explícitamente una altura y / o ancho.
+        </p>
+        <p>
+          Las transformaciones son mucho más eficaces en el navegador. Si anima la posición de un elemento (haciendo la transición de la propiedad <code>left</code>, por ejemplo), puede experimentar un rendimiento notablemente más lento. Este es particularmente el caso cuando se anima un elemento complejo grande o una gran cantidad de elementos en la página a la vez. Este comportamiento de rendimiento se aplica tanto a las transiciones (cubiertas en el <b>capítulo 14</b>) como a las animaciones (que cubriré en el próximo capítulo).
+        </p>
+        <p>
+          Si está haciendo algún tipo de transición o animación, siempre debe favorecer una transformación sobre el posicionamiento o el tamaño explícito si puede. Para comprender por qué es así, debemos observar más de cerca cómo se representa la página en el navegador.
+        </p>
+        <h3 id="sub6">15.3.1. Mirando la canalización de renderizado</h3>
+        <p>
+          Una vez que el navegador calcula qué estilos se aplican a qué elementos de la página, debe traducir esos estilos a píxeles en la pantalla. Este es el proceso de <em>renderizado</em>, que se puede dividir en tres etapas: diseño, pintura y composición.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/12.jpg" alt="ibid">
+          <figcaption>Figura 15.12. Las tres etapas del proceso de renderizado</figcaption>
+        </figure>
+        <p>
+          En la primera etapa, <em>diseño</em>, el navegador calcula cuánto espacio ocupará cada elemento en la pantalla. Debido a la forma en que funciona el flujo de documentos, el tamaño y la posición de un elemento pueden influir en el tamaño y la posición de muchos otros elementos en la página. Esta etapa arregla todo eso.
+        </p>
+        <p>
+          Cada vez que cambie el ancho o alto de un elemento, o ajuste sus propiedades de posición (como <code>top</code> o <code>left</code>), se debe volver a calcular el diseño del elemento. Esto también se hace si JavaScript inserta o elimina un elemento del DOM. Cuando se produce un cambio de diseño, el navegador debe <em>redistribuir</em> el flujo de la página, volviendo a calcular el diseño de todos los demás elementos que se mueven o cambian de tamaño como resultado del cambio.
+        </p>
+        <p>
+          Después del diseño viene la <em>pintura</em>. Este es el proceso de rellenar píxeles: se dibuja el texto; las imágenes, los bordes y las sombras están todos coloreados. Esto no se muestra físicamente en la pantalla, sino que se dibuja en la memoria. Partes de la página están pintadas en <em>capas</em>.
+        </p>
+        <p>
+          Si cambia el color de fondo de un elemento, por ejemplo, debe volver a pintarlo. Pero, debido a que el color de fondo no tiene ningún impacto en la posición o el tamaño de los elementos de la página, no es necesario volver a calcular el diseño para tener en cuenta este cambio. Cambiar un color de fondo es menos intensivo desde el punto de vista informático que cambiar el tamaño de un elemento.
+        </p>
+        <p>
+          En las condiciones adecuadas, un elemento de la página se puede promover en su propia capa. Cuando esto sucede, se pinta por separado de las otras capas de la página. Los navegadores pueden tomar esta capa y enviarla a la GPU (unidad de procesamiento de gráficos) de la computadora para renderizarla, en lugar de pintarla en la CPU principal como la capa principal. Esto es beneficioso porque la GPU está altamente optimizada para realizar este tipo de cálculo.
+        </p>
+        <p>
+          Esto a menudo se conoce como <em>aceleración de hardware</em> porque depende de una pieza del hardware de la computadora para aumentar la velocidad de renderizado. Tener más capas significa más uso de memoria; pero, a cambio, puede acelerar el tiempo de procesamiento del renderizado.
+        </p>
+        <p>
+          En la etapa <em>compuesta</em>, el navegador toma todas las capas que se han pintado y las dibuja en la imagen final que se mostrará en pantalla. Estos se dibujan en un orden determinado para que las capas correctas aparezcan frente a otras capas, en los casos en que se superponen.
+        </p>
+        <p>
+          Dos propiedades, <code>opacity</code> y <code>transform</code>, cuando se cambian, dan como resultado un tiempo de renderizado mucho más rápido. Cuando cambia uno de estos en un elemento, el navegador puede promover ese elemento a su propia capa de pintura y usar la aceleración de GPU. Debido a que el elemento está en su propia capa, la capa principal no cambiará durante la animación y no será necesario volver a pintarla.
+        </p>
+        <p>
+          Cuando se realiza un cambio único en la página, esta optimización generalmente no hace una diferencia notable. Pero cuando el cambio es parte de una animación, la pantalla debe actualizarse decenas de veces por segundo; en cuyo caso, la velocidad importa. La mayoría de las pantallas se actualizan 60 veces por segundo. Idealmente, los cambios durante la animación deberían volver a calcularse al menos así de rápido para producir el movimiento más fluido posible en la pantalla. Cuanto más trabajo tenga que hacer el navegador para cada nuevo cálculo, más difícil será alcanzar esta velocidad.
+        </p>
+        <p>
+          Los navegadores han avanzado mucho en la optimización del proceso de renderizado, segmentando los elementos en capas lo mejor que pueden. Si anima la propiedad de <code>transform</code> o <code>opacity</code> en un elemento, los navegadores modernos, para que la animación sea fluida, generalmente toman buenas decisiones basadas en una serie de factores, incluidos los recursos del sistema. Pero, ocasionalmente, puede encontrar animaciones entrecortadas o parpadeantes.
+        </p>
+        <p>
+          Si experimenta esto, puede usar una propiedad llamada <code>will-change</code> para ejercer control sobre las capas de renderizado. Esta propiedad le indica al navegador, de antemano, que debe esperar que cambie una determinada propiedad en el elemento. Por lo general, esto significa que el elemento se promoverá a su propia capa de pintura. Por ejemplo, aplicar <code>will-change: transform</code> indica que espera cambiar la propiedad de transformación para ese elemento.
+        </p>
+        <p>
+          Sin embargo, no aplique esto a ciegas en la página hasta que vea problemas de rendimiento, ya que tenderá a utilizar más recursos del sistema. Asegúrese de probar antes y después, dejando solo <code>will-change</code> en la hoja de estilo si obtiene un mejor rendimiento. Para profundizar en cómo funciona esta propiedad y cuándo debe o no debe usarla, consulte el excelente artículo de Sara Soueidan en https://dev.opera.com/articles/css-will-change-property/.
+        </p>
+        <p>
+          Debo señalar que una cosa ha cambiado desde que se escribió este artículo: establece que solo las transformaciones 3D promueven un elemento a su propia capa. Este ya no es el caso; los navegadores más recientes ahora también usan aceleración de GPU para transformaciones 2D.
+        </p>
+        <p>
+          Al realizar la transición o la animación, que veremos en el próximo capítulo, intente hacer cambios solo para <code>transform</code> y <code>opacity</code>. Luego, si es necesario, puede cambiar las propiedades que dan como resultado una pintura pero no un rediseño. Solo cambie las propiedades que afecten al diseño cuando sea su única opción y mírelas primero si alguna vez nota problemas de rendimiento con sus animaciones. Para obtener un desglose completo de las propiedades que dan como resultado el diseño, la pintura y / o el compuesto, consulte https://csstriggers.com/.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>15.4. TRANSFORMACIONES TRIDIMENSIONALES (3D)</h2>
+        <p>
+          Hasta ahora, las transformaciones que ha utilizado son todas 2D. Estos son los más fáciles de trabajar (y los más comunes) ya que la página en sí es 2D. Pero no está confinado a esta limitación. La rotación y la traslación se pueden realizar en las tres dimensiones: X, Y y Z.
+        </p>
+        <p>
+          Puede usar la función <code>translate()</code>, como ha visto, para traducir horizontal y verticalmente (dimensiones X e Y). Esto también se puede hacer con las funciones <code>translateX()</code> y <code>translateY()</code>. Las siguientes dos declaraciones producen el mismo resultado:
+        </p>
+        <pre>
+          <code class="container__base-code">
+transform: translate(15px, 50px);
+transform: translateX(15px) translateY(50px);
+          </code>
+        </pre>
+        <p>
+          También puede traducir en la dimensión Z usando <code>translateZ()</code>, que mueve un elemento conceptualmente más cerca o más lejos del usuario. Del mismo modo, puede rotar un elemento alrededor de ejes en las tres dimensiones. Pero, a diferencia de translate, <code>rotateZ()</code> es la versión con la que ya estás familiarizado; es decir, <code>rotate()</code> también tiene un alias como <code>rotateZ()</code> porque gira alrededor del eje Z. Las funciones <code>rotateX()</code> y <code>rotateY()</code> giran alrededor del eje X horizontal (inclinando un elemento hacia adelante y hacia atrás) y alrededor del eje Y vertical (girando — o <em>guiñando</em> — el elemento hacia la izquierda o hacia la derecha), respectivamente. Consulte la <b>figura 15.13</b> para ver una ilustración de estas funciones.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/13.jpg" alt="ibid">
+          <figcaption>Figura 15.13. Rotación en cada uno de los tres ejes con una perspectiva de 300 px aplicada (una línea discontinua representa la posición inicial del elemento)</figcaption>
+        </figure>
+        <h3 id="sub7">15.4.1. Controlando la perspectiva</h3>
+        <p>
+          Sin embargo, antes de agregar transformaciones 3D a la página, debe especificar una cosa más: la <em>perspectiva</em>. Los elementos transformados juntos forman una escena 3D. Luego, el navegador calcula una imagen 2D de esta escena 3D y la muestra en la pantalla. Puede pensar en la perspectiva como la distancia entre la <em>"cámara"</em> y la escena. Mover la cámara cambia la forma en que aparece la escena en la imagen final.
+        </p>
+        <p>
+          Si la cámara está cerca (es decir, la perspectiva es pequeña), los efectos 3D son mucho más fuertes. Si la cámara está lejos (es decir, la perspectiva es grande), los efectos 3D son mucho más sutiles. En la <b>figura 15.14</b> se muestran algunas perspectivas diferentes.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/14.jpg" alt="ibid">
+          <figcaption>Figura 15.14. La misma rotación se aplica en diferentes perspectivas.</figcaption>
+        </figure>
+        <p>
+          El elemento girado de la izquierda, sin una perspectiva aplicada, no se ve en 3D. Aparece aplastado horizontalmente; no hay una sensación real de profundidad. Las transformaciones 3D sin perspectiva aparecen planas así; las partes del elemento que están <em>"más lejos"</em> no aparecen más pequeñas. Por otro lado, el cuadro del medio tiene aplicada una perspectiva de <code>400px</code>. Su borde derecho, el borde que está más lejos del espectador, parece un poco más pequeño y el borde que está más cerca parece más grande. La perspectiva aplicada al cuadro de la derecha es mucho más corta, <code>100px</code>. Esto exagera el efecto, por lo que el borde del elemento más alejado se contrae drásticamente en la distancia.
+        </p>
+        <p>
+          Puede especificar esta distancia de perspectiva de dos formas: utilizando una transformación de <code>perspective()</code> o utilizando la propiedad <code>perspective</code>. Cada uno se comporta un poco diferente. Juntemos un ejemplo básico para ilustrar. Este ejemplo será mínimo, solo para mostrar los efectos de la perspectiva.
+        </p>
+        <p>
+          Primero, rotará cuatro elementos, inclinándolos hacia atrás usando <code>rotateX()</code> <b>(figura 15.15)</b>. Cada elemento se rota de la misma manera y se aplica la misma transformación de <code>perspective()</code>; por tanto, los cuatro elementos parecen iguales.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/15.jpg" alt="ibid">
+          <figcaption>Figura 15.15. Cuatro elementos rotados sobre el eje X, cada uno con una transformación de perspectiva (200px) aplicada</figcaption>
+        </figure>
+        <p>
+          Cree una nueva página para esta demostración y cópiela en el HTML que se muestra aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="row">
+  &lt;div class="box">One&lt;/div>
+  &lt;div class="box">Two&lt;/div>
+  &lt;div class="box">Three&lt;/div>
+  &lt;div class="box">Four&lt;/div>
+&lt;/div>
+          </code>
+          <small>Listado 15.11. Cuatro cuadros para ayudar a ilustrar las transformaciones 3D y la perspectiva</small>
+        </pre>
+        <p>
+          A continuación, aplicará una transformación 3D y una transformación de perspectiva a cada uno de los cuadros. También agregará color y relleno para completar un poco el tamaño y para ayudar a que el efecto sea más evidente. Agregue una hoja de estilo a la página con el código que se muestra en esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.box {
+  box-sizing: border-box;
+  width: 150px;
+  margin: 0 2em;
+  padding: 60px 0;
+  text-align: center;
+  background-color: hsl(150, 50%, 40%);
+  transform: perspective(200px) rotateX(30deg);         1
+}
+          </code>
+          <small>Listado 15.12. Aplicar transformaciones 3D a las cajas</small>
+        </pre>
+        <ol class="index-code">
+          <li>Gira el cuadro 30 grados hacia atrás y aplica una perspectiva</li>
+        </ol>
+        <p>
+          En este ejemplo, todos los cuadros tienen el mismo aspecto. Cada uno tiene su propia perspectiva, aplicada mediante la función <code>perspective()</code>. Este método aplica una perspectiva a un solo elemento; en este ejemplo, lo ha aplicado directamente a cada cuadro. Es como si se tomaran cuatro fotografías distintas de cada elemento, cada una desde la misma posición.
+        </p>
+        <p>
+          A veces querrá que varios elementos compartan una perspectiva común, como si todos existieran dentro del mismo espacio 3D. La <b>figura 15.16</b> muestra una ilustración de esto. Estos son los mismos cuatro elementos, pero todos alcanzan la distancia hacia un punto de fuga común. Es como si se tomara una foto de los cuatro elementos juntos. Para lograr este efecto, utilizará la propiedad <code>perspective</code> en su elemento principal.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/16.jpg" alt="ibid">
+          <figcaption>Figura 15.16. Haga que los elementos compartan una perspectiva común utilizando la propiedad de perspectiva en un elemento ancestro común.</figcaption>
+        </figure>
+        <p>
+          Para ver este efecto, elimine la función <code>perspective()</code> de los cuadros y, en su lugar, agréguela al contenedor usando la propiedad <code>perspective</code>. Estos cambios se muestran aquí.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.row {
+  display: flex;
+  justify-content: center;
+  perspective: 200px;                     1
+}
+
+.box {
+  box-sizing: border-box;
+  width: 150px;
+  margin: 0 2em;
+  padding: 60px 0;
+  text-align: center;
+  background-color: hsl(150, 50%, 40%);
+  transform: rotateX(30deg);              2
+}
+          </code>
+          <small>Listado 15.13. Establecer una perspectiva común</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega la perspectiva al contenedor</li>
+          <li>No apliques una transformación de perspectiva a los cuadros</li>
+        </ol>
+        <p>
+          Al aplicar una perspectiva común al contenedor principal (u otro antepasado), todos los elementos dentro del principal que tienen aplicadas transformaciones 3D compartirán esa perspectiva.
+        </p>
+        <p>
+          Agregar una perspectiva es una parte importante de las transformaciones 3D. Sin él, los elementos más alejados del espectador no aparecerán más pequeños y los que estén más cerca no aparecerán más grandes. Este ejemplo es bastante mínimo. En el próximo capítulo, usará estas técnicas en un ejemplo más práctico para <em>"volar"</em> algunos elementos en la página desde la distancia.
+        </p>
+        <h3 id="sub8">15.4.2. Implementación de transformaciones 3D avanzadas</h3>
+        <p>
+          Algunas otras propiedades pueden resultar útiles al manipular elementos en 3D. No dedicaré mucho tiempo a esto, ya que los casos de uso del mundo real son pocos y distantes entre sí. Pero es bueno saber que existen en caso de que alguna vez los necesite. Le señalaré algunos ejemplos en línea si desea profundizar.
+        </p>
+        <p>
+          De forma predeterminada, la perspectiva se representa como si el espectador (o la cámara) estuviese colocada directamente delante del centro del elemento. La propiedad <code>perspective-origin</code> desplaza la posición de la cámara hacia la izquierda o hacia la derecha y hacia arriba o hacia abajo. La <b>figura 15.17</b> muestra el ejemplo anterior, pero con la cámara desplazada hacia la parte inferior izquierda.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/17.jpg" alt="ibid">
+          <figcaption>Figura 15.17. Mover el origen de la perspectiva aumenta la distorsión de la perspectiva de los elementos hacia los bordes más lejanos.</figcaption>
+        </figure>
+        <p>
+          Para ver esto en su página de muestra, agregue la declaración en este listado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.row {
+  display: flex;
+  justify-content: center;
+  perspective: 200px;
+  perspective-origin: left bottom;           1
+}
+          </code>
+          <small>Listado 15.14. Usar perspective-origin para mover la posición de la cámara</small>
+        </pre>
+        <ol class="index-code">
+          <li>Mueve la posición de la cámara a la parte inferior izquierda del elemento.</li>
+        </ol>
+        <p>
+          Esta es la misma distancia de perspectiva que antes, pero aquí la perspectiva se desplaza para que todos los cuadros estén a la derecha del espectador. Puede especificar la posición utilizando las palabras clave <code>top</code>, <code>left</code>, <code>bottom</code>, <code>right</code> y <code>center</code>. También puede utilizar cualquier porcentaje o valor de longitud, medido desde la esquina superior izquierda del elemento (<code>perspective-origin: 25% 25%,</code> por ejemplo).
+        </p>
+        <p>
+          Si usa <code>rotateX()</code> o <code>rotateY()</code> para girar un elemento más de 90 grados, sucede algo interesante: la "cara" del elemento ya no está dirigida hacia usted. En cambio, está de espaldas y ves la parte posterior del elemento. El elemento de la <b>figura 15.18</b> se ha transformado con <code>rotateY(180deg)</code>. Parece una imagen especular del original.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/18.jpg" alt="ibid">
+          <figcaption>Figura 15.18. Rotar un elemento para ver su parte posterior</figcaption>
+        </figure>
+        <p>
+          Esta es la cara posterior del elemento. De forma predeterminada, la cara posterior es visible, pero puede cambiar esto aplicando <code>backface-visibility: hidden</code> al elemento. Con esta declaración aplicada, el elemento solo será visible si está mirando hacia el espectador y oculto si está mirando hacia otro lado.
+        </p>
+        <p>
+          Una posible aplicación de esta técnica es colocar dos elementos uno al lado del otro, como los dos lados de una tarjeta. La parte frontal de la tarjeta será visible, pero la parte posterior de la tarjeta estará oculta. Luego, puede rotar su elemento contenedor para voltear ambos elementos, haciendo que el frente esté oculto y la parte posterior visible. Para ver una demostración de este efecto de giro de tarjeta, consulte el artículo en https://desandro.github.io/3dtransforms/docs/card-flip.html.
+        </p>
+        <p>
+          La propiedad <code>transform-style</code> se vuelve importante si va a construir escenas complejas con elementos anidados en 3D. Supongamos que ha establecido una perspectiva en un contenedor y luego ha aplicado transformaciones 3D a los elementos que contiene. Ese elemento contenedor, cuando se renderice, será una representación 2D de esa escena. Es como una fotografía de un objeto 3D. Esto se ve bien porque ese elemento debe renderizarse en su pantalla 2D.
+        </p>
+        <p>
+          Si luego aplica una rotación 3D en el contenedor, no se verá bien. En lugar de rotar toda la escena, parecerá que está rotando una fotografía 2D de una escena 3D. La perspectiva estará equivocada y la ilusión de profundidad en la escena se hará añicos. Consulte la <b>figura 15.19</b> para ver un ejemplo que ilustra esto.
+        </p>
+        <figure>
+          <img src="../img_css/cap15/19.jpg" alt="ibid">
+          <figcaption>Figura 15.19. Si realiza una transformación 3D en el padre de otros elementos transformados en 3D, probablemente querrá aplicar preserve-3d (derecha).</figcaption>
+        </figure>
+        <p>
+          La escena renderizada a la izquierda muestra un cubo 3D creado al transformar sus seis lados en su lugar. La imagen del medio muestra lo que sucede si intenta transformar todo el cubo junto (es decir, el elemento principal). Para corregir esto, debe aplicar <code>transform-style: preserve-3d</code> al elemento padre (derecha).
+        </p>
+        <p>
+          El estilo de transformación <code>preserve-3d</code> no es compatible con ninguna versión de Internet Explorer.
+        </p>
+        <p>
+          Para obtener una explicación más completa de esto, así como ejemplos de trabajo, visite el tutorial de Ana Tudor en https://davidwalsh.name/3d-transforms. Aunque es divertido jugar con ejemplos como este, nunca he necesitado usar <code>preserve-3d</code> en un proyecto del mundo real. Pero si decide jugar con las transformaciones 3D solo para ver qué puede construir, puede encontrar útil el tutorial.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Utilice transformaciones para escalar, rotar, trasladar y sesgar elementos en dos y tres dimensiones.</li>
+          <li>Las transformaciones son esenciales para las transiciones y animaciones de alto rendimiento.</li>
+          <li>Comprenda cómo funciona la canalización de renderizado y téngalo en cuenta al crear animaciones.</li>
+          <li>Para usar una curva de función de temporización personalizada para agregar un efecto de rebote a las transiciones.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Rotar, Traducir, Escalar y Borrar</a></li>
+        <li><a href="#sub1">- Cambiar el origen de la transformación</a></li>
+        <li><a href="#sub2">- Aplicar múltiples transformaciones</a></li>
+        <li><a href="#tema2">Transformaciones en Movimiento</a></li>
+        <li><a href="#sub3">- Ampliando el icono</a></li>
+        <li><a href="#sub4">- Creación de etiquetas de "volar en"</a></li>
+        <li><a href="#sub5">- Escalonando las transiciones</a></li>
+        <li><a href="#tema3">Rendimiento de Animacion</a></li>
+        <li><a href="#sub6">- Mirando la canalización de Renderizado</a></li>
+        <li><a href="#tema4">Transformaciones Tridimensionales (3D)</a></li>
+        <li><a href="#sub7">- Controlando la perspectiva</a></li>
+        <li><a href="#sub8">- Implementación de Transformaciones 3D avanzadas</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

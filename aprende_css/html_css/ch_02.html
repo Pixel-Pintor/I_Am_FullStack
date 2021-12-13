@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 2</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 2. Trabajando con unidades relativas</h1>
+      <div>
+        <a href="ch_01.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_03.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capitulo habla sobre:</em></h4>
+      <ul>
+        <li>La verastilidad de las unidades relativas</li>
+        <li>Como usar <code>ems</code> y <code>rems</code>, sin perder la cabeza</li>
+        <li>Usar unidades <span translate="no">viewport-relative</span></li>
+        <li>Una introduccion a las variables CSS</li>
+      </ul>
+      <p>
+        Cuando se trata de especificar valores, CSS proporciona una amplia gama de opciones para elegir. Uno de los más familiares, y probablemente el más fácil de trabajar, son los píxeles. Estos se conocen como <em>unidades absolutas</em>; es decir, <code>5px</code> siempre significa lo mismo. Otras unidades, como <em>em</em> y <em>rem</em>, no son absolutas, sino <em>relativas</em>. El valor de las unidades relativas cambia en función de factores externos; por ejemplo, el significado de <code>2em</code> cambia según el elemento (y, a veces, incluso la propiedad) en el que lo esté utilizando. Naturalmente, esto hace que sea más difícil trabajar con unidades relativas.
+      </p>
+      <p>
+        Los desarrolladores, incluso los desarrolladores de CSS experimentados, a menudo no les gusta trabajar con unidades relativas, incluido el notorio <em>em</em>. La forma en que puede cambiar el valor de un em lo hace parecer impredecible y menos claro que el píxel. En este capítulo, eliminaré el misterio que rodea a las unidades relativas. Primero, explicaré el valor único que aportan a CSS y luego te ayudaré a entenderlos. Explicaré cómo funcionan y te mostraré cómo domar su naturaleza aparentemente impredecible. Puede hacer que los valores relativos funcionen para usted y, si se utilizan correctamente, harán que su código sea más simple, más versátil y más fácil de trabajar.
+      </p>
+      <section id="tema1">
+        <h2>2.1 EL PODER DE LOS VALORES RELATIVOS</h2>
+        <p>
+          CSS trae una <em>vinculación tardía</em> de estilos a la página web: el contenido y sus estilos no se juntan hasta que se completa la creación de ambos. Esto agrega un nivel de complejidad al proceso de diseño que no existe en otros tipos de diseño gráfico, pero también proporciona más poder: una hoja de estilo se puede aplicar a cientos, incluso miles, de páginas. Además, el usuario puede modificar directamente la representación final de la página, que, por ejemplo, puede cambiar el tamaño de fuente predeterminado o cambiar el tamaño de la ventana del navegador.
+        </p>
+        <p>
+          En el desarrollo temprano de aplicaciones informáticas (así como en la publicación tradicional), los desarrolladores (o editores) conocían las limitaciones exactas de su medio. Una ventana de programa en particular puede tener 400 px de ancho por 300 px de alto, o una página puede tener 4 pulgadas de ancho por 6½ pulgadas de alto. En consecuencia, cuando los desarrolladores se dispusieron a diseñar los botones y el texto de la aplicación, sabían exactamente qué tan grandes podían hacer esos elementos y exactamente cuánto espacio les dejaría trabajar para otros elementos en la pantalla. En la web, este no es el caso.
+        </p>
+        <h3 id="sub1">2.11 La lucha por un diseño perfecto en píxeles</h3>
+        <p>
+          En el entorno web, el usuario puede tener la ventana de su navegador configurada en cualquier número de tamaños, y el CSS debe aplicarse a ella. Además, los usuarios pueden cambiar el tamaño de la página después de que se abre y el CSS debe adaptarse a las nuevas restricciones. Esto significa que los estilos no se pueden aplicar cuando crea su página; el navegador debe calcularlos cuando la página se muestra en pantalla.
+        </p>
+        <p>
+          Esto agrega una capa de <em>abstracción</em> a CSS. No podemos diseñar un elemento de acuerdo con un contexto ideal; necesitamos especificar reglas que funcionarán en cualquier contexto en el que se pueda colocar ese elemento. Con la web actual, su página deberá procesarse en un formato de 4 pulgadas pantalla del teléfono, así como en una pantalla de 30 pulgadas.
+        </p>
+        <p>
+          Durante mucho tiempo, los diseñadores mitigaron esta complejidad centrándose en diseños de <em>"píxeles perfectos"</em>. Crearían un contenedor bien definido, a menudo una columna centrada de unos <code>800px</code> de ancho. Luego, dentro de estas limitaciones, se dedicarían a diseñar más o menos como lo hicieron sus predecesores con aplicaciones nativas o publicaciones impresas.
+        </p>
+        <h3 id="sub2">2.1.2. El fin de la web de píxeles perfectos</h3>
+        <p>
+          A medida que la tecnología mejoraba y los fabricantes introducían monitores de mayor resolución, el enfoque de píxeles perfectos lentamente comenzó a fallar. A principios de la década de 2000, se debatió mucho sobre si los desarrolladores podíamos diseñar de forma segura para pantallas de <code>1.024px</code> de ancho en lugar de <code>800px</code> de ancho. Entonces, tendríamos la misma conversación de nuevo por <code>1.280px</code>. Tuvimos que tomar decisiones de juicio. ¿Era mejor hacer nuestro sitio demasiado ancho para computadoras más antiguas o demasiado estrecho para las nuevas?
+        </p>
+        <p>
+          Cuando surgieron los teléfonos inteligentes, los desarrolladores se vieron obligados a dejar de fingir que todos podían tener la misma experiencia en sus sitios. Tanto si lo amamos como si lo odiamos, tuvimos que abandonar columnas de un número conocido de píxeles y comenzar a pensar en el diseño receptivo. Ya no podíamos escondernos de la abstracción que viene con CSS. Tuvimos que abrazarlo.
+        </p>
+        <p>
+          <span translate="no"><em>Responsive:</em></span> en CSS, esto se refiere a estilos que <em>"responden"</em> de manera diferente, según el tamaño de la ventana del navegador. Esto implica una consideración intencional para pantallas de dispositivos móviles, tabletas o computadoras de escritorio de cualquier tamaño. Examinaremos detenidamente el diseño receptivo en el <em>capítulo 8</em>, pero en este capítulo sentaré algunas bases importantes antes de llegar allí.
+        </p>
+        <p>
+          La abstracción adicional significa una complejidad adicional. Si le doy a un elemento un ancho de <code>800px</code>, ¿cómo se verá eso en una ventana más pequeña? ¿Cómo se verá un menú horizontal si no cabe todo en una línea? A medida que escribe su CSS, debe ser capaz de pensar simultáneamente en aspectos específicos, así como en generalidades. Cuando tenga múltiples formas de resolver un problema en particular, deberá favorecer la solución que funcione de manera más general en múltiples y diferentes circunstancias.
+        </p>
+        <p>
+          Las <em>unidades relativas</em> son una de las herramientas que proporciona CSS para trabajar en este nivel de abstracción. En lugar de establecer un tamaño de fuente en <code>14px</code>, puede configurarlo para escalar proporcionalmente al tamaño de la ventana. O puede establecer el tamaño de todo en la página en relación con el tamaño de fuente base y luego cambiar el tamaño de toda la página con una sola línea de código. Echemos un vistazo a lo que proporciona CSS para hacer posible este tipo de enfoque.
+        </p>
+        <p>
+          CSS admite varias unidades de longitud absoluta, la más común de las cuales, y la más básica, es el píxel (px). Las unidades absolutas menos comunes son mm (milímetro), cm (centímetro), pulgada (pulgada), pt (punto: término tipográfico para 1/72 de pulgada) y pc (pica: término tipográfico para 12 puntos) Cualquiera de estas unidades se puede traducir directamente a otra si desea calcular las matemáticas: <code>1 pulgada = 25,4 mm = 2,54 cm = 6 pc = 72 pt = 96 px</code>. Por lo tanto, 16 px es lo mismo que 12 pt (16/96 × 72). Los diseñadores a menudo están más familiarizados con el uso de puntos, donde los desarrolladores están más acostumbrados a los píxeles, por lo que es posible que tenga que hacer alguna traducción entre los dos cuando se comunique con un diseñador.
+        </p>
+        <p>
+          Pixel es un nombre un poco engañoso: un píxel CSS no equivale estrictamente al píxel de un monitor. Este es especialmente el caso de las pantallas de alta resolución (<em>“retina”</em>). Aunque las medidas de CSS se pueden escalar un poco, según el navegador, el sistema operativo y el hardware, <code>96px</code> generalmente se encuentra en el estadio de béisbol de 1 pulgada física en pantalla, aunque esto puede variar en ciertos dispositivos o con la configuración de resolución del usuario.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>2.2 EMS Y REMS</h2>
+        <p>
+          <em>Ems</em>, la unidad de longitud relativa más común, es una medida utilizada en tipografía, que se refiere a un tamaño de fuente específico. En CSS, <code>1em</code> significa el tamaño de fuente del elemento actual; su valor exacto varía según el elemento al que lo esté aplicando. La figura 2.1 muestra un <code>div</code> con <code>1em</code> de relleno.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/01.jpg" alt="ibid">
+          <small>Fig 2.1. Elemento con relleno de 1 em (líneas discontinuas agregadas para ilustrar el relleno)</small>
+        </figure>
+        <p>
+          El código para producir esto se muestra en la siguiente lista. El conjunto de reglas especifica un tamaño de fuente de <code>16px</code>, que se convierte en la definición local del elemento para <code>1em</code>. Luego, el código usa ems para especificar el relleno del elemento. Agregue esto a una nueva hoja de estilo y coloque algo de texto en un <code>&lt;div class = "padded"&gt</code>; para verlo en su navegador.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.padded {
+  font-size: 16px;
+  padding: 1em;
+}
+          </code>
+          <small>List 2.1. Aplicar ems al <span translate="no">padding</span></small>
+        </pre>
+        <p>
+          Este <code>padding</code> tiene un valor especificado de <code>1em</code>. Esto se multiplica por el tamaño de la fuente, lo que produce un relleno renderizado de <code>16px</code>. Esto es importante: el navegador evalúa los valores declarados usando unidades relativas a un valor absoluto, llamado <em>valor calculado</em>.
+        </p>
+        <p>
+          En este ejemplo, editar el relleno a <code>2em</code> produciría un valor calculado de <code>32px</code>. Si otro selector apunta al mismo elemento y lo reemplaza con un tamaño de fuente diferente, cambiará el significado local de <code>em</code>, y el relleno calculado cambiará para reflejar eso.
+        </p>
+        <p>
+          El uso de <em>ems</em> puede ser conveniente al configurar propiedades como <code>padding, height, width</code> o <code>border-radius</code> porque se escalarán de manera uniforme con el elemento si hereda diferentes tamaños de fuente o si el usuario cambia la configuración de fuente.
+        </p>
+        <p>
+          La Figura 2.2 muestra dos cajas de diferentes tamaños. El tamaño de fuente, el relleno y el radio del borde en cada uno no es el mismo.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/02.jpg" alt="ibid">
+          <small>Fig 2.2. Elementos con un acolchado y un radio de borde de tamaño relativo</small>
+        </figure>
+        <p>
+          Puede definir los estilos para estos cuadros especificando el <span translate="no">padding</span> y el <code>border-radius</code> usando <em>ems</em>. Al dar a cada uno un radio de relleno y borde de 1 em, puede especificar un tamaño de fuente diferente para cada elemento, y las otras propiedades se escalarán junto con la fuente.
+        </p>
+        <p>
+          En su HTML, cree dos cuadros como se muestra a continuación. Agregue las clases <code>box-small</code> y <code>box-large</code> a cada una, respectivamente, como modificadores de tamaño.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;span class="box box-small"&gt;Small&lt;/span&gt;
+&lt;span class="box box-large"&gt;Large&lt;/span&gt;
+          </code>
+          <small>List 2.2. Aplicar ems a diferentes elementos (HTML)</small>
+        </pre>
+        <p>
+          Ahora, agregue los estilos que se muestran junto a su hoja de estilo. Esto define una caja usando ems. También define modificadores pequeños y grandes, cada uno de los cuales especifica un tamaño de fuente diferente.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.box {                        
+    padding: 1em;
+    border-radius: 1em;
+    background-color: lightgray;
+  }
+  
+  .box-small {                    <span>1</span>
+    font-size: 12px;              
+  }
+  
+  .box-large {                    <span>1</span>
+    font-size: 18px;              
+  }
+          </code>
+          <small>List 2.3. Aplicación de ems aplicados a diferentes elementos &lt;CSS&gt;</small>
+        </pre>
+        <ol class="index-code">
+          <li>Diferentes tamaños de fuente, que definirán el tamaño em de los elementos.</li>
+        </ol>
+        <p>
+          Esta es una característica poderosa de ems. Puede definir el tamaño de un elemento y luego escalar todo hacia arriba o hacia abajo con una sola declaración que cambia el tamaño de fuente. Construirá otro ejemplo de esto en un momento, pero primero, hablemos de <em>ems</em> y tamaños de fuente.
+        </p>
+        <h3 id="sub3">2.2.1. Usando ems para definir el tamaño de fuente</h3>
+        <p>
+          Cuando se trata de la propiedad de <code>font-size</code>, <em>ems</em> se comporta de manera un poco diferente. Como dije, los <em>ems</em> se definen por el tamaño de fuente del elemento actual. Pero, si declaras el <code>font-size: 1.2em</code>, ¿qué significa eso? Un tamaño de fuente no puede ser igual a 1,2 veces él mismo. En cambio, los <em>ems</em> de tamaño de fuente se derivan del tamaño de fuente <em>heredado</em>.  
+        </p>
+        <p>
+          Para ver un ejemplo básico, consulte la Fig 2.3. Esto muestra dos fragmentos de texto, cada uno con un tamaño de fuente diferente. Los definirá usando <em>ems</em> en el List 2.4.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/03.jpg" alt="ibid">
+          <small>Fig 2.3. Dos tamaños de fuente diferentes usando ems</small>
+        </figure>
+        <p>
+          Cambie su página para que coincida con la siguiente lista. La primera línea de texto está dentro de la etiqueta <code>&lt;body&gt</code>;, por lo que se procesará con el tamaño de fuente del cuerpo. La segunda parte, el lema, hereda ese tamaño de fuente.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;body&gt;
+    We love coffee
+    &lt;p class="slogan"&gt;We love coffee&lt;/p&gt;  <span>1</span>
+&lt;/body&gt;
+          </code>
+        </pre>
+        <ol class="index-code">
+          <li>El lema hereda su tamaño de fuente de &lt;body&gt;.</li>
+        </ol>
+        <p>
+          El CSS de la siguiente lista especifica el tamaño de fuente del cuerpo. He utilizado píxeles aquí para mayor claridad. A continuación, utilizará ems para ampliar el tamaño del eslogan.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  body {
+    font-size: 16px;
+  }
+  
+  .slogan {               <span>1</span>
+    font-size: 1.2em;     <span>1</span>
+  }                       <span>1</span>
+          </code>
+          <small>Lista 2.5. Aplicar ems al tamaño de fuente</small>
+        </pre>
+        <ol class="index-code">
+          <li>Calcula hasta 1,2 veces el tamaño de fuente heredado del elemento</li>
+        </ol>
+        <p>
+          El tamaño de fuente especificado para el eslogan es de <code>1.2em</code>. Para determinar el valor de píxel calculado, deberá consultar el tamaño de fuente heredado de 16 px: 16 por 1.2 es igual a 19.2, por lo que el tamaño de fuente calculado es <code>19.2px</code>.
+        </p>
+        <p>
+          Si conoce el tamaño de fuente basado en píxeles que le gustaría, pero desea especificar la declaración en <em>ems</em>, aquí tiene una fórmula simple: divida el tamaño de píxel deseado por el tamaño de píxel principal <em>(heredado)</em>. Por ejemplo, si desea una fuente de <code>10px</code> y su elemento hereda una fuente de <code>12px</code>, 10/12 = 0.8333 em. Si desea una fuente de <code>16px</code> y la fuente principal es de <code>12px</code>, 16/12 = 1.3333 em. Haremos este cálculo varias veces a lo largo de este capítulo.
+        </p>
+        <p>
+          Es útil saber que, para la mayoría de los navegadores, el tamaño de fuente predeterminado es <code>16px</code>. Técnicamente, es el valor <code>medium</code> de la palabra clave que se calcula en <code>16px</code>.
+        </p>
+        <p>
+          Ahora ha definido <em>ems</em> para el tamaño de fuente (basado en un tamaño de fuente heredado). Y ha definido ems para otras propiedades como <code>padding</code> y <code>border-radius</code> (según el tamaño de fuente del elemento actual). Lo que hace que ems sea complicado es cuando los usa tanto para el tamaño de fuente como para cualquier otra propiedad en el mismo elemento. Al hacer esto, el navegador debe calcular primero el tamaño de la fuente y luego usar ese valor para calcular los otros valores. Ambas propiedades pueden tener el mismo valor declarado, pero tendrán diferentes valores calculados.
+        </p>
+        <p>
+          En el ejemplo anterior, calculamos que el tamaño de fuente era de <code>19.2px</code> &lt;el tamaño de fuente heredado de 16 px multiplicado por 1,2 em&gt;. La Figura 2.4 muestra el mismo elemento de lema, pero con un relleno adicional de <code>1,2em</code> y un fondo gris para hacer más evidente el tamaño del <code>padding</code>. Este relleno es un poco más grande que el tamaño de la fuente, aunque ambos tienen el mismo valor declarado.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/04.jpg" alt="ibid">
+          <small>Fig 2.4. Elemento con fuente 1.2 em y relleno 1.2 em</small>
+        </figure>
+        <p>
+          Lo que está sucediendo aquí es que el párrafo hereda un tamaño de fuente de <code>16px</code> del cuerpo, produciendo un tamaño de fuente calculado de <code>19,2px</code>. Esto significa que 19,2 px es ahora el valor local para un em, y ese valor se usa para calcular el <code>padding|</code>. El CSS para esto se muestra a continuación. Actualice su hoja de estilo para ver esto en su página de prueba.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  body {
+    font-size: 16px;
+  }
+  
+  .slogan {
+    font-size: 1.2em;             <span>1</span>
+    padding: 1.2em;               <span>2</span>
+    background-color: #ccc;
+  }
+          </code>
+          <small>Lista 2.6. Aplicar ems al tamaño de fuente y al relleno</small>
+        </pre>
+        <ol class="index-code">
+          <li>Evalúa a 19,2 px</li>
+          <li>Evalúa a 23,04 px</li>
+        </ol>
+        <p>
+          En este ejemplo, el <code>padding</code> tiene un valor especificado de <code>1,2em</code>. Esto multiplicado por 19,2 px (el tamaño de fuente del elemento actual) produce un valor calculado de <code>23,04px</code>. Aunque el <code>font-size</code> y el <code>padding</code> tienen el mismo valor especificado, sus valores calculados son diferentes.
+        </p>
+        <p>
+          <em>Ems</em> puede producir resultados inesperados cuando los usa para especificar los tamaños de fuente de varios elementos anidados. Para conocer el valor exacto de cada elemento, necesitará conocer su tamaño de fuente heredado, que, si se define en el elemento padre en ems, requiere que conozca el tamaño heredado del elemento padre, y así sucesivamente en el árbol.
+        </p>
+        <p>
+          Esto se hace evidente rápidamente cuando usa ems para el tamaño de fuente de las listas y luego anida las listas a varios niveles de profundidad. Casi todos los desarrolladores web en algún momento de su carrera cargan su página para encontrar algo parecido a la figura 2.5. ¡El texto se encoge! Este es exactamente el tipo de problema que deja a los desarrolladores temiendo el uso de ems.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/05.jpg" alt="ibid">
+          <figcaption>Figura 2.5. Listas anidadas con texto que se reduce</figcaption>
+        </figure>
+        <p>
+          La reducción del texto ocurre cuando anida listas de varios niveles de profundidad y aplica un tamaño de fuente basado en <em>em</em> a cada nivel. Los listados 2.7 y 2.8 proporcionan un ejemplo de esto al establecer el tamaño de fuente de las listas desordenadas en <code>.8em</code>. El selector apunta a cada <code>&lt;ul&gt;</code> en la página; así que cuando estas listas heredan su tamaño de fuente de otras listas, el <em>ems</em> compuesto.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  body {
+    font-size: 16px;
+  }
+  
+  ul {
+    font-size: .8em;
+  }
+          </code>
+          <small>List 2.7. Aplicar ems a una lista</small>
+        </pre>
+        <pre>
+          <code class="container__base-code">
+&lt;ul&gt;
+    &lt;li&gt;Top level
+      &lt;ul&gt;                                   
+        &lt;li&gt;Second level                     
+          &lt;ul&gt;                              
+            &lt;li&gt;Third level                   
+              &lt;ul&gt;                            
+                &lt;li&gt;Fourth level              
+                  &lt;ul&gt;
+                    &lt;li&gt;Fifth level&lt;/li&gt;
+                  &lt;/ul&gt;
+                &lt;/li&gt;
+              &lt;/ul&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+          </code>
+          <small>List 2.8. Listas anidadas</small>
+        </pre>
+        <p>
+          Cada lista tiene un tamaño de fuente 0,8 veces mayor que el de su principal. Esto significa que la primera lista tiene un tamaño de fuente de <code>12,8px</code>, pero la siguiente hacia abajo es de <code>10,24 px (12,8 px × 0,8)</code>, y el tercer nivel es de <code>8,192px</code>, y así sucesivamente. De manera similar, si especificaste un tamaño mayor a <code>1em</code>, el texto aumentaría continuamente en su lugar. Lo que queremos es especificar la fuente en el nivel superior, luego mantener el mismo tamaño de fuente hasta abajo, como en la figura 2.6.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/06.jpg" alt="ibid">
+          <figcaption>Fig 2.6. Listas anidadas con texto corregido</figcaption>
+        </figure>
+        <p>
+          Una forma de lograr esto es con el código del listado 2.9. Esto establece el tamaño de fuente de la primera lista en <code>.8em</code> como antes (listado 2.7). El segundo selector de la lista se dirige a todas las listas desordenadas dentro de una lista desordenada, todas excepto el nivel superior. Las listas anidadas ahora tienen un tamaño de fuente igual al de sus padres, como se muestra en la figura 2.6.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  ul {
+    font-size: .8em;
+  }
+  
+  ul ul {                <span>1</span>
+    font-size: 1em;      <span>1</span>
+  }                      <span>1</span>
+          </code>
+          <small>List 2.9. Corregir el texto que se encoge</small>
+        </pre>
+        <ol class="index-code">
+          <li>Las listas dentro de las listas deben tener el mismo tamaño de fuente que su padre.</li>
+        </ol>
+        <p>
+          Esto soluciona el problema, aunque no es ideal; está estableciendo un valor y luego lo reemplaza inmediatamente con otra regla. Sería mejor si pudiera evitar anular las reglas aumentando poco a poco la especificidad de los selectores.
+        </p>
+        <p>
+          A estas alturas, debería estar claro que ems puede escapar de ti si no tienes cuidado. Son agradables para el relleno, los márgenes y el tamaño de los elementos, pero cuando se trata del tamaño de fuente, pueden complicarse. Afortunadamente, hay una opción mejor: rems.
+        </p>
+        <h3 id="sub4">2.2.2. Usar rems para el tamaño de fuente</h3>
+        <p>
+          Cuando el navegador analiza un documento HTML, crea una representación en la memoria de todos los elementos de la página. Esta representación se llama <em>DOM (Modelo de objetos de documento)</em>. Es una estructura de árbol, donde cada elemento está representado por un nodo. El elemento <code>&lt;html&gt;</code> es el nodo de nivel superior (o raíz). Debajo están sus nodos secundarios, <code>&lt;head&gt;</code> y <code>&lt;body&gt;</code>. Y debajo de ellos están sus hijos, luego sus hijos, y así sucesivamente.
+        </p>
+        <p>
+          El nodo raíz es el antepasado de todos los demás elementos del documento. Tiene un selector especial de pseudoclases <code>(: root)</code> que puede usar para apuntar. Esto es equivalente a usar el selector de tipo <code>html</code> con la especificidad de una clase en lugar de una etiqueta.
+        </p>
+        <p>
+          <em>Rem</em> es la abreviatura de <code>root em</code>. En lugar de ser relativos al elemento actual, <em>rems</em> son relativos al elemento raíz. No importa dónde lo aplique en el documento, <code>1.2rem</code> tiene el mismo valor calculado: 1.2 veces el tamaño de fuente del elemento raíz. La siguiente lista establece el tamaño de fuente raíz y luego usa rems para definir el tamaño de fuente para listas desordenadas relativas a eso.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {                <span>1</span>
+    font-size: 1em;      <span>2</span>
+  }
+  
+  ul {
+    font-size: .8rem;
+  }
+          </code>
+          <small>List 2.10. Especificar el tamaño de fuente usando rems</small>
+        </pre>
+        <ol class="index-code">
+          <li>La pseudoclase: root es equivalente al selector de tipo HTML.</li>
+          <li>Utiliza el tamaño predeterminado del navegador (16 px)</li>
+        </ol>
+        <p>
+          En este ejemplo, el tamaño de fuente raíz es el predeterminado del navegador de <code>16px</code> (un em en el elemento raíz es relativo al predeterminado del navegador). Las listas desordenadas tienen un tamaño de fuente especificado de <code>.8 rem</code>, que se calcula en <code>12.8px</code>. Debido a que esto es relativo a la raíz, el tamaño de fuente permanecerá constante, incluso si anida listas.
+        </p>
+        <p>
+          Algunos navegadores ofrecen dos formas para que el usuario personalice el tamaño del texto: zoom y un tamaño de fuente predeterminado. Al presionar Ctrl-más (+) o Ctrl-menos (-), el usuario puede hacer zoom en la página hacia arriba o hacia abajo. Esto escala visualmente todas las fuentes e imágenes y generalmente hace que todo en la página sea más grande o más pequeño. En algunos navegadores, este cambio solo se aplica a la pestaña actual y es temporal, lo que significa que no se transfiere a pestañas nuevas.
+        </p>
+        <p>
+          Establecer un tamaño de fuente predeterminado es un poco diferente. No solo es más difícil encontrar dónde establecer esto (generalmente en la página de configuración del navegador), sino que los cambios en este nivel permanecen permanentes, hasta que el usuario regresa y cambia el valor nuevamente. El problema es que esta configuración no cambia el tamaño de las fuentes definidas mediante píxeles u otras unidades absolutas. Debido a que un tamaño de fuente predeterminado es vital para algunos usuarios, particularmente aquellos que tienen problemas de visión, siempre debe especificar los tamaños de fuente con unidades relativas o porcentajes.
+        </p>
+        <p>
+          <em>Rem</em> simplifica muchas de las complejidades relacionadas con <em>ems</em>. De hecho, ofrecen un buen término medio entre píxeles y ems al proporcionar los beneficios de las unidades relativas, pero es más fácil trabajar con ellos. ¿Significa esto que debes usar rems en todas partes y abandonar las otras opciones? No.
+        </p>
+        <p>
+          En CSS, de nuevo, la respuesta suele ser "depende". Los rems son solo una herramienta en su bolsa de herramientas. Una parte importante de dominar CSS es aprender cuándo usar qué herramienta. Mi opción predeterminada es usar rems para tamaños de fuente, píxeles para bordes y ems para la mayoría de las otras medidas, especialmente rellenos, márgenes y radio de borde (aunque prefiero el uso de porcentajes para anchos de contenedor cuando sea necesario).
+        </p>
+        <p>
+          De esta manera, los tamaños de fuente son predecibles, pero aún obtendrá el poder de ems escalando su relleno y márgenes, en caso de que otros factores alteren el tamaño de fuente de un elemento. Los píxeles tienen sentido para los bordes, especialmente cuando desea una buena línea fina. Estas son mis unidades de referencia para las distintas propiedades, pero nuevamente, son herramientas y, en algunas circunstancias, una herramienta diferente hace el trabajo mejor.
+        </p>
+        <p>
+          En caso de duda, utilice rems para el tamaño de fuente, píxeles para los bordes y ems para la mayoría de las demás propiedades.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>2.3 DEJA DE PENSAR EN PIXELES</h2>
+        <p>
+          Un patrón, o mejor dicho, antipatrón, que ha sido común durante los últimos años es restablecer el tamaño de fuente en la raíz de la página a <code>.625em</code> o <code>62.5%</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  html {
+    font-size: .625em;
+  }
+          </code>
+          <small>List 2.11. restableciendo globalmente el tamaño de fuente a 10 px</small>
+        </pre>
+        <p>
+          No recomiendo esto. Esto toma el tamaño de fuente predeterminado del navegador, <code>16px</code>, y lo reduce a <code>10px</code>. Esta práctica simplifica las matemáticas: si su diseñador le dice que haga la fuente de <code>14px</code>, puede dividir fácilmente por 10 en su cabeza y escribir <code>1.4rem</code>, todo mientras sigue usando la unidad relativa
+        </p>
+        <p>
+          Inicialmente, esto puede ser conveniente, pero hay dos problemas con este enfoque. Primero, te obliga a escribir muchos estilos duplicados. Diez píxeles es demasiado pequeño para la mayoría del texto, por lo que tendrá que anularlo en toda la página. Te encontrarás configurando párrafos en 1.4 rem y aparte en <code>1.4rem</code> y enlaces de navegación en 1.4rem y así sucesivamente. Esto introduce más lugares de error, más puntos de contacto en su código cuando necesita cambiar y aumenta el tamaño de su hoja de estilo.
+        </p>
+        <p>
+          El segundo problema es que cuando haces esto, sigues pensando en píxeles. Puede escribir 1.4 rem en su código, pero en su mente, todavía está pensando en "14 píxeles". En una web receptiva, debe sentirse cómodo con los valores "difusos". No importa a cuántos píxeles se evalúe 1.2 em; todo lo que necesita saber es que es un poco más grande que el tamaño de fuente heredado. Y, si no se ve como lo desea en pantalla, cámbielo. Esto requiere algo de prueba y error, pero en realidad, también lo es trabajar con píxeles. (En el capítulo 13, veremos reglas concretas adicionales para refinar este enfoque).
+        </p>
+        <p>
+          Cuando se trabaja con ems, es fácil empantanarse obsesionándose con exactamente cuántos píxeles se evaluarán las cosas, especialmente los tamaños de fuente. Te volverás loco dividiendo y multiplicando los valores em sobre la marcha. En cambio, te desafío a que adquieras el hábito de usar ems primero. Si está acostumbrado a usar píxeles, usar valores em puede requerir práctica, pero vale la pena.
+        </p>
+        <p>
+          Esto no quiere decir que nunca tendrá que trabajar con píxeles. Si está trabajando con un diseñador, probablemente necesitará hablar con algunos números de píxeles concretos, y eso está bien. Al comienzo de un proyecto, deberá establecer un tamaño de fuente base (y, a menudo, algunos tamaños comunes para títulos y notas al pie de página). Los valores absolutos son más fáciles de usar cuando se habla del tamaño de las cosas.
+        </p>
+        <p>
+          La conversión a <em>rems</em> implicará aritmética, así que tenga una calculadora a mano. Poner un tamaño de fuente raíz en su lugar define un rem. A partir de ese momento, trabajar en píxeles debería ser la excepción, no la norma.
+        </p>
+        <h3 id="sub5">2.3.1. Establecer un tamaño de fuente predeterminado sensato</h3>
+        <p>
+          Supongamos que desea que el tamaño de fuente predeterminado sea <code>14px</code>. En lugar de establecer un valor predeterminado de <code>10px</code> y luego anularlo en toda la página, establezca ese valor en la raíz. El valor deseado dividido por el valor heredado (en este caso, el predeterminado del navegador) es 14/16, que equivale a 0,875.
+        </p>
+        <p>
+          Agregue la siguiente lista en la parte superior de una nueva hoja de estilo, ya que la estará construyendo. Esto establece la fuente predeterminada en la raíz <code>(&lt;html&gt;)</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {                <span>1</span>
+    font-size: 0.875em;  <span>2</span>
+  }
+          </code>
+          <small>List 2.12. Establecer el verdadero tamaño de fuente predeterminado</small>
+        </pre>
+        <ol class="index-code">
+          <li>O usa el selector de HTML</li>
+          <li>14/16 (px deseado / px heredado) es igual a .875</li>
+        </ol>
+        <p>
+          Ahora el tamaño de fuente deseado se aplica a toda la página. No es necesario que lo especifique en otro lugar. Solo tendrá que cambiarlo en los lugares donde el diseño se desvía de esto, como los títulos.
+        </p>
+        <p>
+          Creemos el panel que se muestra en la figura 2.7. Construirá este panel en función del tamaño de fuente de <code>14px</code>, utilizando medidas relativas.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/07.jpg" alt="ibid">
+          <figcaption>Fig 2.7. Panel con unidades relativas y un tamaño de fuente heredado</figcaption>
+        </figure>
+        <p>
+          El marcado para esto se muestra aquí. Agregue esto a su página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  &lt;div class="panel"&gt;
+    &lt;h2&gt;Single-origin&lt;/h2&gt;
+    &lt;div class="panel-body"&gt;
+      We have built partnerships with small farms around the world to
+      hand-select beans at the peak of season. We then carefully roast
+      in &lt;a href="/batch-size"&gt;small batches&lt;/a&gt; to maximize their
+      potential.
+    &lt;/div&gt;
+  &lt;/div&gt;
+          </code>
+          <small>List 2.13. Marcado para un panel</small>
+        </pre>
+        <p>
+          La siguiente lista muestra los estilos. Utilizará ems para el relleno y el radio del borde, rem para el tamaño de fuente del encabezado y px para el borde. Agrégalos a tu hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .panel {
+    padding: 1em;                 <span>1</span>
+    border-radius: 0.5em;         <span>1</span>
+    border: 1px solid #999;       <span>2</span>
+  }
+  
+  .panel > h2 {
+    margin-top: 0;                <span>3</span>
+    font-size: 0.8rem;            <span>4</span>
+    font-weight: bold;            <span>4</span>
+    text-transform: uppercase;    <span>4</span>
+  }
+          </code>
+          <small>List 2.14. Panel con unidades relativas</small>
+        </pre>
+        <ol class="index-code">
+          <li>Utiliza ems para relleno y radio de borde</li>
+          <li>Usa 1 px para un borde delgado</li>
+          <li>Elimina espacio adicional de la parte superior del panel; más sobre esto en el capítulo 3</li>
+          <li>Diseña la fuente del título usando rems para el tamaño de fuente</li>
+        </ol>
+        <p>
+          Este código coloca un borde delgado alrededor del panel y le da estilo al encabezado. Opté por un encabezado más pequeño, pero en negrita y todo en mayúsculas. ( hacer este tipo de letra más grande o diferente si su diseño lo requiere).
+        </p>
+        <p>
+          El &gt; en el segundo selector es un <em>combinador descendiente directo</em>. Se dirige a un <code>h2</code> que es un elemento secundario de un elemento <code>a.panel</code>. Consulte el apéndice A para obtener una referencia completa de los selectores y combinadores.
+        </p>
+        <p>
+          En el listado 2.13, agregué una clase de cuerpo de <code>panel-body</code> principal del panel para mayor claridad, pero notará que no necesita usarlo en su CSS. Debido a que este elemento ya hereda el tamaño de fuente raíz, ya aparece como desea que se vea.
+        </p>
+        <h3 id="sub6">2.3.2. Haciendo al panel <span translate="no">responsive</span></h3>
+        <p>
+          Llevemos esto un poco más lejos. Puede utilizar algunas <span translate="no"><em>media queries</em></span> para cambiar el tamaño de fuente base, según el tamaño de la pantalla. Esto hará que el panel se renderice en diferentes tamaños según el tamaño de la pantalla del usuario (que se muestra en la figura 2.8).
+        </p>
+        <figure>
+          <img src="../img_css/cap2/08.jpg" alt="ibid">
+          <figcaption>Fig 2.8. Panel <span translate="no">responsive</span> en diferentes tamaños de pantalla: 300 px (arriba a la izquierda), 800 px (arriba a la derecha) y 1440 px (abajo)</figcaption>
+        </figure>
+        <p>
+          <span translate="no"><em>Media query</em></span>: una regla <code>@media</code> utilizada para especificar estilos que se aplicarán solo a determinados tamaños de pantalla o tipos de medios (por ejemplo, impresión o pantalla). Este es un componente clave del diseño <span translate="no">responsive</span>. Consulte el listado 2.15 para ver un ejemplo; Cubriré esto con mayor profundidad en el capítulo 8.
+        </p>
+        <p>
+          Para ver este resultado, edite esta parte de su hoja de estilo para que coincida con esta lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {                        <span>1</span>
+    font-size: 0.75em;           <span>1</span>
+  }                              <span>1</span>
+  
+  @media (min-width: 800px) {    <span>2</span>
+    :root {                      <span>2</span>
+      font-size: 0.875em;        <span>2</span>
+    }                            <span>2</span>
+  }                              <span>2</span>
+  
+  @media (min-width: 1200px) {   <span>3</span>
+    :root {                      <span>3</span>
+      font-size: 1em;            <span>3</span>
+    }                            <span>3</span>
+  }     
+          </code>
+          <small>List 2.15. Tamaño de fuente base <span translate="no">responsive</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Se aplica a todas las pantallas, pero se anula para pantallas más grandes</li>
+          <li>Se aplica solo a pantallas de 800 px y más anchas, anulando el valor original</li>
+          <li>3 Se aplica solo a pantallas de 1200 px y más grandes, anulando ambos valores</li>
+        </ol>
+        <p>
+          Este primer conjunto de reglas especifica un tamaño de fuente predeterminado pequeño. Este es el tamaño de fuente que queremos aplicar en pantallas más pequeñas. Luego usó <span translate="no"><em>media queries</em></span> para anular ese valor con tamaños de fuente incrementalmente más grandes en pantallas con un ancho de 800 px y 1200 px o más.
+        </p>
+        <p>
+          Al aplicar estos tamaños de fuente en la raíz de su página, ha redefinido de manera receptiva el significado de em y rem en toda la página. Esto significa que el panel ahora <span translate="no"><em>responsive</em></span>, aunque no le hizo ningún cambio directamente. En una pantalla pequeña, como un teléfono inteligente, la fuente se reducirá (12 px) del mismo modo, el acolchado y el radio del borde serán más pequeños para coincidir. Y, en pantallas más grandes de más de 800 px y 1200 px de ancho, el componente escala hasta un tamaño de fuente de 14 px y 16 px, respectivamente. Cambie el tamaño de la ventana de su navegador para ver cómo se llevan a cabo estos cambios.
+        </p>
+        <p>
+          Si eres lo suficientemente disciplinado como para diseñar toda tu página en unidades relativas como esta, toda la página se ampliará y reducirá según el tamaño de la ventana gráfica. Esto puede ser una gran parte de su estrategia de respuesta. Estas dos <span translate="no"><em>media queries</em></span> cerca de la parte superior de su hoja de estilo pueden eliminar la necesidad de docenas de <span translate="no">media queries</span> en el resto de su CSS. Pero no funciona si define sus valores en píxeles.
+        </p>
+        <p>
+          Del mismo modo, si su jefe o su cliente decide que las fuentes del sitio que creó son demasiado pequeñas o demasiado grandes, puede cambiarlas globalmente con solo tocar una línea de código. El cambio se extenderá por el resto de su página, sin esfuerzo.
+        </p>
+        <h3 id="sub7">2.3.3. Cambiar el tamaño de un solo componente</h3>
+        <p>
+          También puede usar ems para escalar un componente individual en la página. A veces, es posible que necesite una versión más grande de la misma parte de su interfaz en ciertas partes de la página. Hagamos esto con nuestro panel. Agregará una clase grande al panel: <code>&lt;div class = "panel large"&gt;</code>.
+        </p>
+        <p>
+          La Figura 2.9 muestra tanto el panel normal como el grande a modo de comparación. El efecto es similar al de los paneles receptivos, pero ambos tamaños se pueden usar simultáneamente en la misma página.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/09.jpg" alt="ibid">
+          <figcaption>Fig 2.9. Un panel normal y un panel grande definidos en la misma página</figcaption>
+        </figure>
+        <p>
+          Hagamos un pequeño cambio en la forma en que definió los tamaños de fuente del panel. Seguirás usando unidades relativas, pero ajustarás a qué son relativas. Primero, agregue la declaración <code>font-size: 1rem</code> al elemento principal de cada panel. Esto significa que cada panel establecerá un tamaño de fuente predecible para sí mismo, sin importar dónde se coloque en la página.
+        </p>
+        <p>
+          En segundo lugar, redefina el tamaño de fuente del encabezado usando ems en lugar de rems para que sea relativo al tamaño de fuente de los padres que acaba de establecer en <code>1rem</code>. El código para esto es el siguiente. Actualice su hoja de estilo para que coincida.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .panel {
+    font-size: 1rem;             <span>1</span>
+    padding: 1em;
+    border: 1px solid #999;
+    border-radius: 0.5em;
+  }
+  
+  .panel > h2 {
+    margin-top: 0;
+    font-size: 0.8em;            <span>2</span>
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+          </code>
+          <small>List 2.16. Creando una versión más grande del panel</small>
+        </pre>
+        <ol class="index-code">
+          <li>Establece un tamaño de fuente predecible para el componente.</li>
+          <li>Utiliza ems para crear otras fuentes en relación con el tamaño de fuente principal establecido</li>
+        </ol>
+        <p>
+          Este cambio no tiene ningún efecto en la apariencia del panel, pero ahora lo configura para hacer la versión más grande del panel con una sola línea de CSS. Todo lo que tiene que hacer es anular el rem 1 del elemento principal con otro valor. Debido a que todas las medidas del componente son relativas a esto, anularlo cambiará el tamaño de todo el panel. Agregue el CSS en la siguiente lista a su hoja de estilo para definir una versión más grande.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .panel.large {            <span>1</span>
+    font-size: 1.2rem;
+  }
+          </code>
+          <small>List 2.17. Escalar todo el panel con una declaración</small>
+        </pre>
+        <ol class="index-code">
+          <li>Selector compuesto apunta a elementos con panel y clases grandes</li>
+        </ol>
+        <p>
+          Ahora, puede usar <code>class="panel"</code> para un panel normal y <code>class="panel large"</code> para uno más grande. Del mismo modo, puede definir una versión más pequeña del panel estableciendo un tamaño de fuente más pequeño. Si el panel fuera un componente más complicado, con varios tamaños de fuente o rellenos, solo se necesitaría esta única declaración para cambiar su tamaño, siempre y cuando todo el interior esté definido mediante ems.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>2.4 UNIDADES <span translate="no">VIEWPORT-RELATIVE</span></h2>
+        <p>
+          Ha aprendido que ems y rems se definen en relación con el <code>font-size</code>, pero estos no son el único tipo de unidades relativas. También hay unidades relativas a la <em>ventana gráfica</em> para definir longitudes relativas a la ventana gráfica del navegador.
+        </p>
+        <p>
+          <span translate="no"><em>Viewport:</em></span> el área enmarcada en la ventana del navegador donde se ve la página web. Esto excluye la barra de direcciones, las barras de herramientas y la barra de estado del navegador, si están presentes.
+        </p>
+        <p>
+          Si no está familiarizado con las unidades <span translate="no"><em>viewport-relative</em></span>, aquí hay una breve explicación.
+        </p>
+        <ul>
+          <li><em>vh</em>-1/100 de la altura de la ventan gráfica</li>
+          <li><em>vw</em>-1/100 de el ancho de la ventana gráfica</li>
+          <li><em>vmin</em>-1/100 de le dimensión, la altura o el ancho más pequeños (IE9 admite vm en lugar de vmin)</li>
+          <li><em>vmx</em>-1/100 de la dimensión, la altura o el ancho mayores</li>
+        </ul>
+        <p>
+          Por ejemplo, <code>50vw</code> es igual a la mitad del ancho de la ventana gráfica y <code>25vh</code> equivale al 25% de la altura de la ventana gráfica. vmin se basa en cuál de los dos &lt;alto o ancho&gt; es más pequeño. Esto es útil para garantizar que un elemento quepa en la pantalla independientemente de su orientación: si la pantalla es horizontal, se basará en la altura; si es vertical, se basa en el ancho.
+        </p>
+        <p>
+          La figura 2.10 muestra un elemento cuadrado tal como aparece en varias ventanas gráficas con diferentes tamaños de pantalla. Se define con una altura y un ancho de <code>90vmin</code>, lo que equivale al 90% de la menor de las dos dimensiones: el 90% de la altura en las pantallas horizontales o el 90% del ancho en las verticales.
+        </p>
+        <p>
+          La figura 2.10 muestra un elemento cuadrado tal como aparece en varias ventanas gráficas con diferentes tamaños de pantalla. Se define con una altura y un ancho de 90 vmin, lo que equivale al 90% de la menor de las dos dimensiones: el 90% de la altura en las pantallas horizontales o el 90% del ancho en las verticales.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/10.jpg" alt="ibid">
+          <figcaption>Fig 2.10. Un elemento con una altura y un ancho de 90 vmin siempre se mostrará como un cuadrado un poco más pequeño que la ventana gráfica, independientemente de su tamaño u orientación.</figcaption>
+        </figure>
+        <p>
+          El listado 2.18 muestra los estilos para este elemento. Produce un cuadrado grande que siempre cabe en la ventana gráfica sin importar el tamaño del navegador. Puede agregar un <code>&lt;div class = "cuadrado"&gt;</code> a su página para ver esto.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .square {
+    width: 90vmin;
+    height: 90vmin;
+    background-color: #369;
+  }
+          </code>
+          <small>List 2.18. Elemento cuadrado dimensionado usando vmin</small>
+        </pre>
+        <p>
+          Las longitudes relativas a la ventana gráfica son excelentes para cosas como hacer que una gran imagen de héroe llene la pantalla. Su imagen puede estar dentro de un contenedor largo, pero establecer la altura de la imagen en 100 vh, hace que sea exactamente la altura de la ventana gráfica.
+        </p>
+        <p>
+          Las unidades relativas a la ventana gráfica son una característica más nueva para la mayoría de los navegadores, por lo que hay algunos errores extraños cuando las usa en combinaciones más exóticas con otros estilos. Consulte <em>"Problemas conocidos"</em> en https://caniuse.com/#feat=viewport-units para obtener una lista.
+        </p>
+        <p>
+          Varios de los tipos de unidades de este capítulo no estaban en versiones anteriores de CSS (en particular, rems y unidades relativas a la ventana gráfica). Se agregaron en medio de una serie de cambios en el lenguaje, que a menudo se llama CSS3.
+        </p>
+        <p>
+          A finales de la década de 1990 y principios de la de 2000, después del trabajo inicial en la especificación CSS, poco cambió durante mucho tiempo. El W3C (World Wide Web Consortium) publicó la especificación CSS 2 en mayo de 1998. Poco después, se comenzó a trabajar en la versión 2.1 para corregir problemas y errores en la versión 2. El trabajo en CSS 2.1 continuó durante muchos años, con pocas adiciones significativas al lenguaje. . No se finalizó como recomendación propuesta hasta abril de 2011. En este punto, los navegadores ya habían implementado la mayoría de los cambios de CSS 2.1 y estaban en camino de agregar nuevas funciones bajo el nombre de CSS3.
+        </p>
+        <p>
+          El "3" es un número de versión informal; no hay ninguna especificación CSS3. En cambio, la especificación se dividió en módulos individuales, cada uno con versiones independientes. La especificación para fondos y bordes ahora está separada de la de los modelos de caja y de la de cascada y herencia. Esto permite que el W3C realice nuevas revisiones en un área de CSS sin actualizar innecesariamente áreas que no cambian. Muchas de estas especificaciones permanecen en la versión 3 (ahora llamada nivel 3), pero algunas, como la especificación de selectores, están en el nivel 4 y otras, como una caja flexible, están en el nivel 1.
+        </p>
+        <p>
+          Esto significa que ya no estamos trabajando con una versión particular de CSS. Es un estándar de vida. Cada navegador agrega continuamente soporte para nuevas funciones. Los desarrolladores trabajan con esos cambios y se adaptan a ellos. No habrá CSS4, excepto quizás como un término de marketing más genérico. Aunque este libro cubre las características de CSS3, no necesariamente las llamo como tales porque, en lo que respecta a la web, todo es CSS.
+        </p>
+        <h3 id="sub8">2.4.1 Usando VH para el tamaño de fuente</h3>
+        <p>
+          Una aplicación para las unidades relativas a la ventana gráfica que puede no ser inmediatamente obvia es el tamaño de fuente. De hecho, encuentro este uso más práctico que aplicar vh y vw a las alturas o anchos de los elementos.
+        </p>
+        <p>
+          Considere lo que sucedería si aplicara <code>font-size: 2vw</code> a un elemento. En un monitor de escritorio a 1200 px, esto se evalúa en <code>24px (2% de 1200)</code>. En una tableta con un ancho de pantalla de 768 px, se evalúa en aproximadamente <code>15px (2% de 768)</code>. Y lo bueno es que el elemento se escala suavemente entre los dos tamaños. Esto significa que no hay cambios repentinos en los puntos de interrupción; cambia gradualmente a medida que cambia el tamaño de la ventana gráfica.
+        </p>
+        <p>
+          Desafortunadamente, <code>24px</code> es demasiado grande en una pantalla grande. Y lo que es peor, escala hasta <code>7.5px</code> en un iPhone 6. Lo que sería bueno es este efecto de escala, pero con los extremos un poco menos severos. Puede lograr esto con la función <code>calc()</code> de CSS.
+        </p>
+        <h3 id="sub9">2.4.2 Usando calc() para el tamaño de la fuente</h3>
+        <p>
+          La función <code>calc()</code> le permite realizar operaciones aritméticas básicas con dos o más valores. Esto es particularmente útil para combinar valores que se miden en diferentes unidades. Esta función admite la suma <code>(+)</code>, la resta <code>(-)</code>, la multiplicación <code>(*)</code> y la división <code>(*)</code>. Los operadores de suma y resta deben estar rodeados de espacios en blanco, por lo que sugiero que se acostumbre a agregar siempre un espacio antes y después de cada operador; por ejemplo, <code>calc(1em + 10px)</code>.
+        </p>
+        <p>
+          Utilizará <code>calc()</code> en la siguiente lista para combinar ems con unidades vw. Elimine el tamaño de fuente base anterior (y las <span translate="no"><em>media queries</em></span>) de su hoja de estilo. Agregue esto en su lugar.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {
+    font-size: calc(0.5em + 1vw);
+  }
+          </code>
+          <small>Listado 2.19. Usando calc() para definir el tamaño de fuente en unidades ems y vh</small>
+        </pre>
+        <p>
+          Ahora, abra la página y cambie lentamente el tamaño de su navegador. Verá la escala de fuente sin problemas a medida que lo hace. El <code>0.5em</code> aquí funciona como una especie de tamaño de fuente mínimo, y el <code>1vw</code> agrega un escalar sensible. Esto le dará un tamaño de fuente base que se escala desde <code>11,75px</code> en un iPhone 6 hasta <code>20px</code> en una ventana del navegador de <code>1200px</code>. Puede ajustar estos valores a su gusto.
+        </p>
+        <p>
+          Ahora ha logrado una gran parte de su estrategia de <span translate="no">responsive</span> sin una sola <span translate="no"><em>media queries</em></span>. En lugar de tres o cuatro puntos de interrupción codificados, todo en su página se escalará de manera fluida de acuerdo con la ventana gráfica.
+        </p>
+      </section>
+      <section id="tema5">
+        <h2>2.5. NÚMEROS SIN UNIDADES Y ALTURA DE LÍNEA</h2>
+        <p>
+          Algunas propiedades permiten valores sin unidades (es decir, un número sin unidad especificada). Las propiedades que admiten esto incluyen <code>line-height, z-index</code> y <code>font-weight</code> (700 es equivalente a negrita; 400 es equivalente a normal, etc.). También puede usar el valor sin unidades 0 en cualquier lugar donde se requiera una unidad de longitud (como px, em o rem) porque, en estos casos, la unidad no importa: 0 px es igual a 0% es igual a 0 em.
+        </p>
+        <p>
+          Un 0 sin unidades solo se puede utilizar para valores de <em>longitud</em> y porcentajes, como en rellenos, bordes y anchos. No se puede utilizar para valores angulares, como grados o valores basados en el tiempo como segundos.  
+        </p>
+        <p>
+          La propiedad <code>line-height</code> es inusual porque acepta tanto unidades como valores sin unidades. Por lo general, debe usar números sin unidades porque se heredan de manera diferente. Pongamos texto en la página y veamos cómo se comporta. Agregue el código en la siguiente lista a su hoja de estilo. 
+        </p>
+        <pre>
+          <code class="container__base-code">
+  &lt;body&gt;
+    &lt;p class="about-us"&gt;
+      We have built partnerships with small farms around the world to
+      hand-select beans at the peak of season. We then carefully roast in
+      small batches to maximize their potential.
+    &lt;/p&gt;
+  &lt;/body&gt;
+          </code>
+          <small>List 2.20. Marcado de altura de línea heredado</small>
+        </pre>
+        <p>
+          Deberá especificar una altura de línea para el elemento del cuerpo y permitir que el resto del documento lo herede. Esto funcionará como se esperaba, sin importar lo que haga con los tamaños de fuente en la página (figura 2.11).
+        </p>
+        <figure>
+          <img src="../img_css/cap2/11.jpg" alt="ibid">
+          <figcaption>Fig 2.11. La altura de la línea sin unidad se vuelve a calcular para cada elemento descendiente.</figcaption>
+        </figure>
+        <p>
+          Agregue el listado 2.21 a su hoja de estilo para estos estilos. El párrafo hereda una altura de línea de 1,2. Debido a que el tamaño de la fuente es de 32 px (2 em × 16 px, el valor predeterminado del navegador), la altura de la línea se calcula localmente a 38,4 px (32 px × 1,2). Esto dejará una cantidad adecuada de espacio entre líneas de texto.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  body {
+    line-height: 1.2;               <span>1</span>
+  }
+  
+  .about-us {
+    font-size: 2em;
+  }
+          </code>
+          <small>List 2.21. Altura de la línea con un número sin unidad</small>
+        </pre>
+        <ol class="index-code">
+          <li>Los elementos descendientes heredan el valor sin unidades.</li>
+        </ol>
+        <p>
+          Si, en cambio, especifica la altura de la línea usando una unidad, puede encontrar resultados inesperados, como el que se muestra en la figura 2.12. Las líneas de texto se superponen entre sí. El listado 2.22 muestra el CSS que generó la superposición.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/12.jpg" alt="ibid">
+          <figcaption>Fig 2.12. Líneas superpuestas debido a una altura de línea heredada</figcaption>
+        </figure>
+        <pre>
+          <code class="container__base-code">
+  body {
+    line-height: 1.2em;             <span>1</span>
+  }
+  
+  .about-us {
+    font-size: 2em;                 <span>2</span>
+  }
+          </code>
+          <small>List 2.22. La altura de la línea con unidades da como resultado una salida inesperada</small>
+        </pre>
+        <ol class="index-code">
+          <li>Los elementos descendientes heredan el valor calculado (19,2 px).</li>
+          <li>Evalúa a 32 px</li>
+        </ol>
+        <p>
+          Estos resultados se deben a una peculiaridad de la herencia: cuando un elemento tiene un valor definido usando una longitud (px, em, rem, etc.), su valor calculado es heredado por elementos secundarios. Cuando se especifican unidades como ems para una altura de línea, se calcula su valor y ese valor calculado se transmite a los hijos heredados. Con la propiedad <code>line-height</code>, esto puede provocar resultados inesperados si el elemento secundario tiene un tamaño de fuente diferente, como el texto superpuesto.
+        </p>
+        <p>
+          <span translate="no"><em>Length:</em></span> el nombre formal de un valor CSS que denota una medida de distancia. Es un número seguido de una unidad, como <code>5px</code>. La longitud viene en dos sabores: absoluto y relativo. Los porcentajes son similares a las longitudes, pero estrictamente hablando, no se consideran longitudes.
+        </p>
+        <p>
+          Cuando usa un número sin unidades, ese valor declarado se hereda, lo que significa que su valor calculado se vuelve a calcular para cada elemento secundario heredado. Este será casi siempre el resultado que desea. El uso de un número sin unidades le permite establecer la altura de la línea en el cuerpo y luego olvidarse de ella durante el resto de la página, a menos que haya lugares específicos en los que desee hacer una excepción.
+        </p>
+      </section>
+      <section id="tema6">
+        <h2>2.6. PROPIEDADES PERSONALIZADAS (CSS VARIABLES)</h2>
+        <p>
+          En 2015, se publicó como recomendación candidata una especificación CSS largamente esperada titulada Propiedades personalizadas para variables en cascada. Esta especificación introdujo el concepto de variables en el lenguaje, lo que permitió un nuevo nivel de estilos dinámicos basados en el contexto. Puede declarar una variable y asignarle un valor; luego puede hacer referencia a este valor en toda su hoja de estilo. Puede usar esto para reducir la repetición en su hoja de estilo, así como algunas otras aplicaciones beneficiosas, como verá en breve.
+        </p>
+        <p>
+          Si utiliza un preprocesador de CSS que admite sus propias variables, como Sass (hojas de estilo sintácticamente impresionantes) o Less, puede tener la tentación de ignorar las variables de CSS. No lo hagas. Las nuevas variables CSS son de naturaleza diferente y son mucho más versátiles que cualquier cosa que pueda lograr un preprocesador. Tiendo a referirme a ellos como "propiedades personalizadas" en lugar de variables para enfatizar esta distinción.
+        </p>
+        <p>
+          Para definir una propiedad personalizada, debe declararla como cualquier otra propiedad CSS. El listado 2.23 es un ejemplo de declaración de variable. Inicie una nueva página y hoja de estilo, y agregue este CSS.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {
+    --main-font: Helvetica, Arial, sans-serif;
+  }
+          </code>
+          <small>List 2.23. Definición de una propiedad personalizada</small>
+        </pre>
+        <p>
+          Esta lista define una variable llamada --main-font y establece su valor en un conjunto de fuentes sans-serif comunes. El nombre debe comenzar con dos guiones <code>(--&#41</code>; para distinguirlo de las propiedades CSS, seguido del nombre que desee utilizar.
+        </p>
+        <p>
+          Las variables deben declararse dentro de un bloque de declaración. He usado el selector <code>:root</code> aquí, que establece la variable para toda la página. Explicaré esto en breve.
+        </p>
+        <p>
+          Por sí misma, esta declaración de variable no hace nada hasta que la usamos. Aplicémoslo a un párrafo para producir un resultado como el de la figura 2.13.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/13.jpg" alt="ibid">
+          <figcaption>Fig 2.13. Párrafo simple usando la fuente sans-serif de variable</figcaption>
+        </figure>
+        <p>
+          Una función llamada <code>var()</code> permite el uso de variables. Utilizará esta función para hacer referencia a la variable <code>--main-font</code> que acaba de definir. Agregue el conjunto de reglas que se muestra en la siguiente lista para utilizar la variable.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {
+    --main-font: Helvetica, Arial, sans-serif;
+  }
+  
+  p {                                    <span>1</span>
+    font-family: var(--main-font);       <span>1</span>
+  }                                      <span>1</span>
+          </code>
+          <small>List 2.24. Usar una propiedad personalizada</small>
+        </pre>
+        <ol class="index-code">
+          <li>Establece la familia de fuentes para párrafos en Helvetica, Arial, sans-serif</li>
+        </ol>
+        <p>
+          Las propiedades personalizadas le permiten definir un valor en un lugar, como una <em>"fuente única de verdad"</em>, y reutilizar ese valor en toda la hoja de estilo. Esto es particularmente útil para valores recurrentes como colores. La siguiente lista agrega una propiedad personalizada <code>brand-color</code>. Puede usar esta variable decenas de veces en su hoja de estilo, pero si desea cambiarla, solo tiene que editarla en un lugar.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {
+    --main-font: Helvetica, Arial, sans-serif;
+    --brand-color: #369;                           <span>1</span>
+  }
+  
+  p {
+    font-family: var(--main-font);
+    color: var(--brand-color);
+  }
+          </code>
+          <small>List 2.25. Usar propiedades personalizadas para colores</small>
+        </pre>
+        <ol class="index-code">
+          <li>1 Define una variable de <code>brand-color</code> azul</li>
+        </ol>
+        <p>
+          La función var() acepta un segundo parámetro, que especifica un valor de respaldo. Si la variable especificada en el primer parámetro no está definida, se utiliza el segundo valor en su lugar.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {
+    --main-font: Helvetica, Arial, sans-serif;
+    --brand-color: #369;
+  }
+  
+  p {
+    font-family: var(--main-font, sans-serif);         <span>1</span>
+    color: var(--secondary-color, blue);               <span>2</span>
+  }
+          </code>
+          <small>List 2.26. Proporcionar valores alternativos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Especifica un valor de respaldo de sans-serif</li>
+          <li>La variable de color secundario no está definida, por lo que se utiliza el valor de reserva azul.</li>
+        </ol>
+        <p>
+          Este listado especifica valores de respaldo en dos declaraciones diferentes. En el primero, <code>--main -font</code> se define como <code>Helvetica, Arial, sans-serif</code>, por lo que se usa este valor. En el segundo, <code>--secondary-color</code> es una variable indefinida, por lo que se utiliza el valor de reserva <code>blue</code>.
+        </p>
+        <p>
+          Si una función <code>var()</code> se evalúa como un valor no válido, la propiedad se establecerá en su valor inicial. Por ejemplo, si la variable en <code>padding: var (- brand -color)</code> se evalúa como un color, sería un valor de relleno no válido. En ese caso, el relleno se establecería en 0 en su lugar.
+        </p>
+        <h3 id="sub10">2.6.1. Cambiar propiedades personalizadas de forma dinámica</h3>
+        <p>
+          En los ejemplos hasta ahora, las propiedades personalizadas son simplemente una buena conveniencia; pueden ahorrarle mucha repetición en su código. Pero lo que los hace particularmente interesantes es que las declaraciones de propiedades personalizadas se transmiten en cascada y heredan: puede definir la misma variable dentro de múltiples selectores, y la variable tendrá un valor diferente para varias partes de la página.
+        </p>
+        <p>
+          Puede definir una variable como negra, por ejemplo, y luego redefinirla como blanca dentro de un contenedor en particular. Luego, cualquier estilo basado en esa variable se resolverá dinámicamente en negro si está fuera del contenedor y en blanco si está dentro. Usemos esto para lograr un resultado como el que se muestra en la figura 2.14.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/14.jpg" alt="ibid">
+          <figcaption>Fig 2.14. Las propiedades personalizadas producen paneles de diferentes colores basados en valores de variables locales.</figcaption>
+        </figure>
+        <p>
+          Este panel es similar al que vio anteriormente (figura 2.7). El HTML para esto se muestra en el listado 2.27. Tiene dos instancias del panel: una dentro del cuerpo y otra dentro de una sección oscura. Actualice su HTML para que coincida con esto.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  &lt;body&gt;
+    &lt;div class="panel"&gt;                       <span>1</span>
+      &lt;h2&gt;Single-origin&lt;/h2&gt;
+      &lt;div class="body"&gt;
+        We have built partnerships with small farms
+        around the world to hand-select beans at the
+        peak of season. We then careful roast in
+        small batches to maximize their potential.
+      &lt;/div&gt;
+    &lt;/div&gt;
+  
+    &lt;aside class="dark"&gt;                      <span>2</span>
+      &lt;div class="panel"&gt;                     <span>2</span>
+        &lt;h2&gt;Single-origin&lt;/h2&gt;
+        &lt;div class="body"&gt;
+          We have built partnerships with small farms
+          around the world to hand-select beans at the
+          peak of season. We then careful roast in
+          small batches to maximize their potential.
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/aside&gt;
+  &lt;/body&gt;
+          </code>
+          <small>List 2.27. Dos paneles en diferentes contextos en la página.</small>
+        </pre>
+        <ol class="index-code">
+          <li>Un panel normal en la página</li>
+          <li>El segundo panel dentro de un recipiente oscuro</li>
+        </ol>
+        <p>
+          Redefinamos el panel para usar variables para el texto y el color de fondo. Agregue la siguiente lista a su hoja de estilo. Esto establece el color de fondo en blanco y el texto en negro. Explicaré cómo funciona esto antes de agregar estilos para la variante oscura.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  :root {
+    --main-bg: #fff;                  <span>1</span>
+    --main-color: #000;               <span>1</span>
+  }
+  
+  .panel {
+    font-size: 1rem;
+    padding: 1em;
+    border: 1px solid #999;
+    border-radius: 0.5em;
+    background-color: var(--main-bg);  <span>2</span>
+    color: var(--main-color);          <span>2</span>
+  }
+  
+  .panel &gt; h2 {
+    margin-top: 0;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+          </code>
+          <small>List 2.28. Usar variables para definir los colores del panel</small>
+        </pre>
+        <ol class="index-code">
+          <li>Define las variables de color de fondo y texto como blanco y negro, respectivamente</li>
+          <li>Usa las variables en los estilos del panel</li>
+        </ol>
+        <p>
+          Nuevamente, ha definido las variables dentro de un conjunto de reglas con el selector <code>:root</code>. Esto es importante porque significa que estos valores se establecen para todo en el elemento raíz (la página completa). Cuando un elemento descendiente de la raíz usa las variables, estos son los valores a los que se resolverán.
+        </p>
+        <p>
+          Tiene dos paneles, pero aún se ven iguales. Ahora, definamos las variables nuevamente, pero esta vez con un selector diferente. La siguiente lista proporciona estilos para el contenedor oscuro. Establece un fondo gris oscuro en el contenedor, así como un poco de relleno y margen. También redefine ambas variables. Agregue esto a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  .dark {
+    margin-top: 2em;         <span>1</span>
+    padding: 1em;
+    background-color: #999;  <span>2</span>
+    --main-bg: #333;         <span>3</span>
+    --main-color: #fff;      <span>3</span>
+  }
+          </code>
+          <small>Listado 2.29. <span translate="no">styling</span> el <span translate="no">dark container</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Pone un margen entre el contenedor oscuro y el panel anterior</li>
+          <li>Aplica un fondo gris oscuro al contenedor oscuro</li>
+          <li>Redefine las variables <code>--main-bg</code> y <code>--main-color</code> dentro del alcance del contenedor</li>
+        </ol>
+        <p>
+          Vuelva a cargar la página y el segundo panel tendrá un fondo oscuro y texto blanco. Esto se debe a que cuando el panel usa estas variables, se resolverán en los valores definidos en el contenedor oscuro, en lugar de en la raíz. Tenga en cuenta que no tuvo que cambiar el estilo del panel ni aplicar clases adicionales.
+        </p>
+        <p>
+          En este ejemplo, ha definido propiedades personalizadas dos veces: primero en la raíz (donde <code>--main-color</code> es negro) y luego en el contenedor oscuro 6#40;donde <code>--main-color</code> es blanco). Las propiedades personalizadas se comportan como una especie de variable de ámbito porque los valores son heredados por elementos descendientes. Dentro del recipiente oscuro, <code>--main-color</code> es blanco; en el resto de la página, es negro.
+        </p>
+        <h3 id="sub11">2.6.2. Cambiar propiedades personalizadas con JavaScript</h3>
+        <p>
+          También se puede acceder a las propiedades personalizadas y manipularlas en vivo en el navegador usando JavaScript. Debido a que este no es un libro sobre JavaScript, le mostraré lo suficiente para familiarizarse con el concepto. Dejaré que usted lo integre en sus proyectos de JavaScript.
+        </p>
+        <p>
+          La siguiente lista muestra cómo acceder a una propiedad en un elemento. Agrega un script a la página, que registra el valor de la propiedad <code>--main-bg</code> del elemento raíz.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  &lt;script type="text/javascript"&gt;
+    var rootElement = document.documentElement;
+    var styles = getComputedStyle(rootElement);              <span>1</span>
+    var mainColor = styles.getPropertyValue('--main-bg');    <span>2</span>
+    console.log(String(mainColor).trim());   3              
+  &lt;/script&gt;
+          </code>
+          <small>List 2.30. Acceder a una propiedad personalizada en JavaScript</small>
+        </pre>
+        <ol class="index-code">
+          <li>Obtiene el objeto de estilos para un elemento</li>
+          <li>Obtiene el valor <code>--main-bg</code> del objeto styles</li>
+          <li>3 Asegura que mainColor es una cadena y recorta los espacios en blanco; registra "#fff"</li>
+        </ol>
+        <p>
+          Debido a que puede especificar nuevos valores para propiedades personalizadas sobre la marcha, puede usar JavaScript para establecer un nuevo valor para <code>--main-bg</code> dinámicamente. Si lo configura en azul claro, aparecerá como se muestra en la figura 2.15.
+        </p>
+        <figure>
+          <img src="../img_css/cap2/15.jpg" alt="ibid">
+          <figcaption>Fig 2.15. JavaScript puede establecer el fondo del panel cambiando la variable --main-bg.</figcaption>
+        </figure>
+        <p>
+          El código de la siguiente lista establece un nuevo valor en --main-bg en el elemento raíz. Agregue esto al final de la etiqueta <code>&lt;script&gt;</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+  var rootElement = document.documentElement;
+  rootElement.style.setProperty('--main-bg', '#cdf');    <span>1</span>
+          </code>
+          <small>List 2.31. Establecer una propiedad personalizada en JavaScript</small>
+        </pre>
+        <ol class="index-code">
+          <li>Establece <code>--main-bg</code> en azul claro en el elemento raíz</li>
+        </ol>
+        <p>
+          Si ejecuta este script, cualquier elemento que herede la propiedad <code>--main-bg</code> se actualizará para usar este nuevo valor. En su página, esto cambia el fondo del primer panel a azul claro. El segundo panel permanece sin cambios, ya que sigue heredando la propiedad del contenedor oscuro.
+        </p>
+        <p>
+          Con esta técnica, puede usar JavaScript para cambiar el tema de su sitio, en vivo en el navegador. O bien, puede resaltar ciertas partes de la página o realizar cualquier número de otros cambios sobre la marcha. Con solo unas pocas líneas de JavaScript, puede realizar cambios que afectarán a una gran cantidad de elementos de la página.
+        </p>
+        <h3 id="sub12">2.6.3. Experimentar con propiedades personalizadas</h3>
+        <p>
+          Las propiedades personalizadas son un área completamente nueva de CSS que los desarrolladores recién están comenzando a explorar. Debido a que la compatibilidad con el navegador ha sido limitada, aún no se ha visto mucho uso en <em>"horario de máxima audiencia"</em>. Estoy seguro de que, con el tiempo, verá surgir mejores prácticas y usos novedosos. Esto es algo que debe vigilar. Experimente con propiedades personalizadas y vea qué se le ocurre.
+        </p>
+        <p>
+          Tenga en cuenta que cualquier declaración que utilice <code>var()</code> será ignorada por los navegadores antiguos que no la comprendan. Proporcione un comportamiento alternativo para esos navegadores cuando sea posible:
+        </p>
+        <pre>
+          <code class="container__base-code">
+  color: black;
+  color: var(--main-color);
+          </code>
+        </pre>
+      </section>
+      <section id="resumen">
+        <h3>RESUMEN</h3>
+        <ul>
+          <li>Adopte el uso de unidades relativas, permitiendo que la estructura de la página determine el significado de sus estilos.</li>
+          <li>Favorezca el uso de rems para el tamaño de fuente, pero use selectivamente ems para escalar los componentes de la página de manera simple.</li>
+          <li>Puede hacer que toda su página se amplíe de manera receptiva sin ninguna <span translate="no">media queries</span>.</li>
+          <li>Utilice valores sin unidades al especificar la altura de la línea.</li>
+          <li>Puede comenzar a familiarizarse con una de las características más nuevas de CSS, las propiedades personalizadas.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">El poder de los valores relativos</a></li>
+        <li><a href="#sub1">- La lucha por un diseño perfecto en píxeles</a></li>
+        <li><a href="#sub2">- El fin de la web de píxeles perfectos</a></li>
+        <li><a href="#tema2">EMS y REMS</a></li>
+        <li><a href="#sub3">- Usando ems para definir el tamaño de fuente</a></li>
+        <li><a href="#sub4">- Usar rems para el tamaño de fuente</a></li>
+        <li><a href="#tema3">Deja de pensar en Pixeles</a></li>
+        <li><a href="#sub5">- Establecer un tamaño de fuente predeterminado sensato</a></li>
+        <li><a href="#sub6">- Haciendo al panel <span translate="no">RESPONSIVE</span></a></li>
+        <li><a href="#sub7">- Cambiar el tamaño de un solo componente</a></li>
+        <li><a href="#tema4">Unidades <span translate="no">VIEWPORT-RELATIVE</span></a></li>
+        <li><a href="#sub8">- Usando VH para el tamaño de fuente</a></li>
+        <li><a href="#sub9">- Usando calc() para el tamaño de la fuente</a></li>
+        <li><a href="#tema5">Números sin unidades y altura de línea</a></li>
+        <li><a href="#tema6">Propiedades personalizadas (variables CSS)</a></li>
+        <li><a href="#sub10">- Cambiar propiedades personalizadas de forma dinámica</a></li>
+        <li><a href="#sub11">- Cambiar propiedades personalizadas con JavaScript</a></li>
+        <li><a href="#sub12">- Experimentar con propiedades personalizadas</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

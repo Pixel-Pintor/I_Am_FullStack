@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 9</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 9. CSS Modular</h1>
+      <div>
+        <a href="ch_08.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_10.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capitulo habla sobre:</em></h4>
+      <ul>
+        <li>Problemas emergentes a medida que crece un proyecto</li>
+        <li>Organizar CSS en módulos</li>
+        <li>Evitar la escalada de la especificidad del selector</li>
+        <li>Encuesta de metodologías CSS populares</li>
+      </ul>
+      <p>
+        En las partes 1 y 2, analizamos las complejidades de CSS y las herramientas que proporciona para diseñar elementos en la página. Hemos comprendido el modelo de caja, el colapso de márgenes, los contextos de apilamiento, los flotantes y la caja flexible. Necesitará estas habilidades, especialmente cuando se embarque por primera vez en un nuevo proyecto. En el mundo del desarrollo de software, sin embargo, dedicará una gran cantidad de tiempo no solo a escribir código nuevo, sino también a actualizar y agregar código existente. En CSS, esto trae consigo un conjunto de dificultades completamente nuevo.
+      </p>
+      <p>
+        Cuando realiza cambios en una hoja de estilo existente, esos cambios pueden afectar cualquier número de elementos en cualquier número de páginas de su sitio. <em>Hay un viejo chiste: dos propiedades CSS entran en un bar; se cae un taburete de otro bar</em>. Entonces, ¿cómo se asegura de que su cambio se aplique a todos los lugares que desea actualizar? Y, ¿cómo sabe que su cambio no afectará los elementos que no desea que se modifiquen?
+      </p>
+      <p>
+        En la parte 3, analizaremos estos problemas. Examinaremos la arquitectura de CSS, centrándonos menos en las declaraciones en su hoja de estilo y más en los selectores que elija y el HTML con el que los empareje. La forma en que estructura su código determina si puede realizar cambios de manera segura en el futuro sin efectos secundarios no deseados. Esto comienza con una comprensión del <em>CSS modular</em>, que será el tema central de este capítulo.
+      </p>
+      <p>
+        <em>CSS modular</em> significa dividir la página en sus partes componentes. Estas partes deben ser <em>reutilizables</em> en múltiples contextos y no deben depender directamente unas de otras. El objetivo final es que los cambios en una parte de su CSS no produzcan efectos inesperados en otra.
+      </p>
+      <p>
+        Esto es similar al uso de <em>muebles modulares</em>, como una cocina IKEA. En lugar de construir una unidad de gabinete de cocina gigante, puede seleccionar varias piezas individuales que están diseñadas para verse similares para que encajen visualmente. Pero, eres libre de poner cada pieza donde quieras en medio del arreglo completo. Con <em>CSS modular</em>, en lugar de construir una página web gigante, usted construye cada parte de la página de una manera que sea independiente, luego las coloca juntas en la disposición que desee.
+      </p>
+      <p>
+        La idea de escribir <em>código modular</em> no es nueva en informática, pero los desarrolladores solo han comenzado a aplicarlo a CSS en los últimos años. A medida que los sitios web y las aplicaciones web modernos se han vuelto más grandes y complicados, hemos tenido que encontrar formas de gestionar la creciente complejidad de nuestras hojas de estilo.
+      </p>
+      <p>
+        En lugar de una hoja de estilo donde cualquier selector puede hacer cualquier cosa en cualquier lugar de la página, los estilos modulares le permiten imponer orden. Cada parte de su hoja de estilo, que llamaremos <em>módulo</em>, será responsable de sus propios estilos y ningún módulo debe interferir con los estilos de otro. Este es el principio del software de <em>encapsulación</em> aplicado a CSS.
+      </p>
+      <p>
+        <em>Encapsulación:</em> agrupación de funciones y datos relacionados para formar un objeto. Se utiliza para ocultar el estado o los valores de un objeto estructurado para que las partes externas no puedan operar en ellos.
+      </p>
+      <p>
+        CSS no tiene los conceptos de datos o funciones tradicionales, pero tiene <em>selectores</em> y los elementos a los que apuntan esos selectores. A los efectos de la <em>encapsulación</em>, estas serán las partes que componen nuestro <em>módulo</em>, y cada módulo será responsable de diseñar una pequeña cantidad de elementos DOM.
+      </p>
+      <p>
+        Con la <em>encapsulación</em> en mente, definirás un módulo para cada componente discreto de la página: tus menús de navegación, tus cuadros de diálogo, tus barras de progreso y tus imágenes en miniatura. Cada módulo se identificará mediante un nombre de clase único aplicado a un elemento DOM. Y cada módulo tendrá su propio <em>patrón particular</em> de elementos secundarios para construir el módulo en la página. Anidarás módulos dentro de otros módulos, construyendo en conjunto una página completa.
+      </p>
+      <section id="tema1">
+        <h2>9.1. ESTILOS BÁSICOS: SENTAR LAS BASES</h2>
+        <p>
+          Antes de sumergirse en la escritura de <em>estilos modulares</em>, deberá configurar el entorno. Cada hoja de estilo comienza con un conjunto de reglas genéricas que se aplican a toda la página; esto sigue siendo necesario con <em>CSS modular</em>. Estas reglas a menudo se denominan reglas básicas porque sientan las bases sobre las que se construirán el resto de sus estilos. Esta parte de la hoja de estilo no será modular en sí misma, pero sentará las bases para los estilos modulares que siguen.
+        </p>
+        <p>
+          Cree una nueva página y hoja de estilo, y aplique los estilos base en la siguiente lista al CSS. Los estilos aquí son simplemente un ejemplo de algunos estilos base que podría usar.
+        </p>
+        <pre>
+          <code class="container__base-code">
+:root {
+  box-sizing: border-box;                             1
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;                                1
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;          2
+}
+          </code>
+          <small>Listado 9.1. Agregar estilos base</small>
+        </pre>
+        <ol class="index-code">
+          <li>Restablecimiento del tamaño de la caja (capítulo 3)</li>
+          <li>Tamaño de fuente predeterminado para la página</li>
+        </ol>
+        <p>
+          Otros estilos básicos suelen incluir colores de enlace, estilos de encabezado y márgenes. De forma predeterminada, <code>&lt;body&gt;</code> tiene un pequeño margen, que es posible que desee <em>"poner a cero"</em>. Dependiendo del proyecto, es posible que también desee aplicar estilos para campos de formulario, tablas y listas.
+        </p>
+        <p>
+          Recomiendo una biblioteca llamada <em>normalize.css</em>. Esta es una pequeña hoja de estilo que ayuda a nivelar las discrepancias entre las hojas de estilo del agente de usuario de varios navegadores. Puede descargarlo desde https://necolas.github.io/normalize.css/. Agregue esto antes de su hoja de estilo como parte de sus estilos base.
+        </p>
+        <p>
+          Tus <em>estilos base</em> deben ser bastante genéricos. Solo agregue aquí los estilos que desee aplicar a la mayor parte o a toda la página. No debe haber nombres de clase o ID en sus selectores, por lo que solo apunta a los elementos por su tipo de etiqueta y la pseudoclase ocasional. La idea es que estos estilos brinden el aspecto global que desea, pero son fáciles de anular más adelante cuando lo necesite.
+        </p>
+        <p>
+          Una vez que se establecen los estilos base de su proyecto, rara vez cambiarán. Proporcionan una base estable sobre la que puede construir su <em>CSS modular</em>. Después de sus estilos base, el resto de su hoja de estilo constará principalmente de módulos.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>9.2. UN MÓDULO SIMPLE</h2>
+        <p>
+          Creemos un módulo simple para breves mensajes de notificación. Debido a que cada módulo necesita un nombre único, llamará a este <em translate="no">"message"</em>. Le darás un poco de color y un borde para captar la atención del usuario <b>(figura 9.1)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap9/01.jpg" alt="ibid">
+          <figcaption>Figura 9.1. El módulo de mensajes</figcaption>
+        </figure>
+        <p>
+          El marcado para este módulo es un solo <code>div</code> con una clase <code>message</code>. Agréguelo a su página.
+        </p>
+        <pre>
+          <code class="base-coe">
+&lt;div class="message">
+  Save successful
+&lt;/div>
+          </code>
+        </pre>
+        <p>
+          El CSS para esto es un conjunto de reglas. Apunta al módulo por su nombre de clase. Luego define el relleno, el borde, el radio del borde y los colores. Para aplicar estos estilos al módulo <em translate="no">Message</em>, agregue esta lista a su hoja de estilo, siguiendo los estilos base.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.message {                         1
+  padding: 0.8em 1.2em;
+  border-radius: 0.2em;
+  border: 1px solid #265559;
+  color: #265559;
+  background-color: #e0f0f2;
+}
+          </code>
+          <small>Listado 9.3. Implementación del módulo de mensajes</small>
+        </pre>
+        <ol class="index-code">
+          <li>Dirige el módulo de mensajes por su nombre de clase</li>
+        </ol>
+        <p>
+          Debe estar familiarizado con todas estas propiedades, por lo que esto puede parecer nada especial en este momento. Se parece mucho a otros CSS que ha visto a lo largo del libro. De hecho, gran parte del CSS que ha escrito sigue los principios del <em>CSS modular</em>, pero no le he llamado la atención hasta ahora. Evaluemos qué hace que este CSS sea modular.
+        </p>
+        <p>
+          Es importante que el selector de este módulo esté formado solo por el nombre de la clase. Nada más en el selector restringe estos estilos a un lugar determinado de la página. Por el contrario, usar un selector como <code>#sidebar .message</code> significaría que este módulo solo podría usarse dentro de un elemento <code>#sidebar</code>. Sin esta restricción, el módulo es <em>reutilizable</em> en cualquier contexto.
+        </p>
+        <p>
+          Al agregar esta clase a un elemento, ahora puede reutilizar estos estilos para brindar comentarios al usuario sobre la entrada del formulario, proporcionar un texto de ayuda notable o llamar la atención sobre una exención de responsabilidad legal, por nombrar solo algunos ejemplos. Al <em>reutilizar</em> el mismo módulo, produce una interfaz de usuario coherente. Dondequiera que lo uses, se verá igual. No tendrá un color verde azulado ligeramente diferente en algunos lugares ni un acolchado un poco más grande en otros.
+        </p>
+        <p>
+          He trabajado en proyectos en los que CSS no era modular. En uno, aparecieron una serie de botones similares en toda la aplicación. Había un botón <code>.save-form</code> y un botón <code>.login-form</code> y un botón <code>.options .toolbar</code>. El mismo código se repitió varias veces en la hoja de estilo, aunque eran copias imperfectas unas de otras. La intención era tener una experiencia consistente, pero la evolución lenta a lo largo del tiempo introdujo cambios que nunca se propagaron a cada instancia de un botón en particular. Entonces, algunos botones tenían un relleno ligeramente diferente o un color rojo más brillante.
+        </p>
+        <p>
+          La solución fue <em>refactorizarlo</em> en un único módulo reutilizable que funcionara independientemente de su ubicación en la página. Al crear un módulo, aseguró no solo un código más simple (menos repetición), sino también una coherencia visual. Parecía más profesional y menos rápido ensamblado. A nivel <em>subconsciente</em>, esto ayuda a los usuarios a confiar en su aplicación.
+        </p>
+        <h3 id="sub1">9.2.1. Variaciones de un módulo</h3>
+        <p>
+          La consistencia es buena, pero a veces querrá desviarse intencionalmente de ella. Nuestro módulo de mensajes es bueno, pero es posible que necesitemos que se vea diferente en determinadas circunstancias. Por ejemplo, si necesita mostrar un <em>mensaje de error</em>, tal vez debería ser de color rojo en lugar de verde azulado. O quizás desee distinguir entre mensajes que son puramente informativos y aquellos que indican una acción exitosa, como guardar. Haces esto definiendo <em>modificadores</em>.
+        </p>
+        <p>
+          Creas un modificador definiendo un nuevo nombre de clase que comienza con el nombre del módulo. Por ejemplo, un modificador de error para el módulo <em translate="no">Message</em> podría ser <code>message--error</code>. Al incluir el nombre del módulo, indica claramente que esta clase pertenece al módulo <em translate="no">Message</em>.
+        </p>
+        <p>
+          Una convención popular es usar dos guiones para indicar un modificador: <code>mensaje--error</code>, por ejemplo.
+        </p>
+        <p>
+          Creemos tres modificadores para su módulo: <em translate="no">success</em>, <em translate="no">warning</em> y <em translate="no">error</em>. Agregue esto a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.message {                            1
+  padding: 0.8em 1.2em;
+  border-radius: 0.2em;
+  border: 1px solid #265559;
+  color: #265559;
+  background-color: #e0f0f2;
+}
+
+.message--success {                   2
+  color: #2f5926;
+  border-color: #2f5926;
+  background-color:  #cfe8c9;
+}
+
+.message--warning {                   3
+  color: #594826;
+  border-color: #594826;
+  background-color:  #e8dec9;
+}
+
+.message--error {                     4
+  color: #59262f;
+  border-color: #59262f;
+  background-color:  #e8c9cf;
+}
+          </code>
+          <small>Listado 9.4. Módulo de mensajes con clases modificadoras</small>
+        </pre>
+        <ol class="index-code">
+          <li>Módulo <span translate="no">message</span> base</li>
+          <li>El modificador de éxito cambia el mensaje a verde.</li>
+          <li>El modificador de advertencia cambia el mensaje a amarillo.</li>
+          <li>El modificador de error cambia el mensaje a rojo.</li>
+        </ol>
+        <p>
+          Los estilos de <em>modificadores</em> no necesitan redefinir todo el módulo. Solo necesitan anular las partes que cambian. En este caso, esto significa cambiar el color del texto, el borde y el fondo.
+        </p>
+        <p>
+          Para usar un <em>modificador</em>, agregue tanto la clase del módulo principal como la clase del modificador a un elemento como se muestra a continuación. Esto aplica los estilos predeterminados del módulo y luego permite que el modificador los anule de forma selectiva cuando sea necesario.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="message message--error">              1
+  Invalid password
+&lt;/div>
+          </code>
+          <small>Listado 9.5. Una instancia del módulo de mensajes con el modificador de error aplicado</small>
+        </pre>
+        <ol class="index-code">
+          <li>Agrega ambas clases al elemento</li>
+        </ol>
+        <p>
+          Del mismo modo, agregue el <em>modificador</em> de <em translate="no">success</em> o <em translate="no">warning</em> cuando necesite usar esas versiones. Estos modificadores cambian los colores del módulo, pero otros pueden cambiar el tamaño o incluso el diseño de un módulo.
+        </p>
+        <p>
+          Creemos otro módulo con algunas <em>variantes</em>. Hará un módulo de botones con variantes para tamaños grandes y pequeños, así como opciones de color <b>(figura 9.2)</b>. De esta manera, puede usar el color para agregar un significado visual a los botones. El verde indicará una acción positiva, como guardar o enviar un formulario. El rojo indicará una advertencia para ayudar a evitar que el usuario haga clic accidentalmente en un botón de cancelación.
+        </p>
+        <figure>
+          <img src="../img_css/cap9/02.jpg" alt="ibid">
+          <figcaption>Figura 9.2. Botones con varios tamaños y modificadores de color aplicados</figcaption>
+        </figure>
+        <p>
+          Los estilos de estos botones se dan en la siguiente lista. Incluye el módulo Botón principal, así como cuatro clases de modificadores: dos modificadores de tamaño y dos modificadores de color. Agrégalos a tu hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.button {                            1
+  padding: 0.5em 0.8em;
+  border: 1px solid #265559;
+  border-radius: 0.2em;
+  background-color: transparent;
+  font-size: 1rem;
+}
+
+.button--success {                   2
+  border-color: #cfe8c9;
+  color: #fff;
+  background-color: #2f5926;
+}
+
+.button--danger {                   3
+  border-color: #e8c9c9;
+  color: #fff;
+  background-color: #a92323;
+}
+
+.button--small {                    4
+  font-size: 0.8rem;
+}
+
+.button--large {                    5
+  font-size: 1.2rem;
+}
+          </code>
+          <small>Listado 9.6. Modificadores y módulo de botones</small>
+        </pre>
+        <ol class="index-code">
+          <li>Estilos de botones básicos</li>
+          <li>Variante de color de éxito verde</li>
+          <li>Variante de color rojo peligro</li>
+          <li>Variante pequeña</li>
+          <li>Variante grande</li>
+        </ol>
+        <p>
+          Los <em>modificadores</em> de tamaño funcionan estableciendo un tamaño de fuente más pequeño o más grande. Usó esta técnica en el <b>capítulo 2</b>. Al cambiar el tamaño de fuente, se ajusta el tamaño <code>em</code> del elemento, que, a su vez, cambia el relleno y el radio del borde sin tener que anular sus valores declarados.
+        </p>
+        <p>
+          Mantenga siempre todo el código de un módulo en el mismo lugar. Luego, su hoja de estilo constará de una serie de módulos, uno tras otro.
+        </p>
+        <p>
+          Con estos <em>modificadores</em> en su lugar, el autor del HTML tiene opciones para elegir. Pueden agregar clases de modificadores para cambiar el tamaño del botón según su importancia. También pueden elegir un color para sugerir un significado contextual al usuario.
+        </p>
+        <p>
+          Esta lista muestra algo de HTML, mezclando y haciendo coincidir los modificadores para crear varios botones. Agregue esto en cualquier lugar de su página para ver los resultados en funcionamiento.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;button class="button button--large">Read more&lt;/button>                 1
+&lt;button class="button button--success">Save&lt;/button>                    2
+&lt;button class="button button--danger button—small">Cancel&lt;/button>      3
+          </code>
+        </pre>
+        <ol class="index-code">
+          <li>Módulo de botón con modificador grande</li>
+          <li>Módulo de botón con modificador de éxito</li>
+          <li>Módulo de botón con peligro y pequeño modificador</li>
+        </ol>
+        <p>
+          El primer botón aquí es grande. El segundo tiene el color verde del éxito. El tercero tiene dos <em>modificadores</em>: uno de color <em translate="no">(danger)</em> y otro de tamaño <em>(small)</em>, como los botones de la <b>figura 9.2</b>.
+        </p>
+        <p>
+          La sintaxis de doble guión puede parecer un poco extraña. El beneficio se vuelve más evidente cuando comienza a crear módulos con nombres más largos, como <code>nav-menu</code> o <code>pull-quote</code>. Agregar un <em>modificador</em> a estos produce nombres de clases como <code>nav-menu--horizontal</code> o <code>pull-quote--dark</code>.
+        </p>
+        <p>
+          La sintaxis de doble guión muestra de un vistazo qué parte de la clase es el nombre del módulo y qué parte es el modificador; <code>nav-menu--horizontal</code> indica algo diferente a <code>nav--menu-horizontal</code>. Esto agrega claridad en proyectos con muchos módulos que tienen nombres similares.
+        </p>
+        <p>
+          Esta notación de doble guión se ha popularizado mediante una metodología llamada <em>BEM</em>. Les presentaré <em>BEM</em> y algunas otras metodologías similares cerca del final del capítulo.
+        </p>
+        <p>
+          Imagine que mantiene un sitio web que tiene menús desplegables de colores claros. Un día, su jefe le dice que el menú desplegable en el encabezado de la página debe invertirse para que quede oscuro con texto blanco.
+        </p>
+        <p>
+          Sin <em>CSS modular</em>, su primera inclinación será apuntar a ese menú desplegable en particular con un selector que se parezca a esto: <code>.page-header .dropdown</code>. Con ese selector, anularía los colores predeterminados aplicados por la clase <code>dropdown</code>. Con <em>CSS modular</em>, este selector está estrictamente prohibido. Aunque el uso de un selector descendiente puede funcionar ahora, este enfoque conlleva muchos problemas en el futuro. Consideremos las <em>ramificaciones</em>.
+        </p>
+        <p>
+          Primero, debe decidir a dónde pertenece este código. <em>¿Debería ir con los estilos del encabezado de la página o con los del menú desplegable?</em> Después de agregar suficientes reglas de un solo propósito como esta, la hoja de estilo se convertirá en una lista aleatoria de estilos no relacionados. Y, si necesita modificar estos estilos más adelante, ¿recordará dónde los colocó?
+        </p>
+        <p>
+          En segundo lugar, este enfoque ha aumentado gradualmente la <em>especificidad</em> del selector. Cuando surjan situaciones en las que desee realizar más cambios, deberá cumplir o <em>superar</em> esta especificidad.
+        </p>
+        <p>
+          En tercer lugar, es posible que luego descubra que necesita este menú desplegable oscuro en otro contexto. El que creaste está vinculado al encabezado de la página. Si desea otro menú desplegable oscuro en una barra lateral, deberá agregar <em>nuevos selectores</em> al conjunto de reglas para que coincida con ambos escenarios o duplicar los estilos por completo.
+        </p>
+        <p>
+          Finalmente, el uso continuo de esta práctica produce selectores cada vez más largos que unen el CSS a una estructura HTML particular. Por ejemplo, si tiene un selector como <code>#products-page .sidebar .social-media div:first-child h3</code>, ese conjunto de reglas está estrechamente vinculado a un lugar específico en una página específica.
+        </p>
+        <p>
+          Estos problemas son la raíz de muchas frustraciones que tienen los desarrolladores con respecto a CSS. Cuanto más tiempo se usa y se mantiene una hoja de estilo, peor se vuelven. La especificidad del selector aumenta continuamente a medida que se necesitan nuevos estilos para reemplazar los antiguos. Antes de que se dé cuenta, se encontrará escribiendo un selector con dos ID y cinco clases solo para apuntar a una casilla de verificación.
+        </p>
+        <p>
+          Las reglas se vuelven difíciles de encontrar, ya que los elementos individuales están dirigidos por fragmentos de código en múltiples partes dispares de la hoja de estilo. Se vuelve cada vez más difícil entender la organización de la hoja de estilo y cómo está haciendo lo que le hace a la página. El <em>código difícil</em> de entender significa que los errores se vuelven más comunes. Incluso los cambios más pequeños en la página pueden romper una gran parte de su estilo. Eliminar el código antiguo se vuelve inseguro porque nadie sabe lo que hace y si sigue siendo importante. La hoja de estilo crece en longitud y los problemas solo se agravan. Estos son los problemas que el CSS modular busca prevenir.
+        </p>
+        <p>
+          Cuando necesite que un módulo se vea o se comporte de manera diferente, cree una clase de modificador que se pueda aplicar directamente al elemento específico. En lugar de escribir <code>.page-header .dropdown</code>, por ejemplo, escriba <code>.dropdown--dark</code>. De esta forma, el módulo, y solo el módulo, se encarga de su propia apariencia. Otros módulos no pueden acceder a él para realizar cambios. El menú desplegable <code>dark</code> no está vinculado a ninguna estructura profundamente anidada en el HTML, por lo que puede colocarlo en cualquier lugar de la página que lo necesite.
+        </p>
+        <p>
+          Nunca use <em>selectores descendientes</em> para alterar un módulo en función de su ubicación en la página. Seguir esta regla es lo mejor que puede hacer para evitar que su hoja de estilo caiga en la locura del <em>código inmantenible</em>.
+        </p>
+        <h3 id="sub2">9.2.2. Módulos con múltiples elementos</h3>
+        <p>
+          Los dos módulos que ha creado hasta ahora, <em translate="no">message</em> y <em translate="no">button</em>, son agradables y simples; constan de un solo elemento. Pero muchos módulos que creará necesitarán más elementos. No puede crear un menú desplegable o un modal con un solo elemento.
+        </p>
+        <p>
+          Construyamos un módulo más complejo. Este será un objeto multimedia <b>(figura 9.3)</b>, como el que hizo en el <b>capítulo 4</b> <b>(sección 4.5.1)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap9/03.jpg" alt="ibid">
+          <figcaption>Figura 9.3. Módulo de medios hecho con cuatro elementos</figcaption>
+        </figure>
+        <p>
+          Este módulo consta de cuatro elementos: tiene un contenedor <code>div</code> que incluye una imagen y un cuerpo, y dentro del cuerpo está el título. Al igual que con otros módulos, le dará al <em>contenedor principal</em> el nombre de clase <code>media</code> para que coincida con el nombre del módulo. Para la imagen y el cuerpo, usará los nombres de clase <code>media__image</code> y <code>media__body</code>. Estos comienzan con el nombre del módulo, seguido de un guión bajo doble, luego el nombre del subelemento. (Esta es otra convención de la metodología <em>BEM</em>). Al igual que con los modificadores de guión doble, el nombre de la clase le dice de un vistazo qué papel juega el elemento y a qué módulo pertenece.
+        </p>
+        <p>
+          Las reglas para el módulo <code>media</code> se muestran aquí. Agrégalos a tu hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.media {                         1
+  padding: 1.5em;
+  background-color: #eee;
+  border-radius: 0.5em;
+}
+.media::after {                  2
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.media__image {                  3
+  float: left;
+  margin-right: 1.5em;
+}
+
+.media__body {                   3
+  overflow: auto;
+  margin-top: 0;
+}
+
+.media__body > h4 {              4
+  margin-top: 0;
+}
+          </code>
+          <small>Listado 9.8. Módulo <span translate="no">media</span> con subelementos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Contenedor principal</li>
+          <li>Clearfix</li>
+          <li>Los subelementos de <span translate="no">image</span> y <span translate="no">body</span></li>
+          <li>El título dentro de <span translate="no">body</span></li>
+        </ol>
+        <p>
+          Notará que no tuvo que usar muchos selectores descendientes. La imagen es un elemento secundario del módulo de <code>media</code>, por lo que puede usar el selector <code>.media &gt; .media__image</code>, pero eso no es necesario. Porque el nombre del módulo ya está en la clase <code>media__image</code>; está garantizado que será único.
+        </p>
+        <p>
+          Usé un combinador descendiente directo para el título. Podría usar la clase <code>media__title</code> (o incluso <code>media__body__title</code> para indicar completamente su posición en la jerarquía), pero encuentro que esto no siempre es necesario. En este caso, decidí que la etiqueta <code>&lt;h4&gt;</code> es lo suficientemente descriptiva como para indicar el título del módulo <code>media</code>. Esto nos impide utilizar diferentes encabezados (<code>&lt;h3&gt;</code> o <code>&lt;h5&gt;</code>) para un título multimedia. Si, en sus módulos, no le gusta una restricción como esa, use un nombre de clase para apuntar al elemento en su lugar.
+        </p>
+        <p>
+          Agregue el marcado para este módulo a su página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="media">
+  &lt;img class="media__image" src="runner.png">          1
+  &lt;div class="media__body">                            2
+    &lt;h4>Strength&lt;/h4>                                  3
+    &lt;p>
+      Strength training is an important part of
+      injury prevention. Focus on your core&mdash;
+      especially your abs and glutes.
+    &lt;/p>
+  &lt;/div>
+&lt;/div>
+          </code>
+          <small>Listado 9.9. Marcado para el módulo <span translate="no">media</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Subelemento de <span translate="no">image</span></li>
+          <li>Subelemento de <span translate="no">body</span></li>
+          <li>Subelemento de <span translate="no">title</span></li>
+        </ol>
+        <p>
+          Este es un módulo versátil. Funciona dentro de contenedores de múltiples tamaños, creciendo de forma natural para llenar su ancho. Puede poner varios párrafos dentro del cuerpo. Puede usarlo con imágenes más grandes o más pequeñas (aunque es posible que desee considerar agregar un <code>max-widht</code> a la imagen para que no sobresalga del cuerpo).
+        </p>
+        <p>
+          También puede crear variaciones del módulo. Ahora, es trivial hacer una versión en la que la imagen flote a la derecha en lugar de a la izquierda <b>(figura 9.4)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap9/04.jpg" alt="ibid">
+          <figcaption>Figura 9.4. Módulo <span translate="no">media</span> con variante derecha</figcaption>
+        </figure>
+        <p>
+          Una variante <code>media-right</code> hará este trabajo. Puede agregar la clase variante al <code>div</code> principal del módulo (por lo que es <code>&lt;div class = "media media--right"></code>). Luego, puede usar esa clase para apuntar a la imagen y hacerla flotar hacia la derecha.
+        </p>
+        <p>
+          Agregue la clase modificadora al elemento en su HTML. Agregue la siguiente lista a su hoja de estilo para ver esta versión.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.media--right > .media__image {          1
+  float: right;
+}
+          </code>
+          <small>Listado 9.10. Definición de una variante adecuada para el módulo de medios</small>
+        </pre>
+        <ol class="index-code">
+          <li>Apunta al subelemento de la imagen, pero solo cuando el modificador derecho está presente</li>
+        </ol>
+        <p>
+          Esta regla anula el <code>float: left</code> original de la imagen. Debido a la forma en que funcionan los <em translate="no">floats</em>, no es necesario reordenar los elementos en el HTML.
+        </p>
+        <p>
+          En el módulo <code>media</code>, utilicé el selector <code>.media__body > h4</code> para apuntar al elemento del título. Pude hacer esto porque <code>&lt;h4&gt;</code> es un elemento que solo debería representar un encabezado menor. También utilizo esta técnica para módulos con listas; Me resulta más sencillo orientar los elementos del menú con <code>.menu > li</code> que agregar una clase <code>menu__item</code> a todos y cada uno de los elementos de una lista, aunque las opiniones varían sobre este tema.
+        </p>
+        <p>
+          Debe evitar la orientación basada en tipos de etiquetas genéricas, como <code>div</code> y <code>span</code>. Un selector como <code>.page-header > span</code> es demasiado amplio. Cuando construye inicialmente el módulo, es posible que solo esté usando un intervalo en ese módulo para una cosa, pero nada dice que no volverá más tarde y necesita agregar un segundo intervalo para un propósito diferente. Agregar una clase a los intervalos más adelante es difícil porque implicará buscar cada uso de ese módulo en su marcado y hacer el cambio allí.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>9.3. MÓDULOS COMPUESTOS EN ESTRUCTURAS MÁS GRANDES</h2>
+        <p>
+          En su libro, Código limpio, Robert C. Martin dice: <em>“La primera regla de las clases es que deben ser pequeñas. La segunda regla de las clases es que deben ser más pequeñas que eso"</em>. En ese momento, estaba hablando de <em>clases de programación orientada a objetos</em>, pero el mismo principio se aplica igualmente a los módulos en CSS.
+        </p>
+        <p>
+          Cada uno de sus módulos debe ser responsable de una cosa. Nuestro módulo <code>message</code> es responsable de hacer que un mensaje sea notorio. Nuestro módulo de <code>media</code> se encarga de colocar una imagen junto a algún texto. Debería poder resumir de manera concisa su propósito. Algunos módulos serán de diseño, otros serán de estilo. Cuando un módulo intenta hacer más de una cosa, debería considerar <em>dividirlo en módulos más pequeños</em>.
+        </p>
+        <p>
+          Para demostrarlo, creemos un menú desplegable <b>(figura 9.5)</b>. Este aparecerá como el que construyó en el <b>capítulo 7</b> <b>(sección 7.3.1)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap9/05.jpg" alt="ibid">
+          <figcaption>Figura 9.5. Menú desplegable</figcaption>
+        </figure>
+        <p>
+          Cuando inicie un módulo, pregúntese: <em>"En un nivel alto, ¿cuál es la responsabilidad del módulo?"</em> En este caso, su primera respuesta podría ser: <em>"Un botón que alterna visualmente un menú desplegable y presenta elementos de menú apilados uno encima del otro"</em>.
+        </p>
+        <p>
+          Es una descripción adecuada de lo que necesita para este escenario, pero tengo una regla general: <em>"Si tengo que usar la palabra y al describir la responsabilidad del módulo, entonces podría estar describiendo múltiples responsabilidades"</em>. ¿Alterna un menú o presenta elementos de menú apilados?
+        </p>
+        <p>
+          Cuando necesite usar la palabra <em translate="no">and</em> para describir la responsabilidad de un módulo, considere si potencialmente está describiendo dos (o más) responsabilidades. Puede que no lo esté, esta no es una regla estricta. Pero, si es así, debe definir módulos separados para cada <em>responsabilidad</em>. Este es un principio importante de <em>encapsulación</em>, que se denomina <em>Principio de Responsabilidad Única</em>. Cuando sea posible, distribuya múltiples responsabilidades a múltiples módulos. Esto hará que cada módulo sea pequeño, enfocado y más fácil de entender.
+        </p>
+        <h3 id="sub3">9.3.1. División de múltiples responsabilidades entre módulos</h3>
+        <p>
+          Creemos el menú desplegable con dos módulos diferentes. El primero, al que llamaré <em translate="no">dropdown</em>, tendrá un botón responsable de controlar la visibilidad de un contenedor. Podría desglosar esto aún más y decir que es responsable de revelar el contenedor y ocultarlo. También puede describir la apariencia del botón y el pequeño triángulo que indica la acción. Describir el módulo con este detalle requiere el uso de <em translate="no">and</em>, pero todos estos puntos están subordinados a la responsabilidad principal, por lo que creo que estamos en buena forma.
+        </p>
+        <p>
+          El segundo módulo, al que llamaré <em translate="no">menu</em>, será la lista de enlaces apilados. Luego, compondrá la interfaz completa colocando una instancia del módulo de menú dentro del contenedor de un módulo desplegable.
+        </p>
+        <p>
+          Para comenzar, coloque el marcado de la siguiente lista en su página. Consiste en un módulo desplegable, que contiene un módulo de menú. También contiene un mínimo de <em>JavaScript</em> para agregar la funcionalidad de abrir y cerrar cuando se hace clic en el botón.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="dropdown">
+  &lt;button class="dropdown__toggle">Main Menu&lt;/button>        1
+  &lt;div class="dropdown__drawer">                             2
+    &lt;ul class="menu">                                        3
+      &lt;li>&lt;a href="/">Home&lt;/a>&lt;/li>
+      &lt;li>&lt;a href="/coffees">Coffees&lt;/a>&lt;/li>
+      &lt;li>&lt;a href="/brewers">Brewers&lt;/a>&lt;/li>
+      &lt;li>&lt;a href="/specials">Specials&lt;/a>&lt;/li>
+      &lt;li>&lt;a href="/about">About us&lt;/a>&lt;/li>
+    &lt;/ul>
+  &lt;/div>
+&lt;/div>
+
+&lt;script type="text/javascript">
+(function () {
+  var toggle =
+    document.querySelector('.dropdown__toggle');
+  toggle.addEventListener('click', function (event) {        4
+      event.preventDefault();
+      var dropdown = event.target.parentNode;
+      dropdown.classList.toggle('is-open');
+    }
+  );
+}());
+&lt;/script>
+          </code>
+          <small>Listado 9.11. Construyendo un menú desplegable a partir de dos módulos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Botón de alternancia para el menú desplegable</li>
+          <li>Un subelemento de cajón sirve como contenedor de menú</li>
+          <li>Un módulo de menú colocado dentro del cajón</li>
+          <li>Alterna la clase está abierta cuando se hace clic en el botón de alternancia</li>
+        </ol>
+        <p>
+          He utilizado la notación de <em>doble subrayado</em> aquí para indicar que alternar y cajón son subelementos del módulo desplegable. Al hacer clic en la palanca, se revelará u ocultará el cajón. JavaScript hace esto agregando o quitando la clase <code>is-open</code> en el elemento principal del menú desplegable.
+        </p>
+        <p>
+          Los estilos del menú desplegable se muestran en la siguiente lista. Agregue esto a su hoja de estilo. Estos estilos son similares a los que se muestran en el <b>capítulo 7</b>. He actualizado los nombres de las clases para que coincidan con la notación de subrayado doble. Esto le brinda un menú desplegable funcional, aunque el menú dentro de él permanece sin estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.dropdown {
+  display: inline-block;
+  position: relative;                             1
+}
+
+.dropdown__toggle {
+  padding: 0.5em 2em 0.5em 1.5em;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #eee;
+}
+
+.dropdown__toggle::after {
+  content: "";
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  border: 0.3em solid;
+  border-color: black transparent transparent;     2
+}
+
+.dropdown__drawer {
+  display: none;                                   3
+  position: absolute;
+  left: 0;
+  top: 2.1em;
+  min-width: 100%;
+  background-color: #eee;
+}
+
+.dropdown.is-open .dropdown__toggle::after {
+  top: 0.7em;
+  border-color: transparent transparent black;     4
+}
+.dropdown.is-open .dropdown__drawer {
+  display: block;                                  3
+}
+          </code>
+          <small>Listado 9.12. Definición de un módulo desplegable</small>
+        </pre>
+        <ol class="index-code">
+          <li>Establece bloque contenedor para el cajón absolutamente posicionado</li>
+          <li>Dibuja el triángulo usando bordes (capítulo 7)</li>
+          <li>Oculta el cajón inicialmente, luego lo muestra cuando la clase está abierta está presente</li>
+          <li>Invierte el triángulo mientras el menú desplegable está abierto</li>
+        </ol>
+        <p>
+          Este listado utiliza un <em>posicionamiento relativo</em> en el elemento principal para establecer el bloque contenedor para el cajón, que a su vez está <em>absolutamente posicionado</em> dentro. Proporciona algunos estilos para el botón de alternancia, incluido el triángulo en el pseudo-elemento <code>::after</code>. Por último, revela el cajón e invierte el triángulo cuando está presente la clase <code>is-open</code>.
+        </p>
+        <p>
+          Se trata de 35 líneas de código. Aquí están sucediendo un puñado de cosas, pero no es tanto que no pueda mantenerlo todo en la cabeza mientras trabaja en este módulo. Cuando, en el futuro, tenga que regresar y realizar cambios en un módulo, querrá que sea lo suficientemente pequeño como para poder resolverlo con razonable rapidez.
+        </p>
+        <p>
+          Este módulo es el primero que ha creado que utiliza el <em>posicionamiento</em>. Observe que establece su propio bloque contenedor (<code>position: relative</code> al elemento principal). Los elementos absolutamente posicionados (el cajón y el pseudoelemento <code>::after</code>) se basan en posiciones que se definen dentro del mismo módulo.
+        </p>
+        <p>
+          Cuando es posible, trato de mantener los elementos posicionados que están relacionados entre sí dentro del mismo módulo. De esta manera, el módulo no se comportará de manera extraña si lo coloco dentro de otro contenedor posicionado.
+        </p>
+        <p>
+          La clase <code>is-open</code> tiene un propósito especial en el módulo desplegable. Está diseñado para agregarse o eliminarse del módulo de forma dinámica mediante JavaScript. También es un ejemplo de una <em>clase de estado</em> porque indica algo sobre el estado actual del módulo.
+        </p>
+        <p>
+          Es una convención común diseñar todas las <em>clases estatales</em> para que comiencen con <code>is-</code> o <code>has-</code>. De esa manera, su propósito es evidente; indican algo sobre el estado actual del módulo y se espera que cambien. Otros ejemplos de clases de estado podrían ser <code>is-expanded</code>, <code>is-loading</code> o <code>has-error</code>. La naturaleza precisa de lo que hacen dependerá del módulo en el que se utilicen.
+        </p>
+        <p>
+          Agrupe el código de las <em>clases estatales</em> junto con el resto del código del módulo. Luego, cada vez que necesite usar JavaScript para cambiar dinámicamente la apariencia de un módulo, use la clase de estado para activar el cambio.
+        </p>
+        <p>
+          Una característica que ofrecen todos los preprocesadores como <em>SASS</em> o <em>LESS</em> es la capacidad de fusionar archivos CSS separados en uno. Esto le permite organizar sus estilos en varios archivos y directorios, pero mostrarlos todos en el navegador como un solo archivo. Reduce la cantidad de solicitudes de red necesarias desde el navegador, lo que le permite dividir su código en tamaños manejables. En mi opinión, esta es una de las características más valiosas que proporcionan los preprocesadores.
+        </p>
+        <p>
+          Si utiliza un procesador, le recomiendo encarecidamente que coloque cada módulo de su CSS en su propio archivo con el nombre apropiado. Organícelos en directorios según sea necesario. Luego, cree una hoja de estilo maestra que importe todos sus módulos. De esta manera, no tendrá que buscar en una hoja de estilo larga para cada módulo cuando desee realizar un cambio. Sabrá exactamente dónde debe buscar.
+        </p>
+        <p>
+          Puede crear un <em>main.scss</em> que contenga solo declaraciones <code>@import</code>. Se vería así:
+        </p>
+        <pre>
+          <code class="container__base-code">
+@import 'base';
+@import 'message';
+@import 'button';
+@import 'media';
+@import 'dropdown';
+          </code>
+        </pre>
+        <p>
+          El preprocesador luego traerá sus estilos base de <em>base.scss</em> y sus estilos de módulo, cada uno desde su propio archivo, generando una única hoja de estilo que contiene todos estos estilos. De esa manera, <em>cada módulo tiene su propio archivo</em>, lo que facilita la edición.
+        </p>
+        <p>
+          Consulte el <b>apéndice B</b> para obtener más información sobre los <em>preprocesadores</em>, o consulte la documentación de su preprocesador para obtener más información sobre el uso de su directiva de importación.
+        </p>
+        <p>
+          Con el módulo desplegable en funcionamiento, ahora puede centrar su atención en el módulo <code>menu</code>. Ya no necesita preocuparse por la apertura y el cierre del menú desplegable, ya que el módulo desplegable ya se ocupa de eso. El módulo <code>menu</code> aplicará la apariencia que necesita a la lista de enlaces.
+        </p>
+        <p>
+          Los estilos para esto se muestran aquí. Agrégalos a tu hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.menu {
+  margin: 0;
+  padding-left: 0;
+  list-style-type: none;            1
+  border: 1px solid #999;
+}
+
+.menu &gt; li + li {
+  border-top: 1px solid #999;       2
+}
+
+.menu &gt; li &gt; a {                    3
+  display: block;
+  padding: 0.5em 1.5em;
+  background-color: #eee;
+  color: #369;
+  text-decoration: none;
+}
+
+.menu &gt; li &gt; a:hover {              4
+  background-color: #fff;
+}
+          </code>
+          <small>Listado 9.13. Estilos de módulo de menú</small>
+        </pre>
+        <ol class="index-code">
+          <li>Anula los estilos del agente de usuario para eliminar las viñetas de la lista</li>
+          <li>Agrega un borde entre cada enlace</li>
+          <li>Estilos de enlaces grandes en los que se puede hacer clic</li>
+          <li>Agrega resaltado al pasar el mouse</li>
+        </ol>
+        <p>
+          Estas son las mismas declaraciones que usó en su menú desplegable en el <b>capítulo 7</b>. Cada <code>&lt;li&gt;</code> es un subelemento del módulo, por lo que no sentí la necesidad de agregar un doble subrayado a todos y cada uno de ellos. El selector de <em>descendientes</em> directos <code>.menu > li</code> es lo suficientemente específico.
+        </p>
+        <p>
+          Este módulo es completamente <em>independiente</em>. No depende del módulo desplegable. Esto hace que el código sea más simple porque no es necesario comprender uno para entender el otro. También permite una reutilización más flexible de estos módulos.
+        </p>
+        <p>
+          Puede crear un estilo de menú diferente, ya sea una variante o un módulo completamente separado, y usarlo dentro de un menú desplegable si fuera necesario. También puede utilizar este menú en otro lugar, fuera del menú desplegable. A menudo, no puede predecir lo que sus páginas pueden necesitar en el futuro, pero con los módulos reutilizables, deja la puerta abierta para mezclar y combinar nuevas posibilidades con una apariencia familiar y coherente.
+        </p>
+        <h3 id="sub4">9.3.2. Nombrando módulos</h3>
+        <p>
+          La elección de los nombres de los módulos adecuados requiere reflexión. Puede incluir un nombre temporal a medida que desarrolla el módulo, pero antes de considerarlo completo, asegúrese de haber prestado atención a su nombre. Hacer esto bien es posiblemente la parte más difícil de escribir <em>CSS modular</em>.
+        </p>
+        <p>
+          Considere el módulo <code>media</code> de antes en este capítulo. Lo usó para mostrar una imagen de un corredor y una punta de carrera como se muestra en la <b>figura 9.6</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap9/06.jpg" alt="ibid">
+          <figcaption>Figura 9.6. Módulo <span translate="no">media</span> con una imagen y una punta de ejecución</figcaption>
+        </figure>
+        <p>
+          Imagina que aún no has nombrado el módulo, pero sabes que una página lo necesita. Podrías llamarlo punta corriente. Esto es exacto y, inicialmente, parece apropiado. Pero considere otras cosas que podría querer hacer con los estilos de este módulo. ¿Y si quisiera utilizar el mismo elemento de la interfaz de usuario para otra cosa? Siguiendo el tema de un sitio web de carreras, es posible que desee utilizar una serie de estos para enumerar las próximas carreras. Si lo hace, el nombre <em>running-tip</em> está repentinamente fuera de lugar.
+        </p>
+        <p>
+          Debes darle al módulo un nombre que sea significativo sin importar el contexto en el que quieras usarlo. También debe evitar los nombres que simplemente describen la apariencia visual. Llamar a esto un “cuadro-gris-con-imagen” parece más versátil, pero ¿qué pasa si luego decides que el color de fondo debe ser azul claro? ¿O realiza un rediseño completo del sitio? Este nombre ya no sería aplicable y tendría que cambiarle el nombre y actualizar el nombre en todas partes en el HTML.
+        </p>
+        <p>
+          En cambio, debe preguntarse qué representa conceptualmente este módulo. No siempre es una tarea fácil. El nombre de medios funciona bien en este nivel; admite algún tipo de imagen y texto. Da una fuerte impresión, sin vincular el módulo a ningún uso o implementación visual en particular.
+        </p>
+        <p>
+          Un módulo debe ser versátil. Idealmente, su nombre será simple y memorable. A medida que diseña más páginas para su sitio, puede reutilizar un módulo para cualquier número de cosas. Usted y otros miembros de su equipo pueden adoptarlo en el idioma que usan cuando hablan sobre el sitio: <em>"Usemos un medio aquí"</em> o <em>"Estos mosaicos están demasiado juntos"</em>.
+        </p>
+        <p>
+          Hasta ahora, ha creado un módulo de <code>message</code>, <code>media</code>, <code>dropdown</code> y <code>menu</code>. Algunos otros ejemplos de buenos nombres de módulo incluyen <code>panel</code>, <code>alert</code>, <code>collapsible-section</code> y <code>form-control</code>. Es útil tener una idea general del diseño general del sitio desde el principio. Es posible que sepa, por ejemplo, que habrá dos elementos de la interfaz de usuario no relacionados que podrían llamarse correctamente mosaicos; en cuyo caso, debe tener cuidado de nombrarlos con mayor precisión (tal vez <code>media-tile</code> y <code>headline-tile</code>).
+        </p>
+        <p>
+          Algunas personas imponen el uso de dos palabras en el nombre de cada módulo para que nada sea demasiado genérico; nunca se sabe cuándo puede surgir la necesidad de un módulo de mosaico completamente nuevo. Si su módulo de mosaico existente tiene un nombre más preciso, puede dejarle un poco más de libertad para nombrar el nuevo sin que los dos se combinen.
+        </p>
+        <p>
+          Al nombrar clases variantes para su módulo, debe aplicar principios similares. Por ejemplo, si tienes un módulo de botones, no subclases las variantes rojas y azules con <code>button--red</code> y el <code>button--blue</code>. Es probable que el diseño de su sitio cambie en el futuro y no sabe si estos colores también cambiarán. Intente encontrar nombres más significativos como <code>button--danger</code> y <code>button--success</code>.
+        </p>
+        <p>
+          Los modificadores con un significado más relativo como grande o pequeño no son perfectos, pero pueden ser aceptables. Nada dice que no se pueda cambiar <code>button--large</code> grande durante un rediseño, siempre que siga siendo más grande que un botón normal. Pero ciertamente evite modificadores demasiado precisos como <code>button--20px</code>.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>9.4. CLASES DE UTILIDADES</h2>
+        <p>
+          A veces, necesitará una clase para hacer algo simple y muy específico en un elemento. Esto podría significar centrar el texto, dejarlo flotar a la izquierda o agregar un <em translate="no">clearfix</em>, por ejemplo. Estas clases se denominan <em>clases de utilidad</em>.
+        </p>
+        <p>
+          De alguna manera, las clases de servicios públicos son como <em>pequeños módulos</em>. Sin embargo, una clase de servicios públicos debería estar enfocada en láser. Rara vez será más de una declaración. Me gusta mantener todas estas clases cerca del final de mi hoja de estilo, debajo de todos mis módulos.
+        </p>
+        <p>
+          La siguiente lista muestra cuatro clases de servicios públicos. Cada uno realiza una acción específica: centrar el texto, flotar a la izquierda, borrar la corrección (contener flotantes) y ocultar un elemento.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.text-center {                     1
+  text-align: center !important;
+}
+
+.float-left {                      2
+  float: left;
+}
+
+.clearfix::before,
+.clearfix::after {                 3
+    content: " ";
+    display: table;
+}
+.clearfix::after {
+    clear: both;
+}
+
+.hidden {                          4
+  display: none !important;
+}
+          </code>
+          <small>Listado 9.14. Ejemplos de clases de servicios públicos</small>
+        </pre>
+        <ol class="index-code">
+          <li>Centra el texto dentro de un contenedor</li>
+          <li>Flota un elemento a la izquierda</li>
+          <li>Clearfix</li>
+          <li>Oculta un elemento en la página.</li>
+        </ol>
+        <p>
+          Sí, usé <code>!important</code>. Dos veces. Las clases de servicios públicos son el único lugar donde debe usar la anotación importante. De hecho, incluso podría ser preferido. No importa dónde aplique la clase de utilidad, funcionará. Te garantizo que cada vez que agregas la clase <code>text-center</code> a un elemento, es porque quieres que el texto esté centrado y no quieres que ningún otro estilo anule esto. El uso de la anotación importante garantiza esto.
+        </p>
+        <p>
+          Para ver estas clases en acción, agréguelas a un elemento en su página. Un <code>&lt;div class = "text-center"></code> centra cualquier texto dentro. Agregue <code>float-right</code> a un <code>&lt;img&gt;</code> para flotar, y <em>clearfix</em> a su contenedor para que contenga el <em translate="no">float</em>.
+        </p>
+        <p>
+          Las clases de servicios públicos están destinadas a ayudar rápidamente. No necesita un módulo completo cuando necesita hacer una cosa simple en la página. Cuando este sea el caso, use una <em>clase de utilidad</em>. Sin embargo, no se deje llevar. En la mayoría de los sitios, probablemente no necesitará más de una docena de estas clases.
+        </p>
+      </section>
+      <section id="tema5">
+        <h2>9.5. METODOLOGÍAS CSS</h2>
+        <p>
+          El concepto de <em>CSS modular</em> comenzó a surgir hace varios años. Los desarrolladores que habían experimentado los problemas de escalar CSS para proyectos grandes comenzaron a crear metodologías prescritas para permitir la reutilización de código y reducir errores. En los años posteriores, nuevas metodologías se han basado en estas ideas. Estos no vienen con ningún tipo de biblioteca o tecnología, pero brindan un conjunto de pautas para ayudar a organizar su CSS.
+        </p>
+        <p>
+          Debo mucha de la sabiduría de este capítulo a las personas que me han precedido. Si sigue los consejos presentados en este capítulo, estará muy lejos de seguir la mayoría de estas metodologías.
+        </p>
+        <p>
+          Estas prácticas se han vuelto transformadoras en el mundo de CSS. Vale la pena conocer algunos de los más importantes. Algunos de estos son simples y ofrecen solo algunas pautas. Otros son más rígidos, proporcionando una organización estricta para sus estilos. Cada uno tiene su propia terminología y convenciones de nomenclatura, pero fundamentalmente todos regresan a un enfoque modular de CSS:
+        </p>
+        <ul>
+          <li><em>OOCSS:</em> CSS orientado a objetos, creado por Nicole Sullivan: https://github.com/stubbornella/oocss/wiki</li>
+          <li><em>SMACSS:</em> arquitectura modular y escalable para CSS, creada por Jonathan Snook: https://smacss.com/</li>
+          <li><em>BEM:</em> bloque, elemento, modificador, desarrollado en Yandex: https://en.bem.info/methodology/</li>
+          <li><em>ITCSS:</em> CSS de triángulo invertido, creado por Harry Roberts: www.creativebloq.com/web-design/manage-large-css-projects-itcss-101517528</li>
+        </ul>
+        <p>
+          El orden de esta lista es más o menos cronológico. También se corresponde con una cantidad creciente de estructura. <em>OOCSS</em> se basa en algunos principios rectores, mientras que <em>ITCSS</em> tiene reglas específicas para nombrar clases y categorizar estilos; <em>SMACSS</em> y <em>BEM</em> se encuentran en el medio.
+        </p>
+        <p>
+          En este capítulo, le enseñé las tres secciones principales de su hoja de estilo: reglas básicas, reglas del módulo y clases de utilidad. <em>SMACSS</em> agrega una sección para las reglas de diseño, que se ocupa de diseñar las regiones principales de la página (barra lateral, pie de página y tal vez un sistema de cuadrícula). <em>ITCSS</em> divide las categorías en siete secciones.
+        </p>
+        <p>
+          Si estas metodologías le interesan, le animo a leer más sobre ellas. Tienen una terminología diferente, pero en muchos sentidos se complementan entre sí. Elija uno que sea su favorito o adapte su enfoque de <em>CSS modular</em> a su gusto. Si trabaja con un equipo, encuentre algo en lo que todos puedan estar de acuerdo. Si no le gusta la sintaxis de nomenclatura <em>BEM</em> que le he mostrado, busque otra o cree una nueva que se adapte a sus necesidades.
+        </p>
+        <p>
+          Con equipos grandes, escribir estilos modulares requiere una cierta cantidad de rigor para garantizar que todos sigan las mismas convenciones. También requiere tomar medidas para garantizar que nadie cree nombres de módulos que entren en conflicto entre sí. Para resolver estos problemas, algunas comunidades de desarrollo web comenzaron a experimentar con enfoques alternativos al CSS modular. En busca de una solución, recurrieron a JavaScript. Han ideado un enfoque conocido como <em translate="no">inline styles</em> o <em>CSS in JS</em>.
+        </p>
+        <p>
+          En lugar de depender de las convenciones de nomenclatura de clases, este enfoque requiere el uso de JavaScript para fabricar nombres de clases que sean únicos garantizados o para aplicar todos los estilos a la página utilizando el atributo de <code>style</code> HTML. Han surgido varias bibliotecas de JavaScript para hacer este trabajo, las más populares son <em>Aphrodite</em>, <em>Styled Components</em> y una llamada (confusamente) <em>CSS Modules</em>. La mayoría de estos están vinculados a un marco o conjunto de herramientas de JavaScript en particular, como <em>WebPack</em>.
+        </p>
+        <p>
+          Este enfoque aún es experimental (y un poco controvertido), pero vale la pena tenerlo en cuenta, especialmente si desarrolla aplicaciones de una sola página (SPA). Solo funciona para aplicaciones que se procesan completamente mediante un marco de JavaScript como <em>ReactJS</em>. Seguir este camino implica algunas compensaciones y lo bloquea en un conjunto de herramientas en particular. No es una solución perfecta, pero ha demostrado ser exitosa para algunos.
+        </p>
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Divida su CSS en módulos pequeños y reutilizables.</li>
+          <li>Nunca escriba estilos que lleguen a otro módulo y cambien su apariencia.</li>
+          <li>Utilice clases variantes para proporcionar varias versiones del mismo módulo.</li>
+          <li>Divida las construcciones grandes en módulos más pequeños; construya sus páginas juntando una serie de módulos.</li>
+          <li>Agrupe todas las reglas de un módulo en su hoja de estilo.</li>
+          <li>Utilice una convención de nomenclatura, como guiones dobles y guiones bajos dobles, para que la estructura de sus módulos sea más fácil de entender de un vistazo.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Estilos Básicos: Sentar las bases</a></li>
+        <li><a href="#tema2">Un Módulo Simple</a></li>
+        <li><a href="#sub1">- Variaciones de un Módulo</a></li>
+        <li><a href="#sub2">- Módulos con múltiples elementos</a></li>
+        <li><a href="#tema3">Módulos Compuestos de estructuras más grandes</a></li>
+        <li><a href="#sub3">- División de múltiples responsabilidades entre módulos</a></li>
+        <li><a href="#sub4">- Nombrando módulos</a></li>
+        <li><a href="#tema4">Clases de Utilidades</a></li>
+        <li><a href="#tema5">Metodologías CSS</a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

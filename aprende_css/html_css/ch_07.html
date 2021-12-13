@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_css/general_style.css">
+  <title>Capítulo 7</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capítulo 7. Contextos de posicionamiento y apilamiento</h1>
+      <div>
+        <a href="ch_06.html"><img src="../img_css/logos/left-arrow.png" alt="left-arrow" class="container__header--arrow"></a>
+        <a href="ch_08.html"><img src="../img_css/logos/right-arrow.png" alt="right-arrow" class="container__header--arrow"></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <h4><em>Este capitulo habla sobre:</em></h4>
+      <ul>
+        <li>Los tipos de posicionamiento de elementos: <span translate="no">fixed</span>, <span translate="no">relative</span> y <span translate="no">absolute</span></li>
+        <li>Construyendo cuadros de diálogo modales y menús desplegables</li>
+        <li>Triángulos CSS</li>
+        <li>Comprender el <span translate="no">z-index</span> y los <span translate="no">stacking contexts</span></li>
+        <li>Un nuevo tipo de posicionamiento: <span translate="no">sticky</span></li>
+      </ul>
+      <p>
+        Ahora hemos analizado varias formas de controlar el diseño de la página, desde la visualización de la tabla hasta el <code>flexbox</code> y los <em translate="no">floats</em>. En este capítulo, veremos una técnica importante: la propiedad de <code>position</code>, que puede usar para crear menús desplegables, cuadros de diálogo modales y otros efectos esenciales para las aplicaciones web modernas.
+      </p>
+      <p>
+        El posicionamiento puede complicarse. Es un tema en el que muchos desarrolladores solo tienen una comprensión superficial. Sin una comprensión completa del posicionamiento y las ramificaciones involucradas, es fácil meterse en un agujero. Puede encontrarse con los elementos equivocados frente a otros y corregir el problema no siempre es sencillo.
+      </p>
+      <p>
+        A medida que analizamos los distintos tipos de posicionamiento, me aseguraré de que comprenda con precisión lo que hacen. Luego, aprenderá sobre algo llamado <em translate="">stacking context</em> (contexto de apilamiento), que es una especie de efecto secundario oculto del posicionamiento. Comprender el contexto de apilamiento lo mantendrá fuera de problemas, y si alguna vez se encuentra <em>"en medio de la maleza"</em> con un diseño de página, este conocimiento le brindará las herramientas que necesita para volver a encarrilarse.
+      </p>
+      <p>
+        El valor inicial de la propiedad <code>position</code> es <code>static</code>. Todo lo que hemos hecho en capítulos anteriores es con posicionamiento estático. Cuando cambia este valor por cualquier otro, se dice que el elemento está <em translate="no">positioned</em>. Por tanto, un elemento con posicionamiento estático está <em translate="no">not positioned</em>.
+      </p>
+      <p>
+        Los métodos de diseño que hemos cubierto en capítulos anteriores hacen varias cosas para manipular la forma en que se comporta el flujo de documentos. El <em>posicionamiento</em> es diferente: elimina elementos del flujo de documentos por completo. Esto le permite colocar el elemento en otro lugar de la pantalla. Puede colocar elementos uno delante o detrás del otro, superponiéndose así.
+      </p>
+      <section id="tema1">
+        <h2>7.1. POSICIONAMIENTO FIJO</h2>
+        <p>
+          El posicionamiento fijo, aunque no es tan común como algunos de los otros tipos de posicionamiento, es probablemente el más simple de entender, así que comenzaremos por ahí. Aplicar <code>position: fixed</code> a un elemento le permite colocar el elemento arbitrariamente dentro de la ventana gráfica. Esto se hace con cuatro propiedades complementarias: <code>top</code>, <code>right</code>, <code>bottom</code> y <code>left</code>. Los valores que asigna a estas propiedades especifican qué tan lejos debe estar el elemento fijo de cada borde de la ventana del navegador. Por ejemplo, <code>top: 3em</code> en un elemento fijo significa que su borde superior estará a <code>3em</code> de la parte superior de la ventana gráfica.
+        </p>
+        <p>
+          Al establecer estos cuatro valores, también define implícitamente el ancho y el alto del elemento. Por ejemplo, especificando <code>left: 2em; right: 2em</code> significa que el borde izquierdo del elemento estará a <code>2em</code> del lado izquierdo de la ventana gráfica y el borde derecho estará a <code>2em</code> del lado derecho; por lo tanto, el elemento será <code>4em</code> menos que el ancho total de la ventana gráfica. Lo mismo ocurre con la parte superior, inferior y la altura de la ventana gráfica.
+        </p>
+        <h3 id="sub1">7.1.1. Creando un diálogo modal con posicionamiento fijo</h3>
+        <p>
+          Usemos estas propiedades para construir el <em translate="no">modal dialog box</em> (cuadro de dialogo modal) que se muestra en la <b>figura 7.1</b>. Este cuadro de diálogo aparecerá frente al contenido de la página, ocultándolo de la vista hasta que se cierre el cuadro de diálogo.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/01.jpg" alt="ibid">
+          <figcaption>Figura 7.1. Un cuadro de diálogo modal</figcaption>
+        </figure>
+        <p>
+          Por lo general, usará un cuadro de diálogo modal para solicitar al usuario que lea algo o que ingrese algo antes de continuar. Por ejemplo, este modal <b>(figura 7.1)</b> muestra un formulario donde un usuario puede suscribirse a un boletín. Inicialmente, ocultará el cuadro de diálogo con <code>display: none</code>, y luego usará un poco de <em>JavaScript</em> para cambiar su valor a <code>block</code> con el fin de abrir el modal.
+        </p>
+        <p>
+          Cree una nueva página y agregue la siguiente lista al elemento <code>&lt;body&gt;</code>. Coloca el contenido dentro de dos elementos que lo contienen y usa una etiqueta <code>&lt;script&gt;</code> con algo de JavaScript para proporcionar una funcionalidad básica.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;header class="top-banner"&gt;
+  &lt;div class="top-banner-inner"&gt;
+    &lt;p&gt;Find out what's going on at Wombat Coffee each
+      month. Sign up for our newsletter:
+      &lt;button id="open"&gt;Sign up&lt;/button&gt;                    1
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+&lt;div class="modal" id="modal"&gt;                              2
+  &lt;div class="modal-backdrop"&gt;&lt;/div&gt;                        3
+  &lt;div class="modal-body"&gt;                                  4
+    &lt;button class="modal-close" id="close"&gt;close&lt;/button&gt;
+    &lt;h2&gt;Wombat Newsletter&lt;/h2&gt;
+    &lt;p&gt;Sign up for our monthly newsletter. No spam.
+      We promise!&lt;/p&gt;
+    &lt;form&gt;
+      &lt;p&gt;
+        &lt;label for="email"&gt;Email address:&lt;/label&gt;
+        &lt;input type="text" name="email"/&gt;
+      &lt;/p&gt;
+      &lt;p&gt;&lt;button type="submit"&gt;Submit&lt;/button&gt;&lt;/p&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;
+  var button = document.getElementById('open');
+  var close = document.getElementById('close');
+  var modal = document.getElementById('modal');
+
+  button.addEventListener('click', function (event) {    5
+    event.preventDefault();                               5
+    modal.style.display = 'block';                        5
+  });                                                     5
+
+  close.addEventListener('click', function (event) {      6
+    event.preventDefault();                               6
+    modal.style.display = 'none';                         6
+  });                                                     6
+&lt;/script&gt;
+          </code>
+          <small>Listado 7.1. Crear un cuadro de diálogo modal</small>
+        </pre>
+        <ol class="index-code">
+          <li>Botón para activar el modal</li>
+          <li>Container para el modal</li>
+          <li>Un "telón de fondo" para ocultar el contenido detrás del modal</li>
+          <li>Contenidos modales</li>
+          <li>Abre el modal cuando el usuario hace clic en el botón Registrarse</li>
+          <li>Cierra el modal cuando el usuario hace clic en el botón Cerrar</li>
+        </ol>
+        <p>
+          El primer elemento de esta lista es un banner en la parte superior de la página. Contiene el botón que activa el modal. El segundo elemento es el diálogo modal. Incluye un telón de fondo modal <code>modal-backdrop</code> vacío, que utilizará para ocultar el resto de la página y atraer la atención del usuario al contenido del cuadro de diálogo. Los contenidos están dentro de un elemento de <code>modal-body</code>.
+        </p>
+        <p>
+          El CSS para implementar esto se muestra a continuación. Agréguelo a su hoja de estilo. Incluye un estilo básico para el banner superior, así como los estilos para el modal.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  min-height: 200vh;                         1
+  margin: 0;
+}
+
+button {
+  padding: 0.5em 0.7em;
+  border: 1px solid #8d8d8d;
+  background-color: white;
+  font-size: 1em;
+}
+
+.top-banner {
+  padding: 1em 0;
+  background-color: #ffd698;
+}
+
+.top-banner-inner {
+  width: 80%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.modal {
+  display: none;                            2
+}
+
+.modal-backdrop {                           3
+  position: fixed;                          3
+  top: 0;                                   3
+  right: 0;                                 3
+  bottom: 0;                                3
+  left: 0;                                  3
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-body {                               4
+  position: fixed;                          4
+  top: 3em;                                 4
+  bottom: 3em;                              4
+  right: 20%;                               4
+  left: 20%;                                4
+  padding: 2em 3em;
+  background-color: white;
+  overflow: auto;                           5
+}
+
+.modal-close {
+  cursor: pointer;
+}
+          </code>
+          <small>Listado 7.2. Agregar estilos modales</small>
+        </pre>
+        <ol class="index-code">
+          <li>Fuerza la altura de la página para permitir el desplazamiento (solo para fines de demostración)</li>
+          <li>Oculta el modal por defecto; JavaScript establecerá <code>display: block</code> cuando abra el modal.</li>
+          <li>Utiliza un fondo semitransparente para ocultar el resto de la página mientras el modal está abierto</li>
+          <li>Posiciona la parte principal del modal</li>
+          <li>Permite que el cuerpo modal se desplace, si es necesario</li>
+        </ol>
+        <p>
+          En este CSS, ha utilizado el posicionamiento fijo dos veces. Primero en el <code>modal-backdrop</code> con cada uno de los cuatro lados establecidos en 0. Esto hace que el telón de fondo llene toda la ventana gráfica. Le has dado un color de fondo de <code>rgba (0, 0, 0, 0.5)</code>. Esta notación de color especifica valores de rojo, verde y azul de 0, que se evalúan como negro. El cuarto valor es el canal <em>"alfa"</em>, que especifica su transparencia: un valor de 0 es completamente transparente y 1 es completamente opaco. El valor <code>0.5</code> es semitransparente. Esto sirve para oscurecer todo el contenido de la página detrás del elemento.
+        </p>
+        <p>
+          El segundo lugar en el que usó el posicionamiento fijo es en <code>modal-body</code>. Ha colocado cada uno de sus cuatro lados dentro de la ventana gráfica: <code>3em</code> desde los bordes superior e inferior y el <code>20%</code> desde los lados izquierdo y derecho. También establece un color de fondo blanco. Esto hace que el modal sea un cuadro blanco, centrado en la pantalla. Puede desplazarse por la página como desee, pero el fondo y el cuerpo modal permanecen en su lugar.
+        </p>
+        <p>
+          Cargue la página y verá un banner amarillo pálido en la parte superior de la pantalla con un botón. Haga clic en el botón para abrir el modal posicionado. Debido al posicionamiento fijo, el modal permanece en su lugar, incluso cuando se desplaza por la página (el gran valor de <code>min-height</code> en el cuerpo permite el desplazamiento para ilustrar este comportamiento).
+        </p>
+        <p>
+          Haga clic en el botón cerrar en la parte superior del modal para cerrarlo. Este botón se encuentra ahora en una ubicación extraña, pero regresaremos y lo colocaremos en un momento.
+        </p>
+        <h3 id="sub2">7.1.2. Controlar el tamaño de los elementos posicionados</h3>
+        <p>
+          Al colocar un elemento, no es necesario que especifique valores para los cuatro lados. Puede especificar solo los lados que necesita y luego usar el <code>width</code> y / o <code>height</code> para ayudar a determinar su tamaño. También puede permitir que el elemento se dimensione de forma natural. Considere estas declaraciones:
+        </p>
+        <pre>
+          <code class="container__base-code">
+position: fixed;
+top: 1em;
+right: 1em;
+width: 20%
+          </code>
+        </pre>
+        <p>
+          Estos fijarían el elemento <code>1em</code> desde los bordes superior y derecho de la ventana gráfica con un ancho del <code>20%</code> del ancho de la ventana gráfica. Al omitir las propiedades <code>bottom</code> y <code>height</code>, la altura del elemento será determinada naturalmente por su contenido. Esto se puede utilizar para colocar un menú de navegación en la pantalla, por ejemplo. Permanecerá en su lugar incluso cuando el usuario se desplace hacia abajo por el contenido de la página.
+        </p>
+        <p>
+          Debido a que un elemento fijo se elimina del flujo de documentos, ya no afecta la posición de otros elementos en la página. Seguirán el flujo normal de documentos como si no estuviera allí, lo que significa que a menudo fluirán detrás del elemento fijo, ocultos a la vista. Esto suele estar bien con un diálogo modal porque desea que esté al frente y al centro hasta que el usuario lo descarte.
+        </p>
+        <p>
+          Con algo persistente, como un menú de navegación lateral, deberá tener cuidado de que no fluya otro contenido detrás de él. Por lo general, esto es más fácil de hacer agregando un margen al contenido. Por ejemplo, coloque todo su contenido en un contenedor con un <code>right-margin: 20%</code>. Este margen fluirá detrás de su elemento fijo y el contenido no se superpondrá.
+        </p>
+      </section>
+      <section id="tema2">
+        <h2>7.2. POSICIONAMIENTO ABSOLUTO</h2>
+        <p>
+          El <em>posicionamiento fijo</em>, como acaba de ver, le permite colocar un elemento en relación con la ventana gráfica. A esto se le llama <em translate="no">containing block</em>. La declaración <code>left: 2em</code>, por ejemplo, coloca el borde izquierdo de un elemento posicionado a <code>2em</code> del borde izquierdo del <em>bloque contenedor</em>.
+        </p>
+        <p>
+          El <em>posicionamiento absoluto</em> funciona de la misma manera, excepto que tiene un bloque de contención diferente. En lugar de que su posición se base en la ventana gráfica, su posición se basa en el elemento ancestro posicionado más cercano. Al igual que con un elemento fijo, las propiedades <code>top</code>, <code>right</code>, <code>bottom</code> e <code>left</code> colocan los bordes del elemento dentro de su <em>bloque contenedor</em>.
+        </p>
+        <h3 id="sub3">7.2.1. Posicionamiento absoluto del botón Cerrar</h3>
+        <p>
+          Para ver cómo funciona, cambiemos la posición del botón Cerrar a la esquina superior derecha de su cuadro de diálogo modal. Después de hacerlo, el modal se verá como la <b>figura 7.2</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/02.jpg" alt="ibid">
+          <figcaption>Figura 7.2. Botón de cierre ubicado en la esquina superior derecha del cuadro de diálogo modal</figcaption>
+        </figure>
+        <p>
+          Para hacer esto, declarará la <em>posición absoluta</em> para el botón Cerrar. Su elemento padre es <code>modal-body</code>, que tiene un <em>posicionamiento fijo</em>, por lo que se convierte en el bloque contenedor del botón. Edite los estilos de su botón para que coincidan con la <b>lista 7.3</b>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.modal-close {
+  position: absolute;
+  top: 0.3em;
+  right: 0.3em;
+  padding: 0.3em;
+  cursor: pointer;
+}
+          </code>
+          <small>Listado 7.3. Botón de cierre absolutamente posicionado</small>
+        </pre>
+        <p>
+          Esta lista coloca el botón <code>0.3em</code> desde la parte superior y <code>0.3em</code> desde la derecha del <code>modal-body</code>. Normalmente, como en este ejemplo, el bloque contenedor será el padre del elemento. En los casos en los que el elemento principal no está posicionado, el navegador buscará la <em>jerarquía DOM</em> en el abuelo, bisabuelo, etc. hasta que se encuentre un elemento posicionado, que luego se utiliza como bloque contenedor.
+        </p>
+        <p>
+          Si ninguno de los antepasados del elemento está <em>posicionado</em>, entonces el elemento posicionado absolutamente se colocará en función de algo llamado <em translate="no">initial containing block</em>. Esta es un área con dimensiones iguales al tamaño de la ventana gráfica, anclada en la parte superior de la página.
+        </p>
+        <h3 id="sub4">7.2.2. Posicionando un pseudo-elemento</h3>
+        <p>
+          Ha colocado el botón Cerrar donde lo desea, pero es bastante espartano. Para un botón Cerrar como este, los usuarios normalmente esperan ver alguna indicación gráfica como una <em>x</em> como en la <b>figura 7.3</b>.
+        </p>
+        <p>
+          Su primera tentación puede ser eliminar la palabra cerrar de su marcado y reemplazarla con una <em>x</em>, pero esto introduciría un problema de accesibilidad: los lectores de pantalla de asistencia leen el texto del botón, por lo que debería dar una indicación significativa del propósito del botón. El HTML debe tener sentido por sí solo antes de aplicar CSS.
+        </p>
+        <p>
+          En su lugar, puede utilizar CSS para ocultar la palabra <em translate="no">close</em> y mostrar una <em>x</em>. Lo logrará haciendo dos cosas. Primero, presionará el texto del botón fuera del botón y ocultará el <em>desbordamiento</em>. En segundo lugar, usará la propiedad de <code>content</code> para agregar la <em>x</em> al pseudoelemento <code>::after</code> del botón y al posicionamiento absoluto para centrarlo dentro del botón. Actualice los estilos de sus botones para que coincidan con la <b>lista 7.4</b>.
+        </p>
+        <p>
+          En lugar de la letra <em>x</em>, recomiendo el carácter Unicode para el signo de multiplicación. Es más simétrico y, por lo general, más agradable estéticamente para este propósito. El carácter HTML <code>(&times;)</code> se representará como este carácter, pero en la propiedad de CSS <code>content</code>, debe utilizar el número Unicode de escape: <code>\00D7</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.modal-close {
+  position: absolute;
+  top: 0.3em;
+  right: 0.3em;
+  padding: 0.3em;
+  cursor: pointer;
+  font-size: 2em;
+  height: 1em;              1
+  width: 1em;               1
+  text-indent: 10em;        2
+  overflow: hidden;         2
+  border: 0;
+}
+
+.modal-close::after {
+  position: absolute;
+  line-height: 0.5;
+  top: 0.2em;
+  left: 0.1em;
+  text-indent: 0;
+  content: "\00D7";         3
+}
+          </code>
+          <small>Listado 7.4. Reemplazo del botón Cerrar con una x</small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que el botón sea un pequeño cuadrado</li>
+          <li>Obliga al texto a desbordar el elemento y lo oculta</li>
+          <li>Agrega el carácter Unicode U + 00D7 (signo de multiplicación)</li>
+        </ol>
+        <p>
+          Esta lista establece explícitamente el tamaño del botón en <code>1em</code> cuadrado. La propiedad <code>text-indent</code> luego empuja el texto hacia la derecha, fuera del elemento. El valor exacto no importa siempre que sea mayor que el ancho del botón. Luego, debido a que <code>text-indent</code> es una <em>propiedad heredada</em>, la restableces a 0 en la pseudoclase para que la <em>x</em> no tenga sangría.
+        </p>
+        <p>
+          La pseudoclase ahora está absolutamente posicionada. Se comporta como un elemento hijo del botón, por lo que el botón que se coloca se convierte en el bloque contenedor de su pseudoelemento. La <code>line-height</code> evita que el <em>pseudoelemento</em> sea demasiado alto, y las propiedades <code>top</code> y <code>left</code> lo colocan en el centro del botón. Llegué a los valores exactos aquí a través de un poco de prueba y error; Le animo a experimentar con esos valores en las herramientas de desarrollo de su navegador para ver cómo afectan el <em>posicionamiento</em>.
+        </p>
+        <p>
+          El <em>posicionamiento absoluto</em> es el peso pesado entre los tipos de posicionamiento. Se utiliza a menudo junto con JavaScript para mostrar menús, información sobre herramientas y cuadros de <em>"información"</em>. Lo usaremos para crear un menú desplegable, pero para hacerlo, deberá echar un vistazo a su compañero, el posicionamiento relativo.
+        </p>
+      </section>
+      <section id="tema3">
+        <h2>7.3. POSICIONAMIENTO RELATIVO</h2>
+        <p>
+          El <em>posicionamiento relativo</em> es probablemente el tipo de posicionamiento menos comprendido. Cuando aplica por primera vez <code>position: relative</code> a un elemento, normalmente no verá ningún cambio visible en la página. El elemento <em>relativamente posicionado</em>, y todos los elementos de la página que lo rodean, permanecerán exactamente donde estaban (aunque es posible que veas algunos cambios con respecto a qué elementos están frente a cada uno. Llegaremos a eso en un momento).
+        </p>
+        <p>
+          Las propiedades <code>top</code>, <code>right</code>, <code>bottom</code> e <code>left</code>, si se aplican, desplazarán el elemento de su posición original, pero no cambiarán la posición de ningún elemento a su alrededor. Consulte la <b>figura 7.4</b> para ver un ejemplo. Muestra cuatro elementos <em translate="no">inline-block</em>. Apliqué tres propiedades adicionales al segundo elemento: <code>position: relative; top; 1em; left: 2em</code>. Como puede ver, esto ha desplazado el elemento de su posición inicial, pero los otros elementos no se ven afectados. Todavía siguen el flujo de documentos normal alrededor de la posición inicial del elemento desplazado.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/03.jpg" alt="ibid">
+          <figcaption>Figura 7.4. El segundo elemento se movió usando posicionamiento relativo</figcaption>
+        </figure>
+        <p>
+          Aplicar <code>top: 1em</code> mueve el elemento hacia abajo <code>1em</code> (lejos de su borde superior original). Y a la <code>left: 2em</code> desplaza el elemento a la derecha <code>2em</code> (lejos de su borde izquierdo original). Estos cambios pueden hacer que ese elemento se superponga a elementos debajo o al lado de él. Al posicionar, también se admiten valores negativos, por lo que <code>bottom: -1em</code> desplazaría el elemento <code>1em</code> hacia abajo, tal como lo hace <code>top: 1em</code>.
+        </p>
+        <p>
+          A diferencia del posicionamiento fijo y absoluto, no puede utilizar <code>top</code>, <code>right</code>, <code>bottom</code> e <code>left</code> para cambiar el tamaño de un elemento posicionado relativamente. Esos valores solo cambiarán la posición del elemento hacia arriba o hacia abajo, hacia la izquierda o hacia la derecha. Puede usar <code>top</code> o <code>bottom</code>, pero no ambos juntos (se ignorará el <code>bottom</code>); del mismo modo, puede utilizar <code>left</code> o <code>right</code>, pero no ambas (se ignorará la <code>right</code>).
+        </p>
+        <p>
+          El uso de estas propiedades para ajustar la posición de un elemento relativo puede ser útil para empujar un elemento en su lugar en ocasiones, pero a decir verdad, esta es la razón por la que rara vez utilizará el <em>posicionamiento relativo</em>. Con mucha más frecuencia, usará <code>position: relative</code> para establecer el bloque contenedor para un elemento absolutamente posicionado dentro de él.
+        </p>
+        <h3 id="sub5">7.3.1. Crear un menú desplegable</h3>
+        <p>
+          Usemos el <em>posicionamiento relativo</em> y absoluto para crear un menú desplegable. Inicialmente será un rectángulo simple, pero cuando el usuario pasa el mouse sobre él, se abre una lista de enlaces como los que se muestran en la <b>figura 7.5</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/04.jpg" alt="ibid">
+          <figcaption>Figura 7.5. Menú desplegable</figcaption>
+        </figure>
+        <p>
+          El <b>Listado 7.5</b> muestra el marcado para este menú. Añádalo a su HTML después del cierre <code>&lt;/div&gt;</code> del elemento <code>&lt;div class = "modal"&gt;</code>. Este código incluye un contenedor que usará para centrar el contenido y alinearlo con el contenido del banner. También agregué un <code>&lt;h1&gt;</code> debajo de la ventana emergente para ilustrar cómo aparece la ventana emergente frente a otro contenido en la página.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="container"&gt;
+  &lt;nav&gt;
+    &lt;div class="dropdown"&gt;                              1
+      &lt;div class="dropdown-label"&gt;Main Menu&lt;/div&gt;       2
+      &lt;div class="dropdown-menu"&gt;                       3
+        &lt;ul class="submenu"&gt;                            3
+          &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;                 3
+          &lt;li&gt;&lt;a href="/coffees"&gt;Coffees&lt;/a&gt;&lt;/li&gt;       3
+          &lt;li&gt;&lt;a href="/brewers"&gt;Brewers&lt;/a&gt;&lt;/li&gt;       3
+          &lt;li&gt;&lt;a href="/specials"&gt;Specials&lt;/a&gt;&lt;/li&gt;     3
+          &lt;li&gt;&lt;a href="/about"&gt;About us&lt;/a&gt;&lt;/li&gt;        3
+        &lt;/ul&gt;                                           3
+      &lt;/div&gt;                                            3
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;h1&gt;Wombat Coffee Roasters&lt;/h1&gt;
+&lt;/div&gt;
+          </code>
+          <small>Listado 7.5. Agregar el HTML del menú desplegable</small>
+        </pre>
+        <ol class="index-code">
+          <li>Contenedor para el menú desplegable</li>
+          <li><span translate="no">Label</span> siempre estará visible.</li>
+          <li><span translate="no">Div</span> para mostrar y ocultar a medida que se abre y se cierra el menú</li>
+        </ol>
+        <p>
+          El contenedor desplegable incluye dos elementos secundarios: <em translate="no">label</em>, un rectángulo gris que siempre está visible y el menú desplegable que se mostrará y ocultará a medida que se abra y se cierre el menú desplegable. El menú desplegable estará absolutamente posicionado para que no se mueva alrededor del diseño de la página cuando se revele. Esto significa que aparece frente a otro contenido cuando está visible.
+        </p>
+        <p>
+          A continuación, aplicará la posición relativa al contenedor desplegable. Esto establece el bloque contenedor para el menú absolutamente posicionado. Agregue estos estilos a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.container {
+  width: 80%;
+  max-width: 1000px;
+  margin: 1em auto
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;                1
+}
+
+.dropdown-label {
+  padding: .5em 1.5em;
+  border: 1px solid #ccc;
+  background-color: #eee;
+}
+
+.dropdown-menu {
+  display: none;                     2
+  position: absolute;
+  left: 0;                           3
+  top: 2.1em;                        3
+  min-width: 100%;
+  background-color: #eee;
+}
+.dropdown:hover .dropdown-menu {     4
+  display: block;                    4
+}                                    4
+
+.submenu {
+  padding-left: 0;
+  margin: 0;
+  list-style-type: none;
+  border: 1px solid #999;
+}
+
+.submenu &gt; li + li {
+  border-top: 1px solid #999;
+}
+
+.submenu &gt; li &gt; a {
+  display: block;
+  padding: .5em 1.5em;
+  background-color: #eee;
+  color: #369;
+  text-decoration: none;
+}
+
+.submenu &gt; li &gt; a:hover {
+  background-color: #fff;
+}
+          </code>
+          <small>Listado 7.6. Abrir el menú desplegable al pasar el mouse</small>
+        </pre>
+        <ol class="index-code">
+          <li>Establece el bloque contenedor</li>
+          <li>Oculta el menú inicialmente</li>
+          <li>Coloca el menú debajo del menú desplegable</li>
+          <li>Revela el menú al pasar el mouse <code>(hover)</code></li>
+        </ol>
+        <p>
+          Ahora, cuando mueve el puntero del mouse sobre la etiqueta del Menú principal, el menú desplegable se abre debajo de él. Observe que utilizó el estado <code>:hover</code> de todo el contenedor para abrir el menú. Esto significa que mientras el cursor permanezca sobre cualquiera de sus contenidos, ya sea el <code>dropdown-label</code> o el <code>dropdown-menu</code>, el menú permanece abierto.
+        </p>
+        <p>
+          En el <code>dropdown-menu</code> absolutamente posicionado, usó <code>left: 0</code> para alinear su lado izquierdo con el lado izquierdo del menú desplegable. Luego usó <code>top: 2.1em</code> para colocar su borde superior debajo de <em translate="no">label</em> (con el relleno y el borde, la etiqueta mide aproximadamente <code>2.1em</code> de alto). Un <code>min-width</code> del 100% asegura que será al menos tan ancho como el contenedor desplegable (cuyo ancho está determinado por <code>dropdown-label</code>). Luego usó la clase <code>submenu</code> para diseñar el menú dentro del menú desplegable. (Si abre el cuadro de diálogo modal en este punto, es posible que observe que aparece detrás del menú desplegable de una manera extraña. Está bien; abordaremos ese problema pronto).
+        </p>
+        <p>
+          Para simplificar, el ejemplo del <b>listado 7.6</b> usa una pseudoclase <code>:hover</code> para abrir el menú cuando el usuario pasa el cursor del mouse sobre él. Este ejemplo no está completo. Por lo general, un enfoque más sólido sería usar <em>JavaScript</em> para agregar y eliminar una clase que controla si el menú está abierto. Esto le permite agregar un ligero retraso antes de abrir o cerrar el menú para evitar que el usuario lo active involuntariamente cuando pasa el mouse rápidamente.
+        </p>
+        <p>
+          Además, aunque el ejemplo aquí funciona con un mouse, no funcionará en algunos dispositivos con pantalla táctil (solo ciertos dispositivos con pantalla táctil activan el estado <code>:hover</code> al tocar). Tampoco aborda los problemas de accesibilidad de un lector de pantalla o de la navegación por teclado. Sería prudente aumentar el menú desplegable para garantizar que los controles de la pantalla táctil funcionen y que el menú permanezca abierto cuando el usuario usa la tecla <em translate="no">Tab</em> para navegar por los enlaces del menú.
+        </p>
+        <p>
+          El <em>JavaScript</em> para hacer esto está más allá del alcance de este libro, pero si es experto en ello, puede abordar estas inquietudes con el código que escriba allí. Alternativamente, puede usar una biblioteca de terceros que proporcione una funcionalidad desplegable para encargarse de esto por usted, luego use CSS para personalizar su apariencia a su gusto.
+        </p>
+        <h3 id="sub6">7.3.2. Creando un triángulo CSS</h3>
+        <p>
+          Agreguemos un toque final a su menú desplegable. Funciona como está, pero es posible que el usuario no vea inmediatamente que hay más contenido que descubrir junto con la etiqueta del Menú principal. Agreguemos una pequeña flecha hacia abajo a la etiqueta para indicar que hay más para explorar.
+        </p>
+        <p>
+          Puedes usar un pequeño truco con bordes para dibujar un triángulo que sirva como flecha hacia abajo. Usarás el pseudoelemento <code>::after</code> de la etiqueta desplegable para dibujar el triángulo, luego usarás el posicionamiento absoluto para colocarlo en el lado derecho de la etiqueta.
+        </p>
+        <p>
+          La mayoría de las veces, cuando agrega bordes a un elemento, los hace delgados: generalmente <code>1px</code> o <code>2px</code> es suficiente. Pero observe lo que sucede cuando hace un borde mucho más grueso como se muestra en la <b>figura 7.6</b>. Hice que cada lado del borde tenga un color único para resaltar dónde termina un borde y comienza el siguiente.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/05.jpg" alt="ibid">
+          <figcaption>Figura 7.6. Un elemento con bordes gruesos</figcaption>
+        </figure>
+        <p>
+          Observe lo que sucede en las esquinas donde se unen los bordes de dos bordes: forman un borde diagonal. Ahora observe lo que sucede si encoge el elemento a una altura y un ancho de cero <b>(figura 7.7)</b>. Todas las fronteras se unen y se unen en el medio.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/06.jpg" alt="ibid">
+          <figcaption>Figura 7.7. Cuando el elemento no tiene alto ni ancho, cada borde forma un triángulo.</figcaption>
+        </figure>
+        <p>
+          El borde de cada lado del elemento forma un triángulo. El borde superior apunta hacia abajo; el borde derecho apunta a la izquierda, y así sucesivamente. Con esto en mente, puede usar un borde para darle el triángulo que necesita y luego establecer el color de los bordes restantes en transparente. Un elemento con bordes transparentes izquierdo y derecho y un borde superior visible se verá como la <b>figura 7.8</b> un triángulo simple.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/07.jpg" alt="ibid">
+          <figcaption>Figura 7.8. Triángulo formado por el borde superior de un elemento</figcaption>
+        </figure>
+        <p>
+          Apliquemos estilos al pseudoelemento <code>dropdown-label::after</code> para hacer un triángulo y colocarlo usando posicionamiento absoluto. Agregue esto a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.dropdown-label {
+  padding: 0.5em 2em 0.5em 1.5em;                      1
+  border: 1px solid #ccc;
+  background-color: #eee;
+}
+
+.dropdown-label::after {
+  content: "";
+  position: absolute;                                  2
+  right: 1em;                                          2
+  top: 1em;                                            2
+  border: 0.3em solid;                                 3
+  border-color: black transparent transparent;         3
+}
+
+.dropdown:hover .dropdown-label::after {
+  top: 0.7em;
+  border-color: transparent transparent black;         4
+}
+          </code>
+          <small>Listado 7.7. Posicionamiento absoluto de un triángulo en la etiqueta desplegable</small>
+        </pre>
+        <ol class="index-code">
+          <li>Aumenta el relleno derecho para agregar espacio a la flecha</li>
+          <li>Coloca el elemento en el lado derecho de la etiqueta.</li>
+          <li>Utiliza el borde superior para formar una flecha hacia abajo</li>
+          <li>Al pasar el mouse, cambia a una flecha hacia arriba</li>
+        </ol>
+        <p>
+          El pseudo-elemento no tiene contenido, por lo que no tiene alto ni ancho. Luego usó la propiedad abreviada <code>border-color</code> para establecer el borde superior en negro y los bordes lateral y derecho transparentes, lo que le proporciona la flecha hacia abajo. Un poco de relleno adicional en la <code>dropdown-label</code> deja espacio a la derecha, donde puede colocar el triángulo. El resultado final se muestra en la <b>figura 7.9</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/08.jpg" alt="ibid">
+          <figcaption>Figura 7.9. Etiqueta desplegable con una flecha hacia abajo</figcaption>
+        </figure>
+        <p>
+          Cuando abre el menú, la flecha cambia de dirección y apunta hacia arriba para indicar que el menú se puede cerrar. El ligero cambio en el valor superior (de <code>1em</code> a <code>0.7em</code>) ayuda a que la flecha hacia arriba aparezca ópticamente en el mismo lugar que la flecha hacia abajo.
+        </p>
+        <p>
+          Alternativamente, puede agregar esta flecha con el uso de una imagen o imagen de fondo, pero unas pocas líneas adicionales de CSS pueden ahorrarle a sus usuarios la solicitud externa a través de la red. El resultado de esto es un pequeño toque final que puede agregar mucho brillo a su aplicación o sitio web.
+        </p>
+        <p>
+          Puede utilizar esta técnica para construir otras formas complicadas, como trapezoides, hexágonos y estrellas. Para obtener una lista de docenas de formas creadas en CSS, consulte https://css-tricks.com/examples/ShapesOfCSS/.
+        </p>
+      </section>
+      <section id="tema4">
+        <h2>7.4. <span translate="no">STACKING CONTEXT</span> Y <span translate="no">Z-INDEX</span></h2>
+        <p>
+          El <em>posicionamiento</em> es útil, pero es importante conocer las ramificaciones involucradas. Cuando elimina un elemento del flujo de documentos, se convierte en responsable de todas las cosas que el flujo de documentos normalmente hace por usted.
+        </p>
+        <p>
+          Debe asegurarse de que el elemento no se desborde accidentalmente fuera de la ventana del navegador y, por lo tanto, quede oculto para el usuario. Y debe asegurarse de que no cubra inadvertidamente el contenido importante que necesita ver.
+        </p>
+        <p>
+          Eventualmente, encontrará problemas con el apilamiento. Cuando coloca varios elementos en la misma página, puede encontrarse con un escenario en el que dos elementos colocados diferentes se superponen. Es posible que de vez en cuando se sorprenda al encontrar el <em>"incorrecto"</em> que aparece delante del otro. De hecho, en este capítulo, he creado intencionalmente un escenario de este tipo para ilustrar esto.
+        </p>
+        <p>
+          En la página que ha creado, haga clic en el botón Registrarse en el encabezado de la página para abrir el cuadro de diálogo modal. Si colocó el marcado para el menú desplegable después del modal en su HTML, se verá como la <b>figura 7.10</b>. Observe que el menú desplegable que agregó a la página ahora aparece frente al modal.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/09.jpg" alt="ibid">
+          <figcaption>Figura 7.10. El cuadro de diálogo modal aparece incorrectamente detrás del menú desplegable</figcaption>
+        </figure>
+        <p>
+          Puede abordar este problema de varias formas. Antes de llegar a eso, es importante comprender cómo el navegador determina el <em>orden de apilamiento</em>. Para eso, debemos observar más de cerca cómo el navegador representa una página.
+        </p>
+        <h3 id="sub7">7.4.1. Comprender el proceso de renderizado y el orden de apilamiento</h3>
+        <p>
+          A medida que el navegador analiza HTML en el DOM, también crea otra estructura de árbol llamada <em translate="no">render tree</em> (árbol de representación). Esto representa la apariencia visual y la posición de cada elemento. También es responsable de determinar el orden en el que el <em>navegador pintará los elementos</em>. Este orden es importante porque los elementos pintados más tarde aparecen frente a los elementos pintados anteriormente, en caso de que se superpongan.
+        </p>
+        <p>
+          En circunstancias normales (es decir, antes de aplicar el posicionamiento), este orden está determinado por el orden en que aparecen los elementos en el HTML. Considere los tres elementos en este fragmento de marcado:
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div&gt;one&lt;/div&gt;
+&lt;div&gt;two&lt;/div&gt;
+6lt;div&gt;three&lt;/div&gt;
+          </code>
+        </pre>
+        <p>
+          Su comportamiento de apilamiento se ilustra en la <b>figura 7.11</b>. He utilizado algunos márgenes negativos para obligarlos a superponerse, pero no les he aplicado ninguna posición. Los elementos que aparecen más adelante en el marcado están pintados sobre los anteriores.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/10.jpg" alt="ibid">
+          <figcaption>Figura 7.11. Tres elementos que se apilan normalmente: los elementos posteriores aparecen delante de los anteriores</figcaption>
+        </figure>
+        <p>
+          Este comportamiento cambia cuando comienzas a colocar elementos. El navegador primero pinta todos los elementos no posicionados, luego pinta los posicionados. De forma predeterminada, cualquier elemento posicionado aparece delante de cualquier elemento no posicionado. En la <b>figura 7.12</b>, agregué <code>position: relative</code> a los dos primeros elementos. Esto los lleva al frente, cubriendo el tercer elemento posicionado estáticamente, aunque el orden de los elementos en el HTML no cambia.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/11.jpg" alt="ibid">
+          <figcaption>Figura 7.12. Los elementos colocados se pintan frente a elementos estáticos.</figcaption>
+        </figure>
+        <p>
+          Observe que entre los elementos posicionados, el segundo elemento sigue apareciendo delante del primero. Los elementos colocados se llevan al frente, pero el apilamiento dependiente de la fuente entre ellos permanece sin cambios.
+        </p>
+        <p>
+          En su página, esto significa que tanto el menú modal como el desplegable aparecen frente al contenido estático (que desea), pero lo que aparece más adelante en su marcado se muestra frente al otro. Una forma de arreglar su página sería mover <code>&lt;div class = "modal"&gt;</code> y todo su contenido a algún lugar después del menú desplegable.
+        </p>
+        <p>
+          Normalmente, los modales se agregan al final de la página como el último fragmento de contenido antes de la etiqueta <code>&lt;/body&gt;</code> de cierre. La mayoría de las bibliotecas de JavaScript para crear cuadros de diálogo modales lo harán automáticamente. Debido a que el modal utiliza un <em>posicionamiento fijo</em>, no importa en qué parte del marcado aparezca; siempre estará ubicado en el centro de la pantalla.
+        </p>
+        <p>
+          Mover el elemento a otro lugar en el marcado tiende a ser inofensivo para el posicionamiento fijo, pero esta no es una solución que normalmente pueda utilizar para el posicionamiento relativo o absoluto. El <em>posicionamiento relativo</em> depende del flujo del documento y el posicionamiento absoluto depende de su elemento antecesor posicionado. Necesitamos una forma de controlar su comportamiento de apilamiento. Esto se hace mediante una propiedad denominada <code>z-index</code>.
+        </p>
+        <h3 id="sub8">7.4.2. Manipulación del orden de apilamiento con <span translate="no">z-index</span></h3>
+        <p>
+          La propiedad <code>z-index</code> se puede establecer en cualquier número entero (positivo o negativo). Z se refiere a la dimensión de profundidad en un sistema de coordenadas cartesiano X-Y-Z. Los elementos con un índice Z más alto aparecen delante de los elementos con un índice Z más bajo. Los elementos con un índice Z negativo aparecen detrás de los elementos estáticos.
+        </p>
+        <p>
+          El uso del <code>z-index</code> es el segundo enfoque que puede utilizar para solucionar el problema de apilamiento de su página. Este enfoque le da más libertad a la hora de estructurar el HTML. Apliquemos un <code>z-index</code> de 1 al fondo modal y un <code>z-index</code> de 2 al <code>modal-body</code> (esto asegurará que el cuerpo aparezca frente al fondo). Actualice esta parte de su hoja de estilo para que coincida con la siguiente lista.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;                           1
+}
+
+.modal-body {
+  position: fixed;
+  top: 3em;
+  bottom: 3em;
+  right: 20%;
+  left: 20%;
+  padding: 2em 3em;
+  background-color: white;
+  overflow: auto;
+  z-index: 2;                           2
+}
+          </code>
+          <small>Listado 7.8. Agregar <span translate="no">z-index</span> al cuadro de diálogo modal para llevarlo al frente del menú desplegable</small>
+        </pre>
+        <ol class="index-code">
+          <li>Trae el telón de fondo frente a elementos sin <span translate="no">z-index</span></li>
+          <li>Trae el cuerpo modal frente al telón de fondo</li>
+        </ol>
+        <p>
+          El <code>z-index</code> parece sencillo, pero su uso presenta dos errores. Primero, el <code>z-index</code> solo funciona en elementos posicionados. No puede manipular el orden de apilamiento de los elementos estáticos. En segundo lugar, la aplicación de un <code>z-index</code> a un elemento posicionado establece algo llamado contexto de apilamiento.
+        </p>
+        <h3 id="sub9">7.4.3. Comprender los contextos de apilamiento</h3>
+        <p>
+          Un <em>contexto de apilamiento</em> consta de un elemento o un grupo de elementos que el navegador pinta juntos. Un elemento es la raíz del contexto de apilamiento, por lo que cuando agrega un <code>z-index</code> a un elemento posicionado, ese elemento se convierte en la raíz de un nuevo <em>contexto de apilamiento</em>. Todos sus elementos descendientes son entonces parte de ese contexto de apilamiento.
+        </p>
+        <p>
+          Los <em>contextos de apilamiento</em> no deben confundirse con los contextos de formato de bloques <b>(capítulo 4)</b>. Los dos son conceptos separados, aunque no necesariamente mutuamente excluyentes. Los contextos de apilamiento se ocupan de qué elementos están delante de otros elementos; Los contextos de formato de bloque se ocupan del flujo de documentos y de si los elementos se superpondrán o no.
+        </p>
+        <p>
+          El hecho de que todos los elementos del contexto de apilamiento estén pintados juntos tiene una ramificación importante: ningún elemento fuera del contexto de apilamiento puede apilarse entre dos elementos que estén dentro de él. Dicho de otra manera, si un elemento se apila delante de un contexto de apilamiento, ningún elemento dentro de ese contexto de apilamiento puede colocarse delante de él. Del mismo modo, si un elemento de la página se apila detrás del contexto de apilamiento, ningún elemento dentro de ese contexto de apilamiento se puede apilar detrás de ese elemento.
+        </p>
+        <p>
+          Esto puede ser un poco complicado de entender, así que vamos a armar un escenario para ilustrar esto. En una página HTML nueva, agregue este marcado.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="box one positioned"&gt;
+  one
+  &lt;div class="absolute"&gt;nested&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="box two positioned"&gt;two&lt;/div&gt;
+&lt;div class="box three"&gt;three&lt;/div&gt,
+          </code>
+          <small>Listado 7.9. Ejemplo de apilamiento de contextos</small>
+        </pre>
+        <p>
+          Este marcado consta de tres casillas, dos de las cuales se colocarán y se les dará un <code>z-index</code> de 1. El elemento <code>absolute</code> dentro de la primera casilla se colocará y se le dará un <code>z-index</code> de 100. A pesar de su alto <code>z-index</code>, todavía aparece detrás del segundo cuadro porque su padre forma un contexto de apilamiento detrás del segundo cuadro <b>(figura 7.13)</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/12.jpg" alt="ibid">
+          <figcaption>Figura 7.13. Todo el contexto de apilamiento se apila en relación con otros elementos de la página.</figcaption>
+        </figure>
+        <p>
+          Los estilos para este escenario se encuentran en el <b>listado 7.10</b>. Aplica esto a tu página. La mayoría de estos estilos son para dimensionar y colorear para que el orden de apilamiento exacto sea claramente visible. Los márgenes negativos obligan a los elementos a superponerse. Las únicas declaraciones esenciales son <code>position</code> y el <code>z-index</code> para los distintos elementos.
+        </p>
+        <pre>
+          <code class="container__base-code">
+body {
+  margin: 40px;
+}
+
+.box {
+  display: inline-block;
+  width: 200px;
+  line-height: 200px;
+  text-align: center;
+  border: 2px solid black;
+  background-color: #ea5;
+  margin-left: -60px;
+  vertical-align: top;
+}
+
+.one { margin-left: 0; }
+.two { margin-top: 30px; }
+.three { margin-top: 60px; }
+
+.positioned {                    1
+  position: relative;            1
+  background-color: #5ae;        1
+  z-index: 1;                    1
+}                                1
+
+.absolute {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  height: 2em;
+  background-color: #fff;
+  border: 2px dashed #888;
+  z-index: 100;                  2
+  line-height: initial;
+  padding: 1em;
+}
+          </code>
+          <small>Listado 7.10. Creando los contextos de apilamiento</small>
+        </pre>
+        <ol class="index-code">
+          <li>Cada cuadro colocado establece un contexto de apilamiento con un <code>z-index</code> de 1.</li>
+          <li>Un <code>z-index</code> solo controla la posición de apilamiento del elemento dentro de su contexto de apilamiento.</li>
+        </ol>
+        <p>
+          La caja uno, apilada detrás de la caja dos, es la raíz de un contexto de apilamiento. Debido a esto, no se puede hacer que el elemento absolutamente posicionado dentro de él aparezca delante del cuadro dos, incluso con un valor de <code>z-index</code> alto. Pruebe este ejemplo en las herramientas de desarrollo de su navegador para familiarizarse con las cosas. Manipule el <code>z-index</code> de cada elemento para ver qué sucede.
+        </p>
+        <p>
+          Agregar un <code>z-index</code> a un elemento posicionado es la forma más notable en que se crea un contexto de apilamiento, pero algunas otras propiedades también pueden crear uno. Una <code>opacity</code> por debajo de 1 crea una, al igual que las propiedades de <code>transform</code> o <code>filter</code>. Estos afectan fundamentalmente cómo se representan el elemento y sus elementos secundarios, por lo que todos se pintan juntos. La raíz del documento <code>(&lt;html&gt;)</code>; también crea un contexto de apilamiento de nivel superior para toda la página.
+        </p>
+        <p>
+          Todos los elementos dentro de un contexto de apilamiento se apilan en este orden, de atrás hacia adelante:
+        </p>
+        <ul>
+          <li>El elemento raíz del contexto de apilamiento</li>
+          <li>Elementos posicionados con un <code>z-index</code> negativo (junto con sus hijos)</li>
+          <li>Elementos no posicionados</li>
+          <li>Elementos posicionados con un <code>z-index</code> de <code>auto</code> (y sus hijos)</li>
+          <li>Elementos posicionados con un <code>z-index</code> positivo (y sus hijos)</li>
+        </ul>
+        <p>
+          Es fácil que una hoja de estilo se convierta en una guerra de <code>z-index</code>, sin un orden claro en cuanto a la prioridad de varios componentes. Sin una guía clara, los desarrolladores que agregan a la hoja de estilo pueden agregar algo como un modal y, por temor a que aparezca detrás de otra cosa en la página, le darán un <code>z-index</code> ridículamente alto, como <code>999999</code>. Después de que esto suceda algunas veces, nadie puede adivinar cuál debería ser el <code>z-index</code> para otro componente nuevo.
+        </p>
+        <p>
+          Si utiliza un preprocesador como <em>LESS</em> o <em>SASS</em> (consulte el <b>apéndice B</b>), o si admite navegadores que admiten propiedades personalizadas (consulte el <b>capítulo 2</b>), utilícelo en su beneficio. Coloque todos sus valores de <code>z-index</code> en variables, todo en un solo lugar. De esa manera, puede ver de un vistazo lo que se supone que debe aparecer frente a qué:
+        </p>
+        <pre>
+          <code class="container__base-code">
+--z-loading-indicator: 100;
+--z-nav-menu:          200;
+--z-dropdown-menu:     300;
+--z-modal-backdrop:    400;
+--z-modal-body:        410;
+          </code>
+        </pre>
+        <p>
+          Utilice incrementos de 10 o 100, de modo que pueda insertar nuevos valores en el medio en caso de que sea necesario.
+        </p>
+        <p>
+          Si alguna vez encuentra que el <code>z-index</code> no se comporta como usted esperaría, busque el árbol DOM en los antepasados del elemento hasta que encuentre uno que sea la raíz de un contexto de apilamiento. Luego, use el <code>z-index</code> para llevar todo el contexto de apilamiento hacia adelante o hacia atrás. Tenga cuidado, ya que puede encontrar varios contextos de apilamiento anidados entre sí.
+        </p>
+        <p>
+          Cuando la página es complicada, puede ser difícil determinar exactamente qué contexto de apilamiento es responsable del comportamiento que ves. Por esta razón, siempre tenga cuidado al crear un contexto de apilamiento. No cree uno a menos que tenga una razón específica para ello. Esto es doblemente cierto para los elementos que abarcan grandes porciones de la página. Cuando sea posible, lleve elementos posicionados independientes como modales al nivel superior del DOM, justo antes de la etiqueta <code>&lt;/body&gt;</code>; de cierre, para que no tenga que liberarlos de ningún contexto de apilamiento externo.
+        </p>
+        <p>
+          Algunos desarrolladores caen en la trampa de colocar una gran cantidad de elementos por toda la página. Deberías luchar contra este impulso. Cuanto más utilice el posicionamiento, más complicada se volverá la página y más difícil será depurarla. Si descubre que está posicionando docenas de elementos, dé un paso atrás y vuelva a evaluar la situación. Esto es particularmente importante si se encuentra luchando para que el diseño se comporte de la manera deseada. Cuando su diseño se pueda lograr usando otros métodos, debe usar esos métodos en su lugar.
+        </p>
+        <p>
+          Si puede hacer que el flujo del documento haga el trabajo por usted, en lugar de colocar cosas explícitamente, el navegador se encargará de muchos casos extremos por usted. Recuerde, el posicionamiento elimina elementos del flujo de documentos. En términos generales, solo debe hacer esto cuando necesite apilar elementos uno frente al otro.
+        </p>
+      </section>
+      <section id="tema5">
+        <h2>7.5. <span translate="no">STICKY POSITIONING</span></h2>
+        <p>
+          Los cuatro tipos principales de posicionamiento (<em translate="no">static</em>, <em translate="no">fixed</em>, <em translate="no">absolute</em> y <em translate="no">relative</em>) existen desde hace mucho tiempo, pero hay un nuevo tipo de posicionamiento que se abre paso en los navegadores: <em translate="no">sticky positioning</em>. Es una especie de híbrido entre posicionamiento <em translate="no">relative</em> y <em translate="no">fixed</em>: el elemento se desplaza normalmente con la página hasta que llega a un punto específico en la pantalla, momento en el que se <em>"bloqueará"</em> en su lugar mientras el usuario continúa desplazándose. El caso de uso común para esto es la navegación de la barra lateral.
+        </p>
+        <p>
+          El (<em translate="no">sticky positioning</em>) solo se admite en Firefox durante algún tiempo. Pero en el momento de escribir este artículo, esta función está disponible en los navegadores Chrome y Edge. Safari lo admite con el prefijo de proveedor (<code>position: -webkit-sticky</code>). Asegúrese de consultar https://caniuse.com/#feat=css-sticky para obtener la información de soporte más reciente. Por lo general, utilizará el posicionamiento fijo o absoluto como comportamiento alternativo para otros navegadores.
+        </p>
+        <p>
+          Actualicemos su página que tiene el diálogo modal y el menú desplegable. Lo cambiará a un diseño de dos columnas, agregando una barra lateral de <em translate="no">sticky-positioned</em> como la columna de la derecha. Esto se verá como la captura de pantalla de la <b>figura 7.14</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/13.jpg" alt="ibid">
+          <figcaption>Figura 7.14. La barra lateral de <span translate="no">sticky-positioned</span> se coloca inicialmente con normalidad.</figcaption>
+        </figure>
+        <p>
+          Cuando la página se carga inicialmente, la posición de la barra lateral parece rutinaria. Se desplazará normalmente con la página, hasta cierto punto. Tan pronto como esté a punto de salir de la ventana gráfica, se bloqueará en su lugar. Luego permanecerá allí como un elemento de posición fija, permaneciendo en la pantalla mientras el resto de la página continúa desplazándose. Después de desplazarse un poco hacia abajo en la página, se verá como la <b>figura 7.15</b>.
+        </p>
+        <figure>
+          <img src="../img_css/cap7/14.jpg" alt="ibid">
+          <figcaption>Figura 7.15. La barra lateral permanece "atascada" en su lugar.</figcaption>
+        </figure>
+        <p>
+          Reestructuraremos un poco su página para definir dos columnas. Edite el contenedor en su HTML para que coincida con la siguiente lista. Esto coloca su contenido existente (el menú desplegable y el encabezado de la página) en una columna de la izquierda y agrega una columna de la derecha con un menú de <em translate="no">"affix</em>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+&lt;div class="container"&gt;
+  &lt;main class="col-main"&gt;                         1
+    &lt;nav&gt;
+      &lt;div class="dropdown"&gt;
+        &lt;div class="dropdown-label"&gt;Main Menu&lt;/div&gt;
+        &lt;div class="dropdown-menu"&gt;
+          &lt;ul class="submenu"&gt;
+            &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/coffees"&gt;Coffees&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/brewers"&gt;Brewers&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/specials"&gt;Specials&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/about"&gt;About us&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;h1&gt;Wombat Coffee Roasters&lt;/h1&gt;
+  &lt;/main&gt;
+
+  &lt;aside class="col-sidebar"&gt;                     2
+    &lt;div class="affix"&gt;                           2
+      &lt;ul class="submenu"&gt;
+        &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/coffees"&gt;Coffees&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/brewers"&gt;Brewers&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/specials"&gt;Specials&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/about"&gt;About us&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;
+          </code>
+          <small>Listado 7.11. Cambiar a un diseño de dos columnas con una barra lateral</small>
+        </pre>
+        <ol class="index-code">
+          <li>Envuelve el contenido existente en una columna principal para la columna principal</li>
+          <li>Agrega una segunda columna con un elemento de afijo en su interior</li>
+        </ol>
+        <p>
+          A continuación, actualizará el CSS para que el contenedor se convierta en un para dimensionar las dos columnas. Para esta demostración, reutilizará los estilos del submenú del menú desplegable, aunque puede agregar alternativamente los elementos y estilos que desee en la barra lateral. Agregue estos estilos a su hoja de estilo.
+        </p>
+        <pre>
+          <code class="container__base-code">
+.container {
+  display: flex;                 1
+  width: 80%;
+  max-width: 1000px;
+  margin: 1em auto;
+  min-height: 100vh;             2
+}
+
+.col-main {
+  flex: 1 80%;                   3
+}
+
+.col-sidebar {
+  flex: 20%;                     3
+}
+
+.affix {
+  position: sticky;              4
+  top: 1em;                      4
+}
+          </code>
+          <small>Listado 7.12. Crear un diseño de dos columnas y un menú lateral de <span translate="no">sticky-position</span></small>
+        </pre>
+        <ol class="index-code">
+          <li>Hace que el contenedor sea un contenedor flexible para el diseño de dos columnas</li>
+          <li>Agrega altura artificialmente al contenedor</li>
+          <li>Traza las dos columnas</li>
+          <li>Aplica <span translate="no">sticky-positioning</span> al menú lateral. Se acoplará 1em desde la parte superior de la ventana gráfica.</li>
+        </ol>
+        <p>
+          La mayoría de estos cambios están configurando el diseño de dos columnas. Con eso establecido, solo se necesitan dos declaraciones para colocar el elemento <code>affix</code>. El valor <code>top</code> establece la ubicación donde el elemento se bloqueará en su lugar: <code>1em</code> desde la parte superior de la ventana gráfica.
+        </p>
+        Un elemento <em translate="no">sticky</em> siempre permanecerá dentro de los límites de su elemento padre, la barra lateral <code>col-sidebar</code> en este caso. A medida que se desplaza hacia abajo en la página, la <code>col-sidebar</code> siempre se desplazará normalmente, pero el elemento de <code>affix</code> se desplazará hasta que encaje en su lugar. Continúe desplazándose lo suficiente y se desbloqueará y reanudará el desplazamiento. Esto ocurre cuando el borde inferior del padre llega al borde inferior del menú fijo. Tenga en cuenta que el padre debe ser más alto que el elemento <span translate="no"><em>sticky</em></span> para que se adhiera en su lugar, por lo que aumenté artificialmente su altura agregando una <code>min-height</code> a su contenedor flexible.
+      </section>
+      <section id="resumen">
+        <h2>RESUMEN</h2>
+        <ul>
+          <li>Utilice posicionamiento fijo para diálogos modales</li>
+          <li>Utilice el posicionamiento absoluto para menús desplegables, información sobre herramientas y otras interacciones dinámicas.</li>
+          <li>Tenga en cuenta los problemas de accesibilidad al crear estas funciones.</li>
+          <li>Hay dos trampas de z-index: solo funciona en elementos posicionados y su uso crea un nuevo contexto de apilamiento.</li>
+          <li>Tenga en cuenta los posibles obstáculos al crear varios contextos de apilamiento en una página.</li>
+          <li>Esté atento a una mejor compatibilidad del navegador con el posicionamiento fijo.</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Posicionamiento Fijo</a></li>
+        <li><a href="#sub1">- Creando un diálogo modal con posicionamiento fijo</a></li>
+        <li><a href="#sub2">- Controlar el tamaño de los elementos posicionados</a></li>
+        <li><a href="#tema2">Posicionamiento Absoluto</a></li>
+        <li><a href="#sub3">- Posicionamiento absoluto del botón Cerrar</a></li>
+        <li><a href="#sub4">- Posicionando un pseudo-elemento</a></li>
+        <li><a href="#tema3">Posicionamiento Relativo</a></li>
+        <li><a href="#sub5">- Crear un menú desplegable</a></li>
+        <li><a href="#sub6">- Creando un triángulo CSS</a></li>
+        <li><a href="#tema4"><span translate="no">STACKING CONTEXT</span> y <span translate="no">Z-INDEX</span></a></li>
+        <li><a href="#sub7">- Comprender el proceso de renderizado y el orden de apilamiento</a></li>
+        <li><a href="#sub8">- Manipulación del orden de apilamiento con <span translate="no">Z-INDEX</span></a></li>
+        <li><a href="#sub9">- Comprender los contextos de apilamiento</a></li>
+        <li><a href="#tema5"><span translate="no">STICKY POSITIONING</span></a></li>
+        <li><a href="#resumen">RESUMEN</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>
