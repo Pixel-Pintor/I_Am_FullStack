@@ -192,3 +192,24 @@ img {
 ::-webkit-scrollbar-thumb {
   background: #fa0801;
 }
+
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #dbf6d9;
+}
+
+th,
+td {
+  padding: 0.5em 1em;
+}
+
+thead {
+  background-color: #fa5943;
+  border: 1px solid #dbf6d9;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #dbf6d9;
+}

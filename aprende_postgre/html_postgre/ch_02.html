@@ -139,6 +139,314 @@ F.D. Roosevelt HS      36200
       <p>
         Esta técnica nos da la capacidad de preguntar: <em>"Para cada x en la tabla, ¿cuáles son todos los valores de y?"</em>. Para cada fábrica, ¿cuáles son todos los productos químicos que produce?. Para cada distrito electoral, ¿quiénes son todos los candidatos que se postulan para un cargo?. Para cada sala de conciertos, ¿quiénes son los artistas que tocarán este mes?.
       </p>
+      <h2 id="tema2">Ordenar datos con ORDER BY</h2>
+      <p>
+        Los datos pueden tener más sentido y pueden revelar patrones más facilmente cuando están ordenados en lugar de mezclados al azar.
+      </p>
+      <p>
+        En SQL, ordenamos los resultados de una consulta usando una cláusula que contiene las palabras clave <code>ORDER BY</code> seguidas del nombre de la columna o columnas a ordenar. La aplicación de esta cláusula no cambia la tabla original, solo el resultado de la consulta.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT first_name, last_name, salary
+FROM teachers
+ORDER BY salary DESC;
+        </code>
+      </pre>
+      <p>
+        Por defecto, <code>ORDER BY</code> ordena los valores en orden ascendente, pero aquí los ordeno en orden descendente agregando la palabra clave <code>DESC</code>.(La palabra clave <code>ASC</code> especifica la clasificación en orden ascendente). Ahora, ordenando la columna <code>salary</code> de mayor a menor, puedo determinar qué maestros ganan más:
+      </p>
+      <pre>
+        <code class="container__base-code">
+first_name    last_name    salary
+----------    ---------    ------
+Lee           Reynolds     65000
+Samuel        Cole         43500
+Betty         Diaz         43500
+Kathleen      Roush        38500
+Janet         Smith        36200
+Samantha      Bush         36200
+        </code>
+      </pre>
+      <p>
+        La capacidad de ordenar nuestras consultas nos brinda una grand flexibilidad en la forma en que vemos y presentamos los datos. Por ejemplo, no estamos limitados a ordenar en una sola columna.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT last_name, school, hire_date
+FROM teachers
+ORDER BY school ASC, hire_date DESC;
+        </code>
+      </pre>
+      <p>
+        En este caso, estamos recuperando los apellidos de los maestros, su escuela y la fecha de contratación. Clasificando la columna <code>school</code> en orden ascendente y <code>hire_date</code> en orden descendente, creamos una lista de maestros agrupados por escuela con los maestros contratados más recientemente en primer lugar. Esto nos muestra quiénes son los maestros más nuevos en cada escuela. El conjunto de resultados debería verse así:
+      </p>
+      <pre>
+        <code class="container__base-code">
+last_name    school                 hire_date
+---------    -------------------    ----------
+Smith        F.D. Roosevelt HS      2011-10-30
+Roush        F.D. Roosevelt HS      2010-10-22
+Reynolds     F.D. Roosevelt HS      1993-05-22
+Bush         Myers Middle School    2011-10-30
+Diaz         Myers Middle School    2005-08-30
+Cole         Myers Middle School    2005-08-01
+        </code>
+      </pre>
+      <p>
+        Puede usar <code>ORDER BY</code> en más de dos columnas, pero pronto llegará a un punto de rendimientos decrecientes donde el efeco apenas se notará. La recopilación de datos ocurre más facilmente cuando el resultado se centra en responder una pregunra específica; por lo tanto, una merjor estrategia es limitar el número de columnas en su consulta solo a las más importantes y luego ejecutar varias consultas para responder cada pregunta que tenga.
+      </p>
+      <h2 id="tema3">Filtrar filas con WHERE</h2>
+      <p>
+        A veces, querrá limitar las filas que una consulta devuelve solo a aquellas en las que una o más columnas cumplen ciertos criterios. Usando <code>teachers</code> como ejemplo, es posible que desee encontrar todos los maestros contratados antes de un año en particular o tods los maestros que ganana más de <em>$75,000</em> en las escuelas primarias. Para estas tareas, usamos la cláusula <code>WHERE</code>.
+      </p>
+      <p>
+        La palabra clave <code>WHERE</code> le permite buscar filas que coincidan con un valor especifico, un rango de valores o varios valores según los criterios proporcionados a través de un <em>operador</em>. También puede excluir filas según los criterios.
+      </p>
+      <p>
+        Tenga en cuenta que en la sintaxis SQL estándar, la cláusula <code>WHERE</code> sigue a la palabra clave <code>FROM</code> y al nombre de la tabla o tablas que se consultan:
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT last_name, school, hire_date
+FROM teachers
+WHERE school = 'Myers Middle School';
+        </code>
+      </pre>
+      <p>
+        El conjunto de resultados muestra solo los maestros asignados a <em>Myers Middle School</em>:
+      </p>
+      <pre>
+        <code class="container__base-code">
+last_name    school                 hire_date
+---------    -------------------    ----------
+Cole         Myers Middle School    2005-08-01
+Bush         Myers Middle School    2011-10-30
+Diaz         Myers Middle School    2005-08-30
+        </code>
+      </pre>
+      <p>
+        Aquí, estoy usando el operador de comparación igual para encontrar filas que coincidan exactamente con un valor, pero, por supuesto, puede usar otros operadores con <code>WHERE</code> para personalizar sus criterios de filtro.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <td>Operador</td>
+            <td>Función</td>
+            <td>Ejemplo</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>=</b></td>
+            <td>Igual a</td>
+            <td><code>WHERE school = 'Baker Middle'</code></td>
+          </tr>
+          <tr>
+            <td><b>&lt;> o !=</b></td>
+            <td>No igual a</td>
+            <td><code>WHERE school &lt;> 'Baker Middle</code></td>
+          </tr>
+          <tr>
+            <td><b>></b></td>
+            <td>Mayor qué</td>
+            <td><code>WHERE salary > 20000</code></td>
+          </tr>
+          <tr>
+            <td><b>&lt;</b></td>
+            <td>Menor qué</td>
+            <td><code>WHERE salary &lt; 60500</code></td>
+          </tr>
+          <tr>
+            <td><b>>=</b></td>
+            <td>Mayor qué o igual</td>
+            <td><code>WHERE salary >= 20000</code></td>
+          </tr>
+          <tr>
+            <td><b>&lt;=</b></td>
+            <td>Menor qué o igual</td>
+            <td><code>WHERE salary &lt;= 60500</code></td>
+          </tr>
+          <tr>
+            <td><b>BETWEEN</b></td>
+            <td>Dentro del rango</td>
+            <td><code>WHERE salary BETWEEN 20000 AND 40000</code></td>
+          </tr>
+          <tr>
+            <td><b>IN</b></td>
+            <td>Una coincidencia en un conjunto de valores</td>
+            <td><code>WHERE last_name IN ('Bush', 'Roush')</code></td>
+          </tr>
+          <tr>
+            <td><b>LIKE</b></td>
+            <td>Conincide con un patron (case sensitive)</td>
+            <td><code>WHERE first_name LIKE 'Sam%'</code></td>
+          </tr>
+          <tr>
+            <td><b>ILIKE</b></td>
+            <td>Coincide con un patron (cas insensitive)</td>
+            <td><code>WHERE first_name ILIKE 'sam%'</code></td>
+          </tr>
+          <tr>
+            <td><b>NOT</b></td>
+            <td>Niega una condicion</td>
+            <td><code>WHERE first_name NOT ILIKE 'sam%'</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Los siguientes ejemplos muestran operadores de comparación en acción. Primero, usamos el operador de igualdad para encontrar maestros cuyo primero nombre es <em>Janet</em>:
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT first_name, last_name, school
+FROM teachers
+WHERE first_name = 'Janet';
+        </code>
+      </pre>
+      <p>
+        A continuación, enumeramos todos los nombre de las escuelas en la tabla, pero excluimos a <em>FD Roosevelt HS</em> usando el operador no igual:
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT school
+FROM teachers
+WHERE school != 'FD Roosevelt HS';
+        </code>
+      </pre>
+      <p>
+        Aquí usamos el operador menor que para listar los maestros contratados antes del 1 de enero de 2000 (usando el formato de fecha <em>AAAA-MM-DD</em>):
+      </p>
+      <pre>
+        <code class="containet__base-code">
+SELECT first_name, last_name, hire_date
+FROM teachers
+WHERE hire_date &lt; '2000-01-01';
+        </code>
+      </pre>
+      <p>
+        Luego encontramos maestros que ganan <em>$43,500</em> o más usando el operador <code>>=</code>:
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT first_name, last_name, salary
+FROM teachers
+WHERE salary >= 43500;
+        </code>
+      </pre>
+      <p>
+        La siguiente consulta utiliza el operador <code>BETWEEN</code> para encontrar profesores que ganen entre <em>$40,000</em> y <em>$65,000</em>. Tenga en cuenta que <code>BETWEEN</code> es <em>inclusivo</em>, lo que significa que el resultado incluirá valores que coincidan con los rangos inicial y final especificados.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT first_name, last_name, school, salary
+FROM teachers
+WHERE salary BETWEEN 40000 AND 65000;
+        </code>
+      </pre>
+      <h3 id="sub3">Usando LIKE e ILIKE con WHERE</h3>
+      <p>
+        Los operadores de comparación son bastante sencillos, pero <code>LIKE</code> e <code>ILIKE</code> merecen una explicación adicional. Primero, ambos le permiten buscar patrones en cadenas usando dos caracteres especiales:
+      </p>
+      <ul>
+        <li>
+          <b>Signo que porcentaje (%):</b> Un comodín que coincide con uno o más caracteres
+        </li>
+        <li>
+          <b>Guión bajo (_):</b> Un comodín que coincide con un solor carácter
+        </li>
+      </ul>
+      <p>
+        Por ejemplo, si está tratando de encontrar la palabra <code>baker</code>, los siguientes patrones <code>LIKE</code> coincidirán con ella:
+      </p>
+      <pre>
+        <code class="container__base-code">
+LIKE 'b%'
+LIKE '%ak%'
+LIKE '_aker'
+LIKE 'ba_er'
+        </code>
+      </pre>
+      <p>
+        ¿La diferencia? El operador <code>LIKE</code>, que forma parte del estándar ANSI SQL, distingue entre mayúsculas y minúsculas. El operador <code>ILIKE</code>, que es una implementación exclusiva de <em>PostgreSQL, no distingue entre mayúsculas y minúsculas.</em> En el siguiente codigo la primera cláusula <code>WHERE</code> usa <code>LIKE</code> para buscar nombres que comienzan con los caracteres <code>sam</code>, y debido a que distingue entre mayúsculas y minúsculas, devolverá cero resultados. El segundo, usando <code>ILIKE</code> que no distingue entre mayúsculas y minúsculas, devolverá <code>Samuel</code> y <code>Samantha</code>:
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT first_name
+FROM teachers
+WHERE first_name LIKE 'sam%';
+
+SELECT first_name
+FROM teachers
+WHERE first_name ILIKE 'sam%';
+        </code>
+      </pre>
+      <h3 id="sub4">Combinar operadores con AND y OR</h3>
+      <p>
+        Los operadores de comparación se vuelven aún más útiles cuando los combinamos. Para hacer esto, los conectamos usando la palabra clave <code>AND</code> y <code>OR</code> junto con, si es necesario, paréntesis.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT *
+FROM teachers
+WHERE school = 'Myers Middle School'
+    AND salary &lt; 40000;
+
+SELECT *
+FROM teachers
+WHERE last_name = 'Cole'
+    OR last_name = 'Bush';
+
+SELECT *
+FROM teachers
+WHERE school = 'F.D. Roosevelt HS'
+    AND (salary &lt; 38000 OR salary > 40000);    
+        </code>
+      </pre>
+      <p>
+        La primera consulta usa <code>AND</code> en la cláusula <code>WHERE</code> para encontrar maestros que trabajan en <em>Myerss Middle School</em> y tienen una salario menor a <em>$40,000</em>. Debido a que conectamos las dos condiciones usando <code>AND</code>, ambas deben ser verdaderas para que una fila cumpla con los criterios de la cláusula <code>WHERE</code> y se devuelven en los resultados de la consulta.
+      </p>
+      <p>
+        El segundo ejemplo usa <code>OR</code> para buscar cualquier maestro cuyo apellido coincida con <em>Cole</em> o <em>Bush</em>. Cuando conectamos condiciones usando <code>OR</code>, solo una de las condiciones deber ser verdadera para que una fila cumpla con los criterios de la cláusula <code>WHERE</code>.
+      </p>
+      <p>
+        El ejemplo final busca maestros en <em>Roosevelt</em> cuyos salarios sean menores de <em>$38,000</em> o mayores de <em>$40,000</em>. Cuando colocamos declaraciones entre paréntesis, se evalúan como un grupo antes de combinarse con otros criterios. En este caso, el nombre de la escuela debe ser exactamente <code>FD Roosevelt HS</code> y el salario deber ser menor o mayor que el especificado para que una fila cumpla con los criterios de la cláusula <code>WHERE</code>
+      </p>
+      <h2 id="tema4">Poniendolo todo junto</h2>
+      <p>
+        Puede comenzar a ver cómo incluso las consultas simples anteriores nos permiten profundizar en nuestros datos con flexibilidad y precisión para encontrar lo que estamos buscando. Puede combinar declaraciones de operadores de comparación utilizando las palabras clave <code>AND</code> y <code>OR</code> para proporcionar varios criterios de filtrado, y puede incluir una cláusula <code>ORDER BY</code> para clasificar los resultados.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT column_names
+FROM table_name
+WHERE criteria
+ORDER BY columna_names;
+        </code>
+      </pre>
+      <p>
+        El siguiente codigo muestra una consulta de la tabla <code>teachers</code> que incluye todas las piezas mencionadas anteriormente:
+      </p>
+      <pre>
+        <code class="container__base-code"> 
+SELECT first_name, last_name, school, hire_date, salary
+FROM teachers
+WHERE school LIKE '%Roos%'
+ORDER BY hire_date DESC;
+        </code>
+      </pre>
+      <p>
+        Esta consulta devuelve los maestros de <em>Roosevelt High School</em>, ordenados desde el último hasta el primero. Podemos ver una clara correlación entre la fecha de contratación de un maestro en la escuela y su nivel de salario actual:
+      </p>
+      <pre>
+        <code class="container__base-code">
+first_name    last_name     school              hire_date     salary
+----------    ---------     ------              ---------     ------
+Janet         Smith         F.D. Roosevelt HS   2011-10-30    36200
+Kathleen      Roush         F.D. Roosevelt HS   2010-10-22    38500
+Lee           Reynolds      F.D. Roosevelt HS   1993-05-22    65000
+        </code>
+      </pre>
     </main>
 
     <aside class="container__aside">
@@ -147,11 +455,11 @@ F.D. Roosevelt HS      36200
         <li><a href="#tema1">Sintaxis básica de SELECT</a></li>
         <li><a href="#sub1">- Consultar un subconjunto de columnas</a></li>
         <li><a href="#sub2">- Uso de DISTINCT para encontrar valores únicos</a></li>
-        <li><a href=""></a></li>
-        <li><a href=""></a></li>
-        <li><a href=""></a></li>
-        <li><a href=""></a></li>
-        <li><a href=""></a></li>
+        <li><a href="#tema2">Ordenar datos con ORDER BY</a></li>
+        <li><a href="#tema3">Filtrar filas con WHERE</a></li>
+        <li><a href="#sub3">- Usando LIKE e ILIKE con WHERE</a></li>
+        <li><a href="#sub4">- Combinar operadores con AND y OR</a></li>
+        <li><a href="#tema4">Poniendolo todo junto</a></li>
         <li><a href=""></a></li>
       </ul>
     </aside>
