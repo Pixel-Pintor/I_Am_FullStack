@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_postgre/general_style.css">
+  <title>Capítulo 2</title>
+</head>
+<body>
+  <div class="container"> 
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 2. Inicio de la exploración de datos con SELECT</h1>
+      <div>
+        <a href=""><img src="" alt=""></a>
+        <a href=""><img src="" alt=""></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <p>
+        En SQL, los datos se evaluan con la palabras clave <code>SELECT</code>, que recupera filas y columnas de una o más tablas de la base de datos. Una instruccion <code>SELECT</code> puede ser simple, recuperando todo en una sola tabla, o pueder ser lo suficientemente compleja como para vincular docemas de tablas mientras maneja múltiples cálculos y filtra por criterios exactos.
+      </p>
+      <p>
+        Comenzaremos con declaraciones <code>SELECT</code> simples.
+      </p>
+      <h2 id="tema1">Sintaxis básica de SELECT</h2>
+      <p>
+        Aquí hay una instrucción <code>SELECT</code> que recupera cada fila y columna en una tabla llamada <code>my_table</code>:
+      </p>
+      <pre>
+        <code class="container_base-code">
+SELECT * FROM my_table;
+        </code>
+      </pre>
+      <p>
+        Esta única línea de código muestra la forma más básica de una consulta SQL. El asterisco que sigue a la palabra clave <code>SELECT</code> es un <em>comodín</em>. Un comodín es como un sustituto de un valor: no representa nada en particular y, en cambio, representa todo lo que ese valor podría ser. Aquí, es la abreviatura de <em>"seleccionar todas las columnas"</em>. Si hubiera dado un nombre de columna en lugar del comodín, este comando seleccionaria los valores de esa columna. La palabra clave <code>FROM</code> indica que desea que la consulta devuelva datos de una tabla en particular. El punto y coma después del nombre de la tabla le dice a <em>PostgreSQL</em> que es el final de la declaración de consulta.
+      </p>
+      <p>
+        Usemos esta instrucción <code>SELECT</code> con el comodín de asterisco en la tabla <code>teachers</code>.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT * FROM teachers;
+        </code>
+      </pre>
+      <p>
+        El conjunto de resultados contiene todas las filas y columnas que inserto en la tabla <code>teachers</code>. Es posible que las filas no siempre que aparezcan en este orden, pero está bien.
+      </p>
+      <h3 id="sub1">Consultar un subconjunto de columnas</h3>
+      <p>
+        El uso del comodín de asterisco es útil descubrir todo el contenido de una tabla. Pero a menudo es más practico limitar las columnas que recupera la consulta, especialmente con grandes bases de datos. Puede hacer esto nombrando columnas, separadas por comas, justo después de la palabra clave <code>SELECT</code>. Por ejemplo:
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT some_column, another_column, amazing_column
+FROM table_name;
+        </code>
+      </pre>
+      <p>
+        Con esta sintaxis, la consulta recuperará todas las filas solo estas tres columnas.
+      </p>
+      <p>
+        Apliquemos esto a la tabla <code>teachers</code>. Quizas en su análisis quiera centrarse en los nombre y salarios de los profesores, no en la escuela donde trabajan o cuando fueron contratados. En este caso, puede seleccionar solo unas pocas columnas de la tabla en lugar de utilizar el asterisco. Observe que el orden de las columnas en la consulta es diferente al orden en la tabla: puede recuperar columnas en el orden que desee.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT last_name, first_name, salary FROM teachers;
+        </code>
+      </pre>
+      <p>
+        Ahora, el conjunto de resultados, ha limitado las columnas a tres:
+      </p>
+      <pre>
+        <code class="container__base-code">
+last_name    first_name    salary
+---------    ----------    ------
+Smith        Janet         36200
+Reynolds     Lee           65000
+Cole         Samuel        43500
+Bush         Samantha      36200
+Diaz         Betty         43500
+Roush        Kathleen      38500
+        </code>
+      </pre>
+      <p>
+        Solo estamos trabajando con una tabla de seis filas, pero cuando se enfrenta a una tabla de miles o incluso millones de filas, es esencial obtener una lectura rápida de la calidad de sus datos y el rango de valores que contienen. Para haer esto, profundicemos y agreguemos varias palabras clave SQL.
+      </p>
+      <h3 id="sub2">Uso de DISTINCT para encontrar valores únicos</h3>
+      <p>
+        En una tabla, no es inusual que una columna contenga filas con valores duplicados. En la tabla <code>teachers</code>, por ejemplo, la columna <code>school</code> enumera los mismos nombres de escuelas varias veces porque cada escuela emplea a muchos maestros.
+      </p>
+      <p>
+        Para comprender el rango de valores en un columna, podemos usar la palabra clave <code>DISTINCT</code> como parte de una consulta que elimina los duplicados y muestra solo valores únicos.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT DISTINCT school
+FROM teachers;
+        </code>
+      </pre>
+      <p>
+        Esta consulta busca los valores distintos en la columna <code>school</code>, el resultado es el siguiente:
+      </p>
+      <pre>
+        <code class="container__base-code">
+school
+-------------------
+F.D. Roosevelt HS
+Myers Middle School
+        </code>
+      </pre>
+      <p>
+        Aunque hay seis filas en la tabla, el resultado muestra solo los dos nombre de escuelas únicos en la columna <code>school</code>. Este es un primer paso útil para evaular la calidad de los datos. Por ejemplo, si el nobmre de una escuela se escribe de más de una manera, esas variaciones ortográficas serán fáciles de detectar y corregir. Cuando trabaje con fechas o números, <code>DISTINCT</code> lo ayudará a resaltar el formato incoherente o roto.
+      </p>
+      <p>
+        La palabra clave <code>DISTINCT</code> también funciona en más de una columna a la vez. Si agregamos una columna, la consulta devuelve cada par de valores únicos.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT DISTINCT school, salary
+FROM teachers;
+        </code>
+      </pre>
+      <p>
+        Ahora la consulta devuelve cada salario único (o distinto) ganado en cada escuela. Dbido a que dos maestros de <em>Myers Middle School</em> ganan <em>$43,500</em>, ese par aparece en una sola fila y la consulta devuelve cinco filas en lugar de las seis de la tabla:
+      </p>
+      <pre>
+        <code class="container__base-code">
+school                 salary
+-------------------    ------
+Myers Middle School    43500
+Myers Middle School    36200
+F.D. Roosevelt HS      65000
+F.D. Roosevelt HS      38500
+F.D. Roosevelt HS      36200
+        </code>
+      </pre>
+      <p>
+        Esta técnica nos da la capacidad de preguntar: <em>"Para cada x en la tabla, ¿cuáles son todos los valores de y?"</em>. Para cada fábrica, ¿cuáles son todos los productos químicos que produce?. Para cada distrito electoral, ¿quiénes son todos los candidatos que se postulan para un cargo?. Para cada sala de conciertos, ¿quiénes son los artistas que tocarán este mes?.
+      </p>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Sintaxis básica de SELECT</a></li>
+        <li><a href="#sub1">- Consultar un subconjunto de columnas</a></li>
+        <li><a href="#sub2">- Uso de DISTINCT para encontrar valores únicos</a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>

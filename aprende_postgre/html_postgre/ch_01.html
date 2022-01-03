@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_postgre/general_style.css">
+  <title>Capítulo 1</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 1. Creando su primera base de datos y tabla</h1>
+      <div>
+        <a href=""><img src="" alt=""></a>
+        <a href=""><img src="" alt=""></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <p>
+        Una tabla es una cuadricula de filas y columnas que almacenan datos. Cada fila contiene una colección de columnas y cada columna contiene datos de un tipo específico: más comúnmente, números, caracteres y fechas. Usamos SQL para definir la estructura de una tabla y cómo cada tabla podría relacionarse con otras tabla en la base de datos. También usamos SQL para extraer o <em>consultar</em> datos de tablas.
+      </p>
+      <p>
+        Antes de profundizar en SQL, veamos una ejemplo de cómo podría verse el contenido de las tablas. Usaremos una base de datos hipotética para administrar la inscripción a clases de una escuela; dentro de esa base de datos hay varias tablas que rastrean a los estudiantes y sus clases. La primera tabla, llamada <code>student_enrollment</code>, muestra los estudiantes que están inscritos en cada seccion de la clase:
+      </p>
+      <pre>
+        <code class="container__base-code">
+<span># student_enrollment</span>
+
+student_id    class_id      class_section    semester
+----------    ----------    -------------    ---------
+CHRISPA004    COMPSCI101    3                Fall 2017
+DAVISHE010    COMPSCI101    3                Fall 2017
+ABRILDA002    ENG101        40               Fall 2017
+DAVISHE010    ENG101        40               Fall 2017
+RILEYPH002    ENG101        40               Fall 2017
+        </code>
+      </pre>
+      <p>
+        Está tabla muestra que dos estudiantes se han inscritos en <code>COMPSCI101</code> y tres se han inscrito en <code>ENG101</code>. Pero, ¿dondé están los detalles sobre cada alumno y clase?. En este ejemplo, estos detalles se almacenan en tablas separadas llamadas <code>students</code> y <code>classes</code>, y cada tabla se relaciona con está. Aquí es donde comienza a mostrarse el poder de una <em>base de datos relacional</em>.
+      </p>
+      <p>
+        Las primeras filas de la tabla <code>students</code> incluyen los siguiente:
+      </p>
+      <pre>
+        <code class="container__base-code">
+<span># students</span>
+
+student_id    first_name    last_name    dob       
+----------    ----------    ---------    ----------
+ABRILDA002    Abril         Davis        1999-01-10
+CHRISPA004    Chris         Park         1996-04-10
+DAVISHE010    Davis         Hernandez    1987-09-14
+RILEYPH002    Riley         Phelps       1996-06-15
+        </code>
+      </pre>
+      <p>
+        La tabla de <code>students</code> contiene detalles de cada estudiante, utiliza como identificador el valor de la columna <code>student_id</code>. Ese valor actúa como <em>clave unica</em> que conecta ambas tablas, lo que le da la habilidad de crear filas como la siguiente con la columna <code>class_id</code> desde <code>student_enrollment</code> y las columnas <code>first_name</code> y <code>last_name</code> de la tabla <code>students</code>:
+      </p>
+      <pre>
+        <code class="container__base-code">
+class_id      first_name    last_name
+----------    ----------    ---------
+COMPSCI101    Davis         Hernandez
+COMPSCI101    Chris         Park
+ENG101        Abril         Davis
+ENG101        Davis         Hernandez
+ENG101        Riley         Phelps
+        </code>
+      </pre>
+      <p>
+        La tabla <code>classes</code> funcionara de la misma manera, con una columna <code>class_id</code> y varias columnas de detalles sobre la clase. Los creadores de bases de datos prefieren organizar los datos usando tablas separadas para cada <em>entidad</em> principal que administra la base de datos con el fin de reducir los datos redundantes. En el ejemplo, almacenamos el nombre y la fecha de nacimiento de cada alumno solo una vez, no desperdiciamos espacio en la base de datos ingresando su nombre al lado de cada clase en <code>student_enrollment</code>. Solo incluimos su ID de estudiante.
+      </p>
+      <section id="tema1">
+        <h2>Crear base de datos y una tabla</h2>
+        <p>
+          Para crear una base de datos, use solo una línea SQL, el siguiente comando crea una base de datos llamada <code>analisis</code>.
+        </p>
+        <pre>
+          <code class="container__base-code">
+CREATE DATABASE analysis;
+          </code>
+        </pre>
+        <p>
+          Tenga en cuenta que el código consta de dos palabras clave: <code>CREATE</code> y <code>DATABASE</code>, seguidas del nombre de la nueva base de datos. La declaración termina con un punto y coma, que indica el final del comando.
+        </p>
+        <h3 id="sub1">Creando una tabla</h3>
+        <p>
+          Cuando crea una tabla, asigna un nombre a cada <em>columna</em> (a veces denominado <em>campo</em> o <em>atributo</em>) y le asigna un <em>tipo de datos</em>. Estos son los valores que aceptará la columna, como texto, números enteros, decimales y fechas, y la definición del tipo de datos es una forma en que SQL refuerza la integridad de datos.
+        </p>
+        <p>
+          Se puede acceder y analizar o consultar los datos almacenados en una tabla con declaraciones SQL. Pueder ordernar, editar y ver los datos, ademas de modificar fácilmente la tabla más adelante si cambiar sus necesidades.
+        </p>
+        <h4>La declaracion CREATE TABLE</h4>
+        <p>
+          Para este ejercicio, usaremos un datos del que se habla a menudo: los sueldos de los profesores. El siguiente codigo muestra el codigo SQL para crear una tabla llamada <code>teachers</code>:
+        </p>
+        <pre>
+          <code class="container__base-code">
+<span># crea la tabla teachers con seis columnas</span>
+
+CREATE TABLE teachers (
+	id bigserial,
+	first_name varchar(25),
+	last_name varchar(25),
+	school varchar(25),
+	hire_date date,
+	salary numeric
+);
+          </code>
+        </pre>
+        <p>
+          El código comienza con las dos palabras clave SQL <code>CREATE</code> y <code>TABLE</code> que, junto con el nombre de <code>teachers</code>, le indican a PostgreSQL que el siguiente bit de código describe una tabla para agregar a la base de datos. Después de una paréntesis de apertura, la declaración incluye una lista separada por comas de nombres de columnas junto con sus tipos de datos. Por motivos de estilo cada nueva línea de código esta en su propia línea y tiene cuatro espacios de sangrado, lo cual no es obligatorio, pero hace que el código sea más legible.
+        </p>
+        <p>
+          Cada nombre de columnas representa un elemento de datos discretos definido por un tipo de datos. La columna <code>id</code> es un tipo de dato <code>bigserial</code>, un tipo entero especial que se incrementa automáticamente cada que se agrega una fila a la tabla. La primera fila recibe el valor de <code>1</code> en la columna <code>id</code>, la segunda fila <code>2</code>, y así sucesivamente.
+        </p>
+        <p>
+          A continiación, creamos columnas para el nombre y apellido del profesor y la escuela donde enseña. Cada uno es del tipo de datos <code>varchar</code>, una columna de texto con una longitud máxima especificada por el número entre paréntesis.
+        </p>
+        <p>
+          La fecha de contratacion <code>hire_date</code> se establece en el tipo de datos <code>date</code>, y la columna <code>salary</code> es tipo <code>numeric</code>, está tabla muestra algunos ejemplos comunos de tipos de datos. El bloque de código termina con un paréntesis de cierre y un punto y coma.
+        </p>
+        <h3 id="sub2">Insertar filas en una tabla</h3>
+        <p>
+          Puede agregar datos a una tabla de <em>PostgreSQL</em> de varias formas. A menudo, trabajará con una grand cantidad de filas, por lo que el método más sencilla es importar datos desde un archivo de texto u otra base de datos directamente a una tabla. Pero solo para comenzar, agregaremos algunas filas usando una instruccion <code>INSERT INTO ... VALUES</code> que especifica las columnas de destino y los valores de datos.
+        </p>
+        <h4>La declaración INSERT</h4>
+        <p>
+          El siguiente codigo introduce datos en la tabla <code>teachers</code>:
+        </p>
+        <pre>
+          <code class="container__base-code">
+INSERT INTO teachers (first_name, last_name, school, hire_date, salary)
+VALUES ('Janet', 'Smith', 'F.D. Roosevelt HS', '2011-10-30', 36200),
+        ('Lee', 'Reynolds', 'F.D. Roosevelt HS', '1993-05-22', 65000),
+        ('Samuel', 'Cole', 'Myers Middle School', '2005-08-01', 43500),
+        ('Samantha', 'Bush', 'Myers Middle School', '2011-10-30', 36200),
+        ('Betty', 'Diaz', 'Myers Middle School', '2005-08-30', 43500),
+        ('Kathleen', 'Roush', 'F.D. Roosevelt HS', '2010-10-22', 38500);
+          </code>
+        </pre>
+        <p>
+          Este bloque de código inserta nombre y datos para seis profesores. Después de las palabras clave <code>INSERT INTO</code> está el nombre de la tabla, y entre paréntesis están las columnas que se deben completar. En la siguiente fila está la palabra clave <code>VALUES</code> y los datos para insertar en cada columna en cada fila. Debe encerrar los datos de cada fila entre paréntesis y, dentro de cada paréntesis, use una coma para separar el valor de cada columna. El orden de los valores también debe coincidir con el orden de las columnas especificadas después del nombre de la tabla. Cada fila de datos termina con una coma y la última fila termina la declaración con un punto y coma.
+        </p>
+        <p>
+          Observer que ciertos valores que estamos insertando están encerrados entre comillas simples, pero otros no. El texto y las fechas requieren citas; los números enteros y decimales, no requieren comillas.
+        </p>
+        <p>
+          Quizás se esté preguntando acerca de la columna <code>id</code>, que es la primera columna de la tabla. Cuando creó la tabla, su secuencia de comandos especificó que la columna fuera el tipo de datos <code>bigserial</code>. Entonces, a medida que <em>PostgreSQL</em> inserta cada fila, automáticamente llena la columna <code>id</code> con un número entero que se incrementa automáticamente
+        </p>
+        <h3 id="sub3">Formateo de SQL para mejorar la legibilidad</h3>
+        <p>
+          SQL no require un formato especial para ejecutarse, por lo que puede usar su propio estilo. Pero eso no le hará ganar amigos cuando otros necesiten trabajar con su código. En aras de la legibilidad y de ser un buen programador, es mejor seguir estas convenciones:
+        </p>
+        <ul>
+          <li>
+            Palabras clave SQL en mayúsculas, como <code>SELECT</code>. Utiliza caracteres en minúscula para los tipos de datos pero se pueden escribir en mayúsculas tambien si lo desea.
+          </li>
+          <li>
+            Evite usar <em>CamelCase</em> y en su lugar use <code>lowercase_and_underscores</code> para nombres de objetos, nombres de tablas y columnas.
+          </li>
+          <li>
+            Sangra las cláusulas y los bloques de código para facilitar la lectura utilizando dos o cuatro espacios.
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Crear una base de datos</a></li>
+        <li><a href="#sub1">- Creando una tabla</a></li>
+        <li><a href="#sub2">- Insertar filas en una tabla</a></li>
+        <li><a href="#sub3">- Formateo de SQL para mejorar la legibilidad</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
