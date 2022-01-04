@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_postgre/general_style.css">
+  <title>Capitulo 3</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 3. Comprender los tipos de datos</h1>
+      <div>
+        <a href=""><img src="" alt=""></a>
+        <a href=""><img src="" alt=""></a>
+      </div>
+    </header>
+
+    <main class="container__main">
+      <p>
+        Es importante comprender los tipos de datos porque almacenar datos en el formate adecuado es fundamental par crear bases de datos utilizables y realizar análisis precisos. Además, un tipo de datos es un concepto de programación aplicable a algo más que SQL.
+      </p>
+      <p>
+        En una base de datos SQL, cada columna de una tabla puede contener uno y solo un tipo de datos, que se define en la instrucción <code>CREATE TABLE</code>. Declaras el tipo de datos después de nombrar la columna. Aquí hay un ejemplo simple que incluye dos columnas, una fecha y un número entero:
+      </p>
+      <pre>
+        <code class="container__base-code">
+CREATE TABLE eagle_watch (
+    observed_date date,
+    eagles_seen integer
+);
+        </code>
+      </pre>
+      <p>
+        En esta tabla llamada <code>eagle_watch</code> (para un inventario anual de aguilas calvas), se declara que la columna <code>observed_date</code> contiene valores de fecha agregando el tipo de datos <code>date</code> después de su nombre. De manera similar, <code>eagles_seen</code> está configurado para contener números enteros con la declaración de tipo <code>integer</code>.
+      </p>
+      <p>
+        Estos tipos de datos se encuentran entre las tres categorías que encontrará con mayor frecuencia:
+      </p>
+      <ul>
+        <li>
+          <b>Caracteres:</b> Cualquier carácter o símbolo
+        </li>
+        <li>
+          <b>Números:</b> Incluye números enteros y fracciones
+        </li>
+        <li>
+          <b>Fechas y horas:</b> Tipos que contienen información temporal
+        </li>
+      </ul>
+      <h2 id="tema1">Caracteres</h2>
+      <p>
+        Los tipos de <em>Cadena de Caracteres</em> son tipos de uso general adecuados para cualquier combinación de texto, números y símbolos. Los tipos de caracteres incluyen:
+      </p>
+      <ul>
+        <li>
+          <code>char(n)</code>: Una columna de longitud fija donde la longitud de los caracteres se especifica mediante el valor de <code>n</code>. Una columna configurada en <code>char(20)</code> almacena 20 caracteres por fila, independientemente de la cantiad de caracteres que inserte. Si inserta menos de 20 caracteres en cualquier fila, <em>PostgreSQL</em> rellena el reso de esa columna con espacios. También puede usar la palabra más larga <code>character(n)</code>.
+        </li>
+        <li>
+          <code>varchar(n)</code>: Una columna de longitud variable donde la longitud <em>máxima</em> se especifica mediante <code>n</code>. Si inserta menos caracteres que el máximo, PostgreSQL no almacenará espacios adicionales. Por ejemplo la cadena <code>blue</code> ocupará cuatro espacios, mientras que la cadena <code>123</code> ocupará tres. También puede usar la palabra más larga <code>varying(n)</code>.
+        </li>
+        <li>
+          <code>text</code>: Una columna de longitud variable de longitud ilimitada. El tipo <code>text</code> no es parte del estándar SQL, pero encontrará implementaciones similares en otros sistemas de bases de datos.
+        </li>
+      </ul>
+      <p>
+        Para ver estos tres tipos de caracteres en acción, ejecuta el siguiente codigo. Este script construirá y cargará una tabla simple y luego exportará los datos a una archivo de texto en su computadora.
+      </p>
+      <pre>
+        <code class="container__base-code">
+CREATE TABLE char_data_types (
+    varchar_column varchar(10),
+    char_column char(10),
+    text_column text
+);
+
+INSERT INTO char_data_types
+VALUES 
+    ('abc', 'abc', 'abc'),
+    ('defghi', 'defghi', 'defghi');
+
+COPY char_data_types TO 'C:\Users\User\Desktop\typetest.txt'
+WITH (FORMAT CSV, HEADER, DELIMITER '|');    
+        </code>
+      </pre>
+      <p>
+        El script define tres columnas de caracteres de diferentes tipos e inserta dos filas de la misma cadena en cada una. Aquí no especificamos los nombres de las columnas. Si las declaraciones de <code>VALUES</code> coinciden con el número de columnas de la tabla, la base de datos asumirá que está insertando valores en el orden en que se especificaron las definiciones de columna en la tabla.
+      </p>
+      <p>
+        A continuación, el script usa la palabra clave <code>COPY</code> para exportar los datos a una archivo de texto llamado <code>typetest.txt</code> en un directorio que usted especifique. El directorio y el archivo ya deben existir; <em>PostgreSQL</em> no lo creará por usted.
+      </p>
+      <p>
+        En <em>PostgreSQL</em>, <code>COPY table_name FROM</code> es la función de exportación, las opciones de la palabara clave <code>WITH</code> formatearán los datos en el archivo con cada columna separada por un carácter de <em>barra vertical (|)</em>. De esta manera, se pueder ver fácilmente los epacios inutilizados de las columnas tipo <code>char</code>.
+      </p>
+      <p>
+        Para ver el resultado, abra <code>typetest.txt</code> usando un editor de texto sin formato. El contenido debería verse así:
+      </p>
+      <pre>
+        <code class="container__base-code">
+varchar_column|char_column|text_column
+abc|abc       |abc
+defghi|defghi    |defghi
+        </code>
+      </pre>
+      <p>
+        Aunque especificó 10 caracteres para las columnas <code>varchar</code> y <code>char</code>, solo la columna <code>char</code> genera 10 caracteres cada vez, rellenando los caracteres no utilizados con espacios. Las columnas <code>varchar</code> y <code>text</code> almacenan solo los caracteres que insertó.
+      </p>
+      <h2 id="tema2">Números</h2>
+      <p>
+        Las columnas con números contienen varios tipos de números, pero eso no es todo: también le permiten realizar cálculos con esos números. Esa es una distinción importante de los números que almacena como cadenas en una columna de caracteres, que no se pueden sumar, multiplicar, dividir ni realizar ninguna otra operación matemática, si estás haciendo matemáticas o el numérico es importante, usa tipo de datos número.
+      </p>
+      <p>
+        Los tipos de datos números SQL incluyen:
+      </p>
+      <ul>
+        <li>
+          <b>Entero</b>: Números enteros, tanto positivos como negativos.
+        </li>
+        <li>
+          <b>Punto fijo y Punto flotante</b>: Dos formatos de fracciones de números enteros.
+        </li>
+      </ul>
+      <h3 id="sub1">Enteros</h3>
+      <p>
+        El estandar SQL proporciona tres tipos de enteros: <code>smallint</code>, <code>integer</code> y <code>bigint</code>. La diferencia entre los tres tipos es el tamaño máximo de los números que pueden contener.
+      </p>
+      <p>
+        El tipo de entero <code>bigint</code> cubrirá casi cualquier requisitos que tenga con una columna númerica. Cuando los valores de los datos permanecerá restringidos, <code>smallint</code> tiene sentido: los días del mes o los años son buenos ejemplos. El tipo <code>smallint</code> utilizará la mitad del almacenamiento, por lo que es una decisión de diseño de base de datos inteligente si los valores de la columna siempre encajarán dentro de su rango.
+      </p>
+      <p>
+        Si intenta insertar un número fuera de rango en cualquier columna, la base de datos detendrá la operación y devolvera un error <code>out of range</code>.
+      </p>
+      <h3 id="sub2">Enteros que se incrementan automáticamente</h3>
+      <p>
+        Los tipos de serie <code>serial</code> y <code>smallserial</code> son implementaciones del estándar ANSI SQL para <em>columnas de identidad</em> numeradas automáticamente. Para usar un tipo de serie en una columna, declárelo en la instrucción <code>CREATE TABLE</code> como lo haría con un tipo entero. Por ejemplo, podría crear una tabal llamda <code>people</code> que tenga una columna <code>id</code> en cada fila:
+      </p>
+      <pre>
+        <code class="container__base-code">
+CREATE TABLE people (
+    id serial,
+    person_name varchar(100)
+);
+        </code>
+      </pre>
+      <p>
+        Cada vez que se agrega un nuevo <code>person_name</code> a la tabla, la columna <code>id</code> aumentará en 1.
+      </p>
+      <p>
+        Aunque una columna con un tipo de serie se incrementa automáticamente cada vez que se agrega una fila, algunos escenarios crearán espacios en la secuencia de números en la columna. Si se elimina una fila, por ejemplo, el valor de esa fila nunca se reemplaza. O, si se cancela la inserción de una fila, la secuencia de la columna aún se incrementará.
+      </p>
+      <h3 id="sub3">Números decimales</h3>
+      <p>
+        A diferencia de los números enteros, los <em>decimales</em> representan un número entero más un fracción de un número entero; la fracción está representada por dígitos que siguen a un <em>punto decimal</em>. Por ejemplo, la distancia desde mi casa hasta la tienda de comestibles más cercana es de 6,7 millas; Podría insertar 6.7 en una columna de punto fijo o en una de punto flotante sin problemas en <em>PostgreSQL</em>. La única diferencia es cómo la computadora almacena los datos.
+      </p>
+      <h3 id="sb4">Números de punto fijo</h3>
+      <p>
+        El tipo de punto fijo, también llamado tipo de <em>precisión arbitraria</em>, es <code>numeric(precision, scale)</code>. Le da al argumento <code>precision</code> como el número máximo de dígitos a la izquierza y a la derecha del punto decimal, y la <code>scala</code> es el número de dígitos permitidos a la derecha del punto decimal. Alternativamente, puede usar <code>decimal(precision, scale)</code>. Si omite especificar un valor de escala, la escala se establecerá en cero; en efecto, eso crea un número entero. Si omite especificar la precisión y la escala, la base de datos almacenará valores de cualquier precisión y escalará hasta el máximo permitido.
+      </p>
+      <p>
+        Para registrar un valor con cinco dígitos en total (la precisión) y dos dígitos como máximo a la derecha del decimal (la escala), lo especificamos como <code>numeric(5, 2)</code>. La base de datos siempre devolverá dos dígitos a la derecha del punto decimal, incluso si no ingresa un número que contenga dos dígitos. Por ejemplo, 1,47, 1,00 y 121,50.
+      </p>
+      <h3 id="sub5">Tipos de coma flotante</h3>
+      <p>
+        Los tipos de datos de coma flotante son <code>real</code> y <code>double precision</code>. La diferencia entre los dos es la cantidad de datos que almacenan. El tipo <code>real</code> permite precisión hasta seis dígitos decimales y <code>double precision</code> permite hasta los 15 puntos decimales de precisión, los cuales incluyen el número de dígitos en ambos lados del punto. Estos tiposde punto flotante también se denominan tipos de <em>precision variable</em>. La base de datos almacena el número en partes que representan los dígitos y un exponente, la ubicación a la que pertenece el punto decimal. Entonces, a diferencia de <code>numeric</code>, donde especificamos precisión y escala fijasm el punto decimal en una columna dada puede <em>"flotar"</em> dependiendo del número.
+      </p>
+      <h3 id="sub6">Uso de tipos de coma flotante y fija</h3>
+      <p>
+        Cada tipo tiene límites diferentes en el número total de dígitos o precisíon que puede contener. Para ver cómo cada uno de los tres tipos de datos maneja los mismos números, cree una pequeña tabla e inserte una variedad de casos de prueba, como se muestra en el siguiente codigo:
+      </p>
+      <pre>
+        <code class="container__base-code">
+CREATE TABLE number_data_types (
+    numeric_column numeric(20, 5),
+    real_column real,
+    double_column double precision
+);
+
+INSERT INTO number_data_types
+VALUES 
+    (.7, .7, .7),
+    (2.13579, 2.13579, 2.13579),
+    (2.1357987654, 2.1357987654, 2.1357987654);
+
+SELECT * FROM number_data_types;    
+        </code>
+      </pre>
+      <p>
+        Creamos una tabla con una columna para cada uno de los tipos de datos fraccionarios y cargamos tres filas en la tabla. Cada fila repite el mismo número en las tres columnas. Cuando se ejecuta la última línea del script y seleccionamos todo de la tabla, obtenemos lo siguiente:
+      </p>
+      <pre>
+        <code class="container__base-code">
+numeric_column    real_column    double_column
+--------------    -----------    -------------
+       0.70000            0.7              0.7
+       2.13579        2.13579          2.13579
+       2.13580         2.1358     2.1357987654
+        </code>
+      </pre>
+      <p>
+        Note lo que pasó. La columna <code>numeric_column</code> configurada con una escala de cinco, almacena cinco dígitos después del punto decimal, ya sea que haya insertado esa cantiad o no. Si es menos de cinco, rellena el resto con ceros. Si es más de cinco, los redondea, como con el número de la tercera fila con 10 digitos después del decimal.
+      </p>
+      <p>
+        Las columnas tipo <code>real</code> y <code>double precision</code> almacenan colo el número de dígitos presentes sin relleno. Nuevamente en la tercera fila, el número se redondea cuando se inserta en la columna <code>real</code> porque ese tipo tiene un máximo de seis dígitos de precisión. La columna <code>double precision</code> puede contener hasta 15 digitos, por lo que almacena el número completo.
+      </p>
+      <h3 id="sub7">Problemas con las matemáticas de coma flotante</h3>
+      <p>
+        La forma en que las computadoras almacenan números de punto flotante puede dar lugar a errores matemáticos involuntarios. Mire lo que sucede cuando hacemos algunos cálculos con estos números.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT 
+    numeric_column * 10000000 AS "Fixed",
+    real_column * * 10000000 AS "Float"
+FROM number_data_types
+WHERE numeric_column = .7;    
+        </code>
+      </pre>
+      <p>
+        Aquí, multiplicamos <code>numeric_column</code> por 10 millones y usamos una cláusula <code>WHERE</code> para filtrar solo la primera fila. Deberíamos obtener el mismo resultado para ambos cálculos, ¿verdad? Esto es lo que devuelve la consulta:
+      </p>
+      <pre>
+        <code class="container__base-code">
+Fixed             Float
+-------------     ----------------
+7000000.00000     6999999.88079071
+        </code>
+      </pre>
+      <p>
+        La razón por la que las matemáticas de punto flotante producen tales errores es que la computadora intenta comprimir mucha información en un número finito de bits.
+      </p>
+      <h3 id="sub8">Elegir el tipo de datos de su número</h3>
+      <p>
+        Por ahora, aquí hay tres pautas a considerar cuando se trata de tipos de datos numéricos:
+      </p>
+      <ol>
+        <li>
+          Utilice números enteros cuando sea posible. A menos que sus datos usen decimales, quédese con los tipos enteros.
+        </li>
+        <li>
+          Si está trabajando con datos decimales y necesita que los cáculos sean exactos (por ejemplo, con dinero), elija <code>numeric</code> o su equivalente <code>decimal</code>. Los tipos flotantes ahorrarán espacion, pero sufren de inexactitud matemática. Úselos solo cuando la exactitud no sea tan importante.
+        </li>
+        <li>
+          Elija un tipo de número lo suficientemente grande. A menos que esté diseñando una base de datos para contener millones de filas, opte por el lado de las más grandes. Cuando utilice <code>numeric</code> o <code>decimal</code>, establezca la precisíon lo suficientemente grande para acomodar el número de dígitos en ambos lados del punto decimal.
+        </li>
+      </ol>
+      <h2 class="tema3">Fechas y Horarios</h2>
+      <p>
+        El soporte de fecha y hora en <em>PostgreSQL</em> incluye los cuatro tipos de datos principales que se muestran en la siguiente tabla:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <td>Tipo de datos</td>
+            <td>Tamaño almacenamiento</td>
+            <td>Descripción</td>
+            <td>Rango</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>timestamp</code></td>
+            <td>8 bytes</td>
+            <td>Fecha y hora</td>
+            <td>4713 a.C. al 294276 d.C.</td>
+          </tr>
+          <tr>
+            <td><code>date</code></td>
+            <td>4 bytes</td>
+            <td>Fecha (sin hora)</td>
+            <td>4713 a.C. al 5874897 d.C.</td>
+          </tr>
+          <tr>
+            <td><code>time</code></td>
+            <td>8 bytes</td>
+            <td>Hora (sin fecha)</td>
+            <td>00:00:00 a 24:00:00</td>
+          </tr>
+          <tr>
+            <td><code>interval</code></td>
+            <td>16 bytes</td>
+            <td>Intervalo de tiempo</td>
+            <td>+/- 178.000.000 años</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Aquí hay un resumen de los tipos de datos para horas y fechas en <em>PostgreSQL</em>:
+      </p>
+      <ul>
+        <li>
+          <code>timestamp</code>: Registra la fecha y la hora, que son útiles para una variedad de situacioneas que pueden rastrear: salidas y llegadas de vuelos de pasajeros, un cronograna de juegos de Grandes Ligas o incidentes a lo largo de una línea de tiempo. Por lo general, querrá agregar las palabras clave <code>with time zone</code> para asegurarse de que la hora registrada para un eventos incluya la zona horaria en la que ocurrió. De lo contrario, los tiempos registrados en varios lugares del mundo se vuelven imposibles de comparar. Se puede especificar con la palabra clave <code>timestamptz</code>.
+        </li>
+        <li>
+          <code>date</code>: Registra solo la fecha.
+        </li>
+        <li>
+          <code>time</code>: Registra solo el tiempo. Nuevamente, querrá agregar las palabras clave <code>with time zone</code>.
+        </li>
+        <li>
+          <code>interval</code>: Contiene un valor que representa una unidad de tiempo expresada en el formato de <code>quantity unit</code>. No registra el inicio o el final de un periodo de tiempo, solo su duración. Los ejemplos incluyen <code>12 days</code> o <code>8 hours</code>.
+        </li>
+      </ul>
+      <pre>
+        <code class="container__base-code">
+CREATE TABLE date_time_types (
+    timestamp_column timestamp with time zone,
+    interval_column interval
+);
+
+INSERT INTO date_time_types
+VALUES
+    ('2018-12-31 01:00 EST','2 days'),
+    ('2018-12-31 01:00 -8','1 month'),
+    ('2018-12-31 01:00 Australia/Melbourne','1 century'),
+    (now(), '1 week');
+
+SELECT * FROM date_time_types;    
+        </code>
+      </pre>
+      <p>
+        Aquí creamos una tabla con una columna para ambos tipos e insertamos cuatro filas. Para las primeras tres filas, insertamos en <code>timestamp_column</code> la misma fecha usando el formato: <code>YYYY-MM-DD</code>
+      </p>
+      <p>
+        Después de la hora, especificamos una zona horaria pero usamos un formato diferente en cada una de las tres primeras filas: en la primera fila, usamos la abreviatura <code>EST</code>, que es la hora estándar del este en los Estados Unidos.
+      </p>
+      <p>
+        En la segunda fila, configuramos la zona horaria con el valor <code>-8</code>. Eso representa el número de horas de diferencia, o <em>desplazamiento</em>, de la hora universal coordinada (UTC). El uso de un valor de <code>-8</code> especifica una zona horaria ocho horas por detrás de UTC, que es la zona horaria del Pacífico en los Estados Unidos y Canadá.
+      </p>
+      <p>
+        Para la tercera fila, especificamos la zona horaria usando el nombre de un área y ubicación: <code>Australia/Melbourne</code>. Ese formato utiliza valores que se encuentran en una base de datos de zona horaria estándar que se emplea a menudo en la programación de computadoras.
+      </p>
+      <p>
+        En la cuarta fila, en lugar de especifiar fechas, horas y zonas horarias, la secuencia de comandos utiliza la funcion <code>now()</code>, que captura el momento de transacción actual del hardware.
+      </p>
+      <p>
+        Una vez que se ejectua la secuencia de comandos, la salida debe verse similar a esta:
+      </p>
+      <pre>
+        <code class="container__base-code">
+timestamp_column                 interval_column
+-----------------------------    ---------------
+2018-12-31 01:00:00-05           2 days
+2018-12-31 04:00:00-05           1 mon
+2018-12-30 09:00:00-05           100 years
+2019-01-25 21:31:15.716063-05    7 days
+        </code>
+      </pre>
+      <h3 id="sub9">Uso del tipo de datos de intervalo en cálculos</h3>
+      <p>
+        El tipo de datos <code>interval</code> es útil para cálculos fáciles de entender sobre datos de fecha y hora. Por ejemplo, supongamos que tiene una columna que contiene la fecha en que un cliente firmo un contrato. Usando datos de intervalo, puede agregar 90 días a cada fecha de contrato para determinar cuándo hacer un seguimiento con el cliente.
+      </p>
+      <p>
+        Para ver cómo funciona el tipo de datos <code>interval</code>, usaremos la tabla <code>date_time_types</code> que acabamos de crear:
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT
+    timestamp_column
+    interval_column,
+    timestamp_column - interval_column AS new_date
+FROM date_time_types;
+        </code>
+      </pre>
+      <p>
+        Esta es una declaración <code>SELECT</code> típica, excepto que calcularemos un columna llamada <code>new_date</code> que contiene el resultado de <code>timestamp_column</code> menos <code>interval_column</code>. (Las columnas calculadas se llaman <em>expresiones</em>; usaremos esta técnica a menudo). En cada fila, restamos la unidad de tiempo indicada por el tipo de datos de <code>interval</code> de fecha. Esto produce el siguiente resultado:
+      </p>
+      <figure>
+        <img src="../img_postgre/ch_03/01.jpg" alt="table">
+      </figure>
+      <p>
+        Tenga en cuenta que la columna <code>new_date</code> por defecto tiene el formato de tipo <code>timestamp with time zone</code>, lo que permite la visualización de valores de tiempo y fechas si el valor del intervalo los usa. Nuevamente, su salida puede ser diferente según su zona horaria.
+      </p>
+      <h2 id="tema4">Tipos varios</h2>
+      <p>
+        Los tipos de caracteres, números y fecha/hora constituiran la mayoria de su trabajo con SQL. Pero <em>PostgreSQL</em> admite muchos tipos adicionales:
+      </p>
+      <ul>
+        <li>
+          Un tipo <code>boolean</code> que almacena el valor <code>true</code> o <code>false</code>.
+        </li>
+        <li>
+          Tipos geométricos que incluyen puntos, líneas, círculos y otros objetos bidimensionales.
+        </li>
+        <li>
+          Tipos de direcciones de red, como direcciones IP o MAC.
+        </li>
+        <li>
+          Un tipo de indentificador único universal (UUID), que a veces se utiliza como un valor de clave único en las tablas.
+        </li>
+        <li>
+          Tipos de datos XML y JSON que almacenan información en esos formatos estructurados.
+        </li>
+      </ul>
+      <h2 id="tema5">Transformando valores de un tipo a otro con CAST</h2>
+      <p>
+        La función <code>CAST()</code> solo tiene éxito cuando el tipo de datos de destino se puede acomodar al valor original. Es posible convertir un número entero como texto, porque los tipos de caracteres pueden incluir números. Convertir letras a números no es posible.
+      </p>
+      <p>
+        El siguiente codigo tiene tres ejemplos de conversion. Los dos primeros ejemplos funcionan, pero el tercero intentará realizar una conversion de tipo no válido para que pueda ver cómo se ve un error de conversión de tipo.
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT timestamp_column, CAST(timestamp_column AS varchar(10))
+  FROM date_time_types;
+
+SELECT numeric_column,
+    CAST(numeric_column AS integer),
+    CAST(numeric_column AS varchar(6))
+  FROM number_data_types;
+
+SELECT CAST(char_column AS integer) FROM char_data_types;
+        </code>
+      </pre>
+      <p>
+        La primera instruccion <code>SELECT</code> devuelve el valor de <code>timestamp_column</code> como un <code>varchar</code>. En este caso, establecí la longitud de los caracteres en 10, lo que significa que cuando se convierte en una cadena de caracteres, solo se conservan los primeros 10 caracteres. Eso es útil en este caso, porque eso solo nos da el segmento de fecha  de la columna y excluye el tiempo.
+      </p>
+      <p>
+        La segunda instrucción <code>SELECT</code> devuele la <code>numeric_column</code> tres veces: en su forma original y luego como un número entero y como un carácter. Tras la conversión a un número entero, <em>PostgreSQL</em> redondea el valor a un número entero. Pero en la conversión <code>varchar</code>, no se produce ningún redondeo: el valor simplemente se divide en el sexto carácter.
+      </p>
+      <p>
+        El <code>SELECT</code> final no funciona: devuelve un error de <code>invalid input syntax for integer</code> porque las letras no pueden convertirse en números enteros.
+      </p>
+      <h2 id="tema5">Notación de acceso directo CAST</h2>
+      <p>
+        Siempre es mejor escribir SQL que pueda ser leído por otra persona que pueda aprenderlo más tarde, y la forma en que se escribe <code>CAST()</code> hace que lo que pretendiás cuando lo usaste se bastante obvio. Sin embargo, <em>PostgreSQL</em> también ofrece una notación de atajo menos obvia que ocupa menos espacio: los <em>dos puntos dobles</em>.
+      </p>
+      <p>
+        Inserte los dos pntos dobles entre ele nombre de la columna y el tipo de datos al que desea convertirlo. Por ejemplo, estas dos declaraciones emiten <code>timestamp_column</code> como un <code>varchar</code>:
+      </p>
+      <pre>
+        <code class="container__base-code">
+SELECT timestamp_column, CAST(timestamp_column AS varchar(10))
+FROM date_time_types;
+
+SELECT timestamp_column::varchar(10)
+FROM date_time_types;
+        </code>
+      </pre>
+      <p>
+        Utilice el que más le convenga, pero tenga en cuentaa que los dos puntos dobles son una implementación exclusiva de <em>PostgreSQL</em> que no se encuentra en otras variantes de SQL.
+      </p>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Caracteres</a></li>
+        <li><a href="#tema2">Números</a></li>
+        <li><a href="#sub1">- Enteros</a></li>
+        <li><a href="#sub2">- Enteros que se incrementan automáticamente</a></li>
+        <li><a href="#sub3">- Números decimales</a></li>
+        <li><a href="#sub4">- Números de punto fijo</a></li>
+        <li><a href="#sub5">- Tipos de coma flotante</a></li>
+        <li><a href="#sub6">- Uso de tipos de coma flotante y fija</a></li>
+        <li><a href="#sub7">- Problemas con las matemáticas de coma flotante</a></li>
+        <li><a href="#sub8">- Elegir el tipo de datos de su número</a></li>
+        <li><a href="#tema3">Fechas y Horarios</a></li>
+        <li><a href="#sub9">- Uso del tipo de datos de intervalo en cálculos</a></li>
+        <li><a href="#tema4">Tipos varios</a></li>
+        <li><a href="#tema5">Notación de acceso directo CAST</a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

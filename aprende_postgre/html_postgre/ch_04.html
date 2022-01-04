@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css_postgre/general_style.css">
+  <title>Capitulo 4</title>
+</head>
+<body>
+  <div class="container">
+    <header class="container__header" id="inicio">
+      <h1>Capitulo 4. Importación y Exportación de datos</h1>
+      <div>
+        <a href=""><img src="" alt=""></a>
+        <a href=""><img src="" alt=""></a>
+      </div>
+    </header>
+    
+    <main class="container__main">
+      <p>
+        Hasta ahora, ha aprendido a agregar un puñado de filas a una tabla mediante instrucciones <code>INSERT</code>. Una inserción fila por fila es útil para crear tablas de prueba rápida o agregar algunas filas a una tabla existente. Pero es más probable que necesite cargar cientos, miles o incluso millones de filas, y nadie quiere escribir declaraciones <code>INSERT</code> por separado. Afortunadamente, no es necesario.
+      </p>
+      <p>
+        Si sus datos existen en un archivo de texto <em>delimitado</em> (con una fila de tabla por línea de texto y cada valor de columna separado por una coma u otro carácter), PostgreSQL puede importar los datos de forma masiva a través de su comando <code>COPY</code>. Este comando es una implementación especifica de <em>PostgreSQL</em> con opciones para incluir o excluir columnas y manejar varios tipos de texto delimitado.
+      </p>
+      <p>
+        En la dirección opuesta, <code>COPY</code> también <em>exportará</em> datos de tablas de <em>PostgreSQL</em> o del resultado de una consulta a un archivo de texto delimitado. Esta técnica es útil cuando desea compartir datos con colegas o moverlos a otro formato, como un archivo de Excel.
+      </p>
+      <p>
+        Tres pasos forman el esquema de la mayoría de las importaciones que realizará:
+      </p>
+      <ol>
+        <li>
+          Prepare los datos de origen en forma de archivo de texto delimitado.
+        </li>
+        <li>
+          Crea una tabla para almacenar los datos.
+        </li>
+        <li>
+          Escriba un script <code>COPY</code> para realizar la importación.
+        </li>
+      </ol>
+      <p>
+        Una vez realizada la importación, comprobaremos los datos y buscaremos opciones adicionales para importar y exportar.
+      </p>
+      <h2 id="tema1">Trabajar con archivos de texto delimitados</h2>
+      <p>
+        Un archivo de texto delimitado contiene filas de dtos y cada fila representa una fila en una tabla. En cada fila, un carácter separa o delimita cada columna de datos. El término <em>CSV</em> se refiere un archivo con <em>valores delimitados por comas</em>.
+      </p>
+      <p>
+        Aquí hay una fila de datos típica que puede ver en un archivo delimitado por comas:
+      </p>
+      <pre>
+        <code class="container__base-code">
+John, Doe, 123 Main St., Hyde Park, NY, 845-555-1212
+        </code>
+      </pre>
+      <p>
+        Observer que una coma separa cada dato (nombre, apellido, calle, ciudad, estado y teléfono) sin espacios. Las comas le dicen al software que trate cada elemento como una columna separada, ya sea al importar o exportar.
+      </p>
+      <h3 id="sub1">Citando columnas que contienen delimitadores</h3>
+      <p>
+        Para evitar que un valor que contiene una coma se entienda como dos columnas se usa un carácter delimitador llamado <em>calificador de texto</em> que le dice a SQL que ignore la coma que contiene el valor. La mayoria de veces se usan comillas dobles. Aquí está la fila de datos de ejemplo nuevamente, pero con el nombre de la calle entre comillas dobles:
+      </p>
+      <pre>
+        <code class="container__base-code">
+John, Doe, "123 Main St., Apartment 200", Hyde Park, NY, 845-555-1212
+        </code>
+      </pre>
+      <h3 id="sub2">Manejo de filas de encabezado</h3>
+      <p>
+        Otra característica que encontrará a menudo dentro de un archivo de texto delimitado es la <em>fila de encabezado</em>. Como su nombre lo indica, es una sola fila en la parte superior que enumera el nombre de cada campo de datos. Aquí hay un ejemplo con la fila delimitada que ha estado usando:
+      </p>
+      <pre>
+        <code class="container__base-code">
+FIRSTNAME,LASTNAME,STREET,CITY,STATE,PHONE
+John,Doe,"123 Main St., Apartment 200",Hyde Park,NY,845-555-1212
+        </code>
+      </pre>
+      <p>
+        Los valores en la fila de encabezado identifican los datos en cada columna, lo cual es útil cuando está descifrando el contenido de un archivo. Algunos administradores de bases de datos usan la fila de encabezado para asignar columnas en el archivo delimitado a las columnas correctas en la tabla de importación. Debido a que <em>PostgreSQL</em> no usa la fila de encabezado, no queremos que es fila se importe a una tabla, por lo que usaremos un opción <code>HEADER</code> en comando <code>COPY</code> para excluirla.
+      </p>
+      <h2 id="tema2">Uso de COPY para importar datos</h2>
+      <p>
+        Para importar datos de un archivo externo a nuestra base de datos, primero necesitamos verificar un archivo CSV de origen y construir la tabla en <em>PostgreSQL</em> para contener los datos. A partir de entonces, la declaración SQL para importación es relativamente simple:
+      </p>
+      <pre>
+        <code class="container__base-code">
+COPY table_name
+FROM 'C:\YourDirectory\your_file.csv'
+WITH (FORMAT CSV, HEADER);
+        </code>
+      </pre>
+      <p>
+        El bloque de código comienza con la palabra clave <code>COPY</code> seguida del nombre de la tabla de destino, que ya debe existir en su base de datos. Piense en esta sintaxis en el sentido de <em>"Copiar datos en mi tabla llamada <code>table_name</code>"</em>
+      </p>
+      <p>
+        La palabra clave <code>FROM</code> identifica la ruta complea al archivo de origen, incluido su nombre. La forma en que designa la ruta depende de su sistema operativo. Por ejemplo, para importar un archivo ubicado en mi escritorio de <em>Windows</em> usaria:
+      </p>
+      <pre>
+        <code class="container__base-code">
+FROM 'C:\Users\Anthony\Desktop\my_file.csv'
+        </code>
+      </pre>
+      <p>
+        En macOS o Linux, comience en el directorio raíz del sistema con una barra diagonal y continué desde allí. Así se vería la línea:
+      </p>
+      <pre>
+        <code class="container__base-code">
+FROM '/Users/anthony/Desktop/my_file.csv'
+        </code>
+      </pre>
+      <p>
+        Tenga en cuenta que en ambos casos la ruta completa y el nombre del archivo están entre comillas simples.
+      </p>
+      <p>
+        La palabra clave <code>WITH</code> le permite especificar opciones, que puede adaptar a su archivo de entrada o salida.
+      </p>
+      <h3 id="sub3">Formato de archivo de entrada y salida</h3>
+      <p>
+        Utilice la opción <code>FORMAT format_name</code> para especificar el tipo de archivo que está leyendo o escribiendo. Los nombres de formato son <code>CSV</code>, <code>TEXT</code> o <code>BINARY</code>
+      </p>
+      <h3 id="sub4">Presencia de una fila de encabezado</h3>
+      <p>
+        En la importación, use <code>HEADER</code> para especificar que el archivo de origen tiene una fila de encabezado. Tambien puede especificarlo a mano como <code>HEADER ON</code>, que le dice a la base de datos  que comience a importar desde la segunda línea del archivo, evitando la importación no deseada del encabezado. En la exportación, el uso de <code>HEADER</code> le dice a la base de datos que incluya los nombres de las columnas como una fila de encabezado en el archivo de salida, lo que suele ser útil.
+      </p>
+      <h3 id="sub5">Delimitador</h3>
+      <p>
+        La opción <code>DELIMITER 'character'</code> le permite especificar qué carácter utiliza su archivo de importación o exportación como delimitador. El delimitador deber ser un solo carácter y puede ser un retorno de carro. Por ejemplo, si recibió datos delimitados por <em>barras verticales (|)</em>, trataría la opción de esta manera: <code>DELIMITER '|'</code>.
+      </p>
+      <h3 id="sub6">Carácter QUOTE</h3>
+      <p>
+        Aprendió que en un CSV, las comas dentro de un valor de una sola columna necesita estar rodeado por un carácter que sirva como calificador de texto, indicando a la base de datos que maneje el valor dentro de una columna. De forma predeterminada, <em>PostgreSQL</em> usa comillas dobles, pero si el CSV que está importando usa un carácter diferente, puede especificarlos con la opción <code>QUOTE 'quote_character'</code>.
+      </p>
+      <h2 id="tema3">Importación de datos del censo</h2>
+      <p>
+        El conjunto de datos con el que trabajará en este ejercicio de importación es considerablemente más grande que la tabla <code>teachers</code>. Contiene datos del censo sobre todos los condados de Estados Unidos y tiene 3,143 filas y 91 columnas.
+      </p>
+      <p>
+        Para comprender los datos, es útil saber un poco sobre el censo en EE.UU. Cada 10 años, el gobierno lleva a cabo un conteo de la población, uno de los varios programas de la Oficina del Censo para recopilar datos demográficos. Cada hogar en Estados Unidos recibe un cuestionario sobre cada persona que lo integra: su edad, sexo, raza y si es hispano o no. 
+      </p>
+      <p>
+        La Oficina del Censo informa los totales de población general y los recuentos por raza y etnia para varias geografías, incluidos estados, condados, ciudades, lugares y distritos escolares. Compilé una colección selecta de columnas para los conteos a nivel de condado del Censo de 2010 en un archivo llamado <em>us_counties_2010.csv</em>, descargue el archivo <a href="https://raw.githubusercontent.com/anthonydb/practical-sql/master/Chapter_04/us_counties_2010.csv">DESCARGAR</a> y guardelo en su computadora.
+      </p>
+      <p>
+        Abra el archivo con un editor de texto sin formato. Debería ver una fila de encabezado que comienza con estas columnas:
+      </p>
+      <pre>
+        <code class="container__base-code">
+NAME,STUSAB,SUMLEV,REGION,DIVISION,STATE,COUNTY
+<span>--snip--</span>
+        </code>
+      </pre>
+      <p>
+        Exploraremos algunas de las columnas examinando el código para crear la tabla de importación.
+      </p>
+    </main>
+
+    <aside class="container__aside">
+      <ul>
+        <li><a href="#inicio">INICIO</a></li>
+        <li><a href="#tema1">Trabajar con archivos de texto delimitados</a></li>
+        <li><a href="#sub1">- Citando columnas que contienen delimitadores</a></li>
+        <li><a href="#sub2">- Manejo de filas de encabezado</a></li>
+        <li><a href="#tema2">Uso de COPY para importar datos</a></li>
+        <li><a href="#sub3">- Formato de archivo de entrada y salida</a></li>
+        <li><a href="#sub4">- Presencia de una fila de encabezado</a></li>
+        <li><a href="#sub5">- Delimitador</a></li>
+        <li><a href="#sub6">- Carácter QUOTE</a></li>
+        <li><a href="#tema3">Importación de datos del censo</a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+      </ul>
+    </aside>
+
+    <footer class="container__footer">
+      <p class="container__footer--p" id="made-with"><a href="">Made with <b id="heart">&hearts;</b> <b>By</b> <i>Pixel Pintor</i></a></p>
+      <a class="container__footer--a" href=""><img src="/img/logos/instagram-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/linkedin-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/github-logo.png" alt=""></a>
+      <a class="container__footer--a" href=""><img src="/img/logos/facebook-logo.png" alt=""></a>
+      <a class="container__footer--a" href="../index_css.html"><img src="/img/logos/house-logo.png" alt=""></a>
+    </footer>
+  </div>
+</body>
+</html>

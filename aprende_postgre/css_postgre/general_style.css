@@ -213,3 +213,7 @@ thead {
 tbody tr:nth-child(even) {
   background-color: #dbf6d9;
 }
+
+img {
+  max-width: 40rem;
+}
